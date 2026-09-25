@@ -38,13 +38,19 @@ const BUCKET_KEYWORDS: Array<[bucket: string, keywords: string[]]> = [
 // against creators of the same size — on Amplio. The tiers are fixed; the
 // rate for each is the median engagement of our own creators in that tier
 // (marketplace/server/engagement-baseline.ts), not a published benchmark.
-export const ENGAGEMENT_TIERS = [3_000, 7_000, 10_000, 100_000, Infinity] as const;
+export const ENGAGEMENT_TIERS = [
+  { maxFollowers: 3_000 },
+  { maxFollowers: 7_000 },
+  { maxFollowers: 10_000 },
+  { maxFollowers: 100_000 },
+  { maxFollowers: Infinity },
+] as const;
 
 /** Median engagement rate per tier, in ENGAGEMENT_TIERS order; null where we have too few creators. */
 export type EngagementBaseline = { byTier: Array<number | null>; overall: number | null };
 
 export function tierIndex(followers: number) {
-  const index = ENGAGEMENT_TIERS.findIndex((max) => followers <= max);
+  const index = ENGAGEMENT_TIERS.findIndex((tier) => followers <= tier.maxFollowers);
   return index < 0 ? ENGAGEMENT_TIERS.length - 1 : index;
 }
 
