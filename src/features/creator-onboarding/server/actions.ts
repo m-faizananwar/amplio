@@ -46,8 +46,8 @@ const READ_FAILED = "We couldn't read that profile — enter it by hand.";
 
 // The row already holds this profile's import: don't pay for a second read.
 async function cachedImport(auth: Auth, url: string): Promise<ImportedLinkedinProfile | null> {
-  const [row] = await getDb().select({ linkedinUrl: creators.linkedinUrl, followers: creators.followers, headline: creators.headline, country: creators.country, avatarUrl: creators.avatarUrl }).from(creators).where(ownRow(auth)).limit(1);
-  if (!row || normalizeLinkedinUrl(row.linkedinUrl) !== url || row.followers <= 0) return null;
+  const [row] = await getDb().select({ linkedinUrl: creators.linkedinUrl, readAt: creators.linkedinReadAt, followers: creators.followers, headline: creators.headline, country: creators.country, avatarUrl: creators.avatarUrl }).from(creators).where(ownRow(auth)).limit(1);
+  if (!row?.readAt || normalizeLinkedinUrl(row.linkedinUrl) !== url) return null;
   return { name: "", headline: row.headline || null, followers: row.followers, countryCode: row.country || null, photoUrl: row.avatarUrl || null };
 }
 
@@ -65,7 +65,8 @@ export async function readLinkedinProfile(input: LinkedinInput): Promise<ActionR
     if (cached) return { ok: true, data: cached };
     const read = await importLinkedinProfile(url);
     if (!read.ok) {
-      await getDb().update(creators).set({ linkedinUrl: url }).where(ownRow(auth.data));
+      // a failed read keeps the URL and marks the card as entered by hand
+      await getDb().update(creators).set({ linkedinUrl: url, linkedinReadAt: null }).where(ownRow(auth.data));
       dropCaches(auth.data);
       return { ok: false, error: READ_FAILED };
     }
@@ -75,6 +76,8 @@ export async function readLinkedinProfile(input: LinkedinInput): Promise<ActionR
       .update(creators)
       .set({
         linkedinUrl: url,
+        // the card's "imported from your public LinkedIn on <date>" reads this
+        linkedinReadAt: new Date(),
         ...(p.followers !== null ? { followers: p.followers } : {}),
         ...(p.headline ? { headline: p.headline } : {}),
         ...(country ? { country } : {}),

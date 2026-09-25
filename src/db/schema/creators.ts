@@ -28,6 +28,9 @@ export const creators = pgTable(
     audienceJobTitles: jsonb("audience_job_titles").$type<AudienceMix>().notNull().default({}),
     audienceSeniority: jsonb("audience_seniority").$type<AudienceMix>().notNull().default({}),
     avatarUrl: text("avatar_url").notNull(),
+    // When the public LinkedIn profile was last read for real (Apify); null means
+    // the card was entered by hand (the read failed or was skipped).
+    linkedinReadAt: timestamp("linkedin_read_at", { withTimezone: true }),
     // Onboarding: "complete your professional information" (optional step) and completion.
     legalCountry: text("legal_country"),
     registeredBusiness: boolean("registered_business"),

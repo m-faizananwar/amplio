@@ -1,0 +1,1 @@
+ALTER TABLE "creators" ADD COLUMN "linkedin_read_at" timestamp with time zone;
