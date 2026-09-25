@@ -49,7 +49,8 @@ export function TrailDrawer({ open, onOpenChange, title, total, rows, loading, e
         ) : (
           <ol className="divide-y divide-rule">
             {rows.map((row, i) => (
-              <li key={row.id} className="grid grid-cols-[8.5rem_1fr_auto] items-baseline gap-3 px-5 py-2.5 animate-rise" style={i < 12 ? { animationDelay: `${i * 20}ms` } : undefined}>
+              <li key={row.id} className="relative grid grid-cols-[8.5rem_1fr_auto] items-baseline gap-3 px-5 py-2.5 animate-rise" style={i < 12 ? { animationDelay: `${i * 20}ms` } : undefined}>
+                {i === 0 ? <TrailLead /> : null}
                 <time dateTime={row.at} className="num text-caption text-ink-muted">{time(row.at)}</time>
                 <div className="min-w-0">
                   <p className="truncate text-body text-ink">
@@ -69,6 +70,18 @@ export function TrailDrawer({ open, onOpenChange, title, total, rows, loading, e
         )}
       </DrawerContent>
     </Drawer>
+  )
+}
+
+// The total sits just above the list, in the drawer's header. A line drops
+// from it to the first row and ends in a dot: the number and the row it
+// starts from, joined the way the mark joins its dots.
+function TrailLead() {
+  return (
+    <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-3 w-px">
+      <span className="absolute top-0 left-0 h-1/2 w-px origin-top bg-ink animate-drop" />
+      <span className="absolute top-1/2 left-0 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-ink animate-pop-in [animation-delay:180ms]" />
+    </span>
   )
 }
 

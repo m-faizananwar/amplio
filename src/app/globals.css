@@ -71,6 +71,7 @@
   /* named ledger-* so they never shadow tw-animate-css's own enter/exit */
   --animate-rise: ledger-rise var(--duration-slow) var(--ease-ledger) both;
   --animate-pop-in: ledger-pop var(--duration-base) var(--ease-ledger) both;
+  --animate-drop: ledger-drop var(--duration-slow) var(--ease-ledger) both;
 
   /* shadcn names on the ledger palette */
   --color-brand: var(--brand);
@@ -234,12 +235,16 @@
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
+@keyframes ledger-drop {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
 @keyframes ledger-pop {
   from { opacity: 0; transform: scale(0.96); }
   to { opacity: 1; transform: scale(1); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .animate-rise, .animate-pop-in { animation: none !important; }
+  .animate-rise, .animate-pop-in, .animate-drop { animation: none !important; }
 }
 
 /* ---------------------------------------------------------------------------
