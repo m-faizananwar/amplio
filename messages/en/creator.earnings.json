@@ -61,11 +61,6 @@
       "inTransit": "In transit",
       "completed": "Completed"
     },
-    "descriptions": {
-      "payout": "{brand} · {campaign}",
-      "withdrawalStripe": "Withdrawal · Stripe (instant)",
-      "withdrawalBank": "Withdrawal · bank transfer"
-    },
     "empty": {
       "all": "No movements yet. Your first payment will appear here.",
       "awaiting": "Nothing is awaiting release.",

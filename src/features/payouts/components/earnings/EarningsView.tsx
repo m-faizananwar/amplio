@@ -29,7 +29,8 @@ export function EarningsView({ summary: s, months, ledger, payout, openWithdraw 
   // bumps once per successful withdrawal so the coin runs each time
   const [coins, setCoins] = useState(0);
   const money = (c: number) => format.number(c / CENTS, { style: "currency", currency: "EUR" });
-  const trail = earningsTrail(ledger, (r) => t(`ledger.types.${r.type}`));
+  const methods = { bank: t("withdraw.method.bank"), stripe: t("withdraw.method.stripe") };
+  const trail = earningsTrail(ledger, (r) => t(`ledger.types.${r.type}`), methods);
   const cards: Array<{ key: Key; label: string; hint: string; value: number; rows: TrailRow[] }> = [
     { key: "available", label: t("stats.available.label"), hint: t("stats.available.hint"), value: s.availableCents, rows: trail.available },
     { key: "awaiting", label: t("stats.awaitingRelease.label"), hint: t("stats.awaitingRelease.hint", { count: s.awaitingReleaseCount }), value: s.awaitingReleaseCents, rows: trail.awaiting },

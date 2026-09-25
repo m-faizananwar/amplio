@@ -61,11 +61,6 @@
       "inTransit": "En cours de virement",
       "completed": "Effectué"
     },
-    "descriptions": {
-      "payout": "{brand} · {campaign}",
-      "withdrawalStripe": "Retrait · Stripe (immédiat)",
-      "withdrawalBank": "Retrait · virement bancaire"
-    },
     "empty": {
       "all": "Aucun mouvement pour l’instant. Votre premier paiement apparaîtra ici.",
       "awaiting": "Rien en attente de versement.",
