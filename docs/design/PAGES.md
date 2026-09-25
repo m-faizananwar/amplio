@@ -320,6 +320,33 @@ when money moves), and empty-state scenes (a brief writing itself, two dots join
 rippling, three dots typing). Transform, opacity and dashoffset only; final frame under
 reduced motion; loops are ambient. Numbers roll through the primitives' RollingNumber.
 
+## The loop, end to end (QA, localhost, fresh accounts)
+
+Screens `docs/design/screens/loop-01…39-*.jpg` (captured in dark mode — the
+app follows the system theme). Every step in the new UI, two accounts
+created for the run, local database only:
+
+1. Brand signs up → one-screen onboarding reads hubspot.com, AI draft →
+   Creators (01–05).
+2. Creator signs up → LinkedIn read for real (Apify) fills the card, the
+   creator edits the headline, sets €450, fills legal details (06–12).
+3. Brand finds the creator, the invite asks for funds → demo top-up €500 →
+   funded invitation, €450 held in Billing (13–16).
+4. Creator accepts → writes the draft → brand requests changes (round 1 of
+   2) → creator resubmits → brand approves (17–25).
+5. Creator schedules, adds the post URL, marks it published (26–28).
+6. A fresh browser opens the tracked link (302 with the click id + cookie)
+   and signs up on /demo/landing (29–30).
+7. Brand Results: 1 click and 1 sign-up attributed to the creator, the rows
+   drawers list them, the CSV exports (31–33).
+8. Brand releases €450 → PAID in both ledgers → creator withdraws via the
+   labelled Stripe stub (34–39).
+
+Found on the way: the LinkedIn step promised views and engagement the
+import doesn't read (fixed, 00dee46); releasing a payment moves money on
+one click with no confirm step, and Results shows "Estimated reach 0" for a
+creator whose views are unknown (both reported to the brand side).
+
 ## Real vs stubbed
 
 | Where | What | Status |
