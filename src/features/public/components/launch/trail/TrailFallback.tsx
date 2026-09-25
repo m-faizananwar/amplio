@@ -22,6 +22,14 @@ export function TrailFallback({ signups }: { signups: number }) {
         {t.sources.map((p, i) => <circle key={i} cx={p.x} cy={p.y} r="9" />)}
         <circle cx={t.site.x} cy={t.site.y} r="5" />
       </g>
+      {/* a few clicks in flight, so a still frame shows the flow */}
+      <g fill="var(--color-money)">
+        {t.audience.filter((_, i) => i % 7 === 0).map((p, i) => {
+          const s = t.sources[t.parentOf[t.audience.indexOf(p)]];
+          const k = 0.35 + (i % 3) * 0.2;
+          return <circle key={i} cx={s.x + (p.x - s.x) * k} cy={s.y + (p.y - s.y) * k} r="4" />;
+        })}
+      </g>
       {Array.from({ length: L.rows }, (_, r) => (
         <g key={r}>
           <rect x={L.x + 10} y={L.top + r * L.rowHeight - L.rowHeight * 0.27} width={L.rowWidth} height={L.rowHeight * 0.55} fill="var(--color-ink)" fillOpacity="0.14" />

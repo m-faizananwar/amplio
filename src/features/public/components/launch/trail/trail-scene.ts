@@ -114,7 +114,7 @@ export function createTrailScene(canvas: HTMLCanvasElement, counts: TrailCounts)
     pointMat.uniforms.uScale.value = renderer.getPixelRatio();
     layout = layoutTrail(width, height, { audience: AUDIENCE, ledgerRows: counts.signups });
     rest = layout.audience.map((p) => ({ ...p }));
-    layout.sources.forEach((p, i) => setFixed(i, p, { s: width < 640 ? 14 : 20, c: INK, a: 1 }));
+    layout.sources.forEach((p, i) => setFixed(i, p, { s: width < 640 ? 18 : 26, c: INK, a: 1 }));
     (markGeo.attributes.position.array as Float32Array).set(layout.sources.flatMap((p) => [p.x, p.y, 0]));
     markGeo.attributes.position.needsUpdate = true;
     setFixed(3 + AUDIENCE, layout.site, { s: 10, c: INK, a: 0.9 });
@@ -193,12 +193,12 @@ export function createTrailScene(canvas: HTMLCanvasElement, counts: TrailCounts)
         return;
       }
       bezier(p.path, p.t, tmp);
-      setFixed(idx, tmp, { s: p.signup ? 13 : 8, c: p.signup && p.t > 0.35 ? MONEY : INK, a: (p.signup ? 1 : 0.85) * fade });
+      setFixed(idx, tmp, { s: p.signup ? 14 : 9, c: MONEY, a: (p.signup ? 1 : 0.8) * fade });
     });
     for (const name of ["position", "aSize", "aColor", "aAlpha"]) pointGeo.attributes[name].needsUpdate = true;
     pulse = Math.max(0, pulse - dt * 3);
     setFixed(3 + AUDIENCE, layout.site, { s: 12 + pulse * 18, c: pulse > 0.05 ? MONEY : INK, a: fade });
-    edges.material.opacity = 0.07 * fade;
+    edges.material.opacity = 0.1 * fade;
   }
 
   function frame(now: number) {

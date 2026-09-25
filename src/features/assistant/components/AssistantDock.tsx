@@ -11,20 +11,21 @@ import { useAssistantChat } from "./useAssistantChat";
 import { useSpeechInput } from "./useSpeechInput";
 import "./assistant.css";
 
-type Props = { mode: "public" | "brand" | "creator"; csrfToken?: string };
+type Props = { mode: "public" | "brand" | "creator"; csrfToken?: string; startHidden?: boolean };
 
-function stored() {
-  try { return localStorage.getItem(STORAGE_KEYS.collapsed) === "1"; } catch { return false; }
+// "1" hidden, "0" shown by choice, null never chosen (the surface's default applies)
+function stored(): boolean | null {
+  try { const v = localStorage.getItem(STORAGE_KEYS.collapsed); return v === null ? null : v === "1"; } catch { return null; }
 }
 function store(on: boolean) {
-  try { if (on) localStorage.setItem(STORAGE_KEYS.collapsed, "1"); else localStorage.removeItem(STORAGE_KEYS.collapsed); } catch { /* storage blocked */ }
+  try { localStorage.setItem(STORAGE_KEYS.collapsed, on ? "1" : "0"); } catch { /* storage blocked */ }
 }
 
 // The assistant, calm: a pill at the bottom of every page (type or talk),
 // the conversation above it, and a small button in the corner when hidden.
 // Same brain as before — it asks before anything that moves money or
 // changes a collaboration (the server holds the pending action until "yes").
-export function AssistantDock({ mode, csrfToken }: Props) {
+export function AssistantDock({ mode, csrfToken, startHidden = false }: Props) {
   const t = useTranslations("common.assistant");
   const chat = useAssistantChat(csrfToken);
   const [open, setOpen] = useState(false);
@@ -34,7 +35,7 @@ export function AssistantDock({ mode, csrfToken }: Props) {
   const speech = useSpeechInput({ onPartial: setDraft, onFinal: (text) => { setDraft(""); setOpen(true); void chat.send(text); } }, () => input.current?.focus());
   const listening = speech.status !== "idle";
   // eslint-disable-next-line react-hooks/set-state-in-effect -- the stored preference is read after mount
-  useEffect(() => setHidden(stored()), []);
+  useEffect(() => setHidden(stored() ?? startHidden), [startHidden]);
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
