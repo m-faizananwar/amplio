@@ -288,15 +288,6 @@ minimum progress bar made the wait feel longer than the read. If the site
 can't be read, the draft says it starts from the company name. The fields
 are the shared ones Settings uses (WebsiteFields, BrandProfileFields).
 
-## Graphics and motion kit (`src/components/graphics`)
-One motif, the trail, drawn by hand in SVG on currentColor: DrawOnPath (a stroke draws in),
-TrailLoader (the only loader: the mark's dots pulse), StatusGlyph (a glyph per collaboration
-state — envelope, arrow, joined dots, pen, revise, check, calendar, pulse, coin, cross — that
-redraws when the state changes), Stamp (a paid ledger row prints in), Burst (a spray of dots
-when money moves), and empty-state scenes (a brief writing itself, two dots joining, a link
-rippling, three dots typing). Transform, opacity and dashoffset only; final frame under
-reduced motion; loops are ambient. Numbers roll through the primitives' RollingNumber.
-
 ### Creator — `/onboarding/creator/{linkedin,card,price,professional}`
 The same column and the same rail sign-up started (Account → LinkedIn →
 Card → Price → Legal), one step per screen because each is a different
@@ -306,6 +297,15 @@ nothing guessed. The card step shows the card brands will see building
 under the fields, labelled "from your public LinkedIn" or "entered by you".
 Price starts from the suggestion; the legal step can wait for Settings
 ("Do this later"). Every field is the shared one Settings uses.
+
+## Graphics and motion kit (`src/components/graphics`)
+One motif, the trail, drawn by hand in SVG on currentColor: DrawOnPath (a stroke draws in),
+TrailLoader (the only loader: the mark's dots pulse), StatusGlyph (a glyph per collaboration
+state — envelope, arrow, joined dots, pen, revise, check, calendar, pulse, coin, cross — that
+redraws when the state changes), Stamp (a paid ledger row prints in), Burst (a spray of dots
+when money moves), and empty-state scenes (a brief writing itself, two dots joining, a link
+rippling, three dots typing). Transform, opacity and dashoffset only; final frame under
+reduced motion; loops are ambient. Numbers roll through the primitives' RollingNumber.
 
 ## Real vs stubbed
 
