@@ -1,41 +1,45 @@
 import type { CollaborationDto } from "@/features/collaborations/schemas";
-import { formatDate } from "@/lib/dates";
-import { formatCents } from "@/lib/money";
 import type { NeedsYouItem } from "@/lib/creator-next-step";
 
 export type NeedsYouRow = { key: string; title: string; detail: string; href: string; cta: string };
 
-const CURRENCY = "EUR";
+// next-intl's translator for creator.overview.needsYou, and the viewer's
+// money and date formatters (passed in so this stays a plain function).
+type T = (key: string, values?: Record<string, string | number>) => string;
+type Fmt = { money: (cents: number) => string; date: (iso: string) => string };
 
-function collaborationRow(c: CollaborationDto): NeedsYouRow {
+function collaborationRow(c: CollaborationDto, t: T, fmt: Fmt): NeedsYouRow {
   const href = `/creator/collaborations/${c.id}`;
-  const fee = formatCents(c.feeCents, CURRENCY);
-  const due = c.dueDate ? ` · due ${formatDate(c.dueDate)}` : "";
-  const base = `${c.campaignName} · ${fee}${due}`;
+  const v = { brand: c.brandCompany, campaign: c.campaignName, amount: fmt.money(c.feeCents) };
+  const row = (kind: string, detailKey: string, extra: Record<string, string | number> = {}) => ({
+    key: c.id, href, title: t(`${kind}.title`, v), detail: t(`${kind}.${detailKey}`, { ...v, ...extra }), cta: t(`${kind}.action`),
+  });
   switch (c.status) {
     case "invited":
-      return { key: c.id, title: `${c.brandCompany} invited you`, detail: `${base} · fee held`, href, cta: "Answer" };
+      return c.acceptBy ? row("invitation", "detail", { date: fmt.date(c.acceptBy) }) : row("invitation", "detailNoDate");
     case "changes_requested":
-      return { key: c.id, title: `${c.brandCompany} asked for changes`, detail: `Round ${c.revisionRound} of ${c.maxRevisionRounds} · ${base}`, href, cta: "Update draft" };
+      return row("changesRequested", "detail", { round: c.revisionRound, max: c.maxRevisionRounds });
     case "scheduled":
-      return { key: c.id, title: `Publish your post for ${c.brandCompany}`, detail: `Scheduled ${formatDate(c.scheduledAt)} · add the post URL once it's live`, href, cta: "Add post URL" };
+      return row("publish", "detail", { date: c.scheduledAt ? fmt.date(c.scheduledAt) : "—" });
     case "approved":
-      return { key: c.id, title: `${c.brandCompany} approved your draft`, detail: `${base} · pick a publish date`, href, cta: "Schedule" };
+      return row("schedule", "detail");
     default:
-      return { key: c.id, title: `Write the draft for ${c.brandCompany}`, detail: base, href, cta: "Write draft" };
+      return c.dueDate ? row("draft", "detail", { date: fmt.date(c.dueDate) }) : row("draft", "detailNoDate");
   }
 }
 
 // Turns the ordered Needs-you items into display rows: one line, one button.
-export function toNeedsYouRows(items: NeedsYouItem[], byId: Map<string, CollaborationDto>): NeedsYouRow[] {
+type Options = { byId: Map<string, CollaborationDto>; t: T; fmt: Fmt; setup: "detailPrice" | "detailIndustries" | "detailBoth" };
+
+export function toNeedsYouRows(items: NeedsYouItem[], { byId, t, fmt, setup }: Options): NeedsYouRow[] {
   return items.flatMap((item): NeedsYouRow[] => {
     if (item.kind === "withdraw") {
-      return [{ key: "withdraw", title: `${formatCents(item.availableCents, CURRENCY)} ready to withdraw`, detail: "Paid out from collaborations that went live", href: "/creator/earnings?withdraw=1", cta: "Withdraw" }];
+      return [{ key: "withdraw", title: t("withdraw.title", { amount: fmt.money(item.availableCents) }), detail: t("withdraw.detail"), href: "/creator/earnings?withdraw=1", cta: t("withdraw.action") }];
     }
     if (item.kind === "setup") {
-      return [{ key: "setup", title: "Finish your card", detail: "Brands can't book you until your card has a price and industries", href: "/creator/settings", cta: "Finish card" }];
+      return [{ key: "setup", title: t("setup.title"), detail: t(`setup.${setup}`), href: "/creator/settings#pricing", cta: t("setup.action") }];
     }
     const c = byId.get(item.id);
-    return c ? [collaborationRow(c)] : [];
+    return c ? [collaborationRow(c, t, fmt)] : [];
   });
 }
