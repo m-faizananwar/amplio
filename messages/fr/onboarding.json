@@ -1,0 +1,68 @@
+{
+  "rail": {
+    "label": "Étapes de l’inscription",
+    "stepOf": "Étape {current} sur {total}"
+  },
+  "common": {
+    "back": "Retour",
+    "continue": "Continuer",
+    "saving": "Enregistrement…",
+    "opening": "Ouverture de votre espace…",
+    "later": "Plus tard"
+  },
+  "brand": {
+    "meta": "Configurer votre marque · Amplio",
+    "title": "Partez de votre site web",
+    "sub": "Collez l’adresse de votre site. Nous le lisons et une IA rédige votre proposition de valeur et trois clients idéaux. Vous relisez tout avant utilisation.",
+    "analyze": "Lire mon site",
+    "analyzing": "Lecture de votre site…",
+    "reanalyze": "Relire mon site",
+    "sorting": {
+      "title": "Tri du contenu de votre site",
+      "valueProp": "Proposition de valeur",
+      "idealCustomers": "Clients idéaux",
+      "reading": "Lecture de {host}"
+    },
+    "draftTitle": "Relisez votre brouillon",
+    "draftSub": "Rédigé par une IA à partir de votre site. Corrigez ce qui ne va pas : les créateurs le voient dans chaque brief.",
+    "readFailed": "Impossible de lire {url}. Ce brouillon part du nom de votre entreprise : modifiez-le avant de terminer.",
+    "finish": "Terminer et trouver des créateurs",
+    "finishing": "Préparation de votre premier brief de campagne…",
+    "alreadySetUp": "Votre marque est déjà configurée. Modifiez ces informations dans les Paramètres."
+  },
+  "creator": {
+    "linkedin": {
+      "meta": "Ajouter votre LinkedIn · Amplio",
+      "title": "Ajoutez votre profil LinkedIn",
+      "sub": "Collez l’URL de votre profil public. Nous en tirons votre fiche : nom, accroche, abonnés, vues habituelles et engagement.",
+      "import": "Importer le profil",
+      "importing": "Lecture de votre profil…",
+      "imported": "Profil lu. Vérifiez votre fiche à l’étape suivante.",
+      "failedTitle": "Impossible de lire ce profil",
+      "failedBody": "Saisissez-le à la main. Nous n’inventons jamais de chiffres : ce que nous n’avons pas pu lire reste vide.",
+      "manual": "Saisir à la main",
+      "privacy": "Nous ne lisons que votre profil public, et une seule fois."
+    },
+    "card": {
+      "meta": "Créer votre fiche · Amplio",
+      "title": "Créez votre fiche",
+      "sub": "Votre accroche, votre pays et jusqu’à trois secteurs. L’aperçu montre la fiche que verront les marques, au fil de la saisie.",
+      "previewLabel": "Ce que voient les marques",
+      "fromLinkedin": "Depuis votre LinkedIn public",
+      "enteredByHand": "Saisi par vous"
+    },
+    "price": {
+      "meta": "Fixer votre prix · Amplio",
+      "title": "Fixez votre prix",
+      "sub": "Un prix net fixe par post, et jusqu’à trois offres groupées si vous le souhaitez. Modifiable plus tard.",
+      "suggested": "Suggestion : {price}",
+      "creating": "Création de votre fiche…"
+    },
+    "legal": {
+      "meta": "Informations légales · Amplio",
+      "title": "Vos informations légales",
+      "sub": "Nécessaires pour facturer les marques et vous payer : pays de résidence fiscale, statut, nom et adresse légaux, et deux confirmations.",
+      "laterNote": "Vous pourrez terminer plus tard dans les Paramètres. Ces informations sont obligatoires avant de postuler, d’accepter une réservation ou de retirer vos revenus."
+    }
+  }
+}

@@ -1,18 +1,15 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import { AuthSplitLayout } from "@/features/auth/components/AuthSplitLayout";
-import { COPY } from "../constants";
 
-// The split layout with a form-shaped skeleton: no layout shift between steps.
+// The onboarding column while the step loads: rail, title, one field.
 export function OnboardingLoading() {
   return (
-    <AuthSplitLayout panelTitle={COPY.panelTitle} panelBody={COPY.panelBody} panelFootnote={COPY.panelFootnote}>
-      <div aria-busy="true" aria-label="Loading">
-        <Skeleton className="h-3 w-20" />
-        <Skeleton className="mt-3 h-9 w-56" />
-        <Skeleton className="mt-3 h-4 w-full" />
-        <Skeleton className="mt-8 h-12 w-full rounded-xl" />
-        <Skeleton className="mt-4 h-12 w-full rounded-xl" />
+    <div className="flex min-h-[100svh] justify-center bg-paper px-4 pt-28" aria-busy="true" aria-label="Loading">
+      <div className="grid w-full max-w-[36rem] content-start gap-6">
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-9 w-2/3" />
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-11 w-full" />
       </div>
-    </AuthSplitLayout>
+    </div>
   );
 }

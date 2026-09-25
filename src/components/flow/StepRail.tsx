@@ -14,7 +14,7 @@ export function StepRail({ steps, current, label, stepOf, className }: Props) {
         <span aria-hidden="true" className="absolute left-[7px] right-[7px] top-[7px] h-px bg-rule" />
         <span aria-hidden="true" className="absolute left-[7px] top-[7px] h-px bg-ink transition-[width] duration-(--duration-slow) ease-ledger" style={{ width: `calc((100% - 14px) * ${pct / 100})` }} />
         {steps.map((step, i) => (
-          <li key={step} aria-current={i === current ? "step" : undefined} className="relative flex flex-col items-center gap-2" style={{ width: 14 }}>
+          <li key={step} aria-current={i === current ? "step" : undefined} className={cn("relative flex flex-col gap-2", i === 0 ? "items-start" : i === steps.length - 1 ? "items-end" : "items-center")} style={{ width: 14 }}>
             <span
               aria-hidden="true"
               className={cn(

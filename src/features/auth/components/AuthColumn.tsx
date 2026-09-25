@@ -4,9 +4,10 @@ import { getTranslations } from "next-intl/server";
 import { BrandLockup } from "@/components/brand/BrandLockup";
 import { LocaleToggle } from "@/components/shell/topbar/LocaleToggle";
 
-// Auth is one centred column (DIRECTION.md): the lockup home, the rail when
+// Auth and onboarding are one centred column (DIRECTION.md); `wide` gives
+// onboarding's longer forms room: the lockup home, the rail when
 // there is one, the form, and quiet legal links. No second pane, no media.
-export async function AuthColumn({ rail, children }: { rail?: ReactNode; children: ReactNode }) {
+export async function AuthColumn({ rail, children, wide = false }: { rail?: ReactNode; children: ReactNode; wide?: boolean }) {
   const t = await getTranslations("landing.footer.links");
   return (
     <div className="flex min-h-[100svh] flex-col bg-paper">
@@ -17,7 +18,7 @@ export async function AuthColumn({ rail, children }: { rail?: ReactNode; childre
         <LocaleToggle />
       </header>
       <main className="flex flex-1 justify-center px-4 pb-16 pt-6 sm:pt-12">
-        <div className="w-full max-w-[26rem] animate-rise">
+        <div className={wide ? "w-full max-w-[36rem] animate-rise" : "w-full max-w-[26rem] animate-rise"}>
           {rail ? <div className="mb-10">{rail}</div> : null}
           {children}
         </div>

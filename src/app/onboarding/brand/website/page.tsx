@@ -1,28 +1,24 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { ErrorState } from "@/components/page/ErrorState";
-import { AuthSplitLayout } from "@/features/auth/components/AuthSplitLayout";
-import { OnboardingStepHeader } from "@/features/brand-onboarding/components/OnboardingStepHeader";
-import { WebsiteStepForm } from "@/features/brand-onboarding/components/WebsiteStepForm";
-import { COPY, ONBOARDING_ROUTES } from "@/features/brand-onboarding/constants";
+import { AuthColumn } from "@/features/auth/components/AuthColumn";
+import { BrandSetup } from "@/features/brand-onboarding/components/BrandSetup";
+import { ONBOARDING_ROUTES } from "@/features/brand-onboarding/constants";
 import { loadOnboardingProfile } from "@/features/brand-onboarding/server/queries";
 import { requireOnboardingBrand } from "@/features/brand-onboarding/server/require-onboarding-brand";
 
-import { BRAND } from "@/config/brand";
-export const metadata: Metadata = { title: `Your website · ${BRAND.wordmark}` };
+export async function generateMetadata(): Promise<Metadata> {
+  return { title: (await getTranslations("onboarding.brand"))("meta") };
+}
 
-export default async function BrandOnboardingWebsitePage() {
+// The whole brand onboarding: website in, draft out, on one screen.
+export default async function BrandOnboardingPage() {
   const viewer = await requireOnboardingBrand(ONBOARDING_ROUTES.website);
   const profile = await loadOnboardingProfile(viewer.brand.id);
+  const hasDraft = !!profile && (!!profile.website && (profile.valueProp.trim().length > 0 || profile.icps.some((i) => i.title.trim())));
   return (
-    <AuthSplitLayout panelTitle={COPY.panelTitle} panelBody={COPY.panelBody} panelFootnote={COPY.panelFootnote}>
-      <OnboardingStepHeader step={1} title={COPY.website.title} sub={COPY.website.sub} />
-      <div className="mt-8">
-        {profile ? (
-          <WebsiteStepForm website={profile.website} onboarded={profile.onboarded} />
-        ) : (
-          <ErrorState body="Your brand workspace could not be loaded. The database may be unreachable." retryHref={ONBOARDING_ROUTES.website} />
-        )}
-      </div>
-    </AuthSplitLayout>
+    <AuthColumn wide>
+      {profile ? <BrandSetup profile={profile} hasDraft={hasDraft} /> : <ErrorState body="Your brand workspace could not be loaded. The database may be unreachable." retryHref={ONBOARDING_ROUTES.website} />}
+    </AuthColumn>
   );
 }

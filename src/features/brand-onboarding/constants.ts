@@ -2,22 +2,12 @@ import { BRAND } from "@/config/brand";
 // Brand onboarding: the 3 steps after "register as brand" (product map,
 // "Brand onboarding after email + 6-digit code").
 
-export const ONBOARDING_STEPS_TOTAL = 3;
 export const ONBOARDING_ROUTES = {
   index: "/onboarding/brand",
   website: "/onboarding/brand/website",
   profile: "/onboarding/brand/profile",
 } as const;
 
-// The step-1 progress animation: staged messages while the server reads the
-// site. The flow never finishes before MIN_MS so the stages read naturally.
-export const ANALYSIS_STAGES = [
-  { label: "Reading your site…", atMs: 0 },
-  { label: "Finding your ICPs…", atMs: 7_000 },
-  { label: "Writing your starter brief…", atMs: 14_000 },
-] as const;
-export const ANALYSIS_MIN_MS = 20_000;
-export const ANALYSIS_TICK_MS = 250;
 
 // server/site-reader.ts
 export const SITE_FETCH_TIMEOUT_MS = 10_000;
@@ -75,33 +65,8 @@ export const INDUSTRY_KEYWORDS: ReadonlyArray<{ industry: string; keywords: read
   { industry: "Real Estate / PropTech", keywords: ["real estate", "property", "proptech"] },
 ];
 
-// Copy (product map, verbatim where naano's is known).
+// The coach mark on the marketplace (goes when that page stops mounting it).
 export const COPY = {
-  panelTitle: "Creators. Brands. Results.",
-  panelBody: "Run LinkedIn creator campaigns that drive real business - discover creators, track performance, pay in one click.",
-  panelFootnote: "Built for B2B marketing teams",
-  website: {
-    title: "Your website",
-    sub: "We'll read your site to understand the product and your 3 main ICPs. This usually takes 20–40 seconds.",
-    placeholder: "https://yourcompany.com",
-    submit: "Analyze my website",
-  },
-  profile: {
-    title: "Value prop & ICP",
-    sub: `Review these details once. ${BRAND.name} turns them into a brief for your creators.`,
-    valuePropLabel: "Value proposition",
-    valuePropHint: "What the company does, for whom, how — 4 to 6 sentences. Edit if needed.",
-    icpsLabel: "3 ideal customers (ICP)",
-    icpsHint: "The audiences your creators need to understand.",
-    briefLabel: "Starter creator brief",
-    briefHint: "What your creators will receive",
-    briefReady: "Ready",
-    briefNote: "Creators can adapt the angle to their expertise, while keeping every product claim factual.",
-    briefFootnote: "Every creator you invite will receive this brief. You can edit it later from Campaigns.",
-    back: "Back",
-    submit: "Continue to AI Matching",
-    submitting: "Opening AI Matching…",
-  },
   coachMark: {
     title: `${BRAND.copilot} is using your campaign brief`,
     body: `Your starter brief is attached. Tell ${BRAND.copilot} what matters most, open profiles, and save the creators you want to invite.`,

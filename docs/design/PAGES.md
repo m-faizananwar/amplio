@@ -263,6 +263,19 @@ visualiser (each dot grows with the live mic level), the transcript, mute, end, 
 Same brain: tools go through the confirm gate, so anything that moves money or changes a
 collaboration is described and waits for "yes".
 
+## Onboarding
+
+### Brand — `/onboarding/brand/website` (`/profile` redirects here)
+One screen, in the auth column (wider, for the ideal-customer cards): paste
+the website, and while the site is read its words drop into two trays —
+value proposition and ideal customers — then the AI draft appears right
+under the field, editable, before anything is used; the rail moves from
+Website to Profile when it lands. Two screens for "type a URL" and "check
+what we made of it" was a page turn for no reason, and the old 20-second
+minimum progress bar made the wait feel longer than the read. If the site
+can't be read, the draft says it starts from the company name. The fields
+are the shared ones Settings uses (WebsiteFields, BrandProfileFields).
+
 ## Real vs stubbed
 
 | Where | What | Status |

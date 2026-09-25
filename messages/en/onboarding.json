@@ -1,0 +1,68 @@
+{
+  "rail": {
+    "label": "Setup steps",
+    "stepOf": "Step {current} of {total}"
+  },
+  "common": {
+    "back": "Back",
+    "continue": "Continue",
+    "saving": "Saving…",
+    "opening": "Opening your workspace…",
+    "later": "Do this later"
+  },
+  "brand": {
+    "meta": "Set up your brand · Amplio",
+    "title": "Start from your website",
+    "sub": "Paste your website. We read it and an AI drafts your value proposition and three ideal customers. Nothing is used until you've reviewed it.",
+    "analyze": "Read my website",
+    "analyzing": "Reading your site…",
+    "reanalyze": "Re-read my website",
+    "sorting": {
+      "title": "Sorting what your site says",
+      "valueProp": "Value proposition",
+      "idealCustomers": "Ideal customers",
+      "reading": "Reading {host}"
+    },
+    "draftTitle": "Review your draft",
+    "draftSub": "Drafted by an AI from your website. Edit anything that isn't right: creators see it in every brief.",
+    "readFailed": "We couldn't read {url}. This draft starts from your company name — edit it before you finish.",
+    "finish": "Finish and find creators",
+    "finishing": "Preparing your first campaign brief…",
+    "alreadySetUp": "Your brand is already set up. Change these details in Settings."
+  },
+  "creator": {
+    "linkedin": {
+      "meta": "Add your LinkedIn · Amplio",
+      "title": "Add your LinkedIn profile",
+      "sub": "Paste your public profile URL. We fill your card from it: name, headline, followers, typical views and engagement.",
+      "import": "Import profile",
+      "importing": "Reading your profile…",
+      "imported": "Profile read. Check your card on the next step.",
+      "failedTitle": "We couldn't read that profile",
+      "failedBody": "Enter it by hand instead. We never invent numbers: anything we couldn't read stays blank.",
+      "manual": "Enter it by hand",
+      "privacy": "We read only your public profile, and only once."
+    },
+    "card": {
+      "meta": "Build your card · Amplio",
+      "title": "Build your card",
+      "sub": "Your headline, country and up to three industries. The preview shows the card brands will see as you type.",
+      "previewLabel": "What brands see",
+      "fromLinkedin": "From your public LinkedIn",
+      "enteredByHand": "Entered by you"
+    },
+    "price": {
+      "meta": "Set your price · Amplio",
+      "title": "Set your price",
+      "sub": "One fixed net price per post, plus up to three bundles if you want them. You can change both later.",
+      "suggested": "Suggested: {price}",
+      "creating": "Creating your card…"
+    },
+    "legal": {
+      "meta": "Legal details · Amplio",
+      "title": "Your legal details",
+      "sub": "Needed to invoice brands and pay you: your tax country, business status, legal name and address, and two confirmations.",
+      "laterNote": "You can finish this later in Settings. It's needed before you apply, accept a booking or withdraw."
+    }
+  }
+}
