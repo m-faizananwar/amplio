@@ -27,7 +27,7 @@ export function CreatorLedgerRow({ creator: c }: { creator: CreatorDto }) {
   const compact = (n: number) => format.number(n, { notation: "compact", maximumFractionDigits: 1 });
   return (
     <li className="grid gap-3 px-5 py-4">
-      <div className="grid items-center gap-3 md:grid-cols-[minmax(0,1.6fr)_6.5rem_5.5rem_5.5rem_5.5rem_auto] md:gap-4">
+      <div className="grid items-center gap-3 md:grid-cols-[minmax(0,1.6fr)_6.5rem_5.5rem_5.5rem_5.5rem_9.5rem] md:gap-4">
         <button type="button" onClick={() => openProfile(c)} className="flex min-w-0 items-center gap-3 rounded-control text-left outline-none focus-visible:ring-3 focus-visible:ring-ink/15">
           <PersonAvatar name={c.name} src={c.avatarUrl} />
           <span className="min-w-0">

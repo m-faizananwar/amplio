@@ -55,7 +55,7 @@ function ListBody({ list, query }: { list: CreatorListDto; query: MarketplaceQue
   return (
     <div className="grid gap-4">
       <div className="overflow-hidden rounded-card border border-rule bg-surface">
-        <div className="hidden grid-cols-[minmax(0,1.6fr)_6.5rem_5.5rem_5.5rem_5.5rem_auto] gap-4 border-b border-rule px-5 py-2.5 text-caption text-ink-muted md:grid" aria-hidden="true">
+        <div className="hidden grid-cols-[minmax(0,1.6fr)_6.5rem_5.5rem_5.5rem_5.5rem_9.5rem] gap-4 border-b border-rule px-5 py-2.5 text-caption text-ink-muted md:grid" aria-hidden="true">
           <span>{t("columns.creator")}</span><span>{t("columns.fit")}</span><span>{t("columns.followers")}</span><span>{t("columns.views")}</span><span>{t("columns.price")}</span><span />
         </div>
         <ol key={`${query.tab}-${query.sort}`} className="list-stagger divide-y divide-rule">
