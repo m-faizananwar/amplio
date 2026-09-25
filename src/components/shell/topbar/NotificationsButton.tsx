@@ -22,12 +22,20 @@ function useClientNow() {
 }
 
 // The bell: what moved on your collaborations and messages, newest first.
-export function NotificationsButton({ notifications }: { notifications: ShellNotification[] }) {
+export function NotificationsButton({ notifications, role }: { notifications: ShellNotification[]; role: "brand" | "creator" }) {
   const t = useTranslations("shell.topBar.notifications");
+  const tn = useTranslations("shell.notifications");
   const time = useTranslations("common.time");
   const [open, setOpen] = useState(false);
   const now = useClientNow();
   const count = notifications.length;
+  // Worded here, from the row's facts, so the bell reads in the viewer's language.
+  const words = (n: ShellNotification) => {
+    const vars = { name: n.counterpart, campaign: n.campaign };
+    if (n.kind === "message" || !n.status) return { title: tn("message.title", vars), body: tn("message.body", vars) };
+    const key = n.resubmitted ? `${role}.resubmitted` : `${role}.${n.status}`;
+    return { title: tn(`${key}.title`, vars), body: tn(`${key}.body`, vars) };
+  };
   const ago = (iso: string) => {
     if (!now) return "";
     const min = Math.max(0, Math.round((now - Date.parse(iso)) / MINUTE_MS));
@@ -48,17 +56,17 @@ export function NotificationsButton({ notifications }: { notifications: ShellNot
           <p className="px-4 py-8 text-center text-body text-ink-muted">{t("empty")}</p>
         ) : (
           <ul className="max-h-96 divide-y divide-rule overflow-y-auto">
-            {notifications.map((n, i) => (
+            {notifications.map((n, i) => { const w = words(n); return (
               <li key={n.id} className="animate-rise" style={i < 12 ? { animationDelay: `${i * 20}ms` } : undefined}>
                 <Link href={n.href} onClick={() => setOpen(false)} className="grid gap-0.5 px-4 py-2.5 outline-none hover:bg-tint focus-visible:bg-tint">
                   <span className="flex items-baseline justify-between gap-3">
-                    <span className="text-body text-ink">{n.title}</span>
+                    <span className="text-body text-ink">{w.title}</span>
                     <span className="num shrink-0 text-caption text-ink-muted">{ago(n.at)}</span>
                   </span>
-                  <span className="text-small text-ink-muted">{n.body}</span>
+                  <span className="text-small text-ink-muted">{w.body}</span>
                 </Link>
               </li>
-            ))}
+            ); })}
           </ul>
         )}
       </PopoverContent>

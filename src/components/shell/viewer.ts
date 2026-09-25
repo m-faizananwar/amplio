@@ -15,7 +15,16 @@ export type ShellViewer = {
   launchPlan: { explored: boolean; briefed: boolean; invited: boolean; stepsLeft: number } | null;
 };
 
-export type ShellNotification = { id: string; title: string; body: string; href: string; at: string };
+export type ShellNotification = {
+  id: string;
+  kind: "status" | "message";
+  status: import("@/lib/collaboration-status").CollaborationStatus | null;
+  resubmitted: boolean;
+  counterpart: string;
+  campaign: string;
+  href: string;
+  at: string;
+};
 
 export function initialsOf(viewer: Pick<ShellViewer, "firstName" | "lastName">) {
   return `${viewer.firstName.charAt(0)}${viewer.lastName.charAt(0)}`.toUpperCase() || "N";

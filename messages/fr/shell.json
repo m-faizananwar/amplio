@@ -77,7 +77,11 @@
     "pageErrorBody": "Vos données ne sont pas perdues. Réessayez, ou revenez à votre vue d’ensemble.",
     "notFoundTitle": "Cette page n’existe pas",
     "notFoundBody": "Le lien est peut-être erroné, ou la page a été déplacée.",
-    "backToOverview": "Retour à la vue d’ensemble"
+    "backToOverview": "Retour à la vue d’ensemble",
+    "dbTitle": "Base de données non configurée",
+    "dbDescription": "Cet écran a besoin de la base de données.",
+    "dbBody": "Ce déploiement n’est relié à aucune base de données, il n’y a donc aucune ligne à afficher. Renseignez DATABASE_URL, lancez la migration puis le chargement des données de départ, et cet écran se remplira. La navigation fonctionne en attendant.",
+    "dbHealth": "Vérifier /api/health"
   },
   "setup": {
     "title": "Terminez votre configuration",
@@ -85,5 +89,67 @@
     "stepsLeft": "{count, plural, one {# étape restante} other {# étapes restantes}}",
     "dismiss": "Masquer pour l’instant"
   },
-  "skipToContent": "Aller au contenu"
+  "skipToContent": "Aller au contenu",
+  "notifications": {
+    "brand": {
+      "applied": {
+        "title": "{name} a candidaté",
+        "body": "{campaign} · acceptez pour créer la réservation"
+      },
+      "accepted": {
+        "title": "{name} a accepté votre invitation",
+        "body": "{campaign} · la conversation est ouverte"
+      },
+      "declined": {
+        "title": "{name} a refusé votre invitation",
+        "body": "{campaign} · la rémunération provisionnée est restituée sur votre portefeuille"
+      },
+      "draft_submitted": {
+        "title": "Nouveau brouillon de {name}",
+        "body": "{campaign} · relisez-le avant sa publication"
+      },
+      "resubmitted": {
+        "title": "Brouillon modifié de {name}",
+        "body": "{campaign} · relisez les modifications"
+      },
+      "scheduled": {
+        "title": "{name} a programmé la publication",
+        "body": "{campaign} · le post sera en ligne à la date prévue"
+      },
+      "live": {
+        "title": "Le post de {name} est en ligne",
+        "body": "{campaign} · payez pour libérer sa rémunération"
+      }
+    },
+    "creator": {
+      "invited": {
+        "title": "{name} vous a envoyé une invitation",
+        "body": "{campaign} · acceptez ou refusez"
+      },
+      "accepted": {
+        "title": "{name} a accepté votre candidature",
+        "body": "{campaign} · la réservation est créée"
+      },
+      "declined": {
+        "title": "{name} a refusé votre candidature",
+        "body": "{campaign} · gardez un œil sur les nouvelles opportunités"
+      },
+      "changes_requested": {
+        "title": "{name} a demandé des modifications",
+        "body": "{campaign} · mettez à jour votre brouillon"
+      },
+      "approved": {
+        "title": "{name} a validé votre brouillon",
+        "body": "{campaign} · programmez la publication"
+      },
+      "paid": {
+        "title": "{name} a versé votre rémunération",
+        "body": "{campaign} · vos revenus sont libérés"
+      }
+    },
+    "message": {
+      "title": "Nouveau message de {name}",
+      "body": "{campaign} · ouvrez la conversation pour répondre"
+    }
+  }
 }

@@ -77,7 +77,11 @@
     "pageErrorBody": "Your data is safe. Try again, or go back to your overview.",
     "notFoundTitle": "This page doesn't exist",
     "notFoundBody": "The link may be mistyped, or the page has moved.",
-    "backToOverview": "Back to overview"
+    "backToOverview": "Back to overview",
+    "dbTitle": "Database not configured",
+    "dbDescription": "This screen needs the database.",
+    "dbBody": "This deployment has no database connection, so there are no rows to show. Set DATABASE_URL, run the migration and the seed, and this screen fills in. Navigation works in the meantime.",
+    "dbHealth": "Check /api/health"
   },
   "setup": {
     "title": "Finish setting up",
@@ -85,5 +89,67 @@
     "stepsLeft": "{count, plural, one {# step left} other {# steps left}}",
     "dismiss": "Hide for now"
   },
-  "skipToContent": "Skip to content"
+  "skipToContent": "Skip to content",
+  "notifications": {
+    "brand": {
+      "applied": {
+        "title": "{name} applied",
+        "body": "{campaign} · accept to create the booking"
+      },
+      "accepted": {
+        "title": "{name} accepted your invitation",
+        "body": "{campaign} · the thread is open"
+      },
+      "declined": {
+        "title": "{name} declined your invitation",
+        "body": "{campaign} · the held fee is back in your wallet"
+      },
+      "draft_submitted": {
+        "title": "Draft ready from {name}",
+        "body": "{campaign} · review it before it's published"
+      },
+      "resubmitted": {
+        "title": "Updated draft from {name}",
+        "body": "{campaign} · review the changes"
+      },
+      "scheduled": {
+        "title": "{name} scheduled the post",
+        "body": "{campaign} · it goes live on the planned date"
+      },
+      "live": {
+        "title": "{name}'s post is live",
+        "body": "{campaign} · pay to release their earnings"
+      }
+    },
+    "creator": {
+      "invited": {
+        "title": "{name} invited you",
+        "body": "{campaign} · accept or decline"
+      },
+      "accepted": {
+        "title": "{name} accepted your application",
+        "body": "{campaign} · the booking is created"
+      },
+      "declined": {
+        "title": "{name} declined your application",
+        "body": "{campaign} · keep an eye on new opportunities"
+      },
+      "changes_requested": {
+        "title": "{name} asked for changes",
+        "body": "{campaign} · update your draft"
+      },
+      "approved": {
+        "title": "{name} approved your draft",
+        "body": "{campaign} · schedule the post"
+      },
+      "paid": {
+        "title": "{name} paid you",
+        "body": "{campaign} · your earnings are released"
+      }
+    },
+    "message": {
+      "title": "New message from {name}",
+      "body": "{campaign} · open the thread to reply"
+    }
+  }
 }

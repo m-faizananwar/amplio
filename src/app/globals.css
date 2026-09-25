@@ -394,3 +394,16 @@ details.accordion.closing > :not(summary) { animation: accordion-up 0.2s ease-ou
   .voice-bar { animation: none !important; height: 0.6rem; }
 }
 
+
+/* RollingNumber (src/components/ui/rolling-number.tsx): the digit columns and
+   separators are pseudo-content, so they never enter the page's text. */
+.roll-digit { position: relative; display: inline-block; width: 1ch; height: 1em; overflow: hidden; }
+.roll-digit::before {
+  content: "0\A 1\A 2\A 3\A 4\A 5\A 6\A 7\A 8\A 9";
+  position: absolute; inset-inline: 0; top: 0;
+  white-space: pre; line-height: 1em; text-align: center;
+  transform: translateY(calc(var(--d, 0) * -1em));
+  transition: transform var(--duration-slow) var(--ease-ledger);
+}
+.roll-char::before { content: attr(data-char); white-space: pre; }
+@media (prefers-reduced-motion: reduce) { .roll-digit::before { transition: none; } }

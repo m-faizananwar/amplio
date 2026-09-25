@@ -18,7 +18,7 @@ export function TopBar({ viewer }: { viewer: ShellViewer }) {
         {viewer.demo ? <div className="hidden md:block"><RoleSwitch role={viewer.role} /></div> : null}
         <WalletChip role={viewer.role} walletCents={viewer.walletCents} />
         <div className="hidden sm:block"><LocaleToggle /></div>
-        <NotificationsButton notifications={viewer.notifications} />
+        <NotificationsButton notifications={viewer.notifications} role={viewer.role} />
         <AccountMenu viewer={viewer} />
       </div>
     </header>
