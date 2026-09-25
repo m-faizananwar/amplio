@@ -4,6 +4,8 @@ import { getDb } from "@/db";
 import { clicks, collaborations, creators, ledgerEntries, trackingLinks, users } from "@/db/schema";
 import { ANALYTICS_DAYS, DAY_MS } from "../constants";
 import type { AnalyticsDto } from "../schemas";
+import { cachedRead } from "@/db/cache";
+import { tag } from "@/lib/cache-tags";
 
 const PUBLISHED: readonly string[] = ["live", "paid"];
 
@@ -29,7 +31,7 @@ async function dailyClicks(campaignId: string) {
   });
 }
 
-export async function getCampaignClickCount(campaignId: string): Promise<number> {
+async function loadCampaignClickCount(campaignId: string): Promise<number> {
   const [row] = await getDb()
     .select({ n: sql<number>`count(*)::int` })
     .from(clicks)
@@ -91,7 +93,7 @@ async function committedBudget(campaignId: string) {
   return { committedCents: budget?.cents ?? 0, bookings: budget?.n ?? 0 };
 }
 
-export async function getCampaignAnalytics(campaignId: string): Promise<AnalyticsDto> {
+async function loadCampaignAnalytics(campaignId: string): Promise<AnalyticsDto> {
   const [rows, budget, daily] = await Promise.all([collaborationRows(campaignId), committedBudget(campaignId), dailyClicks(campaignId)]);
   const published = rows.filter((r) => PUBLISHED.includes(r.status) && r.postUrl && r.publishedAt);
   const nameOf = (r: AnalyticsRow) => `${r.firstName} ${r.lastName}`.trim();
@@ -110,4 +112,13 @@ export async function getCampaignAnalytics(campaignId: string): Promise<Analytic
       clicks: r.clicks,
     })),
   };
+}
+
+// Campaign analytics: clicks land here too, so the results tag joins the key.
+export function getCampaignClickCount(campaignId: string) {
+  return cachedRead(loadCampaignClickCount, ["campaign-click-count"], { tags: [tag.campaign(campaignId)] })(campaignId);
+}
+
+export function getCampaignAnalytics(campaignId: string) {
+  return cachedRead(loadCampaignAnalytics, ["campaign-analytics"], { tags: [tag.campaign(campaignId)] })(campaignId);
 }

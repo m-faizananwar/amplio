@@ -5,8 +5,10 @@ import { brands, campaigns, collaborations, creators, ledgerEntries, shortlist, 
 import { AI_HISTORY_LIMIT, COLLAB_TAB_STATUSES, type CollabTabKey } from "../constants";
 import type { BrandProfile, CampaignCardDto, CampaignDto, CampaignSummaryDto, CollaborationRowDto, LaunchPlanDto } from "../schemas";
 import { toCampaignDto, toCollaborationRowDto } from "./dto";
+import { cachedRead } from "@/db/cache";
+import { tag } from "@/lib/cache-tags";
 
-export async function getBrandProfile(brandId: string): Promise<BrandProfile | null> {
+async function loadBrandProfile(brandId: string): Promise<BrandProfile | null> {
   const [row] = await getDb()
     .select({
       id: brands.id,
@@ -54,13 +56,13 @@ async function cardStats(campaignIds: string[]) {
   return stats;
 }
 
-export async function listCampaignCards(brandId: string): Promise<CampaignCardDto[]> {
+async function loadCampaignCards(brandId: string): Promise<CampaignCardDto[]> {
   const rows = await getDb().select().from(campaigns).where(eq(campaigns.brandId, brandId)).orderBy(desc(campaigns.createdAt));
   const stats = await cardStats(rows.map((r) => r.id));
   return rows.map((row) => ({ ...toCampaignDto(row), ...(stats.get(row.id) ?? { creators: 0, published: 0, committedCents: 0 }) }));
 }
 
-export async function getCampaign(brandId: string, campaignId: string): Promise<CampaignDto | null> {
+async function loadCampaign(brandId: string, campaignId: string): Promise<CampaignDto | null> {
   const [row] = await getDb()
     .select()
     .from(campaigns)
@@ -68,7 +70,7 @@ export async function getCampaign(brandId: string, campaignId: string): Promise<
   return row ? toCampaignDto(row) : null;
 }
 
-export async function listCampaignSummaries(brandId: string): Promise<CampaignSummaryDto[]> {
+async function loadCampaignSummaries(brandId: string): Promise<CampaignSummaryDto[]> {
   return getDb()
     .select({ id: campaigns.id, name: campaigns.name, status: campaigns.status })
     .from(campaigns)
@@ -77,7 +79,7 @@ export async function listCampaignSummaries(brandId: string): Promise<CampaignSu
 }
 
 // HISTORY rail on "Create with AI": past AI-generated campaigns, newest first.
-export async function listAiHistory(brandId: string): Promise<CampaignSummaryDto[]> {
+async function loadAiHistory(brandId: string): Promise<CampaignSummaryDto[]> {
   return getDb()
     .select({ id: campaigns.id, name: campaigns.name, status: campaigns.status })
     .from(campaigns)
@@ -86,7 +88,7 @@ export async function listAiHistory(brandId: string): Promise<CampaignSummaryDto
     .limit(AI_HISTORY_LIMIT);
 }
 
-export async function listCollaborationRows(campaignId: string, tab: CollabTabKey): Promise<CollaborationRowDto[]> {
+async function loadCollaborationRows(campaignId: string, tab: CollabTabKey): Promise<CollaborationRowDto[]> {
   const statusFilter = tab === "all" ? undefined : inArray(collaborations.status, [...COLLAB_TAB_STATUSES[tab]]);
   const rows = await getDb()
     .select({
@@ -105,7 +107,7 @@ export async function listCollaborationRows(campaignId: string, tab: CollabTabKe
   return rows.map(toCollaborationRowDto);
 }
 
-export async function countCollaborationsByTab(campaignId: string): Promise<Record<CollabTabKey, number> & { committedCents: number }> {
+async function loadCountCollaborationsByTab(campaignId: string): Promise<Record<CollabTabKey, number> & { committedCents: number }> {
   const db = getDb();
   const rows = await db
     .select({ status: collaborations.status, n: sql<number>`count(*)::int`, fee: sql<number>`coalesce(sum(${collaborations.feeCents}), 0)::int` })
@@ -130,7 +132,7 @@ export async function countCollaborationsByTab(campaignId: string): Promise<Reco
 }
 
 // GET STARTED popover: each step is true when a row proves it happened.
-export async function getLaunchPlan(brandId: string): Promise<LaunchPlanDto> {
+async function loadLaunchPlan(brandId: string): Promise<LaunchPlanDto> {
   const db = getDb();
   const [explored] = await db.select({ id: shortlist.id }).from(shortlist).where(eq(shortlist.brandId, brandId)).limit(1);
   const [briefed] = await db
@@ -146,4 +148,38 @@ export async function getLaunchPlan(brandId: string): Promise<LaunchPlanDto> {
     .limit(1);
   const steps = [Boolean(explored), Boolean(briefed), Boolean(invited)];
   return { explored: steps[0], briefed: steps[1], invited: steps[2], stepsLeft: steps.filter((s) => !s).length };
+}
+
+// Campaign reads. Rows on one campaign carry that campaign's tag as well, so a
+// status change there does not drop the whole brand's list.
+export function getBrandProfile(brandId: string) {
+  return cachedRead(loadBrandProfile, ["brand-profile"], { tags: [tag.brandSettings(brandId)] })(brandId);
+}
+
+export function listCampaignCards(brandId: string) {
+  return cachedRead(loadCampaignCards, ["campaign-cards"], { tags: [tag.brandCampaigns(brandId)] })(brandId);
+}
+
+export function getCampaign(brandId: string, campaignId: string) {
+  return cachedRead(loadCampaign, ["campaign"], { tags: [tag.brandCampaigns(brandId), tag.campaign(campaignId)] })(brandId, campaignId);
+}
+
+export function listCampaignSummaries(brandId: string) {
+  return cachedRead(loadCampaignSummaries, ["campaign-summaries"], { tags: [tag.brandCampaigns(brandId)] })(brandId);
+}
+
+export function listAiHistory(brandId: string) {
+  return cachedRead(loadAiHistory, ["ai-history"], { tags: [tag.brandCampaigns(brandId)] })(brandId);
+}
+
+export function listCollaborationRows(campaignId: string, tab: CollabTabKey) {
+  return cachedRead(loadCollaborationRows, ["collaboration-rows"], { tags: [tag.campaign(campaignId)] })(campaignId, tab);
+}
+
+export function countCollaborationsByTab(campaignId: string) {
+  return cachedRead(loadCountCollaborationsByTab, ["collaboration-tab-counts"], { tags: [tag.campaign(campaignId)] })(campaignId);
+}
+
+export function getLaunchPlan(brandId: string) {
+  return cachedRead(loadLaunchPlan, ["launch-plan"], { tags: [tag.brandCampaigns(brandId)] })(brandId);
 }

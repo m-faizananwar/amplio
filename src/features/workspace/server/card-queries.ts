@@ -2,6 +2,8 @@ import "server-only";
 import { count, eq, inArray, sql } from "drizzle-orm";
 import { getDb, isDbConfigured } from "@/db";
 import { collaborations, creatorPosts, creators, users } from "@/db/schema";
+import { cachedRead } from "@/db/cache";
+import { tag } from "@/lib/cache-tags";
 
 export type PublicCard = {
   handle: string;
@@ -24,7 +26,7 @@ export type PublicCard = {
   publishedCollaborations: number;
 };
 
-export async function getPublicCard(handle: string): Promise<PublicCard | null> {
+async function loadPublicCard(handle: string): Promise<PublicCard | null> {
   if (!isDbConfigured()) return null;
   const db = getDb();
   const [row] = await db
@@ -65,4 +67,10 @@ export async function getPublicCard(handle: string): Promise<PublicCard | null> 
     commentsPerPost: posts?.comments ?? 0,
     publishedCollaborations: published?.n ?? 0,
   };
+}
+
+// The public creator card. Keyed by handle, dropped with the directory when a
+// creator edits their profile.
+export function getPublicCard(handle: string) {
+  return cachedRead(loadPublicCard, ["public-card"], { tags: [tag.creatorDirectory()] })(handle);
 }

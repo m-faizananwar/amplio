@@ -7,6 +7,8 @@ import { THREAD_STATUSES } from "@/lib/collaboration-labels";
 import type { MessageDto, ThreadDetailDto, ThreadDto, ViewerRole } from "../schemas";
 import { type CollaborationRow, collaborationSelect, initialOf, isUuid } from "./dto";
 import { MAX_THREAD_MESSAGES, MESSAGE_PREVIEW_CHARS } from "../ui-constants";
+import { cachedRead } from "@/db/cache";
+import { tag } from "@/lib/cache-tags";
 
 export type ThreadScope = { role: ViewerRole; ownerId: string; userId: string };
 
@@ -52,7 +54,7 @@ async function lastMessages(collaborationIds: string[]) {
 
 // One thread per accepted-or-later collaboration on the viewer's side,
 // newest activity first.
-export async function listThreads(scope: ThreadScope): Promise<ThreadDto[]> {
+async function loadThreads(scope: ThreadScope): Promise<ThreadDto[]> {
   const rows = await collaborationSelect().where(
     and(ownerFilter(scope), inArray(collaborations.status, [...THREAD_STATUSES])),
   );
@@ -63,7 +65,7 @@ export async function listThreads(scope: ThreadScope): Promise<ThreadDto[]> {
 }
 
 // The viewer must be a party (owner filter) for the thread to exist at all.
-export async function getThread(scope: ThreadScope, collaborationId: string): Promise<ThreadDetailDto | null> {
+async function loadThread(scope: ThreadScope, collaborationId: string): Promise<ThreadDetailDto | null> {
   if (!isUuid(collaborationId)) return null;
   const [row] = await collaborationSelect().where(and(eq(collaborations.id, collaborationId), ownerFilter(scope)));
   if (!row || !THREAD_STATUSES.includes(row.collab.status)) return null;
@@ -104,4 +106,13 @@ export async function getThread(scope: ThreadScope, collaborationId: string): Pr
 export function threadScopeFor(viewer: { role: ViewerRole; userId: string; brand: { id: string } | null; creator: { id: string } | null }): ThreadScope | null {
   const ownerId = viewer.role === "brand" ? viewer.brand?.id : viewer.creator?.id;
   return ownerId ? { role: viewer.role, ownerId, userId: viewer.userId } : null;
+}
+
+// Threads and one thread's messages, tagged by the side reading them.
+export function listThreads(scope: ThreadScope) {
+  return cachedRead(loadThreads, ["threads"], { tags: [scope.role === "creator" ? tag.creatorMessages(scope.ownerId) : tag.brandMessages(scope.ownerId)] })(scope);
+}
+
+export function getThread(scope: ThreadScope, collaborationId: string) {
+  return cachedRead(loadThread, ["thread"], { tags: [scope.role === "creator" ? tag.creatorMessages(scope.ownerId) : tag.brandMessages(scope.ownerId)] })(scope, collaborationId);
 }

@@ -3,6 +3,8 @@ import { and, desc, eq, gte, inArray, ne } from "drizzle-orm";
 import { getDb } from "@/db";
 import { brands, campaigns, collaborationEvents, collaborations, creators, messages, users } from "@/db/schema";
 import type { CollaborationStatus } from "@/lib/collaboration-status";
+import { cachedRead } from "@/db/cache";
+import { tag } from "@/lib/cache-tags";
 
 export type Notification = { id: string; title: string; body: string; href: string; at: string };
 
@@ -49,7 +51,7 @@ function resubmitTitle(copy: { title: string; body: string }, fromStatus: string
   return fromStatus === "changes_requested" ? { ...copy, title: copy.title.replace("Draft ready", "Updated draft") } : copy;
 }
 
-export async function getBrandNotifications(brandId: string, userId: string): Promise<Notification[]> {
+async function loadBrandNotifications(brandId: string, userId: string): Promise<Notification[]> {
   const db = getDb();
   const events = await db
     .select({
@@ -84,7 +86,7 @@ export async function getBrandNotifications(brandId: string, userId: string): Pr
   ]);
 }
 
-export async function getCreatorNotifications(creatorId: string, userId: string): Promise<Notification[]> {
+async function loadCreatorNotifications(creatorId: string, userId: string): Promise<Notification[]> {
   const db = getDb();
   const events = await db
     .select({
@@ -114,4 +116,14 @@ export async function getCreatorNotifications(creatorId: string, userId: string)
     }),
     ...msgs.map((m) => ({ id: m.id, title: `New message from ${m.brand}`, body: "Open the thread to reply", href: `/creator/messages/${m.collaborationId}`, at: m.createdAt.toISOString() })),
   ]);
+}
+
+// The bell. Part of the shell, so it is cached with the viewer: any mutation
+// that touches either side's shell drops it.
+export function getBrandNotifications(brandId: string, userId: string) {
+  return cachedRead(loadBrandNotifications, ["brand-notifications"], { tags: [tag.viewer(userId), tag.brandCollaborations(brandId)] })(brandId, userId);
+}
+
+export function getCreatorNotifications(creatorId: string, userId: string) {
+  return cachedRead(loadCreatorNotifications, ["creator-notifications"], { tags: [tag.viewer(userId), tag.creatorCollaborations(creatorId)] })(creatorId, userId);
 }

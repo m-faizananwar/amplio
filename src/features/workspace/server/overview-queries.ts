@@ -6,6 +6,8 @@ import {
 } from "@/db/schema";
 import { fitScore } from "@/lib/fit-score";
 import { NEW_CREATORS_LIMIT, NEW_CREATORS_POOL, RECOMMENDED_OPPORTUNITIES } from "../constants";
+import { cachedRead } from "@/db/cache";
+import { tag } from "@/lib/cache-tags";
 
 const DAY_MS = 86_400_000;
 const RECENT_DAYS = 7;
@@ -24,7 +26,7 @@ export type BrandOverview = {
   newCreators: Array<{ id: string; name: string; avatarUrl: string; industries: string[]; fit: number; priceCents: number }>;
 };
 
-export async function getBrandOverview(brandId: string): Promise<BrandOverview> {
+async function loadBrandOverview(brandId: string): Promise<BrandOverview> {
   const db = getDb();
   const [brand] = await db.select().from(brands).where(eq(brands.id, brandId));
   const [activeCampaign] = await db
@@ -111,7 +113,7 @@ export type CreatorOverview = {
   active: Array<{ id: string; brand: string; campaign: string; status: string; dueDate: string | null; feeCents: number }>;
 };
 
-export async function getCreatorOverview(creatorId: string): Promise<CreatorOverview> {
+async function loadCreatorOverview(creatorId: string): Promise<CreatorOverview> {
   const db = getDb();
   const [row] = await db
     .select({ creator: creators, firstName: users.firstName, lastName: users.lastName })
@@ -175,7 +177,7 @@ export async function getCreatorOverview(creatorId: string): Promise<CreatorOver
 }
 
 // Sum of estimated impressions of published sponsored posts, per creator.
-export async function getLeaderboard(limit: number) {
+async function loadLeaderboard(limit: number) {
   if (!isDbConfigured()) return [];
   const rows = await getDb()
     .select({
@@ -198,3 +200,16 @@ export async function getLeaderboard(limit: number) {
 }
 
 export const ACTIVATED_STATUSES = ACTIVATED;
+
+// The two dashboard overviews, and the leaderboard everyone shares.
+export function getBrandOverview(brandId: string) {
+  return cachedRead(loadBrandOverview, ["brand-overview"], { tags: [tag.brandOverview(brandId)] })(brandId);
+}
+
+export function getCreatorOverview(creatorId: string) {
+  return cachedRead(loadCreatorOverview, ["creator-overview"], { tags: [tag.creatorOverview(creatorId)] })(creatorId);
+}
+
+export function getLeaderboard(limit: number) {
+  return cachedRead(loadLeaderboard, ["leaderboard"], { tags: [tag.creatorDirectory()] })(limit);
+}

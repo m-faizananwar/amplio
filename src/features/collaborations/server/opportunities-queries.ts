@@ -5,6 +5,8 @@ import { brands, campaigns, collaborations, creators } from "@/db/schema";
 import { fitScore } from "@/lib/fit-score";
 import type { OpportunityDto } from "../schemas";
 import { toBriefDto } from "./dto";
+import { cachedRead } from "@/db/cache";
+import { tag } from "@/lib/cache-tags";
 
 const DAY_MS = 86_400_000;
 
@@ -16,7 +18,7 @@ function daysUntil(date: Date | null, now: number) {
 // Every active campaign open to applications, scored against this creator.
 // Campaigns the creator already has a collaboration on stay in the list with
 // that state instead of an Apply button.
-export async function listOpportunities(creatorId: string): Promise<OpportunityDto[]> {
+async function loadOpportunities(creatorId: string): Promise<OpportunityDto[]> {
   const db = getDb();
   const [creator] = await db.select().from(creators).where(eq(creators.id, creatorId));
   if (!creator) return [];
@@ -54,4 +56,9 @@ export async function listOpportunities(creatorId: string): Promise<OpportunityD
       };
     })
     .sort((a, b) => b.matchScore - a.matchScore);
+}
+
+// Open campaigns minus the ones this creator is already on.
+export function listOpportunities(creatorId: string) {
+  return cachedRead(loadOpportunities, ["opportunities"], { tags: [tag.creatorOpportunities(creatorId)] })(creatorId);
 }

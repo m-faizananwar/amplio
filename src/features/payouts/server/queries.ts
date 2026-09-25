@@ -4,6 +4,8 @@ import { getDb } from "@/db";
 import { ledgerEntries } from "@/db/schema";
 import { EARNINGS_MONTHS } from "../constants";
 import type { LedgerRowDto } from "../schemas";
+import { cachedRead } from "@/db/cache";
+import { tag } from "@/lib/cache-tags";
 
 export type EarningsSummary = {
   totalEarnedCents: number;
@@ -31,7 +33,7 @@ export function toLedgerDto(row: typeof ledgerEntries.$inferSelect): LedgerRowDt
   };
 }
 
-export async function getEarningsSummary(creatorId: string): Promise<EarningsSummary> {
+async function loadEarningsSummary(creatorId: string): Promise<EarningsSummary> {
   const db = getDb();
   const [paid] = await db
     .select({ cents: sql<number>`coalesce(sum(${ledgerEntries.amountCents}), 0)::int`, n: count() })
@@ -62,7 +64,7 @@ export async function getEarningsSummary(creatorId: string): Promise<EarningsSum
   };
 }
 
-export async function getEarningsByMonth(creatorId: string): Promise<MonthPoint[]> {
+async function loadEarningsByMonth(creatorId: string): Promise<MonthPoint[]> {
   const start = new Date();
   start.setUTCDate(1);
   start.setUTCHours(0, 0, 0, 0);
@@ -80,12 +82,12 @@ export async function getEarningsByMonth(creatorId: string): Promise<MonthPoint[
   });
 }
 
-export async function getCreatorLedger(creatorId: string): Promise<LedgerRowDto[]> {
+async function loadCreatorLedger(creatorId: string): Promise<LedgerRowDto[]> {
   const rows = await getDb().select().from(ledgerEntries).where(eq(ledgerEntries.creatorId, creatorId)).orderBy(desc(ledgerEntries.createdAt));
   return rows.map(toLedgerDto);
 }
 
-export async function getBillingSummary(brandId: string): Promise<BillingSummary> {
+async function loadBillingSummary(brandId: string): Promise<BillingSummary> {
   const [row] = await getDb()
     .select({
       balance: sql<number>`coalesce(sum(${ledgerEntries.amountCents}), 0)::int`,
@@ -98,7 +100,29 @@ export async function getBillingSummary(brandId: string): Promise<BillingSummary
   return { balanceCents: row?.balance ?? 0, topupsCents: row?.topups ?? 0, committedCents: row?.committed ?? 0, entries: row?.n ?? 0 };
 }
 
-export async function getBrandLedger(brandId: string): Promise<LedgerRowDto[]> {
+async function loadBrandLedger(brandId: string): Promise<LedgerRowDto[]> {
   const rows = await getDb().select().from(ledgerEntries).where(eq(ledgerEntries.brandId, brandId)).orderBy(desc(ledgerEntries.createdAt));
   return rows.map(toLedgerDto);
+}
+
+// Cached per owner: the ledger only moves through a payout or a top-up, and
+// both revalidate these tags.
+export function getEarningsSummary(creatorId: string) {
+  return cachedRead(loadEarningsSummary, ["earnings-summary"], { tags: [tag.creatorEarnings(creatorId)] })(creatorId);
+}
+
+export function getEarningsByMonth(creatorId: string) {
+  return cachedRead(loadEarningsByMonth, ["earnings-by-month"], { tags: [tag.creatorEarnings(creatorId)] })(creatorId);
+}
+
+export function getCreatorLedger(creatorId: string) {
+  return cachedRead(loadCreatorLedger, ["creator-ledger"], { tags: [tag.creatorEarnings(creatorId)] })(creatorId);
+}
+
+export function getBillingSummary(brandId: string) {
+  return cachedRead(loadBillingSummary, ["billing-summary"], { tags: [tag.brandBilling(brandId)] })(brandId);
+}
+
+export function getBrandLedger(brandId: string) {
+  return cachedRead(loadBrandLedger, ["brand-ledger"], { tags: [tag.brandBilling(brandId)] })(brandId);
 }

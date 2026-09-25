@@ -4,6 +4,8 @@ import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { getDb } from "@/db";
 import { brands, campaigns } from "@/db/schema";
+import { updateTags } from "@/db/cache";
+import { tagsForMutation } from "@/lib/cache-tags";
 import { getViewer } from "@/features/auth/server/session";
 import { generateCampaignDraft } from "@/features/campaigns/server/brief-ai";
 import { DAY_MS, DEFAULT_TARGET_REGIONS, STARTER_CAMPAIGN_SUFFIX, STARTER_FEE_CENTS, STARTER_POST_DEADLINE_DAYS } from "../constants";
@@ -22,10 +24,16 @@ function firstIssue(error: { issues: Array<{ message: string }> }) {
 }
 
 // The viewer's own brand row, or null (no session, a creator, a deleted row).
-async function ownBrandRow(): Promise<BrandOnboardingRow | null> {
+async function ownBrandRow(): Promise<(BrandOnboardingRow & { ownerUserId: string }) | null> {
   const viewer = await getViewer();
   if (!viewer?.brand) return null;
-  return await getBrandOnboardingRow(viewer.brand.id);
+  const row = await getBrandOnboardingRow(viewer.brand.id);
+  return row ? { ...row, ownerUserId: viewer.userId } : null;
+}
+
+// The brand profile is read by the shell, the campaigns and the marketplace fit.
+function dropCaches(row: { brandId: string; ownerUserId: string }) {
+  updateTags(tagsForMutation("brand-profile", { brandId: row.brandId, userIds: [row.ownerUserId] }));
 }
 
 // "use server" files only export async functions, so this stays local.
@@ -68,6 +76,7 @@ export async function analyzeWebsite(input: WebsiteInput): Promise<ActionResult<
     const row = await ownBrandRow();
     if (!row) return { ok: false, error: NOT_SIGNED_IN };
     const data = await analyze(row, parsed.data.url);
+    dropCaches(row);
     revalidatePath("/onboarding/brand", "layout");
     return { ok: true, data };
   } catch (error) {
@@ -131,6 +140,7 @@ export async function completeOnboarding(input: ProfileInput): Promise<ActionRes
     await db.update(brands).set({ valueProp: parsed.data.valueProp, icps: parsed.data.icps }).where(eq(brands.id, row.brandId));
     const result = await ensureStarterCampaign(row, parsed.data);
     if (!row.onboarded) await db.update(brands).set({ onboardingCompletedAt: new Date() }).where(eq(brands.id, row.brandId));
+    dropCaches(row);
     revalidatePath("/brand", "layout");
     return { ok: true, data: result };
   } catch (error) {

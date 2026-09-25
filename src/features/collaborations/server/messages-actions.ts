@@ -2,8 +2,11 @@
 
 import { revalidatePath } from "next/cache";
 import { getDb } from "@/db";
+import { updateTags } from "@/db/cache";
+import { tagsForMutation } from "@/lib/cache-tags";
 import { messages } from "@/db/schema";
 import { type ActionResult, type MessageDto, type SendMessageInput, sendMessageSchema } from "../schemas";
+import { collaborationScope } from "./cache-scope";
 import { NOT_YOURS, authorize, friendlyError, ownedCollaborationId } from "./ownership";
 
 // Either party may write once the thread exists; the ownership check is the
@@ -20,6 +23,7 @@ export async function sendMessage(input: SendMessageInput): Promise<ActionResult
       .insert(messages)
       .values({ collaborationId: owned, senderUserId: auth.viewer.userId, body: auth.data.body })
       .returning();
+    updateTags(tagsForMutation("message", await collaborationScope(owned)));
     for (const root of ["/creator", "/brand"]) {
       revalidatePath(`${root}/messages`);
       revalidatePath(`${root}/messages/${owned}`);

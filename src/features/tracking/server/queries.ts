@@ -3,6 +3,8 @@ import { and, count, countDistinct, desc, eq, gte, inArray, sql } from "drizzle-
 import { getDb } from "@/db";
 import { brands, campaigns, clicks, collaborations, creatorPosts, creators, ledgerEntries, pixelEvents, trackingLinks, users } from "@/db/schema";
 import { CSV_MAX_ROWS, RESULTS_WINDOW_DAYS, SERIES_DAYS, type SeriesRange } from "../constants";
+import { cachedRead } from "@/db/cache";
+import { tag } from "@/lib/cache-tags";
 
 const DAY_MS = 86_400_000;
 const DETAIL_ROWS = 6;
@@ -83,7 +85,7 @@ function brandClicks(brandId: string, creatorId?: string) {
     .where(and(eq(campaigns.brandId, brandId), creatorId ? eq(creators.id, creatorId) : undefined));
 }
 
-export async function getResultsSummary(brandId: string): Promise<ResultsSummary> {
+async function loadResultsSummary(brandId: string): Promise<ResultsSummary> {
   const db = getDb();
   const since = new Date(Date.now() - RESULTS_WINDOW_DAYS * DAY_MS);
   const [published] = await db
@@ -118,7 +120,7 @@ export async function getResultsSummary(brandId: string): Promise<ResultsSummary
   };
 }
 
-export async function getClicksSeries(brandId: string, range: SeriesRange): Promise<SeriesPoint[]> {
+async function loadClicksSeries(brandId: string, range: SeriesRange): Promise<SeriesPoint[]> {
   const days = SERIES_DAYS[range];
   const since = new Date(Date.now() - (days - 1) * DAY_MS);
   since.setUTCHours(0, 0, 0, 0);
@@ -137,7 +139,7 @@ export async function getClicksSeries(brandId: string, range: SeriesRange): Prom
   });
 }
 
-export async function getAttributionByCreator(brandId: string): Promise<CreatorAttribution[]> {
+async function loadAttributionByCreator(brandId: string): Promise<CreatorAttribution[]> {
   const db = getDb();
   const rows = await db
     .select({
@@ -182,7 +184,7 @@ async function creatorNames(creatorIds: string[]) {
   return new Map(rows.map((r) => [r.id, `${r.firstName} ${r.lastName}`]));
 }
 
-export async function getPixelStatus(brandId: string): Promise<PixelStatus | null> {
+async function loadPixelStatus(brandId: string): Promise<PixelStatus | null> {
   const db = getDb();
   const [brand] = await db.select({ siteKey: brands.pixelSiteKey }).from(brands).where(eq(brands.id, brandId));
   if (!brand) return null;
@@ -193,7 +195,7 @@ export async function getPixelStatus(brandId: string): Promise<PixelStatus | nul
   return { siteKey: brand.siteKey, active: (agg?.n ?? 0) > 0, events: agg?.n ?? 0, lastEventAt: agg?.last ?? null };
 }
 
-export async function getPublishedPosts(brandId: string, origin: string): Promise<PublishedPost[]> {
+async function loadPublishedPosts(brandId: string, origin: string): Promise<PublishedPost[]> {
   const rows = await getDb()
     .select({
       collaborationId: collaborations.id,
@@ -232,7 +234,7 @@ export async function getPublishedPosts(brandId: string, origin: string): Promis
 }
 
 // "More metrics & attribution details": where the clicks came from and what the pixel saw.
-export async function getAttributionDetails(brandId: string): Promise<AttributionDetails> {
+async function loadAttributionDetails(brandId: string): Promise<AttributionDetails> {
   const db = getDb();
   const base = brandClicks(brandId).as("bc");
   const byCountry = await db
@@ -263,7 +265,7 @@ export async function getAttributionDetails(brandId: string): Promise<Attributio
   };
 }
 
-export async function getClickLog(brandId: string, creatorId?: string): Promise<ClickLogRow[]> {
+async function loadClickLog(brandId: string, creatorId?: string): Promise<ClickLogRow[]> {
   const rows = await brandClicks(brandId, creatorId).orderBy(desc(clicks.clickedAt)).limit(CSV_MAX_ROWS);
   const names = await creatorNames([...new Set(rows.map((r) => r.creatorId))]);
   return rows.map((r) => ({
@@ -275,4 +277,34 @@ export async function getClickLog(brandId: string, creatorId?: string): Promise<
     referrer: r.referrer,
     userAgent: r.userAgent,
   }));
+}
+
+// Attribution reads: dirtied by a click, a pixel event, or a collaboration
+// going live. `origin` is part of the key because the post links carry it.
+export function getResultsSummary(brandId: string) {
+  return cachedRead(loadResultsSummary, ["results-summary"], { tags: [tag.brandResults(brandId)] })(brandId);
+}
+
+export function getClicksSeries(brandId: string, range: SeriesRange) {
+  return cachedRead(loadClicksSeries, ["clicks-series"], { tags: [tag.brandResults(brandId)] })(brandId, range);
+}
+
+export function getAttributionByCreator(brandId: string) {
+  return cachedRead(loadAttributionByCreator, ["attribution-by-creator"], { tags: [tag.brandResults(brandId)] })(brandId);
+}
+
+export function getPixelStatus(brandId: string) {
+  return cachedRead(loadPixelStatus, ["pixel-status"], { tags: [tag.brandResults(brandId)] })(brandId);
+}
+
+export function getPublishedPosts(brandId: string, origin: string) {
+  return cachedRead(loadPublishedPosts, ["published-posts"], { tags: [tag.brandResults(brandId)] })(brandId, origin);
+}
+
+export function getAttributionDetails(brandId: string) {
+  return cachedRead(loadAttributionDetails, ["attribution-details"], { tags: [tag.brandResults(brandId)] })(brandId);
+}
+
+export function getClickLog(brandId: string, creatorId?: string) {
+  return cachedRead(loadClickLog, ["click-log"], { tags: [tag.brandResults(brandId)] })(brandId, creatorId);
 }

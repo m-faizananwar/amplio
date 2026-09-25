@@ -3,6 +3,8 @@
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { getDb } from "@/db";
+import { updateTags } from "@/db/cache";
+import { tagsForMutation } from "@/lib/cache-tags";
 import { campaigns, creators, shortlist, naoFeedback } from "@/db/schema";
 import { getViewer, type Viewer } from "@/features/auth/server/session";
 import { createCollaboration, DuplicateCollaborationError } from "@/features/collaborations/server/create";
@@ -78,6 +80,7 @@ export async function toggleShortlist(input: unknown): Promise<ActionResult<{ sh
     } else {
       await db.delete(shortlist).where(and(eq(shortlist.brandId, auth.brandId), eq(shortlist.creatorId, creatorId)));
     }
+    updateTags(tagsForMutation("shortlist", { brandId: auth.brandId }));
     revalidate();
     return { ok: true, data: { shortlisted } };
   } catch (error) {
@@ -105,6 +108,7 @@ export async function bookCreator(input: unknown): Promise<ActionResult<BookingR
       feeCents: bundle?.totalCents,
       note: bundle ? `Bundle · ${bundle.posts} posts` : undefined,
     });
+    updateTags(tagsForMutation("booking", { brandId: auth.brandId, creatorId, campaignId, userIds: [auth.viewer.userId] }));
     revalidate();
     return { ok: true, data: { collaborationId: collab.id, status: collab.status, feeCents: collab.feeCents, acceptBy: collab.acceptBy?.toISOString() ?? null } };
   } catch (error) {
@@ -133,6 +137,7 @@ export async function sendOffer(input: unknown): Promise<ActionResult<BookingRes
       approveBeforePublish,
       note: note || undefined,
     });
+    updateTags(tagsForMutation("booking", { brandId: auth.brandId, creatorId, campaignId, userIds: [auth.viewer.userId] }));
     revalidate();
     return { ok: true, data: { collaborationId: collab.id, status: collab.status, feeCents: collab.feeCents, acceptBy: collab.acceptBy?.toISOString() ?? null } };
   } catch (error) {

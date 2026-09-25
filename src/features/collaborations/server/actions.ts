@@ -3,6 +3,8 @@
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { getDb } from "@/db";
+import { updateTags } from "@/db/cache";
+import { tagsForMutation } from "@/lib/cache-tags";
 import { campaigns } from "@/db/schema";
 import type { Viewer } from "@/features/auth/server/session";
 import type { CollaborationStatus } from "@/lib/collaboration-status";
@@ -23,6 +25,7 @@ import {
   scheduleSchema,
   submitDraftSchema,
 } from "../schemas";
+import { collaborationScope } from "./cache-scope";
 import { createCollaboration } from "./create";
 import { NOT_YOURS, authorize, friendlyError, ownedCollaborationId } from "./ownership";
 import { type TransitionInput, transition } from "./transition";
@@ -50,7 +53,9 @@ async function runTransition(
   const owned = await ownedCollaborationId(viewer, collaborationId);
   if (!owned) return { ok: false, error: NOT_YOURS };
   try {
+    const scope = await collaborationScope(collaborationId);
     const updated = await transition({ collaborationId, actor: viewer.role, ...input });
+    updateTags(tagsForMutation("collaboration-status", scope));
     revalidateCollaboration(collaborationId);
     return { ok: true, data: { collaborationId, status: updated.status } };
   } catch (error) {
@@ -74,6 +79,7 @@ export async function applyToCampaign(input: ApplyInput): Promise<StatusResult> 
 
   try {
     const collab = await createCollaboration({ campaignId: campaign.id, creatorId, origin: "application" });
+    updateTags(tagsForMutation("booking", await collaborationScope(collab.id)));
     revalidateCollaboration(collab.id);
     return { ok: true, data: { collaborationId: collab.id, status: collab.status } };
   } catch (error) {

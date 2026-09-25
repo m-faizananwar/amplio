@@ -1,6 +1,8 @@
 import "server-only";
 import { and, arrayOverlaps, asc, count, desc, eq, gte, ilike, inArray, lte, or, sql } from "drizzle-orm";
 import { getDb } from "@/db";
+import { cachedRead } from "@/db/cache";
+import { tag } from "@/lib/cache-tags";
 import { brands, campaigns, collaborations, creatorPosts, creators, shortlist, users } from "@/db/schema";
 import { getViewer, type Viewer } from "@/features/auth/server/session";
 import type { FitCampaign } from "@/lib/fit-score";
@@ -12,39 +14,58 @@ import { type CreatorDtoContext, type CreatorRowWithName, toCreatorDto } from ".
 
 // ---- context: brand, campaigns, selected campaign ---------------------------------
 
-export async function getMarketplaceContext(viewer: Viewer, campaignId?: string): Promise<MarketplaceContextDto | null> {
-  if (!viewer.brand) return null;
+// The brand's own inputs to the marketplace: its ICPs and its campaigns.
+// Cached per brand — the viewer's wallet balance is merged in afterwards, so a
+// top-up does not drop the creator list with it.
+async function loadBrandContext(brandId: string) {
   const db = getDb();
   const [brand] = await db
     .select({ icps: brands.icps, targetIndustries: brands.targetIndustries })
     .from(brands)
-    .where(eq(brands.id, viewer.brand.id));
+    .where(eq(brands.id, brandId));
   if (!brand) return null;
 
   const rows = await db
     .select({ id: campaigns.id, name: campaigns.name, status: campaigns.status, targetIndustries: sql<string[]>`${campaigns.brief}->'targetIndustries'` })
     .from(campaigns)
-    .where(eq(campaigns.brandId, viewer.brand.id))
+    .where(eq(campaigns.brandId, brandId))
     .orderBy(desc(campaigns.createdAt));
 
-  const options: CampaignOptionDto[] = rows.map((r) => ({ id: r.id, name: r.name, status: r.status }));
+  return { icpTitles: brand.icps.map((i) => i.title), brandIndustries: brand.targetIndustries, rows };
+}
+
+function brandContext(brandId: string) {
+  return cachedRead(loadBrandContext, ["marketplace-brand-context"], {
+    tags: [tag.brandCampaigns(brandId), tag.brandSettings(brandId)],
+  })(brandId);
+}
+
+export async function getMarketplaceContext(viewer: Viewer, campaignId?: string): Promise<MarketplaceContextDto | null> {
+  if (!viewer.brand) return null;
+  const data = await brandContext(viewer.brand.id);
+  if (!data) return null;
+
+  const options: CampaignOptionDto[] = data.rows.map((r) => ({ id: r.id, name: r.name, status: r.status }));
   // Default: the most recent active campaign, else the most recent one.
   const selected = options.find((c) => c.id === campaignId) ?? options.find((c) => c.status === "active") ?? options[0] ?? null;
-  const selectedRow = rows.find((r) => r.id === selected?.id);
-  const targetIndustries = selectedRow?.targetIndustries?.length ? selectedRow.targetIndustries : brand.targetIndustries;
+  const selectedRow = data.rows.find((r) => r.id === selected?.id);
+  const targetIndustries = selectedRow?.targetIndustries?.length ? selectedRow.targetIndustries : data.brandIndustries;
 
   return {
     brandId: viewer.brand.id,
     company: viewer.brand.company,
     walletCents: viewer.brand.walletCents,
-    icpTitles: brand.icps.map((i) => i.title),
+    icpTitles: data.icpTitles,
     targetIndustries,
     campaigns: options,
     selectedCampaign: selected,
   };
 }
 
-export function fitCampaignOf(ctx: MarketplaceContextDto): FitCampaign {
+// Only these fields decide the list, so only these belong in its cache key.
+export type ListContext = Pick<MarketplaceContextDto, "brandId" | "targetIndustries" | "icpTitles" | "selectedCampaign">;
+
+export function fitCampaignOf(ctx: Pick<ListContext, "targetIndustries" | "icpTitles">): FitCampaign {
   return { targetIndustries: ctx.targetIndustries, icpTitles: ctx.icpTitles };
 }
 
@@ -84,7 +105,7 @@ function sortItems(items: CreatorDto[], sort: MarketplaceQuery["sort"]) {
   return items.sort(by[sort]);
 }
 
-async function loadDtoContext(ctx: MarketplaceContextDto, creatorIds: string[]): Promise<Omit<CreatorDtoContext, "campaign" | "shortlistedIds">> {
+async function loadDtoContext(ctx: Pick<ListContext, "selectedCampaign">, creatorIds: string[]): Promise<Omit<CreatorDtoContext, "campaign" | "shortlistedIds">> {
   const db = getDb();
   const postsByCreator = new Map<string, (typeof creatorPosts.$inferSelect)[]>();
   const collaborationStatusByCreator = new Map<string, string>();
@@ -110,7 +131,7 @@ async function shortlistedIdsFor(brandId: string) {
 
 // Filters run in SQL; the fit score (the default sort) is computed per row,
 // so ordering and paging happen in memory. 300 creators make that cheap.
-export async function listCreators(ctx: MarketplaceContextDto, query: MarketplaceQuery): Promise<CreatorListDto> {
+async function loadCreatorList(ctx: ListContext, query: MarketplaceQuery): Promise<CreatorListDto> {
   const db = getDb();
   const shortlistedIds = await shortlistedIdsFor(ctx.brandId);
   const [all] = await db.select({ n: count() }).from(creators);
@@ -145,7 +166,7 @@ export async function listCreators(ctx: MarketplaceContextDto, query: Marketplac
   return { ...empty, items, topRanked, total: scored.length, hasMore: scored.length > limit };
 }
 
-export async function listCountries(): Promise<CountryOptionDto[]> {
+async function loadCountries(): Promise<CountryOptionDto[]> {
   const rows = await getDb()
     .select({ code: creators.country, n: count() })
     .from(creators)
@@ -156,10 +177,30 @@ export async function listCountries(): Promise<CountryOptionDto[]> {
 
 // Nao: every creator scored against the campaign, best first. Optional
 // industry hint narrows the pool when the prompt names one.
-export async function rankCreators(ctx: MarketplaceContextDto, industries: string[]): Promise<CreatorDto[]> {
+export async function rankCreators(ctx: ListContext, industries: string[]): Promise<CreatorDto[]> {
   const query: MarketplaceQuery = { tab: "all", sort: "best", industry: industries, country: [], min: undefined, max: undefined, page: 1, activity: "any" };
   const list = await listCreators(ctx, query);
   return list.items;
+}
+
+// A brand's view of the directory: the creators, their fit against the selected
+// campaign, and what is already shortlisted or booked. Dropped when a creator
+// edits their profile (directory), when the brand shortlists, and when a
+// campaign or a booking moves.
+export function listCreators(ctx: ListContext, query: MarketplaceQuery): Promise<CreatorListDto> {
+  const scoped: ListContext = {
+    brandId: ctx.brandId,
+    targetIndustries: ctx.targetIndustries,
+    icpTitles: ctx.icpTitles,
+    selectedCampaign: ctx.selectedCampaign,
+  };
+  return cachedRead(loadCreatorList, ["creator-list"], {
+    tags: [tag.creatorDirectory(), tag.brandShortlist(ctx.brandId), tag.brandCollaborations(ctx.brandId), tag.brandCampaigns(ctx.brandId)],
+  })(scoped, query);
+}
+
+export function listCountries(): Promise<CountryOptionDto[]> {
+  return cachedRead(loadCountries, ["creator-countries"], { tags: [tag.creatorDirectory()] })();
 }
 
 // ---- page loaders: never throw, so page.tsx stays a switch on the result ---------

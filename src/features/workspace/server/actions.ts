@@ -4,6 +4,8 @@ import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getDb } from "@/db";
+import { updateTags } from "@/db/cache";
+import { tagsForMutation } from "@/lib/cache-tags";
 import { brands, creators, users } from "@/db/schema";
 import { destroySession, getViewer } from "@/features/auth/server/session";
 import { isDemoEmail } from "@/features/auth/constants";
@@ -30,6 +32,7 @@ export async function updateBrandProfile(input: BrandProfileInput): Promise<Acti
     console.error("[workspace] brand profile update failed", { brandId: viewer.brand.id, error });
     return { ok: false, error: "We couldn't save your profile." };
   }
+  updateTags(tagsForMutation("brand-profile", { brandId: viewer.brand.id, userIds: [viewer.userId] }));
   revalidatePath("/brand", "layout");
   return { ok: true, data: undefined };
 }
@@ -48,6 +51,7 @@ export async function updateBrandAudience(input: BrandAudienceInput): Promise<Ac
     console.error("[workspace] brand audience update failed", { brandId: viewer.brand.id, error });
     return { ok: false, error: "We couldn't save your audience." };
   }
+  updateTags(tagsForMutation("brand-profile", { brandId: viewer.brand.id, userIds: [viewer.userId] }));
   revalidatePath("/brand/settings");
   return { ok: true, data: undefined };
 }
@@ -76,6 +80,7 @@ export async function updateCreatorProfile(input: CreatorProfileInput): Promise<
     console.error("[workspace] creator profile update failed", { creatorId: viewer.creator.id, error });
     return { ok: false, error: "We couldn't save your profile." };
   }
+  updateTags(tagsForMutation("creator-profile", { creatorId: viewer.creator.id, userIds: [viewer.userId] }));
   revalidatePath("/creator", "layout");
   return { ok: true, data: undefined };
 }
@@ -100,6 +105,7 @@ export async function updatePayoutDetails(input: PayoutDetailsInput): Promise<Ac
     console.error("[workspace] payout details update failed", { creatorId: viewer.creator.id, error });
     return { ok: false, error: "We couldn't save your payout details." };
   }
+  updateTags(tagsForMutation("creator-profile", { creatorId: viewer.creator.id, userIds: [viewer.userId] }));
   revalidatePath("/creator/settings");
   revalidatePath("/creator/earnings");
   return { ok: true, data: undefined };

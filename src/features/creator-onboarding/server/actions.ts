@@ -3,6 +3,8 @@
 import { and, eq, isNull } from "drizzle-orm";
 import { getDb, isDbConfigured } from "@/db";
 import { creators } from "@/db/schema";
+import { updateTags } from "@/db/cache";
+import { tagsForMutation } from "@/lib/cache-tags";
 import { getViewer } from "@/features/auth/server/session";
 import { deriveLinkedinProfile, type LinkedinProfile } from "@/lib/linkedin-profile";
 import { PROFILE_READ_DELAY_MS, WORKSPACE_AFTER_ONBOARDING } from "../constants";
@@ -27,6 +29,12 @@ async function requireCreator(): Promise<ActionResult<Auth>> {
 // Every write is scoped to the creator row owned by the signed-in user.
 function ownRow(auth: Auth) {
   return and(eq(creators.id, auth.creatorId), eq(creators.userId, auth.userId));
+}
+
+// The creator row is part of the viewer (the shell reads it) and of the public
+// directory, so every step of onboarding drops both.
+function dropCaches(auth: Auth) {
+  updateTags(tagsForMutation("creator-profile", { creatorId: auth.creatorId, userIds: [auth.userId] }));
 }
 
 function firstIssue(error: { issues: Array<{ message: string }> }) {
@@ -57,6 +65,7 @@ export async function readLinkedinProfile(input: LinkedinInput): Promise<ActionR
         engagementRate: profile.engagementRate,
       })
       .where(ownRow(auth.data));
+    dropCaches(auth.data);
     return { ok: true, data: profile };
   } catch (error) {
     console.error("[creator-onboarding] readLinkedinProfile failed", { creatorId: auth.data.creatorId, error });
@@ -75,6 +84,7 @@ export async function saveCreatorCard(input: CardInput): Promise<ActionResult<Ca
       .update(creators)
       .set({ headline: parsed.data.headline, country: parsed.data.country, industries: [...parsed.data.industries] })
       .where(ownRow(auth.data));
+    dropCaches(auth.data);
     return { ok: true, data: parsed.data };
   } catch (error) {
     console.error("[creator-onboarding] saveCreatorCard failed", { creatorId: auth.data.creatorId, error });
@@ -93,6 +103,7 @@ export async function savePricing(input: PriceInput): Promise<ActionResult<Price
       .update(creators)
       .set({ priceCents: parsed.data.priceCents, bundles: parsed.data.bundles })
       .where(ownRow(auth.data));
+    dropCaches(auth.data);
     return { ok: true, data: parsed.data };
   } catch (error) {
     console.error("[creator-onboarding] savePricing failed", { creatorId: auth.data.creatorId, error });
@@ -106,6 +117,7 @@ async function markCompleted(auth: Auth) {
     .update(creators)
     .set({ onboardingCompletedAt: new Date() })
     .where(and(ownRow(auth), isNull(creators.onboardingCompletedAt)));
+  dropCaches(auth);
 }
 
 // Optional last screen: professional information, then complete.
@@ -126,6 +138,7 @@ export async function saveProfessionalInfo(input: ProfessionalInput): Promise<Ac
         invoicingAuthorized: parsed.data.invoicingAuthorized,
       })
       .where(ownRow(auth.data));
+    dropCaches(auth.data);
     await markCompleted(auth.data);
     return { ok: true, data: { redirectTo: WORKSPACE_AFTER_ONBOARDING } };
   } catch (error) {

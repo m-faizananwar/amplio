@@ -2,6 +2,8 @@ import "server-only";
 import { and, count, desc, eq, gte, inArray, sql } from "drizzle-orm";
 import { getDb } from "@/db";
 import { brands, campaigns, clicks, collaborations, creatorPosts, creators, trackingLinks } from "@/db/schema";
+import { cachedRead } from "@/db/cache";
+import { tag } from "@/lib/cache-tags";
 
 export type PublicSnapshot = {
   followers: number;
@@ -38,7 +40,7 @@ function sinceFor(range: AnalyticsRange) {
   return range === "all" ? null : new Date(Date.now() - Number(range) * DAY_MS);
 }
 
-export async function getPublicSnapshot(creatorId: string, range: AnalyticsRange = "all"): Promise<PublicSnapshot> {
+async function loadPublicSnapshot(creatorId: string, range: AnalyticsRange = "all"): Promise<PublicSnapshot> {
   const db = getDb();
   const since = sinceFor(range);
   const [creator] = await db.select({ followers: creators.followers }).from(creators).where(eq(creators.id, creatorId));
@@ -60,7 +62,7 @@ export async function getPublicSnapshot(creatorId: string, range: AnalyticsRange
   };
 }
 
-export async function getPublicPosts(creatorId: string, range: AnalyticsRange = "all"): Promise<PublicPostDto[]> {
+async function loadPublicPosts(creatorId: string, range: AnalyticsRange = "all"): Promise<PublicPostDto[]> {
   const since = sinceFor(range);
   const rows = await getDb()
     .select()
@@ -79,7 +81,7 @@ export async function getPublicPosts(creatorId: string, range: AnalyticsRange = 
   }));
 }
 
-export async function getTrackedLinkPerformance(creatorId: string): Promise<TrackedLinkPerformance[]> {
+async function loadTrackedLinkPerformance(creatorId: string): Promise<TrackedLinkPerformance[]> {
   const rows = await getDb()
     .select({
       collaborationId: collaborations.id,
@@ -99,4 +101,17 @@ export async function getTrackedLinkPerformance(creatorId: string): Promise<Trac
     .groupBy(collaborations.id, brands.company, campaigns.name, collaborations.status, trackingLinks.code, collaborations.publishedAt)
     .orderBy(desc(count(clicks.id)));
   return rows.map((r) => ({ ...r, publishedAt: r.publishedAt?.toISOString() ?? null }));
+}
+
+// The creator's own analytics: clicks on their links, and their posts.
+export function getPublicSnapshot(creatorId: string, range: AnalyticsRange = "all") {
+  return cachedRead(loadPublicSnapshot, ["public-snapshot"], { tags: [tag.creatorAnalytics(creatorId)] })(creatorId, range);
+}
+
+export function getPublicPosts(creatorId: string, range: AnalyticsRange = "all") {
+  return cachedRead(loadPublicPosts, ["public-posts"], { tags: [tag.creatorAnalytics(creatorId)] })(creatorId, range);
+}
+
+export function getTrackedLinkPerformance(creatorId: string) {
+  return cachedRead(loadTrackedLinkPerformance, ["tracked-link-performance"], { tags: [tag.creatorAnalytics(creatorId)] })(creatorId);
 }

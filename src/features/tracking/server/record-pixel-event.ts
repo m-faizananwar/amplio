@@ -1,6 +1,8 @@
 import "server-only";
 import { eq } from "drizzle-orm";
 import { getDb, isDbConfigured } from "@/db";
+import { expireTags } from "@/db/cache";
+import { tagsForMutation } from "@/lib/cache-tags";
 import { brands, clicks, pixelEvents } from "@/db/schema";
 import type { PixelEventInput } from "../schemas";
 
@@ -25,5 +27,6 @@ export async function recordPixelEvent(input: PixelEventInput) {
     valueCents: Math.round((input.value ?? 0) * CENTS),
     visitorId: input.visitorId ?? null,
   });
+  expireTags(tagsForMutation("tracking", { brandId: brand.id }));
   return true;
 }

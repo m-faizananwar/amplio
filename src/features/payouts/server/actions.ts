@@ -4,6 +4,8 @@ import { randomBytes } from "node:crypto";
 import { eq, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { getDb } from "@/db";
+import { updateTags } from "@/db/cache";
+import { tagsForMutation } from "@/lib/cache-tags";
 import { brands, ledgerEntries } from "@/db/schema";
 import { getViewer } from "@/features/auth/server/session";
 import { BILLING_PATH, EARNINGS_PATH } from "../constants";
@@ -42,6 +44,7 @@ export async function withdrawEarnings(input: WithdrawInput): Promise<ActionResu
     console.error("[payouts] withdrawal failed", { creatorId: viewer.creator.id, error });
     return { ok: false, error: "We couldn't record the withdrawal. Nothing was moved." };
   }
+  updateTags(tagsForMutation("withdraw", { creatorId: viewer.creator.id, userIds: [viewer.userId] }));
   revalidatePath(EARNINGS_PATH);
   revalidatePath("/creator", "layout");
   return { ok: true, data: { availableCents: summary.availableCents - parsed.data.amountCents } };
@@ -71,6 +74,7 @@ export async function topUpWallet(input: TopUpInput): Promise<ActionResult<{ bal
       if (!row || !brand) throw new Error("top-up wrote nothing");
       return { balanceCents: brand.walletCents, row: toLedgerDto(row) };
     });
+    updateTags(tagsForMutation("top-up", { brandId, userIds: [viewer.userId] }));
     revalidatePath(BILLING_PATH);
     revalidatePath("/brand", "layout");
     return { ok: true, data: result };

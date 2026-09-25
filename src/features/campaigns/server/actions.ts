@@ -3,6 +3,8 @@
 import { and, eq, inArray, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { getDb } from "@/db";
+import { updateTags } from "@/db/cache";
+import { tagsForMutation } from "@/lib/cache-tags";
 import { brands, campaigns, collaborations, ledgerEntries } from "@/db/schema";
 import { getViewer } from "@/features/auth/server/session";
 import { createCollaboration, DuplicateCollaborationError } from "@/features/collaborations/server/create";
@@ -20,22 +22,23 @@ const NOT_SIGNED_IN = "Sign in as a brand to manage campaigns.";
 const NOT_FOUND = "This campaign does not exist or belongs to another workspace.";
 const GENERIC = "Something went wrong on our side. Nothing was saved — please try again.";
 
-type Owned = { brandId: string; campaignId: string };
+type Owned = { brandId: string; campaignId: string; ownerUserId: string };
 
 async function ownedCampaign(campaignId: string): Promise<Owned | null> {
   const viewer = await getViewer();
   if (!viewer?.brand) return null;
   const campaign = await getCampaign(viewer.brand.id, campaignId);
-  return campaign ? { brandId: viewer.brand.id, campaignId } : null;
+  return campaign ? { brandId: viewer.brand.id, campaignId, ownerUserId: viewer.userId } : null;
 }
 
 function firstIssue(error: { issues: Array<{ message: string }> }) {
   return error.issues[0]?.message ?? "Invalid input";
 }
 
-function revalidateCampaign(campaignId: string) {
+function revalidateCampaign(owned: Owned) {
+  updateTags(tagsForMutation("campaign", { brandId: owned.brandId, campaignId: owned.campaignId }));
   revalidatePath("/brand/campaigns");
-  revalidatePath(`/brand/campaigns/${campaignId}`, "layout");
+  revalidatePath(`/brand/campaigns/${owned.campaignId}`, "layout");
 }
 
 async function createDraft(
@@ -64,6 +67,7 @@ async function createDraft(
       sourceUrl: input.url,
     })
     .returning({ id: campaigns.id });
+  updateTags(tagsForMutation("campaign", { brandId: brand.id, campaignId: row.id }));
   revalidatePath("/brand/campaigns");
   return { ok: true, data: { campaignId: row.id, generatedWith } };
 }
@@ -101,7 +105,7 @@ export async function updateCampaignBasics(input: BasicsInput): Promise<ActionRe
       .update(campaigns)
       .set({ name, description, postDeadline: postDeadline ? new Date(`${postDeadline}T12:00:00Z`) : null, defaultFeeCents })
       .where(and(eq(campaigns.id, campaignId), eq(campaigns.brandId, owned.brandId)));
-    revalidateCampaign(campaignId);
+    revalidateCampaign(owned);
     return { ok: true, data: { campaignId } };
   } catch (error) {
     console.error("[campaigns] updateCampaignBasics failed", { campaignId, error });
@@ -117,7 +121,7 @@ export async function saveBrief(input: SaveBriefInput): Promise<ActionResult<{ c
     const owned = await ownedCampaign(campaignId);
     if (!owned) return { ok: false, error: NOT_FOUND };
     await getDb().update(campaigns).set({ brief }).where(and(eq(campaigns.id, campaignId), eq(campaigns.brandId, owned.brandId)));
-    revalidateCampaign(campaignId);
+    revalidateCampaign(owned);
     return { ok: true, data: { campaignId } };
   } catch (error) {
     console.error("[campaigns] saveBrief failed", { campaignId, error });
@@ -164,7 +168,12 @@ export async function launchCampaign(input: LaunchInput): Promise<ActionResult<L
       .where(and(eq(campaigns.id, campaignId), eq(campaigns.brandId, brand.id)));
     const result: LaunchResultDto = { campaignId, invited: [], unfunded: [], skipped: [] };
     for (const creator of picks) await inviteOne(campaignId, creator, result);
-    revalidateCampaign(campaignId);
+    // Each invitation holds a fee and lands in a creator's workspace, so both
+    // sides and the brand's wallet are dropped, not just the campaign.
+    for (const creatorId of result.invited) {
+      updateTags(tagsForMutation("booking", { brandId: brand.id, campaignId, creatorId, userIds: [viewer.userId] }));
+    }
+    revalidateCampaign({ brandId: brand.id, campaignId, ownerUserId: viewer.userId });
     revalidatePath("/brand", "layout");
     return { ok: true, data: result };
   } catch (error) {
@@ -181,7 +190,8 @@ export async function inviteCreator(input: InviteInput): Promise<ActionResult<{ 
     const owned = await ownedCampaign(campaignId);
     if (!owned) return { ok: false, error: NOT_FOUND };
     const collab = await createCollaboration({ campaignId, creatorId, origin: "invitation" });
-    revalidateCampaign(campaignId);
+    updateTags(tagsForMutation("booking", { brandId: owned.brandId, campaignId, creatorId }));
+    revalidateCampaign(owned);
     revalidatePath("/brand", "layout");
     return { ok: true, data: { collaborationId: collab.id } };
   } catch (error) {
@@ -226,6 +236,8 @@ export async function deleteCampaign(campaignId: string): Promise<ActionResult<{
     console.error("[campaigns] deleteCampaign failed", { campaignId, error });
     return { ok: false, error: GENERIC };
   }
+  // A delete refunds held fees, so the wallet in the shell goes too.
+  updateTags(tagsForMutation("campaign", { brandId: owned.brandId, campaignId, userIds: [owned.ownerUserId] }));
   revalidatePath("/brand/campaigns");
   revalidatePath("/brand", "layout");
   return { ok: true, data: { deleted: true } };

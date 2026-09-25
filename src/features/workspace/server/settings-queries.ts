@@ -2,6 +2,8 @@ import "server-only";
 import { eq } from "drizzle-orm";
 import { getDb } from "@/db";
 import { brands, creators, users } from "@/db/schema";
+import { cachedRead } from "@/db/cache";
+import { tag } from "@/lib/cache-tags";
 
 export type BrandSettings = {
   company: string;
@@ -13,7 +15,7 @@ export type BrandSettings = {
   icps: Array<{ title: string; description: string }>;
 };
 
-export async function getBrandSettings(brandId: string): Promise<BrandSettings | null> {
+async function loadBrandSettings(brandId: string): Promise<BrandSettings | null> {
   const [row] = await getDb()
     .select({ brand: brands, firstName: users.firstName, lastName: users.lastName, email: users.email })
     .from(brands)
@@ -44,7 +46,7 @@ export type CreatorSettings = {
   payout: { method: "stripe" | "bank" | null; accountHolder: string; ibanLast4: string };
 };
 
-export async function getCreatorSettings(creatorId: string): Promise<CreatorSettings | null> {
+async function loadCreatorSettings(creatorId: string): Promise<CreatorSettings | null> {
   const [row] = await getDb()
     .select({ creator: creators, firstName: users.firstName, lastName: users.lastName, email: users.email })
     .from(creators)
@@ -67,4 +69,13 @@ export async function getCreatorSettings(creatorId: string): Promise<CreatorSett
       ibanLast4: row.creator.payoutIbanLast4 ?? "",
     },
   };
+}
+
+// Settings forms: only their own save dirties them.
+export function getBrandSettings(brandId: string) {
+  return cachedRead(loadBrandSettings, ["brand-settings"], { tags: [tag.brandSettings(brandId)] })(brandId);
+}
+
+export function getCreatorSettings(creatorId: string) {
+  return cachedRead(loadCreatorSettings, ["creator-settings"], { tags: [tag.creatorOverview(creatorId)] })(creatorId);
 }
