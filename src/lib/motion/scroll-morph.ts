@@ -1,4 +1,4 @@
-// Section reveals, blovio's model (customers/tanguy_blovio/src/useScrollMorph.ts):
+// Section reveals:
 // a one-shot 8px rise per [data-morph] element, staggered 20ms by its
 // position within its section (max 220ms), fired by an IntersectionObserver a
 // touch before the element is on screen (rootMargin 0 0 -10% 0); a section a
