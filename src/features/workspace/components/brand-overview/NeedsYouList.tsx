@@ -4,6 +4,7 @@ import { getFormatter, getTranslations } from "next-intl/server";
 import { PersonAvatar } from "@/components/ui/avatar";
 import { buttonVariants } from "@/components/ui/button";
 import { JoiningDotsScene } from "@/components/graphics/scenes";
+import { StatusGlyph } from "@/components/graphics/StatusGlyph";
 import { EmptyState } from "@/components/ui/empty-state";
 import type { CollaborationDto } from "@/features/collaborations/schemas";
 
@@ -41,7 +42,13 @@ export async function NeedsYouList({ items, lowWalletCents }: Props) {
           return (
             <li key={c.id} className="animate-rise" style={{ animationDelay: `${(i + 1) * 20}ms` }}>
               <Link href={`/brand/collaborations/${c.id}`} className="group flex flex-wrap items-center gap-3 px-5 py-4 outline-none transition-colors duration-(--duration-fast) ease-ledger hover:bg-tint focus-visible:bg-tint">
-                <PersonAvatar name={c.creatorName} src={c.creatorAvatarUrl} size="sm" />
+                {/* The state, drawn on the avatar's corner: it redraws when the state moves on. */}
+                <span className="relative shrink-0">
+                  <PersonAvatar name={c.creatorName} src={c.creatorAvatarUrl} size="sm" />
+                  <span className="absolute -right-1.5 -bottom-1.5 grid size-5 place-items-center rounded-full bg-surface text-attention ring-1 ring-rule" aria-hidden="true">
+                    <StatusGlyph key={c.status} status={c.status} className="size-3.5" />
+                  </span>
+                </span>
                 <span className="min-w-0 flex-1">
                   <span className="line-clamp-2 font-medium text-ink">{tc(`nextAction.brand.${c.status}.action`, vars)}</span>
                   <span className="block truncate text-small text-ink-muted">{c.creatorName} · {c.campaignName}</span>

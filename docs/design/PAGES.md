@@ -60,7 +60,8 @@ are the onboarding ones (`src/features/profile-fields`), so editing looks like c
 ### Overview — `/brand`
 One column: **Needs you** first — drafts to review, applicants to answer, live posts to pay,
 and a short wallet on top because it blocks every new invitation — each a ruled row with the
-next step in words and the button for it. Then three numbers (clicks, attributed sign-ups,
+next step in words and the button for it, the state drawn on the creator's avatar
+(envelope, pen, pulse…) so the kind of work reads before the words. Then three numbers (clicks, attributed sign-ups,
 committed spend), each opening the rows it is made of. The setup card shows only while
 setup is unfinished. People open the app to act; totals come second.
 
