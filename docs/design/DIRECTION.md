@@ -66,6 +66,46 @@ scrolls to the end.
   the pace: where it drags, where it's boring, what a ten-year-old would skip. Then a second
   version that fixes each of those, sharper and more playful. Both passes are recorded.
 
+## Graphics and motion: make it ours, make it move
+
+The ledger is the frame; inside it the product should feel alive and made by hand. Every
+graphic is our own SVG, built from one motif: **the trail** — dots joined by a line, the
+same shape as the mark. Things draw themselves, dots travel, lines connect.
+
+**Motion kit (shared, in src/components/motion):** DrawOnPath (stroke draws in), Odometer
+(digits roll per column), Sparkline (line draws, last point pulses), TrailLoader (the mark's
+three dots pulse in sequence — the only loader in the app), StatusGlyph (one glyph per
+collaboration state that morphs into the next), Stamp (a ledger row prints in with a
+"PAID" / "APPROVED" stamp), Burst (a small spray of dots for a success moment).
+
+**Where it shows up:**
+- **Empty states** each get a small animated scene: no campaigns → a blank brief with a
+  line writing itself; no collaborations → two dots reaching for each other and joining;
+  no clicks yet → a tracked link sending out ripples; no messages → three dots typing.
+- **Collaboration states:** invited (envelope) → accepted (two dots join) → draft (pen
+  line) → approved (check draws) → live (pulse) → paid (coin drops into the ledger).
+- **Money moments:** top-up → coins stack into the wallet; payout → the ledger row prints
+  with a stamp; approving a draft → the check draws and the row slides to its new group.
+- **Numbers and charts:** counters roll, sparklines and chart lines draw on enter, points
+  pop, a crosshair follows the pointer; opening the trail drawer draws a line from the
+  metric to its first row.
+- **Fit score:** the four signal bars fill one after another, then a ring closes around
+  the percentage.
+- **Creator cards:** the avatar sits in an orbit of audience dots (density = audience
+  size); on hover, the top audience titles float out as chips.
+- **Onboarding:** the step rail is a trail — dots light up and the line fills as you go;
+  the creator card assembles itself as fields are filled; website analysis shows the
+  site's words being sorted into value-prop and ICP chips.
+- **Assistant and call mode:** the mark's three dots are the voice visualizer — they
+  stretch and bounce with the mic level and settle when it thinks.
+- **404:** the trail snaps and the dots fall.
+
+**Rules.** Hand-drawn SVG only — no stock illustrations, no icon-pack art as decoration.
+currentColor + tokens so every graphic works in dark mode. Animate transform, opacity and
+stroke-dashoffset only; 150–600 ms for UI, longer only for ambient loops that pause
+off-screen. Under reduced motion every graphic shows its final frame. One component per
+graphic, under 500 lines, lazy-loaded when heavy.
+
 ## Signature pattern: the trail
 
 Any metric (clicks, leads, CPL, earnings) is clickable and opens a drawer listing the
