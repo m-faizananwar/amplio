@@ -1,7 +1,10 @@
 import type { CollaborationDto } from "@/features/collaborations/schemas";
+import type { CollaborationStatus } from "@/lib/collaboration-status";
 import type { NeedsYouItem } from "@/lib/next-step";
 
-export type NeedsYouRow = { key: string; title: string; detail: string; href: string; cta: string };
+// glyph: the StatusGlyph drawn beside the row (money waiting shows the coin,
+// an unfinished card the pen).
+export type NeedsYouRow = { key: string; glyph: CollaborationStatus; title: string; detail: string; href: string; cta: string };
 
 // next-intl's translator for creator.overview.needsYou, and the viewer's
 // money and date formatters (passed in so this stays a plain function).
@@ -12,7 +15,7 @@ function collaborationRow(c: CollaborationDto, t: T, fmt: Fmt): NeedsYouRow {
   const href = `/creator/collaborations/${c.id}`;
   const v = { brand: c.brandCompany, campaign: c.campaignName, amount: fmt.money(c.feeCents) };
   const row = (kind: string, detailKey: string, extra: Record<string, string | number> = {}) => ({
-    key: c.id, href, title: t(`${kind}.title`, v), detail: t(`${kind}.${detailKey}`, { ...v, ...extra }), cta: t(`${kind}.action`),
+    key: c.id, glyph: c.status, href, title: t(`${kind}.title`, v), detail: t(`${kind}.${detailKey}`, { ...v, ...extra }), cta: t(`${kind}.action`),
   });
   switch (c.status) {
     case "invited":
@@ -34,10 +37,10 @@ type Options = { byId: Map<string, CollaborationDto>; t: T; fmt: Fmt; setup: "de
 export function toNeedsYouRows(items: NeedsYouItem[], { byId, t, fmt, setup }: Options): NeedsYouRow[] {
   return items.flatMap((item): NeedsYouRow[] => {
     if (item.kind === "withdraw") {
-      return [{ key: "withdraw", title: t("withdraw.title", { amount: fmt.money(item.availableCents) }), detail: t("withdraw.detail"), href: "/creator/earnings?withdraw=1", cta: t("withdraw.action") }];
+      return [{ key: "withdraw", glyph: "paid", title: t("withdraw.title", { amount: fmt.money(item.availableCents) }), detail: t("withdraw.detail"), href: "/creator/earnings?withdraw=1", cta: t("withdraw.action") }];
     }
     if (item.kind === "setup") {
-      return [{ key: "setup", title: t("setup.title"), detail: t(`setup.${setup}`), href: "/creator/settings#pricing", cta: t("setup.action") }];
+      return [{ key: "setup", glyph: "draft_submitted", title: t("setup.title"), detail: t(`setup.${setup}`), href: "/creator/settings#pricing", cta: t("setup.action") }];
     }
     const c = byId.get(item.id);
     return c ? [collaborationRow(c, t, fmt)] : [];
