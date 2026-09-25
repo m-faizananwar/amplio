@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Cormorant_Garamond, Inter } from "next/font/google";
+import { Cormorant_Garamond, Geist, Geist_Mono } from "next/font/google";
 import { PointerTilt } from "@/components/motion/PointerTilt";
 import { RouteProgress } from "@/components/motion/RouteProgress";
 import { PublicChrome } from "@/components/shell/PublicChrome";
@@ -12,13 +12,13 @@ import "./globals.css";
 import "@/styles/interaction.css";
 
 import { BRAND } from "@/config/brand";
-// Cormorant Garamond 500 is only for the brand lockup (src/components/brand).
+// Cormorant stays only until the last old landing component that names it is removed.
 const cormorant = Cormorant_Garamond({ subsets: ["latin"], weight: ["500"], variable: "--font-cormorant", display: "swap" });
 
-const inter = Inter({
-  variable: "--font-sans",
-  subsets: ["latin"],
-});
+// Geist for every word, Geist Mono for every number (docs/design/DIRECTION.md).
+// next/font downloads them at build time and serves them from our origin.
+const geist = Geist({ variable: "--font-geist", subsets: ["latin"], display: "swap" });
+const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"], display: "swap" });
 
 const TOAST_MS = 3000;
 
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${cormorant.variable} h-full antialiased`}>
+    <html lang="en" className={`${geist.variable} ${geistMono.variable} ${cormorant.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
         <RouteProgress />
         <PublicChrome />
