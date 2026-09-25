@@ -108,7 +108,12 @@
         "No per-click or per-view deals. Your price is your price."
       ]
     },
-    "stubNote": "In this build, card top-ups and bank payouts are Stripe stubs: you see the full flow, but no real money moves."
+    "stubNote": "In this build, card top-ups and bank payouts are Stripe stubs: you see the full flow, but no real money moves.",
+    "coin": {
+      "brand": "Brand pays",
+      "creator": "Creator is paid",
+      "fee": "Amplio fee"
+    }
   },
   "faq": {
     "title": "Questions, answered.",

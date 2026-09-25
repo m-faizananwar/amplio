@@ -4,7 +4,10 @@ import { Scene } from "./Scene";
 import { SceneRail } from "./SceneRail";
 import { ClicksVisual } from "./visuals/ClicksVisual";
 import { LedgerVisual } from "./visuals/LedgerVisual";
-import { PostVisual } from "./visuals/PostVisual";
+import { Stage } from "../stage/Stage";
+import { ShareBurst } from "../stage/ShareBurst";
+import { ClickField } from "../stage/ClickField";
+import { SignupDrop } from "../stage/SignupDrop";
 import { ProofVisual } from "./visuals/ProofVisual";
 import { SignupsVisual } from "./visuals/SignupsVisual";
 
@@ -31,9 +34,9 @@ export async function LaunchScenes({ trail, creators }: Props) {
   return (
     <div className="relative">
       <SceneRail count={SCENES.length} />
-      <Scene {...scene("post")} visual={<PostVisual creator={names[0]} linkLabel={LINK} />} />
-      <Scene {...scene("clicks")} flip visual={<ClicksVisual clicks={tr.clicks} label={bare("hero.counts.clicks", tr.clicks)} liveLabel={live} rowLabel={bare("hero.counts.clicks", 1)} link={LINK} />} />
-      <Scene {...scene("signups")} visual={<SignupsVisual signups={tr.signups} label={bare("hero.counts.signups", tr.signups)} liveLabel={live} />} />
+      <Scene {...scene("post")} visual={<Stage loop><ShareBurst name={names[0]} linkLabel={LINK} /></Stage>} />
+      <Scene {...scene("clicks")} flip visual={<div className="grid gap-6"><Stage loop><ClickField linkLabel="/r/k3x9" /></Stage><ClicksVisual clicks={tr.clicks} label={bare("hero.counts.clicks", tr.clicks)} liveLabel={live} rowLabel={bare("hero.counts.clicks", 1)} link={LINK} /></div>} />
+      <Scene {...scene("signups")} visual={<div className="grid gap-4"><Stage><SignupDrop rows={names.slice(0, 3).map((creator) => t("scenes.ledger.rowLabel", { creator }))} signUpLabel={bare("hero.counts.signups", 1)} /></Stage><SignupsVisual signups={tr.signups} label={bare("hero.counts.signups", tr.signups)} liveLabel={live} compact /></div>} />
       <Scene
         {...scene("ledger")}
         flip
@@ -43,7 +46,7 @@ export async function LaunchScenes({ trail, creators }: Props) {
         {...scene("proof")}
         ink
         visual={
-          <ProofVisual
+          <Stage><ProofVisual
             billTitle={t("scenes.proof.billTitle")}
             proofTitle={t("scenes.proof.proofTitle")}
             billLine={t("hero.counts.posts", { count: tr.paidPosts })}
@@ -53,7 +56,7 @@ export async function LaunchScenes({ trail, creators }: Props) {
             clicksLine={bare("scenes.proof.proofClicks", tr.clicks)}
             signupsLine={bare("scenes.proof.proofSignups", tr.signups)}
             liveLabel={live}
-          />
+          /></Stage>
         }
       />
     </div>

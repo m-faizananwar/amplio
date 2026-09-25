@@ -3,13 +3,18 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
+import type { PublicTrail } from "../../constants";
+import { CoinSplit } from "../stage/CoinSplit";
+import { FaqGlyph } from "../stage/FaqGlyph";
+import { Stage } from "../stage/Stage";
 import { WordReveal } from "./WordReveal";
 
 const heading = "text-[clamp(40px,6vw,80px)] font-semibold leading-[0.95] tracking-[-0.04em]";
 
 // After the story: how to start, what it costs, questions, sign up. Calmer
 // than the scenes, same type scale, one idea per block.
-export async function LaunchClosing() {
+export async function LaunchClosing({ trail }: { trail: PublicTrail | null }) {
+  const coinPrice = trail?.example ? `€${Math.round(trail.example.feeCents / 100).toLocaleString("en-US")}` : "€";
   const t = await getTranslations("landing");
   const side = (key: "brands" | "creators", href: string) => (
     <div className="rounded-card border border-rule bg-surface p-6 sm:p-8">
@@ -52,6 +57,7 @@ export async function LaunchClosing() {
         <div className="mx-auto max-w-content scroll-mt-20 px-4 py-24 sm:px-8">
           <WordReveal as="h2" text={t("pricing.title")} className={heading} />
           <p className="mt-6 max-w-xl text-lead text-ink-muted">{t("pricing.sub")}</p>
+          <Stage className="mt-10 max-w-xl"><CoinSplit price={coinPrice} labels={{ brand: t("pricing.coin.brand"), creator: t("pricing.coin.creator"), fee: t("pricing.coin.fee") }} /></Stage>
           <div className="mt-12 grid gap-4 lg:grid-cols-2">{plan("brands")}{plan("creators")}</div>
           <p className="mt-6 text-small text-ink-muted">{t("pricing.stubNote")}</p>
         </div>
@@ -60,13 +66,13 @@ export async function LaunchClosing() {
         <div className="mx-auto grid max-w-content scroll-mt-20 gap-12 px-4 py-24 sm:px-8 lg:grid-cols-[1fr_1.4fr]">
           <WordReveal as="h2" text={t("faq.title")} className={heading} />
           <div className="divide-y divide-rule border-y border-rule">
-            {items.map((item) => (
+            {items.map((item, index) => (
               <details key={item.q} className="group py-5">
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-lead font-medium [&::-webkit-details-marker]:hidden">
                   {item.q}
                   <span className="text-h4 text-ink-muted transition-transform duration-(--duration-fast) ease-ledger group-open:rotate-45" aria-hidden="true">+</span>
                 </summary>
-                <p className="mt-3 max-w-2xl text-ink-muted">{item.a}</p>
+                <div className="mt-3 flex max-w-2xl gap-4"><FaqGlyph index={index} /><p className="text-ink-muted">{item.a}</p></div>
               </details>
             ))}
           </div>

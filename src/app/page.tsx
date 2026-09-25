@@ -29,10 +29,10 @@ export default async function HomePage() {
       <main className="flex-1">
         <LaunchHero trail={trail} />
         <LaunchScenes trail={trail} creators={names} />
-        <LaunchClosing />
+        <LaunchClosing trail={trail} />
       </main>
       <PublicFooter />
-      <PublicAssistantPill />
+      <PublicAssistantPill startHidden />
     </ClientMessages>
   );
 }

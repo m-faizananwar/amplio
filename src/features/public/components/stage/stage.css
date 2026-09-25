@@ -1,0 +1,53 @@
+/* Hand-made SVG scenes: transform, opacity and stroke-dashoffset only.
+   Every animation waits (paused, first frame) until its Stage is in view. */
+.stage:not([data-on]) *, .stage:not([data-on]) *::before, .stage:not([data-on]) *::after { animation-play-state: paused !important; }
+
+/* a dot flies from its origin to (--dx, --dy) and fades in on the way */
+@keyframes stFly { from { transform: translate(0, 0) scale(0.6); opacity: 0; } 15% { opacity: 1; } to { transform: translate(var(--dx, 0), var(--dy, 0)) scale(1); opacity: 1; } }
+.st-fly { transform-box: fill-box; animation: stFly var(--dur, 700ms) cubic-bezier(.2,.8,.2,1) var(--d, 0ms) both; }
+/* the same, looping: fly out, rest, fade, again */
+@keyframes stFlyLoop { 0% { transform: translate(0, 0) scale(0.5); opacity: 0; } 12% { opacity: 1; } 55%, 85% { transform: translate(var(--dx, 0), var(--dy, 0)) scale(1); opacity: 1; } 100% { transform: translate(var(--dx, 0), var(--dy, 0)) scale(1); opacity: 0; } }
+.st-fly-loop { transform-box: fill-box; animation: stFlyLoop var(--dur, 2600ms) cubic-bezier(.2,.8,.2,1) var(--d, 0ms) infinite both; }
+
+@keyframes stPop { from { transform: scale(0); opacity: 0; } 70% { transform: scale(1.15); opacity: 1; } to { transform: scale(1); opacity: 1; } }
+.st-pop { transform-box: fill-box; transform-origin: center; animation: stPop 320ms cubic-bezier(.2,.8,.2,1) var(--d, 0ms) both; }
+
+@keyframes stRise { from { transform: translateY(10px); opacity: 0; } to { transform: none; opacity: 1; } }
+.st-rise { animation: stRise 280ms cubic-bezier(.2,.8,.2,1) var(--d, 0ms) both; }
+
+@keyframes stDrop { from { transform: translateY(-60px); opacity: 0; } 60% { opacity: 1; } 80% { transform: translateY(4px); } to { transform: none; opacity: 1; } }
+.st-drop { transform-box: fill-box; animation: stDrop 520ms cubic-bezier(.3,.7,.2,1) var(--d, 0ms) both; }
+
+@keyframes stGrow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.st-grow { transform-box: fill-box; transform-origin: left center; animation: stGrow 420ms cubic-bezier(.2,.8,.2,1) var(--d, 0ms) both; }
+.st-grow-y { transform-box: fill-box; transform-origin: center bottom; animation: stGrowY 420ms cubic-bezier(.2,.8,.2,1) var(--d, 0ms) both; }
+@keyframes stGrowY { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+
+@keyframes stDraw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.st-draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: stDraw var(--dur, 420ms) cubic-bezier(.2,.8,.2,1) var(--d, 0ms) forwards; }
+
+@keyframes stSlideInL { from { transform: translateX(-44px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes stSlideInR { from { transform: translateX(44px); opacity: 0; } to { transform: none; opacity: 1; } }
+.st-in-l { animation: stSlideInL 420ms cubic-bezier(.2,.8,.2,1) var(--d, 0ms) both; }
+.st-in-r { animation: stSlideInR 420ms cubic-bezier(.2,.8,.2,1) var(--d, 0ms) both; }
+
+@keyframes stPulse { 0%, 100% { transform: scale(1); opacity: 0.9; } 50% { transform: scale(1.35); opacity: 1; } }
+.st-pulse { transform-box: fill-box; transform-origin: center; animation: stPulse 1.6s ease-in-out var(--d, 0ms) infinite; }
+
+@keyframes stTravel { 0% { transform: translate(0, 0); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translate(var(--dx), var(--dy)); opacity: 0; } }
+.st-travel { transform-box: fill-box; animation: stTravel var(--dur, 3200ms) cubic-bezier(.45,0,.55,1) var(--d, 0ms) infinite; }
+
+@keyframes stShrink { to { transform: scale(0); opacity: 0; } }
+.st-shrink { transform-box: fill-box; transform-origin: center; animation: stShrink 360ms cubic-bezier(.2,.8,.2,1) var(--d, 0ms) forwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  .stage * { animation: none !important; }
+  .st-draw { stroke-dashoffset: 0; }
+  .st-fly, .st-fly-loop, .st-travel { transform: translate(var(--dx, 0), var(--dy, 0)); opacity: 1; }
+  .st-shrink { transform: scale(0); opacity: 0; }
+}
+
+/* FAQ: the answer's drawing draws in when its question opens */
+.faq-draw { stroke-dasharray: 1; stroke-dashoffset: 1; }
+details[open] .faq-draw { animation: stDraw 520ms cubic-bezier(.2,.8,.2,1) both; }
+@media (prefers-reduced-motion: reduce) { .faq-draw { stroke-dashoffset: 0; } details[open] .faq-draw { animation: none; } }

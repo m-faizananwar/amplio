@@ -108,7 +108,12 @@
         "Ni paiement au clic, ni à la vue. Votre prix reste votre prix."
       ]
     },
-    "stubNote": "Dans cette version, les recharges par carte et les virements bancaires sont simulés avec Stripe : vous voyez tout le parcours, mais aucun argent réel ne circule."
+    "stubNote": "Dans cette version, les recharges par carte et les virements bancaires sont simulés avec Stripe : vous voyez tout le parcours, mais aucun argent réel ne circule.",
+    "coin": {
+      "brand": "La marque paie",
+      "creator": "Le créateur reçoit",
+      "fee": "Frais Amplio"
+    }
   },
   "faq": {
     "title": "Vos questions, nos réponses.",
