@@ -27,10 +27,15 @@ export function LinkedinForm({ linkedinUrl, alreadyRead }: { linkedinUrl: string
   async function onSubmit(values: LinkedinInput) {
     setError(null);
     setFailed(false);
-    const result = await readLinkedinProfile(values);
-    // any failure (couldn't read, timed out, no token) leaves the hand-typed path open
-    if (!result.ok) return setFailed(true);
-    router.push(ONBOARDING_STEPS.card.path);
+    // any failure — couldn't read, timed out, no token, or the request itself
+    // failing — leaves the hand-typed path open instead of a silent reset
+    try {
+      const result = await readLinkedinProfile(values);
+      if (!result.ok) return setFailed(true);
+      router.push(ONBOARDING_STEPS.card.path);
+    } catch {
+      setFailed(true);
+    }
   }
 
   return (
