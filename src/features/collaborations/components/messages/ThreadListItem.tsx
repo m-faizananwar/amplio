@@ -10,6 +10,7 @@ export function ThreadListItem({ thread: t, role, active }: Props) {
   return (
     <li>
       <Link
+        prefetch={false}
         href={`/${role}/messages/${t.collaborationId}`}
         aria-current={active ? "page" : undefined}
         className={cn(

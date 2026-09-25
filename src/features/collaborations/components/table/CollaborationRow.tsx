@@ -24,7 +24,8 @@ export function CollaborationRow({ row, role }: Props) {
   return (
     <TableRow className="relative cursor-pointer">
       <TableCell>
-        <Link href={href} className="flex items-center gap-3 font-medium after:absolute after:inset-0 after:content-['']">
+        {/* A list of 20 rows must not prefetch 20 detail pages; the row is one click away either way. */}
+        <Link href={href} prefetch={false} className="flex items-center gap-3 font-medium after:absolute after:inset-0 after:content-['']">
           {role === "creator" ? (
             <>
               <BrandMark initial={row.brandInitial} name={row.brandCompany} size="sm" />
