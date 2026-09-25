@@ -15,6 +15,11 @@ import { revalidateTag, unstable_cache, updateTag } from "next/cache";
 // The window only bounds writes we don't see (a reseed, direct SQL).
 const DEFAULT_TTL_S = 300;
 
+// The data cache outlives a deploy, so an entry written by the last build
+// came back in the old DTO shape on the first hit after a shape change. Each
+// deploy keys its own entries; tags still reach every entry of the current one.
+const DEPLOY_KEY = process.env.VERCEL_DEPLOYMENT_ID ?? process.env.VERCEL_GIT_COMMIT_SHA ?? "local";
+
 type CacheOptions = { tags: string[]; revalidate?: number };
 
 /**
@@ -26,7 +31,7 @@ export function cachedRead<A extends unknown[], R>(
   keyParts: string[],
   options: CacheOptions,
 ): (...args: A) => Promise<R> {
-  return unstable_cache(loader, keyParts, { tags: options.tags, revalidate: options.revalidate ?? DEFAULT_TTL_S });
+  return unstable_cache(loader, [DEPLOY_KEY, ...keyParts], { tags: options.tags, revalidate: options.revalidate ?? DEFAULT_TTL_S });
 }
 
 /**
