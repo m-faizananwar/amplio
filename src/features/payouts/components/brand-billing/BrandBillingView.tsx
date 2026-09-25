@@ -5,6 +5,7 @@ import { useFormatter, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Burst } from "@/components/graphics/Burst";
 import { useWallet } from "@/components/shell/WalletProvider";
 import { Button } from "@/components/ui/button";
 import { StatCard } from "@/components/ui/stat-card";
@@ -29,6 +30,7 @@ export function BrandBillingView({ balanceCents, buckets, rows: initialRows, sug
   const router = useRouter();
   const wallet = useWallet(balanceCents);
   const [rows, setRows] = useState(initialRows);
+  const [credited, setCredited] = useState(0);
   const [dialog, setDialog] = useState({ open: suggestedCents !== null, cents: suggestedCents ?? TOPUP_PRESETS_CENTS[DEFAULT_PRESET], suggested: suggestedCents !== null });
   const euros = (c: number) => format.number(c / CENTS, { style: "currency", currency: "EUR" });
 
@@ -47,6 +49,7 @@ export function BrandBillingView({ balanceCents, buckets, rows: initialRows, sug
     }
     setRows((current) => current.map((r) => (r.id === pending.id ? result.data.row : r)));
     wallet.setWalletCents(result.data.balanceCents);
+    setCredited((n) => n + 1);
     toast.success(t("topUp.done", { amount: euros(cents), balance: euros(result.data.balanceCents) }));
     router.refresh();
   }
@@ -54,7 +57,8 @@ export function BrandBillingView({ balanceCents, buckets, rows: initialRows, sug
   return (
     <div className="grid gap-12">
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <div className="grid gap-3 rounded-card border border-rule bg-surface p-5">
+        <div className="relative grid gap-3 rounded-card border border-rule bg-surface p-5">
+          {credited > 0 ? <Burst key={credited} /> : null}
           <StatCard className="border-0 p-0" label={t("buckets.available.label")} value={wallet.walletCents} format={euros} tone="money" hint={t("buckets.available.hint")} />
           <Button size="sm" className="justify-self-start" onClick={() => setDialog({ open: true, cents: TOPUP_PRESETS_CENTS[DEFAULT_PRESET], suggested: false })}><Plus aria-hidden="true" />{t("topUp.open")}</Button>
         </div>

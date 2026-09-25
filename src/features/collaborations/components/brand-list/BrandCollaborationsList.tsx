@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
+import { JoiningDotsScene } from "@/components/graphics/scenes";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -40,7 +41,7 @@ export function BrandCollaborationsList({ rows, campaigns, initialFilter }: Prop
   };
 
   if (rows.length === 0) {
-    return <EmptyState title={t("empty.none.title")} body={t("empty.none.body")} action={<Link href="/brand/creators" className={buttonVariants()}>{t("empty.none.action")}</Link>} />;
+    return <EmptyState illustration={<JoiningDotsScene />} title={t("empty.none.title")} body={t("empty.none.body")} action={<Link href="/brand/creators" className={buttonVariants()}>{t("empty.none.action")}</Link>} />;
   }
   return (
     <div className="grid gap-4">

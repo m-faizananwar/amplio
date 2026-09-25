@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { PersonAvatar } from "@/components/ui/avatar";
 import { buttonVariants } from "@/components/ui/button";
+import { JoiningDotsScene } from "@/components/graphics/scenes";
 import { EmptyState } from "@/components/ui/empty-state";
 import type { CollaborationDto } from "@/features/collaborations/schemas";
 
@@ -20,7 +21,7 @@ export async function NeedsYouList({ items, lowWalletCents }: Props) {
   const format = await getFormatter();
   const euros = (cents: number) => format.number(cents / CENTS, { style: "currency", currency: "EUR" });
   if (items.length === 0 && lowWalletCents === null) {
-    return <EmptyState title={t("empty.title")} body={t("empty.body")} action={<Link href="/brand/creators" className={buttonVariants({ variant: "secondary" })}>{t("empty.action")}</Link>} />;
+    return <EmptyState illustration={<JoiningDotsScene />} title={t("empty.title")} body={t("empty.body")} action={<Link href="/brand/creators" className={buttonVariants({ variant: "secondary" })}>{t("empty.action")}</Link>} />;
   }
   return (
     <div className="grid gap-3">

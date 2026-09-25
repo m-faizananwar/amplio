@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { type FormEvent, useRef, useState } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
+import { TrailLoader } from "@/components/graphics/TrailLoader";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { MATCHING_PROMPT_MAX_LENGTH } from "../../constants";
@@ -78,7 +79,7 @@ export function MatchingView({ ctx }: { ctx: MarketplaceContextDto }) {
         {error ? <p role="alert" className="rounded-control border border-failure/30 bg-failure-soft px-3 py-2 text-small text-failure">{error}</p> : null}
         {pending ? (
           <div className="grid gap-2" aria-busy="true" aria-live="polite">
-            <p className="text-small text-ink-muted">{t("ranking")}</p>
+            <p className="flex items-center gap-2 text-small text-ink-muted"><TrailLoader label={t("ranking")} />{t("ranking")}</p>
             {Array.from({ length: ROWS_SKELETON }, (_, i) => <Skeleton key={i} className="h-16 w-full" />)}
           </div>
         ) : asked && result ? <MatchingAnswer prompt={asked} result={result} ctx={ctx} /> : null}

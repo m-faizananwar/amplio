@@ -1,6 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { getFormatter, getTranslations } from "next-intl/server";
+import { BlankBriefScene } from "@/components/graphics/scenes";
 import { buttonVariants } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { StatusChip } from "@/components/ui/status-chip";
@@ -16,7 +17,7 @@ export async function CampaignsLedger({ campaigns }: { campaigns: CampaignCardDt
   const t = await getTranslations("brand.campaigns.list");
   const format = await getFormatter();
   if (campaigns.length === 0) {
-    return <EmptyState title={t("empty.title")} body={t("empty.body")} action={<Link href="/brand/campaigns/new" className={buttonVariants()}>{t("empty.action")}</Link>} />;
+    return <EmptyState illustration={<BlankBriefScene />} title={t("empty.title")} body={t("empty.body")} action={<Link href="/brand/campaigns/new" className={buttonVariants()}>{t("empty.action")}</Link>} />;
   }
   return (
     <div className="overflow-hidden rounded-card border border-rule bg-surface">

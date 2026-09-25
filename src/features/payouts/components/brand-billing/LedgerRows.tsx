@@ -2,6 +2,7 @@
 
 import { useFormatter, useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
+import { Stamp } from "@/components/graphics/Stamp";
 import { EmptyState } from "@/components/ui/empty-state";
 import { StatusChip } from "@/components/ui/status-chip";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -23,7 +24,9 @@ export function LedgerRows({ rows }: { rows: LedgerRowDto[] }) {
   const chip = (r: LedgerRowDto) =>
     r.status === "pending"
       ? <StatusChip tone="attention">{t("status.held")}</StatusChip>
-      : <StatusChip tone={r.type === "topup" ? "neutral" : "money"}>{t(r.type === "topup" ? "status.credited" : "status.paid")}</StatusChip>;
+      : r.type === "topup"
+        ? <StatusChip tone="neutral">{t("status.credited")}</StatusChip>
+        : <Stamp>{t("status.paid")}</Stamp>;
   return (
     <section aria-labelledby="ledger-title" className="grid gap-4">
       <div className="flex flex-wrap items-end justify-between gap-3">
