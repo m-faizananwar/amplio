@@ -13,18 +13,34 @@ import { TRAIL_TTL_S, type PublicTrail } from "../constants";
 // minute, and labelled "demo workspace data" wherever it is shown.
 const DEMO_BRAND_EMAILS = [DEMO_ACCOUNTS.brand.email, DEMO_ACCOUNTS.brand.legacyEmail];
 
+type Db = ReturnType<typeof getDb>;
+
+async function demoBrandId(db: Db) {
+  const [brand] = await db
+    .select({ id: brands.id })
+    .from(brands)
+    .innerJoin(users, eq(users.id, brands.ownerUserId))
+    .where(inArray(users.email, DEMO_BRAND_EMAILS))
+    .limit(1);
+  return brand?.id ?? null;
+}
+
 async function loadTrail(): Promise<PublicTrail | null> {
   if (!isDbConfigured()) return null;
   try {
     const db = getDb();
-    const [brand] = await db
-      .select({ id: brands.id })
-      .from(brands)
-      .innerJoin(users, eq(users.id, brands.ownerUserId))
-      .where(inArray(users.email, DEMO_BRAND_EMAILS))
-      .limit(1);
-    if (!brand) return null;
+    const brandId = await demoBrandId(db);
+    if (!brandId) return null;
+    const [counts, example] = await Promise.all([trailCounts(db, brandId), examplePost(db, brandId)]);
+    return { ...counts, example, asOf: new Date().toISOString() };
+  } catch (error) {
+    console.error("[public] trail read failed", { error: error instanceof Error ? error.message : String(error) });
+    return null;
+  }
+}
 
+async function trailCounts(db: Db, brandId: string) {
+    const brand = { id: brandId };
     const ofBrand = eq(campaigns.brandId, brand.id);
     const [[posts], [links], [clickRows], [signups], [paid]] = await Promise.all([
       db.select({ n: count() }).from(collaborations).innerJoin(campaigns, eq(campaigns.id, collaborations.campaignId)).where(and(ofBrand, isNotNull(collaborations.publishedAt))),
@@ -40,8 +56,21 @@ async function loadTrail(): Promise<PublicTrail | null> {
       // the bill: what the demo brand paid for the posts it paid for
       db.select({ n: count(), cents: sum(collaborations.feeCents) }).from(collaborations).innerJoin(campaigns, eq(campaigns.id, collaborations.campaignId)).where(and(ofBrand, isNotNull(collaborations.paidAt))),
     ]);
-    // one real paid post, end to end: its fee, the clicks on its link, the sign-ups those clicks became
-    const [example] = await db
+    return {
+      posts: posts.n,
+      links: links.n,
+      clicks: clickRows.n,
+      signups: signups.n,
+      paidPosts: paid.n,
+      paidCents: Number(paid.cents ?? 0),
+      lastClickAt: clickRows.last ? clickRows.last.toISOString() : null,
+    };
+}
+
+async function examplePost(db: Db, brandId: string) {
+  // one real paid post, end to end: its fee, the clicks on its link, the sign-ups those clicks became
+  const ofBrand = eq(campaigns.brandId, brandId);
+  const [example] = await db
       .select({
         feeCents: collaborations.feeCents,
         clicks: sql<number>`count(distinct ${clicks.id})`.mapWith(Number),
@@ -56,21 +85,7 @@ async function loadTrail(): Promise<PublicTrail | null> {
       .groupBy(collaborations.id)
       .orderBy(desc(sql`count(distinct ${clicks.id})`))
       .limit(1);
-    return {
-      example: example ?? null,
-      posts: posts.n,
-      links: links.n,
-      clicks: clickRows.n,
-      signups: signups.n,
-      paidPosts: paid.n,
-      paidCents: Number(paid.cents ?? 0),
-      lastClickAt: clickRows.last ? clickRows.last.toISOString() : null,
-      asOf: new Date().toISOString(),
-    };
-  } catch (error) {
-    console.error("[public] trail read failed", { error: error instanceof Error ? error.message : String(error) });
-    return null;
-  }
+  return example ?? null;
 }
 
 export const getPublicTrail = cachedRead(loadTrail, ["public-trail"], { tags: ["public:trail"], revalidate: TRAIL_TTL_S });

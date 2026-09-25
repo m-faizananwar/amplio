@@ -271,5 +271,12 @@
         }
       ]
     }
+  },
+  "notFound": {
+    "eyebrow": "404",
+    "title": "Cette piste ne mène nulle part.",
+    "body": "Le lien est peut-être ancien, ou la page se trouve dans un espace marque ou créateur et demande de vous connecter.",
+    "home": "Retour à l’accueil",
+    "signIn": "Se connecter"
   }
 }

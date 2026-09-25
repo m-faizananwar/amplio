@@ -394,8 +394,3 @@ details.accordion.closing > :not(summary) { animation: accordion-up 0.2s ease-ou
   .voice-bar { animation: none !important; height: 0.6rem; }
 }
 
-/* The landing's paper + ink for the public page heroes (PageHero). */
-.page-hero { background: #f2f0ec; color: #0d0c0b; }
-.page-hero-wash { background: linear-gradient(to bottom, rgba(242, 240, 236, 0.55), rgba(242, 240, 236, 0.15) 40%, rgba(242, 240, 236, 0.9)); }
-.page-hero-muted { color: rgba(13, 12, 11, 0.64); }
-.page-hero-eyebrow { color: rgba(13, 12, 11, 0.6); }

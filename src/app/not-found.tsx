@@ -1,19 +1,29 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
+import { buttonVariants } from "@/components/ui/button";
 import { PublicFooter } from "@/features/public/components/nav/PublicFooter";
-import { PillLink } from "@/features/public/components/shared/PillLink";
+import { cn } from "@/lib/cn";
+import "./not-found.css";
 
-export default function NotFound() {
+// 404: the mark's trail snaps and its dots fall (DIRECTION.md, "404").
+export default async function NotFound() {
+  const t = await getTranslations("public.notFound");
   return (
     <>
-      <main className="flex flex-1 flex-col items-center justify-center bg-linear-to-b from-brand-soft to-background px-4 py-32 text-center">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand">404</p>
-        <h1 className="mt-4 text-4xl font-bold tracking-[-0.03em] sm:text-6xl">This page isn&apos;t on the marketplace.</h1>
-        <p className="mt-6 max-w-md text-lg text-muted-foreground">The link may be old, or the page lives in the brand or creator workspace and needs a sign-in.</p>
-        <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row">
-          <PillLink href="/" label="Back to the landing page" />
-          <Link href="/login" className="text-sm font-semibold hover:underline">
-            Sign in
-          </Link>
+      <main className="flex flex-1 flex-col items-center justify-center px-4 py-28 text-center">
+        <svg viewBox="0 0 120 80" className="nf-trail h-20 w-32" aria-hidden="true">
+          <path className="nf-left" d="M14 60 L58 42" stroke="var(--color-ink)" strokeWidth="3" strokeLinecap="round" fill="none" />
+          <path className="nf-right" d="M64 40 L106 16" stroke="var(--color-ink)" strokeWidth="3" strokeLinecap="round" fill="none" />
+          <circle className="nf-dot nf-dot-1" cx="14" cy="60" r="7" fill="var(--color-ink)" />
+          <circle className="nf-dot nf-dot-2" cx="60" cy="41" r="7" fill="var(--color-ink)" />
+          <circle className="nf-dot nf-dot-3" cx="106" cy="16" r="7" fill="var(--color-ink)" />
+        </svg>
+        <p className="num mt-8 text-small text-ink-muted">{t("eyebrow")}</p>
+        <h1 className="mt-2 max-w-xl text-[clamp(36px,5vw,56px)] leading-[1.05] tracking-[-0.035em]">{t("title")}</h1>
+        <p className="mt-4 max-w-md text-lead text-ink-muted">{t("body")}</p>
+        <div className="mt-8 flex flex-wrap justify-center gap-3">
+          <Link href="/" className={cn(buttonVariants({ size: "lg" }), "h-11 px-5")}>{t("home")}</Link>
+          <Link href="/login" className={cn(buttonVariants({ variant: "secondary", size: "lg" }), "h-11 px-5")}>{t("signIn")}</Link>
         </div>
       </main>
       <PublicFooter />

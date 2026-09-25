@@ -1,0 +1,11 @@
+/* the trail snaps at the middle dot, the halves swing apart, the dots drop */
+.nf-left { transform-origin: 14px 60px; animation: nf-snap-left 420ms cubic-bezier(.2,.8,.2,1) 300ms both; }
+.nf-right { transform-origin: 106px 16px; animation: nf-snap-right 420ms cubic-bezier(.2,.8,.2,1) 300ms both; }
+.nf-dot { animation: nf-fall 520ms cubic-bezier(.5,0,.75,0) both; }
+.nf-dot-1 { animation-delay: 700ms; }
+.nf-dot-2 { animation-delay: 560ms; }
+.nf-dot-3 { animation-delay: 820ms; }
+@keyframes nf-snap-left { to { transform: rotate(14deg); } }
+@keyframes nf-snap-right { to { transform: rotate(-18deg); } }
+@keyframes nf-fall { 60% { transform: translateY(14px); } 80% { transform: translateY(10px); } to { transform: translateY(14px); } }
+@media (prefers-reduced-motion: reduce) { .nf-left, .nf-right, .nf-dot { animation: none; } }

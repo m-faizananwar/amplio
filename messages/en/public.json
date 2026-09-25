@@ -271,5 +271,12 @@
         }
       ]
     }
+  },
+  "notFound": {
+    "eyebrow": "404",
+    "title": "This trail goes nowhere.",
+    "body": "The link may be old, or the page lives in a brand or creator workspace and needs you to sign in.",
+    "home": "Back to the start",
+    "signIn": "Sign in"
   }
 }
