@@ -8,3 +8,6 @@ export const PIXEL_EVENT_TYPES = ["visit", "signup", "purchase"] as const;
 // Salt for hashed visitor IPs; changing it re-keys every stored hash, so it stays as first deployed.
 export const IP_HASH_SALT = "naano-rebuild";
 export const CSV_MAX_ROWS = 10_000;
+// The trail drawer lists at most this many rows; the CSV export has the rest.
+export const TRAIL_ROW_LIMIT = 300;
+export const TRAIL_WINDOW_DAYS = RESULTS_WINDOW_DAYS;
