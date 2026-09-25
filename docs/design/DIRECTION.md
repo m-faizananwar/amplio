@@ -1,10 +1,9 @@
 # Amplio — our own interface
 
 8x changed the brief: keep the idea and the backend, rebuild the frontend with our own
-layout and visual design. Nothing in the new interface copies another site. The ported
-pieces from other templates (scroll-scrub hero, glass card, splash, gaze footer, ink
-footer, compressing glass nav, OceanPulse auth panel, LED stage, globe) are removed, not
-restyled. The backend (Postgres, Drizzle, server actions, tracking, ledger, assistant) stays.
+layout and visual design. The first version's landing effects (video-scrub hero, frosted
+cards, splash screen, animated footers, compressing nav, the auth-page media panel, the
+metric stage, the globe) are removed, not restyled. The backend (Postgres, Drizzle, server actions, tracking, ledger, assistant) stays.
 
 Deadline: resubmit by end of Saturday 26 September. Freeze: Saturday 19:00 UTC.
 
