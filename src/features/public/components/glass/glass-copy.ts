@@ -1,4 +1,4 @@
-// The hero card's two findings, from the seeded benchmark data (benchmarks-data.ts).
+// The hero card's two findings, from the seeded demo workspace.
 export const GLASS_CARD = {
   title: "Latest results",
   index: "//01",

@@ -17,18 +17,13 @@ export const INK_COLUMNS = [
       { label: "Brief editor", href: "/brand/campaigns/new" },
       { label: "Results", href: "/brand/results" },
       { label: "Pricing", href: "/pricing" },
-      { label: "Benchmarks", href: "/benchmarks" },
     ],
   },
   {
     heading: "Company",
     aria: "Company",
     links: [
-      { label: "About", href: "/about" },
       { label: "For creators", href: "/for-creators" },
-      { label: "For agencies", href: "/for-agencies" },
-      { label: "Blog", href: "/case-study" },
-      { label: "Book a call", href: "/book-a-call" },
     ],
   },
   {
@@ -39,11 +34,10 @@ export const INK_COLUMNS = [
       { label: "Help Center", href: "/faq" },
       { label: "Integrations", href: "/brand/integrations" },
       { label: "Where’s My Booking", href: "/brand/collaborations" },
-      { label: "Talk To Us", href: "/book-a-call" },
     ],
   },
 ] as const;
-export const INK_LETTER = "Sign up for early notice on new creators, benchmarks & members-only campaigns.";
+export const INK_LETTER = "Sign up for early notice on new creators and campaigns.";
 export const INK_SOCIALS = ["LinkedIn", "X", "Instagram", "TikTok"] as const;
 export const INK_LEGAL = [
   { label: "Privacy Notice", href: "/privacy" },

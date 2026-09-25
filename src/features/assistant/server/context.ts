@@ -13,19 +13,6 @@ import { CONTEXT_LIST_MAX } from "../constants";
 const eur = (cents: number) => formatCents(cents, "EUR", "de-DE");
 const ACTION_STATUSES = new Set(["applied", "draft_submitted", "approved", "live"]);
 
-// Numbers from docs/reference/naano-market-notes.md (the reference product's
-// Q2 2026 report, first-party, not audited). The assistant may quote these
-// and nothing else.
-export const MARKET_FACTS = [
-  "Benchmark report (Q2 2026, first-party): 312 campaigns, 89 brands, 1,847 posts, ~300 active creators.",
-  "Average CPL €18.10 (median CPL by vertical: marketing-ops €16, sales-tech €16, RevOps €17, product €18, devtools €19, fintech €19, HR-tech €20, vertical SaaS €21).",
-  "Average CTR 12.0%; by creator size: 1k–3k followers 13.8%, 3k–7k 12.1%, 7k–10k 10.4%, 10k+ 8.7% — smaller creators get higher CTR.",
-  "CPC €2.30; median time to launch 7 days (p25 5, p90 16).",
-  "Funnel: click → 30s+ engagement 67%, engagement → demo 8.3%, demo → SQL 41%, cost per SQL about €530.",
-  "Versus LinkedIn Ads: CPL 67–80% lower, CTR about 15× (0.8% baseline); outbound that references a creator post gets a 39.6% reply rate versus ~5% cold.",
-  "Creator prices: fixed price per post from €20 up to about €1,500; typical CPM €11–34.",
-];
-
 // What a visitor can ask about: the product, the numbers, the pricing.
 export function publicContext(): string {
   const steps = HOW_IT_WORKS.steps.map((s) => `${s.n} ${s.label}`).join("; ");
@@ -34,7 +21,6 @@ export function publicContext(): string {
     `${BRAND.name} is a B2B LinkedIn creator marketplace: brands book vetted creators for sponsored posts at a fixed price per post, brief them, approve drafts, and track every click back to the post.`,
     `How it works: ${steps}.`,
     `Pricing: ${plans}. ${PRICING.footnote}`,
-    ...MARKET_FACTS,
     "Sign up at /register (brands: /register/brand, creators: /register/creator). Demo accounts are one click on /login.",
   ].join("\n");
 }

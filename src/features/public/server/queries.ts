@@ -5,8 +5,6 @@ import { creatorPosts, creators, users } from "@/db/schema";
 import { getDb, isDbConfigured } from "@/db";
 import { fitScore } from "@/lib/fit-score";
 import {
-  BENCHMARK_CTR,
-  LEADS_PER_CLICK,
   POST_EXAMPLES_CANDIDATES,
   POST_EXAMPLES_COUNT,
   type PublicCreator,
@@ -35,7 +33,6 @@ function toPostDto(row: {
   followers: number;
   avatarUrl: string;
 }): PublicPost {
-  const clicksEst = Math.round(row.impressions * BENCHMARK_CTR);
   const followersK = Math.round(row.followers / 1000);
   return {
     id: row.id,
@@ -45,8 +42,6 @@ function toPostDto(row: {
     creatorLine: `Creator · ${row.industries.slice(0, 2).join(" & ")} · ${followersK}K followers`,
     avatarUrl: row.avatarUrl,
     impressions: row.impressions,
-    clicksEst,
-    leadsEst: Math.round(clicksEst * LEADS_PER_CLICK),
   };
 }
 

@@ -1,8 +1,8 @@
-// Our copy in the spec's slots. Numbers are the seeded benchmark figures.
+// Our copy in the spec's slots. The numbers come from the seeded demo workspace.
 export const STAGE_COPY = {
   headline: { lead: "Built for ", dots: "Measurable", line2: "Performance" },
   intro: ["Every campaign is engineered for reach, fit and", " attribution, giving your brand the numbers", " to prove what a post produced."],
-  learnMore: { label: "Learn More", href: "/benchmarks" },
+  learnMore: { label: "Learn More", href: "/pricing" },
   cards: {
     speed: { title: ["Cost per lead", "Across 312 campaigns"], dots: "18", unit: "€", caption: ["Median cost", "per qualified lead"] },
     context: { title: ["Click-through rate", "Across 1,847 posts"], dots: "12", unit: "%", caption: ["Average CTR", "vs 0.8% for ads"] },

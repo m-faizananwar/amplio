@@ -1,4 +1,4 @@
-import { ExternalLink, Eye, MousePointerClick, Users } from "lucide-react";
+import { ExternalLink, Eye } from "lucide-react";
 import { POST_EXAMPLES, type PublicPost } from "../../constants";
 import { GlassCard } from "../glass/GlassCard";
 import { CreatorAvatar } from "../shared/CreatorAvatar";
@@ -6,11 +6,9 @@ import { CreatorAvatar } from "../shared/CreatorAvatar";
 const format = new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 1 });
 
 export function PostExampleCard({ post, index }: { post: PublicPost; index: number }) {
-  const stats = [
-    { icon: Eye, value: format.format(post.impressions), label: "Impressions" },
-    { icon: MousePointerClick, value: format.format(post.clicksEst), label: `Clicks (${POST_EXAMPLES.estLabel})` },
-    { icon: Users, value: format.format(post.leadsEst), label: `Leads (${POST_EXAMPLES.estLabel})` },
-  ];
+  // Only what the database holds: the creator's own impressions. The click and
+  // lead figures here were estimates from someone else's benchmark rates.
+  const stats = [{ icon: Eye, value: format.format(post.impressions), label: "Impressions" }];
   return (
     <GlassCard title={post.creatorName} index={index + 1} order={index} className="p-6">
       <div className="flex items-center gap-3">

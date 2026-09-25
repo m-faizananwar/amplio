@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Reveal } from "@/components/motion/Reveal";
-import { CaseStudySection } from "@/features/public/components/landing/CaseStudySection";
 import { ScrollHero } from "@/features/public/components/hero/ScrollHero";
 import { FaqSection } from "@/features/public/components/landing/FaqSection";
 import { SayHeySection } from "@/features/public/components/gaze-footer/SayHeySection";
@@ -10,7 +9,6 @@ import { MarketplaceShowcase } from "@/features/public/components/landing/Market
 import { PerformanceStage } from "@/features/public/components/performance/PerformanceStage";
 import { PostExamplesSection } from "@/features/public/components/landing/PostExamplesSection";
 import { PricingSection } from "@/features/public/components/landing/PricingSection";
-import { QuoteSection } from "@/features/public/components/landing/QuoteSection";
 import { PublicAssistantPill } from "@/features/public/components/nav/PublicAssistantPill";
 import { LandingSplash } from "@/features/public/components/splash/LandingSplash";
 import { CtaSection } from "@/features/public/components/shared/CtaSection";
@@ -34,10 +32,8 @@ export default async function HomePage() {
       <LandingSplash />
       <main className="flex-1">
         <ScrollHero />
-        <Reveal><QuoteSection /></Reveal>
         <Reveal><MarketplaceShowcase creators={creators} /></Reveal>
         <Reveal><HowItWorksSection /></Reveal>
-        <Reveal><CaseStudySection /></Reveal>
         {/* Results = the metric-cards stage (docs/reference/metric-cards-spec.md); it runs its own entrance. */}
         <PerformanceStage />
         <Reveal><PostExamplesSection posts={posts} /></Reveal>

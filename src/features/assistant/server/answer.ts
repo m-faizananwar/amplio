@@ -5,7 +5,7 @@ import type { Viewer } from "@/features/auth/server/session";
 import { handleTranscript } from "@/features/voice/server/handle-transcript";
 import { ANSWER_MAX_TOKENS, ANSWER_MAX_WORDS, HISTORY_MAX } from "../constants";
 import type { ChatMessage, ChatRequest, ChatResponse } from "../schemas";
-import { MARKET_FACTS, publicContext, viewerContext } from "./context";
+import { publicContext, viewerContext } from "./context";
 
 const SYSTEM = (context: string, loggedOut: boolean) =>
   [
@@ -48,8 +48,6 @@ export function templateAnswer(message: string, context: string, loggedOut: bool
     if (score > best.score) best = { line, score };
   }
   const nudge = loggedOut ? " You can try it at /register." : "";
-  if (best.score === 0) return `I don't have that in front of me. I can answer about ${loggedOut ? "how the product works, pricing and the benchmark numbers" : "your campaigns, collaborations and balance"}.${nudge}`;
+  if (best.score === 0) return `I don't have that in front of me. I can answer about ${loggedOut ? "how the product works and what it costs" : "your campaigns, collaborations and balance"}.${nudge}`;
   return `${best.line}${nudge}`;
 }
-
-export { MARKET_FACTS };

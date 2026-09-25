@@ -18,7 +18,7 @@ export const LANDING_COPY: GazeFooterCopy = {
     { label: "Sign in", href: "/login" },
     { label: "Start free", href: "/register/brand" },
     { label: "Join as a creator", href: "/register/creator" },
-    { label: "Book a call", href: "/book-a-call" },
+    { label: "Read the FAQ", href: "/faq" },
   ],
   rightBadge: "say hey",
   rightHeadline: ["let’s team up!", "bring us your brief*"],
