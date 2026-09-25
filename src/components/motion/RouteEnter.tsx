@@ -28,7 +28,10 @@ export function RouteEnter({ children }: { children: ReactNode }) {
         el.setAttribute("data-morph", "");
         targets.push(el);
       });
-      release = registerMorph(targets);
+      const unregister = registerMorph(targets);
+      // drop our marks too, or a re-run (Strict Mode's double effect, a
+      // streamed swap) would read them as someone else's and skip the tiles
+      release = () => { unregister(); targets.forEach((el) => el.removeAttribute("data-morph")); };
     };
     mark();
     // the streamed page replaces the skeleton after mount

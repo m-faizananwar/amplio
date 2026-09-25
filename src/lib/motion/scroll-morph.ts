@@ -13,13 +13,21 @@ const POP = "is-pop";
 const POP_Y_PERCENT = 8;
 const POP_SCALE = "0.94";
 
-type Registry = { els: Set<HTMLElement>; groupOf: Map<HTMLElement, HTMLElement>; io: IntersectionObserver | null; raf: number; reduced: boolean };
-let reg: Registry | null = null;
-// tiles registered before the observer started (children's layout effects run before the root's effect)
-const pending: HTMLElement[][] = [];
+// Tiles live at module level, apart from the observer: React Strict Mode runs
+// the root's effect twice (start → cleanup → start), and tiles registered
+// between the two must survive into the second observer or they stay hidden.
+const els = new Set<HTMLElement>();
+const groupOf = new Map<HTMLElement, HTMLElement>();
+type Observer = { io: IntersectionObserver | null; raf: number; reduced: boolean };
+let obs: Observer | null = null;
 
 function groupFor(el: HTMLElement) {
   return (el.closest("[data-morph-group]") ?? el.closest("section") ?? el) as HTMLElement;
+}
+
+function watch(el: HTMLElement) {
+  if (!obs) return;
+  if (obs.reduced) el.classList.add(POP); else obs.io?.observe(el);
 }
 
 // Attach the observer and the release loop once (the root layout mounts it).
@@ -30,56 +38,51 @@ export function startScrollMorph(): () => void {
   const io = reduced ? null : new IntersectionObserver((entries) => {
     for (const e of entries) if (e.isIntersecting) e.target.classList.add(POP);
   }, { threshold: 0, rootMargin: "0px 0px -10% 0px" });
-  reg = { els: new Set(), groupOf: new Map(), io, raf: 0, reduced };
-  for (const els of pending.splice(0)) registerMorph(els);
+  obs = { io, raf: 0, reduced };
+  for (const el of els) watch(el);
   const check = () => {
-    if (!reg) return;
-    reg.raf = 0;
+    if (!obs) return;
+    obs.raf = 0;
     const vh = window.innerHeight;
-    for (const g of new Set(reg.groupOf.values())) {
+    for (const g of new Set(groupOf.values())) {
       if (g.getBoundingClientRect().top < vh) continue;
-      for (const el of reg.els) if (reg.groupOf.get(el) === g) el.classList.remove(POP);
+      for (const el of els) if (groupOf.get(el) === g) el.classList.remove(POP);
     }
   };
-  const onScroll = () => { if (reg && !reg.raf) reg.raf = requestAnimationFrame(check); };
+  const onScroll = () => { if (obs && !obs.raf) obs.raf = requestAnimationFrame(check); };
   window.addEventListener("scroll", onScroll, { passive: true });
   window.addEventListener("resize", onScroll, { passive: true });
   return () => {
     io?.disconnect();
-    if (reg) cancelAnimationFrame(reg.raf);
+    if (obs) cancelAnimationFrame(obs.raf);
     window.removeEventListener("scroll", onScroll);
     window.removeEventListener("resize", onScroll);
     document.documentElement.classList.remove("pop-ready");
-    reg = null;
+    obs = null;
   };
 }
 
 // Register a section's tiles (called by Reveal after it has marked them).
-// Index within the section sets the stagger; headings (data-morph="text")
-// run textReveal instead of the pop.
-export function registerMorph(els: HTMLElement[]): () => void {
-  if (els.length === 0) return () => undefined;
-  if (!reg) {
-    pending.push(els);
-    return () => { const i = pending.indexOf(els); if (i >= 0) pending.splice(i, 1); else unregister(els); };
-  }
-  const r = reg;
+// Index within the section sets the stagger. Tiles registered before the
+// observer starts (children's effects run before the root's) are picked up
+// when it does.
+export function registerMorph(list: HTMLElement[]): () => void {
+  if (list.length === 0) return () => undefined;
   const seen = new Map<HTMLElement, number>();
-  for (const el of els) {
+  for (const el of list) {
     const g = groupFor(el);
-    r.groupOf.set(el, g);
-    r.els.add(el);
+    groupOf.set(el, g);
+    els.add(el);
     const i = seen.get(g) ?? 0;
     seen.set(g, i + 1);
     el.style.setProperty("--pop-y", `${el.dataset.morphY ?? POP_Y_PERCENT}%`);
     el.style.setProperty("--pop-s", el.dataset.morphScale ?? POP_SCALE);
     el.style.setProperty("--pop-d", `${Math.min(i * STAGGER, MAX_DELAY)}ms`);
-    if (r.reduced) el.classList.add(POP); else r.io?.observe(el);
+    watch(el);
   }
-  return () => unregister(els);
+  return () => unregister(list);
 }
 
-function unregister(els: HTMLElement[]) {
-  if (!reg) return;
-  for (const el of els) { reg.io?.unobserve(el); reg.els.delete(el); reg.groupOf.delete(el); el.classList.remove(POP); }
+function unregister(list: HTMLElement[]) {
+  for (const el of list) { obs?.io?.unobserve(el); els.delete(el); groupOf.delete(el); el.classList.remove(POP); }
 }
