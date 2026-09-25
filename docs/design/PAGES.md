@@ -348,6 +348,25 @@ import doesn't read (fixed, 00dee46); releasing a payment moves money on
 one click with no confirm step, and Results shows "Estimated reach 0" for a
 creator whose views are unknown (both reported to the brand side).
 
+## Lighthouse (live, amplio-mvp.vercel.app, Lighthouse 12, 2026-09-26)
+
+After the static public pages (f25f7c3). Performance / Accessibility / Best practices / SEO,
+then FCP · LCP · TBT · CLS.
+
+| Page | Desktop | Mobile |
+|---|---|---|
+| `/` | 99 / 100 / 100 / 100 — 0.3 s · 0.5 s · 0 ms · 0 | 64 → **95–99** / 100 / 100 / 100 — 1.2 s · 1.7–2.5 s · 0–20 ms · 0 |
+| `/for-creators` | 99 / 100 / 100 / 100 — 0.5 s · 0.6 s · 0 ms · 0 | 87 → 100 / 100 / 100 / 100 — 1.1 s · 1.4 s · 0 ms · 0 |
+| `/pricing` | 100 / 100 / 100 / 100 — 0.3 s · 0.5 s · 0 ms · 0 | 96 / 100 / 100 / 100 — 1.1 s · 2.6 s · 80 ms · 0 |
+| `/login` | 100 / 100 / 100 / 100 — 0.3 s · 0.3 s · 0 ms · 0 | 94 / 100 / 100 / 100 — 1.1 s · 3.1 s · 40 ms · 0 |
+
+The landing's mobile score was held down by three.js: ~500 KB evaluated on a
+throttled phone was 1.3 s of main thread (TBT 1,840 ms) even though it loads
+after first paint. Since 02a323b phones, low-power devices and Save-Data never
+download it — the hero's drawing animates its clicks in plain SVG — and desktop
+keeps the WebGL layer. Mobile numbers vary a few points run to run (two runs
+shown for `/`); the "→" rows are before / after that change.
+
 ## Real vs stubbed
 
 | Where | What | Status |
