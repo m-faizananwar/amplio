@@ -1,53 +1,76 @@
-# Walkthrough script — under 5 minutes, camera on, voiceover
+# Walkthrough — Amplio, redesigned (under 5 minutes, camera on)
 
-One take at 1440 wide. Two tabs open before you start: the live URL in a private window (logged out) and the repo on GitHub.
-Talk like you're showing a colleague. If something breaks on camera, say so and move on — dead ends are allowed.
+One take at 1440 wide, English, light theme. Two tabs ready: https://amplio-mvp.vercel.app
+(signed out) and the repo on GitHub open at `docs/design/DECISIONS.md`. Talk like you're
+showing a colleague what you decided and why. One decision per scene.
 
-## 0:00 – 0:20 · what this is
-"This is Amplio, a clone of naano.com — a B2B LinkedIn creator marketplace. Both sides, brand and creator, the whole booking loop,
-click tracking, payouts. Built in 24 hours with Claude Code: one session mapped naano screen by screen and evaluated every build,
-three builder sessions shipped in parallel on branches. I directed all of them. Every prompt and reply is in .agent-logs."
+**Don't click Review, Decide or Release on camera** — the reviewers use the same demo
+accounts, and those buttons change their data. Open things, read them, move on.
 
-## 0:20 – 1:00 · landing, the "better than the original" part
-Let the splash run (2 s). Scroll slowly through the hero — the video scrubs with the scroll, the glass card refracts.
-"Cinematic landing: scroll-scrubbed hero, glass cards, LED metric cards, compressing nav. Everything below the fold is lazy —
-the page is 3 MB total, Lighthouse desktop 83." Hover one post card and one pricing card (they invert to ink). Scroll to say-hey:
-move the mouse — the character's eyes follow. "Fun, and it's the call to action." Click the assistant pill, type "how does pricing work".
-"That's the assistant — Claude, Gemini fallback. On the dashboard it also runs actions, by voice."
+## 0:00 – 0:25 · the one idea
+"Amplio is a marketplace where B2B brands pay LinkedIn creators for posts. I used naano as
+the reference product, not the blueprint. What I thought was wrong with it: brands are
+shown estimated reach and asked to trust it. So the one idea behind every screen here is
+that **every number is a receipt** — a click, a sign-up, a payout is a row you can open."
 
-## 1:00 – 1:25 · auth
-Sign up → the two role cards → back. Login → "Explore as demo brand".
-"Graders don't sign up, so demo logins. Real sign-up works too, own cookie auth, real forgot-password email."
+## 0:25 – 1:10 · landing
+Scroll the landing at reading speed. Tap the hero drawing once (a burst of clicks).
+"The hero is live: posts, tracked links, clicks, sign-ups — real counts from the demo
+workspace, labelled as demo data. The page tells one story as you scroll: a post goes out,
+clicks fly into the tracked link, sign-ups drop into a ledger with names on the rows, and
+the bill locks next to the proof." At the pricing block: "the coin goes whole to the
+creator and the fee reads €0 — because that's what the ledger does, so that's what the
+page says." Point at the round button bottom-right: "the assistant waits in the corner on
+public pages, so it never sits on the content." Then: "What I cut from the reference —
+their benchmark figures, customer logos, testimonials — none of that was ours."
 
-## 1:25 – 2:25 · brand side
-Overview: "Hello Demo — four numbers, to-do list, creators that fit." Creators: filter by industry, sort by fit. Open a profile:
-"Fit score is computed from four signals — audience overlap, category, engagement, consistency — with a one-line reason." Book rail →
-Collaborate → confirm. "Fee held from the wallet, the creator has to accept." Campaigns → the demo campaign → Brief → Launch stepper:
-"Estimator: reach, clicks, leads, CPL from naano's published benchmarks." Click the assistant pill: "show me results" → it navigates.
+## 1:10 – 1:35 · sign-up, honestly
+Open Sign up → flip the Brand / Creator switch → back. Sign in → **Open the demo brand**.
+"One column, role first, and the steps ahead on one line. Brand onboarding reads your
+website and an AI drafts your value proposition and ideal customers on the same screen,
+editable. For creators the LinkedIn import is a real read of the public profile — if it
+can't read it, it says so and you type it in. It never invents a number."
 
-## 2:25 – 3:15 · creator side + the loop
-Sign out → "Explore as demo creator". Opportunities → View the brief → Copy for my AI. Collaborations → the invitation you just made →
-Accept → Submit draft (two lines). Sign out → demo brand → Collaborations → To do → Review → Approve.
-"Every state change goes through one transition function that writes an audit event. Illegal moves throw. That's tested."
+## 1:35 – 2:35 · brand side: what changed
+- **Overview:** "The reference opens on a dashboard of totals. People open the app to
+  act, so the first thing is *Needs you* — Esmeralda's draft to review, Ethyl's
+  application to decide, Althea's and Tom's payments to release — then the numbers."
+- Click **Show rows** under *Clicks on tracked links*: the drawer lists every click. "This
+  is the receipt." Close it.
+- **Collaborations:** "Every row says the next step and who owns it, instead of a status name."
+- **Creators:** open a fit score. "A percentage you can't question is one you can't trust —
+  it opens its four signals and a reason."
+- **Campaigns → a campaign's launch:** "The estimate is built from our own live posts, with
+  the sample size shown. With too little data it says so."
+- **Billing:** "Available, held until the creator answers, committed, paid — and the ledger
+  with a reference on every line." (Releasing a payment is two clicks: it arms, then asks.)
 
-## 3:15 – 4:00 · attribution, the part naano gets criticised for
-Demo creator → the live collaboration → copy the tracked link → open it in a new tab → it 302s to the demo landing → submit the
-lead form. Back to demo brand → Results: the click and the lead are there, attributed to that creator. Click log → Export CSV.
-"Every number on this dashboard is a database row you can create by clicking. The pixel is a real /n.js with naano's API."
+## 2:35 – 3:15 · creator side
+Top bar: switch **Brand → Creator** (demo accounts only). Overview: "*Needs you* again —
+changes Premium Inboxes asked for, a draft to write for Zune, money to withdraw." Open
+**Earnings**: "each amount has *See the rows*." **My card**: "the card brands see, and the
+deal and referral links live here now — I merged the affiliate page in."
 
-## 4:00 – 4:40 · honest close
-README on GitHub: the real-vs-stubbed table. "Stubbed: Stripe, the LinkedIn import, email codes, X and YouTube, the MCP endpoint.
-Next I'd build the pixel SDK properly and negotiation end to end." Show .agent-logs (one file per session) for two seconds. Stop.
+## 3:15 – 3:45 · stopped pretending
+GitHub tab → `DECISIONS.md` → *Stopped pretending*.
+"Some cuts weren't design, they were honesty: a '48 hours to accept' nothing enforced, a
+two-second 'thinking' pause after the answer had arrived, thumbs that claimed to improve
+results, 'a human replies within a business day' with nobody there, and an estimate built
+from someone else's benchmarks. The fee shows €0 because we take none. Card top-ups and
+bank payouts are the stubs left, and the product says so where they appear."
+
+## 3:45 – 4:20 · the assistant and how it was built
+Back in the app, open the assistant, ask "what needs me today?" — it answers from the
+workspace. "Same actions as the buttons, and it asks before anything that moves money or
+changes a collaboration." Then the repo: `.agent-logs/`. "I ran this as one orchestrating
+Claude session and three builders in parallel. I set the direction and the decisions,
+they built, and every change was checked on the live site. Every prompt is in these logs."
+
+## 4:20 – 4:40 · close
+"The idea and the backend are the same — a real Postgres database, real tracking, a real
+LinkedIn import. The interface and the product decisions are ours."
 
 ## Before you hit record
-- Private window, live URL opens logged out, /api/health is 200, favicon shows on the tab.
-- Click the whole loop once off camera so you know the seeded names (Faizan Anwar is the demo creator).
-- Creators page takes ~1.5 s to stream — say something while the skeleton shows, don't stare at it.
-- Loom at 1440, mic on, camera on. Aim for 4:30. Never past 4:55.
-
-## Hand-in
-- Links: "github" → https://github.com/m-faizananwar/naano-rebuild · "live" → https://naano-rebuild-opal.vercel.app · Loom link.
-- "Anything you want to say", two sentences: "I ran Claude Code as a team — one session mapped naano and evaluated every build,
-  three built in parallel on branches; every prompt is in .agent-logs. Stripe, the LinkedIn import and email codes are stubbed
-  and say so in the README; everything else is real and seeded."
-- After submitting: reset the Neon database password and update naano_clone_DATABASE_URL on Vercel.
+- Private window, 1440 wide, English, light theme. `/api/health` is 200.
+- Walk the demo brand and creator once off camera, read-only, so the names are fresh.
+- Loom: mic on, camera on. Aim for 4:30, never past 4:55.
