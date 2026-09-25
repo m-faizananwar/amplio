@@ -34,7 +34,7 @@
     "linkedin": {
       "meta": "Ajouter votre LinkedIn · Amplio",
       "title": "Ajoutez votre profil LinkedIn",
-      "sub": "Collez l’URL de votre profil public. Nous en tirons votre fiche : nom, accroche, abonnés, vues habituelles et engagement.",
+      "sub": "Collez l’URL de votre profil public. Nous en tirons votre fiche : accroche, abonnés, pays et photo. Ce qu’un profil public ne montre pas reste vide.",
       "import": "Importer le profil",
       "importing": "Lecture de votre profil…",
       "imported": "Profil lu. Vérifiez votre fiche à l’étape suivante.",

@@ -34,7 +34,7 @@
     "linkedin": {
       "meta": "Add your LinkedIn · Amplio",
       "title": "Add your LinkedIn profile",
-      "sub": "Paste your public profile URL. We fill your card from it: name, headline, followers, typical views and engagement.",
+      "sub": "Paste your public profile URL. We fill your card from it: headline, followers, country and photo. Anything a public profile doesn't show stays blank.",
       "import": "Import profile",
       "importing": "Reading your profile…",
       "imported": "Profile read. Check your card on the next step.",
