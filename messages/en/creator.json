@@ -1,0 +1,953 @@
+{
+  "overview": {
+    "title": "Overview",
+    "description": "What's waiting on you, then your three numbers.",
+    "loading": "Loading your overview",
+    "error": {
+      "title": "We couldn't load your overview",
+      "body": "Your data is safe. Try again in a moment."
+    },
+    "needsYou": {
+      "title": "Needs you",
+      "description": "Most urgent first.",
+      "more": "{count, plural, one {# more item} other {# more items}}",
+      "viewAll": "See all in Collaborations",
+      "invitation": {
+        "title": "{brand} invited you to {campaign}",
+        "detail": "{amount} fee, held for you · answer by {date}",
+        "detailNoDate": "{amount} fee, held for you",
+        "action": "Answer"
+      },
+      "changesRequested": {
+        "title": "{brand} asked for changes",
+        "detail": "{campaign} · round {round} of {max}",
+        "action": "Update draft"
+      },
+      "draft": {
+        "title": "Write the draft for {brand}",
+        "detail": "{campaign} · due {date}",
+        "detailNoDate": "{campaign}",
+        "action": "Write draft"
+      },
+      "schedule": {
+        "title": "Schedule your post for {brand}",
+        "detail": "{campaign} · draft approved",
+        "action": "Schedule"
+      },
+      "publish": {
+        "title": "Publish your post for {brand}",
+        "detail": "{campaign} · scheduled for {date}",
+        "action": "Add post URL"
+      },
+      "withdraw": {
+        "title": "{amount} is available",
+        "detail": "Released by brands after your posts went live.",
+        "action": "Withdraw"
+      },
+      "setup": {
+        "title": "Finish your card",
+        "detailPrice": "Add your price per post so brands can book you.",
+        "detailIndustries": "Pick your industries so brands can find you.",
+        "detailBoth": "Add your price and industries so brands can find and book you.",
+        "action": "Finish setup"
+      }
+    },
+    "allClear": {
+      "title": "Nothing needs you right now",
+      "body": "Invitations and brand reviews appear here. Meanwhile, look at open campaigns.",
+      "action": "Browse opportunities"
+    },
+    "numbers": {
+      "title": "Your numbers",
+      "openTrail": "See the rows",
+      "earned": {
+        "label": "Earned to date",
+        "hint": "Paid collaborations"
+      },
+      "clicks": {
+        "label": "Clicks on your links",
+        "hint": "All tracked links"
+      },
+      "livePosts": {
+        "label": "Live posts",
+        "hint": "Published for brands"
+      }
+    }
+  },
+  "card": {
+    "title": "My card",
+    "description": "What brands see before they book you.",
+    "loading": "Loading your card",
+    "error": {
+      "title": "We couldn't load your card",
+      "body": "Try again in a moment."
+    },
+    "actions": {
+      "edit": "Edit card",
+      "openPublic": "Open public card",
+      "flip": "Flip card"
+    },
+    "stubNote": "Profile figures are imported from your public LinkedIn URL and simulated in this version.",
+    "fields": {
+      "headline": "Headline",
+      "bio": "About",
+      "industries": "Industries",
+      "country": "Country",
+      "followers": "Followers",
+      "medianViews": "Median views",
+      "engagementRate": "Engagement rate",
+      "engagementRateValue": "{percent}%",
+      "reactionsPerPost": "Reactions per post",
+      "commentsPerPost": "Comments per post",
+      "postsAnalyzed": "{count, plural, one {Based on # post} other {Based on # posts}}",
+      "audienceJobTitles": "Audience by role",
+      "audienceSeniority": "Audience by seniority",
+      "publishedCollaborations": "Published collaborations",
+      "pricePerPost": "Price per post",
+      "bundle": "{count, plural, one {# post for {amount}} other {# posts for {amount}}}",
+      "noPrice": "No price yet"
+    },
+    "incomplete": {
+      "title": "Brands can't book you yet",
+      "missingPrice": "Add your price per post.",
+      "missingIndustries": "Pick at least one industry.",
+      "action": "Go to settings"
+    },
+    "links": {
+      "title": "Your links",
+      "description": "Two links, both traced back to you.",
+      "deal": {
+        "title": "Deal link",
+        "description": "Your public card. Brands book you from it.",
+        "hint": "Add it to your LinkedIn profile or Featured section.",
+        "referralNote": "Brands that sign up through this link count as your referrals.",
+        "copy": "Copy link",
+        "copied": "Deal link copied",
+        "open": "Open",
+        "shareLinkedin": "Share on LinkedIn",
+        "shareEmail": "Send by email",
+        "shareText": "My creator card: audience, figures and price per post, in one link.",
+        "emailSubject": "My creator card"
+      },
+      "referral": {
+        "title": "Referral link",
+        "description": "Send it to a brand. If it signs up and runs campaigns, you earn a share.",
+        "copy": "Copy link",
+        "copied": "Referral link copied"
+      },
+      "numbers": {
+        "rewardsEarned": "Rewards earned",
+        "brandsIntroduced": "Brands introduced",
+        "brandsRewarding": "Brands paying rewards",
+        "earningNow": "Earning now",
+        "earningNowHint": "Inside the {months}-month window"
+      },
+      "terms": "You earn {percent}% of the platform commission on each brand you introduce, for {months} months from its first paid campaign. The platform commission is {commission}%.",
+      "introduced": {
+        "title": "Brands you introduced",
+        "joined": "Joined {date}",
+        "paid": "{count, plural, one {# paid collaboration} other {# paid collaborations}}",
+        "reward": "{amount} earned",
+        "windowEnds": "Window ends {date}",
+        "windowNotStarted": "Window starts at its first paid campaign"
+      },
+      "empty": {
+        "title": "No referrals yet",
+        "body": "Share your referral link with a brand. When it signs up, it appears here.",
+        "action": "Copy referral link"
+      }
+    }
+  },
+  "publicCard": {
+    "metaTitle": "{name} · Creator card",
+    "metaDescription": "{name}'s LinkedIn audience, figures and price per post.",
+    "book": "Book {name}",
+    "bookHint": "Your fee is held when you send the invitation and paid to {name} after the post is live.",
+    "demoLabel": "Demo creator. These figures are seeded, not real.",
+    "stubNote": "Figures are imported from the public LinkedIn profile and simulated in this version.",
+    "sections": {
+      "about": "About",
+      "audience": "Audience",
+      "performance": "Performance",
+      "pricing": "Pricing"
+    },
+    "fields": {
+      "industries": "Industries",
+      "country": "Country",
+      "followers": "Followers",
+      "medianViews": "Median views",
+      "engagementRate": "Engagement rate",
+      "engagementRateValue": "{percent}%",
+      "reactionsPerPost": "Reactions per post",
+      "commentsPerPost": "Comments per post",
+      "postsAnalyzed": "{count, plural, one {Based on # post} other {Based on # posts}}",
+      "audienceJobTitles": "Audience by role",
+      "audienceSeniority": "Audience by seniority",
+      "publishedCollaborations": "Published collaborations",
+      "pricePerPost": "Price per post",
+      "bundle": "{count, plural, one {# post for {amount}} other {# posts for {amount}}}",
+      "noPrice": "Price on request"
+    },
+    "notFound": {
+      "title": "This card doesn't exist",
+      "body": "The link may be mistyped, or the creator removed their card.",
+      "action": "Go to home page"
+    }
+  },
+  "opportunities": {
+    "title": "Opportunities",
+    "description": "Open campaigns, sorted by how well they fit your audience.",
+    "loading": "Loading campaigns",
+    "error": {
+      "title": "We couldn't load campaigns",
+      "body": "Try again in a moment."
+    },
+    "resultCount": "{count, plural, =0 {No campaigns} one {# campaign} other {# campaigns}}",
+    "filters": {
+      "search": "Search",
+      "searchPlaceholder": "Search a campaign or brand",
+      "industry": "Industry",
+      "industryAll": "All industries",
+      "region": "Region",
+      "regionAll": "All regions",
+      "deadline": "Deadline",
+      "deadlineAny": "Any deadline",
+      "deadlineWithin": "{count, plural, one {Within # day} other {Within # days}}",
+      "fit": "Fit",
+      "fitAny": "Any fit",
+      "fitAtLeast": "{percent}% or more",
+      "sort": "Sort by",
+      "sortFit": "Best fit",
+      "sortDeadline": "Nearest deadline",
+      "sortBrand": "Brand A–Z",
+      "reset": "Reset filters"
+    },
+    "item": {
+      "fitScore": "{percent}% fit",
+      "whyFit": "Why this fits",
+      "postBy": "Post by {date}",
+      "noDeadline": "No deadline",
+      "daysLeft": "{count, plural, =0 {Due today} one {# day left} other {# days left}}",
+      "yourPrice": "Your price: {amount}",
+      "channel": "LinkedIn · 1 post",
+      "industries": "Industries",
+      "regions": "Regions",
+      "readBrief": "Read brief",
+      "apply": "Apply",
+      "applying": "Applying…",
+      "existing": "{status} · open collaboration",
+      "openCollaboration": "Open collaboration"
+    },
+    "fit": {
+      "title": "How this fit is scored",
+      "description": "Four signals, weighted. Open one to see the detail.",
+      "reason": "{first}, and {second}.",
+      "score": "{percent}/100",
+      "weight": "Weight {percent}%",
+      "signals": {
+        "audience": "Audience overlap",
+        "category": "Category match",
+        "engagement": "Engagement quality",
+        "consistency": "Posting consistency"
+      },
+      "details": {
+        "audienceNoIcp": "The brand hasn't named its buyers yet",
+        "audienceMatch": "{percent}% of your audience are {segment}, the brand's buyers",
+        "audienceMiss": "Your audience rarely includes {segments}",
+        "categoryMatch": "You already write about {industries}",
+        "categoryMiss": "You write about other categories",
+        "engagement": "{rate}% engagement vs {benchmark}% for accounts your size",
+        "consistency": "{count, plural, one {# post a month} other {# posts a month}}"
+      },
+      "segments": {
+        "founders": "founders",
+        "marketing": "marketers",
+        "sales": "sales people",
+        "engineering": "engineers",
+        "product": "product people",
+        "hr": "HR people",
+        "finance": "finance people",
+        "operations": "operations people"
+      }
+    },
+    "briefDrawer": {
+      "title": "{campaign} brief",
+      "byBrand": "By {brand}",
+      "close": "Close",
+      "sections": {
+        "objectives": "What the post should do",
+        "audience": "Who you're writing for",
+        "message": "Key message",
+        "guidelines": "Guidelines",
+        "angles": "{count, plural, =0 {Content angles} one {# content angle} other {# content angles}}",
+        "links": "Links and proof points",
+        "deadline": "Post deadline"
+      },
+      "fields": {
+        "brand": "Brand",
+        "valueProp": "What they do",
+        "icp": "Their buyers",
+        "industries": "Industries",
+        "regions": "Regions",
+        "primaryCta": "Main call to action",
+        "secondaryWin": "Secondary goal",
+        "tone": "Tone",
+        "do": "Do",
+        "avoid": "Avoid",
+        "trackedLink": "Your tracked link"
+      },
+      "empty": {
+        "icp": "The brand hasn't described its buyers yet.",
+        "links": "No links yet. Stick to the facts on the brand's profile.",
+        "angles": "No angles yet. Choose your own.",
+        "trackedLink": "Your tracked link appears once the booking is accepted.",
+        "deadline": "No deadline"
+      },
+      "copyMarkdown": "Copy as Markdown",
+      "copyForAi": "Copy for AI",
+      "copiedMarkdown": "Brief copied as Markdown",
+      "copiedForAi": "Prompt copied. Paste it into your AI tool.",
+      "copyFailed": "Couldn't copy the brief. Try again."
+    },
+    "applyDialog": {
+      "title": "Apply to {campaign}",
+      "description": "{brand} sees your application and your card. If they accept, the booking is created at your price.",
+      "yourPrice": "Your net price per post",
+      "deadline": "Post deadline",
+      "noDeadline": "No deadline",
+      "channel": "Channel",
+      "channelValue": "LinkedIn · 1 post",
+      "confirm": "Send application",
+      "pending": "Sending…",
+      "cancel": "Cancel",
+      "success": "Application sent. {brand} answers next.",
+      "errors": {
+        "profileIncomplete": "Finish your creator profile before applying.",
+        "closed": "This campaign is no longer open to applications.",
+        "duplicate": "You already have a collaboration on this campaign.",
+        "unknownCampaign": "We couldn't find this campaign. Reload the page."
+      }
+    },
+    "empty": {
+      "none": {
+        "title": "No open campaigns right now",
+        "body": "Campaigns appear here when brands open them. A complete card ranks better.",
+        "action": "Review my card"
+      },
+      "filtered": {
+        "title": "No campaigns match these filters",
+        "body": "Remove a filter or two to see more.",
+        "action": "Reset filters"
+      }
+    }
+  },
+  "collaborations": {
+    "title": "Collaborations",
+    "description": "Each row shows the next step and who owns it.",
+    "loading": "Loading collaborations",
+    "error": {
+      "title": "We couldn't load your collaborations",
+      "body": "Try again in a moment."
+    },
+    "filters": {
+      "label": "Show",
+      "needsYou": "Needs you",
+      "waitingOnBrand": "Waiting on brand",
+      "live": "Live",
+      "done": "Done",
+      "all": "All",
+      "count": "{count}"
+    },
+    "table": {
+      "brand": "Brand",
+      "campaign": "Campaign",
+      "nextAction": "Next step",
+      "owner": "Owner",
+      "status": "Status",
+      "clicks": "Clicks",
+      "clicksNone": "—",
+      "due": "Due",
+      "noDue": "No deadline",
+      "fee": "Fee",
+      "open": "Open",
+      "sortBy": "Sort by {column}"
+    },
+    "owner": {
+      "you": "You",
+      "brand": "{brand}",
+      "done": "Done"
+    },
+    "nextAction": {
+      "invited": {
+        "action": "Accept or decline the invitation",
+        "owner": "You"
+      },
+      "applied": {
+        "action": "Waiting for {brand} to answer",
+        "owner": "{brand}"
+      },
+      "accepted": {
+        "action": "Write the draft",
+        "owner": "You"
+      },
+      "draft_submitted": {
+        "action": "Waiting for {brand} to review your draft",
+        "owner": "{brand}"
+      },
+      "changes_requested": {
+        "action": "Update your draft (round {round} of {max})",
+        "owner": "You"
+      },
+      "approved": {
+        "action": "Schedule the post",
+        "owner": "You"
+      },
+      "scheduled": {
+        "action": "Publish and add the post URL",
+        "owner": "You"
+      },
+      "live": {
+        "action": "Waiting for {brand} to release payment",
+        "owner": "{brand}"
+      },
+      "paid": {
+        "action": "Paid {amount}",
+        "owner": "Done"
+      },
+      "declined": {
+        "action": "Closed",
+        "owner": "Done"
+      }
+    },
+    "timeLeft": {
+      "minutes": "{count, plural, one {# minute left} other {# minutes left}}",
+      "hours": "{count, plural, one {# hour left} other {# hours left}}",
+      "days": "{count, plural, one {# day left} other {# days left}}",
+      "expired": "Expired",
+      "withAction": "{action} · {timeLeft}"
+    },
+    "empty": {
+      "none": {
+        "title": "No collaborations yet",
+        "body": "Brand invitations and your accepted applications land here. Start with an open campaign.",
+        "action": "Browse opportunities"
+      },
+      "needsYou": {
+        "title": "Nothing needs you right now",
+        "body": "Everything else is with brands or finished.",
+        "action": "Show all"
+      },
+      "waitingOnBrand": {
+        "title": "Nothing is waiting on a brand",
+        "body": "When you send a draft or an application, it waits here for the brand.",
+        "action": "Show all"
+      },
+      "live": {
+        "title": "No live posts yet",
+        "body": "A post goes live when you publish it and add its URL.",
+        "action": "Show all"
+      },
+      "done": {
+        "title": "Nothing finished yet",
+        "body": "Paid and closed collaborations appear here.",
+        "action": "Show all"
+      }
+    },
+    "detail": {
+      "back": "All collaborations",
+      "loading": "Loading collaboration",
+      "error": {
+        "title": "We couldn't load this collaboration",
+        "body": "Try again in a moment."
+      },
+      "notFound": {
+        "title": "Collaboration not found",
+        "body": "It may have been removed, or it belongs to another workspace.",
+        "action": "All collaborations"
+      },
+      "header": {
+        "title": "{campaign} · {brand}",
+        "fee": "Your fee",
+        "due": "Due {date}",
+        "message": "Message {brand}",
+        "readBrief": "Read brief"
+      },
+      "money": {
+        "title": "Your fee",
+        "held": "Held",
+        "heldNote": "{brand}'s fee of {amount} is held. You're paid after the post is live.",
+        "awaitingRelease": "Awaiting release",
+        "awaitingReleaseNote": "Your post is live. {amount} is released when {brand} pays.",
+        "paid": "Paid",
+        "paidNote": "{amount} was added to your available balance on {date}.",
+        "returned": "Returned",
+        "returnedNote": "The fee went back to {brand}."
+      },
+      "terms": {
+        "title": "Offer terms",
+        "fee": "Fee per post",
+        "listPrice": "List price",
+        "discount": "{amount} · {percent}% off",
+        "origin": "Origin",
+        "originInvitation": "Brand invitation",
+        "originApplication": "Your application",
+        "review": "Review",
+        "reviewRequired": "Brand approves before you publish",
+        "reviewNotRequired": "Publish without review",
+        "dueDate": "Due date",
+        "noDeadline": "No deadline",
+        "answerBy": "Answer by",
+        "scheduledFor": "Scheduled for",
+        "published": "Published",
+        "paid": "Paid",
+        "offerNote": "Note from {brand}"
+      },
+      "trackedLink": {
+        "title": "Tracked link",
+        "body": "Use this link in your post. Every click is recorded.",
+        "copy": "Copy link",
+        "copied": "Tracked link copied",
+        "clicks": "{count, plural, =0 {No clicks yet} one {# click} other {# clicks}}",
+        "pending": "Clicks appear once the post is live."
+      },
+      "draftPreview": {
+        "pending": "Draft awaiting review",
+        "approved": "Approved draft",
+        "yours": "Your draft",
+        "viewPost": "View post on LinkedIn"
+      },
+      "decide": {
+        "title": "Accept or decline this invitation",
+        "description": "Accepting confirms the booking on these terms. {brand}'s fee is already held for you.",
+        "accept": "Accept",
+        "decline": "Decline",
+        "pending": "Saving…",
+        "declineConfirm": {
+          "title": "Decline this invitation?",
+          "body": "{brand} gets its fee back and this collaboration closes for good.",
+          "confirm": "Decline",
+          "cancel": "Keep it open"
+        }
+      },
+      "draft": {
+        "title": "Write the draft",
+        "description": "Write the post as it will go out. {brand} reviews it before you publish.",
+        "label": "Your LinkedIn post",
+        "placeholder": "Hook first, one clear call to action, disclosure included.",
+        "help": "At least {min} characters.",
+        "counter": "{count} / {max}",
+        "submit": "Send for review",
+        "pending": "Sending…"
+      },
+      "resubmit": {
+        "title": "Update your draft (round {round} of {max})",
+        "description": "{brand} asked for changes. Edit the post and send it back.",
+        "noteLabel": "{brand}'s note",
+        "lastRound": "This is the last round of changes.",
+        "submit": "Resubmit draft",
+        "pending": "Sending…"
+      },
+      "schedule": {
+        "title": "Schedule the post",
+        "description": "Draft approved. Pick the day you'll publish, then come back to add the post URL.",
+        "label": "Publish date",
+        "submit": "Schedule",
+        "pending": "Saving…"
+      },
+      "publish": {
+        "title": "Publish and add the post URL",
+        "description": "Once the post is on LinkedIn, paste its URL here. Clicks on your tracked link start counting.",
+        "label": "LinkedIn post URL",
+        "placeholder": "https://www.linkedin.com/posts/…",
+        "submit": "Mark as published",
+        "pending": "Saving…"
+      },
+      "waiting": {
+        "applied": "{brand} hasn't answered your application yet.",
+        "draft_submitted": "{brand} is reviewing your draft. Their decision appears here.",
+        "live": "Your post is live. {brand} releases your fee next.",
+        "paid": "{brand} paid {amount}. It's in your earnings.",
+        "declined": "This collaboration is closed."
+      },
+      "validation": {
+        "draftMin": "Write at least {min} characters. The brand reviews the full post.",
+        "draftMax": "Keep it under {max} characters (LinkedIn's limit).",
+        "dateRequired": "Pick a date.",
+        "dateInvalid": "Enter a valid date.",
+        "dateFuture": "The publish date must be in the future.",
+        "postUrlInvalid": "Paste the full URL of the post.",
+        "postUrlLinkedin": "The post URL must be on linkedin.com."
+      },
+      "timeline": {
+        "title": "History",
+        "empty": "Nothing has happened yet.",
+        "events": {
+          "invite": "{brand} sent the invitation",
+          "apply": "You applied to the campaign",
+          "acceptInvitation": "You accepted the invitation",
+          "acceptApplication": "{brand} accepted your application",
+          "declineInvitation": "You declined the invitation",
+          "declineApplication": "{brand} declined your application",
+          "submitDraft": "You sent a draft",
+          "resubmitDraft": "You sent a revised draft (round {round})",
+          "approve": "{brand} approved the draft",
+          "requestChanges": "{brand} asked for changes",
+          "schedule": "You scheduled the post for {date}",
+          "publish": "You published the post",
+          "payBrand": "{brand} released the payment",
+          "paySystem": "Payment released",
+          "unknown": "Status changed"
+        }
+      }
+    },
+    "toasts": {
+      "accepted": "Booking confirmed. Your thread with {brand} is open.",
+      "declined": "Invitation declined. {brand} gets its fee back.",
+      "draftSent": "Draft sent. {brand} reviews it next.",
+      "scheduled": "Post scheduled for {date}.",
+      "published": "You're live. {brand} releases your fee next.",
+      "rolledBack": "That didn't go through, so nothing changed.",
+      "errors": {
+        "generic": "Something went wrong on our side. Nothing was changed. Try again.",
+        "stale": "This step is no longer available. Reload to see where things stand.",
+        "staleForm": "This page is out of date. Reload and try again.",
+        "sessionExpired": "Your session has expired. Sign in again.",
+        "notYours": "This collaboration isn't in your workspace."
+      }
+    }
+  },
+  "analytics": {
+    "title": "Analytics",
+    "description": "Your public LinkedIn figures and the clicks on your tracked links.",
+    "stubLabel": "Imported from your public LinkedIn profile. Simulated in this version.",
+    "loading": "Loading analytics",
+    "error": {
+      "title": "We couldn't load your analytics",
+      "body": "Try again in a moment."
+    },
+    "range": {
+      "label": "Range",
+      "all": "All time",
+      "last30": "Last 30 days",
+      "last90": "Last 90 days"
+    },
+    "metrics": {
+      "followers": "Followers",
+      "posts": "Posts",
+      "reach": "Reach",
+      "engagements": "Engagements",
+      "clicks": "Clicks",
+      "postsWithReach": "{count, plural, one {Reach from # post} other {Reach from # posts}}",
+      "openTrail": "See the rows"
+    },
+    "trackedLinks": {
+      "title": "Tracked links",
+      "description": "One link per collaboration. Every click is a row.",
+      "headers": {
+        "brand": "Brand",
+        "campaign": "Campaign",
+        "status": "Status",
+        "link": "Link",
+        "clicks": "Clicks",
+        "published": "Published"
+      },
+      "notPublished": "Not published yet"
+    },
+    "posts": {
+      "title": "Recent posts",
+      "description": "Your public posts in this range.",
+      "headers": {
+        "post": "Post",
+        "date": "Date",
+        "impressions": "Impressions",
+        "reactions": "Reactions",
+        "comments": "Comments",
+        "reposts": "Reposts"
+      },
+      "open": "Open on LinkedIn"
+    },
+    "trail": {
+      "followers": "Followers",
+      "followersSource": "Imported from {url} on {date}",
+      "posts": "Posts in this range",
+      "reach": "Reach, post by post",
+      "engagements": "Engagements, post by post",
+      "clicksAll": "Clicks on all your links",
+      "clicksCampaign": "Clicks on your {campaign} link"
+    },
+    "empty": {
+      "noPosts": {
+        "title": "No public posts imported yet",
+        "body": "Posts appear once your LinkedIn profile is read. Check your profile URL in Settings.",
+        "action": "Open settings"
+      },
+      "noLinks": {
+        "title": "No tracked links yet",
+        "body": "Your link goes live when you publish a collaboration. Start with an open campaign.",
+        "action": "Browse opportunities"
+      }
+    }
+  },
+  "earnings": {
+    "title": "Earnings",
+    "description": "What you've earned, what's held and what you've withdrawn.",
+    "loading": "Loading earnings",
+    "error": {
+      "title": "We couldn't load your earnings",
+      "body": "Try again in a moment."
+    },
+    "stats": {
+      "available": {
+        "label": "Available",
+        "hint": "Ready to withdraw"
+      },
+      "awaitingRelease": {
+        "label": "Awaiting release",
+        "hint": "{count, plural, =0 {Nothing live yet} one {# live post, brand to pay} other {# live posts, brands to pay}}"
+      },
+      "withdrawn": {
+        "label": "Withdrawn",
+        "hint": "Sent out so far"
+      },
+      "inTransit": {
+        "label": "In transit",
+        "hint": "Bank withdrawals on their way"
+      },
+      "earned": {
+        "label": "Earned to date",
+        "hint": "Paid collaborations"
+      },
+      "openTrail": "See the rows"
+    },
+    "chart": {
+      "title": "Earnings by month",
+      "description": "{count, plural, one {Net collaboration earnings, last month} other {Net collaboration earnings, last # months}}",
+      "empty": "No earnings in this period."
+    },
+    "ledger": {
+      "title": "Ledger",
+      "description": "Every movement, one row each.",
+      "tabs": {
+        "all": "All movements",
+        "awaiting": "Awaiting release",
+        "payments": "Payments"
+      },
+      "headers": {
+        "date": "Date",
+        "type": "Type",
+        "reference": "Reference",
+        "detail": "Detail",
+        "amount": "Amount",
+        "status": "Status"
+      },
+      "types": {
+        "booking": "Booking",
+        "payout": "Collaboration payment",
+        "withdrawal": "Withdrawal",
+        "topup": "Top-up"
+      },
+      "statuses": {
+        "pending": "Pending",
+        "inTransit": "In transit",
+        "completed": "Completed"
+      },
+      "descriptions": {
+        "payout": "{brand} · {campaign}",
+        "withdrawalStripe": "Withdrawal · Stripe (instant)",
+        "withdrawalBank": "Withdrawal · bank transfer"
+      },
+      "empty": {
+        "all": "No movements yet. Your first payment will appear here.",
+        "awaiting": "Nothing is awaiting release.",
+        "payments": "No payments yet. Each paid collaboration adds a row."
+      }
+    },
+    "withdraw": {
+      "button": "Withdraw",
+      "disabledReason": "Nothing to withdraw yet. Money becomes available when a brand releases your fee.",
+      "title": "Withdraw earnings",
+      "description": "Choose how to receive your available balance.",
+      "stubNote": "Stripe payouts aren't connected in this version. The ledger records your withdrawal; no money is sent.",
+      "method": {
+        "label": "Payout method",
+        "stripe": "Stripe",
+        "stripeBody": "Instant transfer to a connected Stripe account.",
+        "stripeStatus": "Not connected",
+        "bank": "Bank transfer",
+        "bankBody": "SEPA transfer. Shows as in transit until it arrives.",
+        "bankOnFile": "{name} · IBAN ending {last4}",
+        "bankMissing": "No bank details on file",
+        "editDetails": "Edit in Settings"
+      },
+      "amount": {
+        "label": "Amount",
+        "help": "{amount} available",
+        "placeholder": "0.00",
+        "withdrawAll": "Withdraw all"
+      },
+      "awaitingNote": "{amount} is awaiting release. It becomes available when the brand pays.",
+      "awaitingNone": "Nothing is awaiting release.",
+      "confirm": "Confirm withdrawal",
+      "pending": "Confirming…",
+      "cancel": "Cancel",
+      "success": "{amount} withdrawal recorded. {remaining} still available.",
+      "validation": {
+        "required": "Enter an amount.",
+        "min": "The minimum withdrawal is {amount}.",
+        "overBalance": "That's more than your available balance."
+      },
+      "errors": {
+        "failed": "We couldn't record the withdrawal. Nothing was moved.",
+        "notCreator": "Sign in as a creator to withdraw."
+      }
+    },
+    "empty": {
+      "title": "No earnings yet",
+      "body": "You're paid after a post is live and the brand releases the fee. Start with an open campaign.",
+      "action": "Browse opportunities"
+    }
+  },
+  "messages": {
+    "title": "Messages",
+    "description": "One thread per collaboration, open once a booking is accepted.",
+    "loading": "Loading messages",
+    "error": {
+      "title": "We couldn't load your messages",
+      "body": "Try again in a moment."
+    },
+    "list": {
+      "title": "Conversations",
+      "search": "Search conversations",
+      "searchPlaceholder": "Search a brand or campaign",
+      "campaign": "Campaign",
+      "campaignAll": "All campaigns",
+      "unread": "{count, plural, one {# unread} other {# unread}}",
+      "youPrefix": "You: {message}",
+      "noPreview": "No messages yet",
+      "noMatch": "No conversation matches."
+    },
+    "empty": {
+      "noThreads": {
+        "title": "No conversations yet",
+        "body": "A thread opens when a booking is accepted. Answer an invitation or apply to a campaign.",
+        "action": "Browse opportunities"
+      },
+      "noSelection": {
+        "title": "Select a conversation",
+        "body": "Pick a thread from the list."
+      },
+      "noMessages": "No messages yet. Say hello."
+    },
+    "thread": {
+      "back": "All messages",
+      "title": "{brand} · {campaign}",
+      "openCollaboration": "Open collaboration",
+      "you": "You"
+    },
+    "composer": {
+      "label": "Message",
+      "placeholder": "Write a message…",
+      "hint": "Enter to send, Shift + Enter for a new line.",
+      "send": "Send",
+      "sending": "Sending…",
+      "reactions": "Quick reactions",
+      "validation": {
+        "empty": "Write something first.",
+        "max": "Keep it under {max} characters."
+      }
+    },
+    "errors": {
+      "sendFailed": "Your message wasn't sent.",
+      "retry": "Retry",
+      "notSent": "Not sent",
+      "notFound": {
+        "title": "Conversation not found",
+        "body": "It may belong to another workspace, or the thread isn't open yet.",
+        "action": "All messages"
+      }
+    },
+    "bot": {
+      "preview": "Questions about the app? Start here.",
+      "reply": "Hi, I'm {name}. I can't answer questions in this version yet. Your bookings, briefs and payouts are in the menu on the left."
+    }
+  },
+  "trail": {
+    "title": "{metric} · {count, plural, one {# row} other {# rows}}",
+    "description": "The rows this number is made of.",
+    "close": "Close",
+    "loading": "Loading rows",
+    "error": {
+      "title": "We couldn't load these rows",
+      "body": "Try again in a moment."
+    },
+    "demoLabel": "Demo workspace data",
+    "total": "Total",
+    "showingLatest": "Showing the latest {count}",
+    "columns": {
+      "time": "Time",
+      "date": "Date",
+      "source": "Source",
+      "brand": "Brand",
+      "campaign": "Campaign",
+      "post": "Post",
+      "referrer": "Referrer",
+      "device": "Device",
+      "type": "Type",
+      "reference": "Reference",
+      "status": "Status",
+      "amount": "Amount"
+    },
+    "values": {
+      "referrerDirect": "Direct",
+      "deviceDesktop": "Desktop",
+      "deviceMobile": "Mobile",
+      "deviceTablet": "Tablet",
+      "deviceUnknown": "Unknown"
+    },
+    "empty": {
+      "title": "No rows yet",
+      "body": "This number is zero, so there's nothing to show."
+    }
+  },
+  "common": {
+    "loading": "Loading…",
+    "retry": "Try again",
+    "error": {
+      "title": "Something went wrong",
+      "body": "We couldn't load this. Try again in a moment."
+    },
+    "copyLink": "Copy link",
+    "copied": "Copied",
+    "copyFailed": "Couldn't copy. Select the link and copy it manually.",
+    "save": "Save",
+    "saving": "Saving…",
+    "saved": "Saved",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "close": "Close",
+    "back": "Back",
+    "edit": "Edit",
+    "open": "Open",
+    "you": "You",
+    "demoData": "Demo data",
+    "money": {
+      "fee": "Fee",
+      "held": "Held",
+      "available": "Available",
+      "awaitingRelease": "Awaiting release",
+      "withdrawn": "Withdrawn"
+    },
+    "status": {
+      "invited": "Invited",
+      "applied": "Applied",
+      "accepted": "Accepted",
+      "declined": "Declined",
+      "draft_submitted": "Draft sent",
+      "changes_requested": "Changes requested",
+      "approved": "Approved",
+      "scheduled": "Scheduled",
+      "live": "Live",
+      "paid": "Paid"
+    }
+  }
+}

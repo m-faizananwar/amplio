@@ -1,0 +1,355 @@
+{
+  "creator": {
+    "title": "Settings",
+    "description": "The same fields as your sign-up. Each section saves on its own.",
+    "loading": "Loading settings",
+    "error": {
+      "title": "We couldn't load your settings",
+      "body": "Try again in a moment."
+    },
+    "states": {
+      "save": "Save",
+      "saving": "Saving…",
+      "saved": "Changes saved",
+      "error": "We couldn't save your changes. Try again.",
+      "unsaved": "You have unsaved changes.",
+      "discard": "Discard",
+      "sessionExpired": "Your session has expired. Sign in again.",
+      "notCreator": "Sign in as a creator to change these settings."
+    },
+    "linkedin": {
+      "title": "LinkedIn profile",
+      "description": "We read your public profile once to fill your card.",
+      "stub": "Import is simulated in this version: the figures are generated from the URL, not fetched from LinkedIn.",
+      "url": {
+        "label": "Public profile URL",
+        "placeholder": "https://www.linkedin.com/in/your-name",
+        "help": "We read only public details: name, photo, headline, country and follower count."
+      },
+      "lastRead": "Last read {date}",
+      "reread": "Re-read profile",
+      "reading": "Reading your profile…",
+      "success": "Profile updated from your public LinkedIn.",
+      "errors": {
+        "required": "Paste your public LinkedIn profile URL.",
+        "format": "Use a public profile URL like https://www.linkedin.com/in/your-name.",
+        "tooLong": "That URL is too long.",
+        "notFound": "We couldn't find a public profile at that URL."
+      }
+    },
+    "card": {
+      "title": "Card",
+      "description": "What brands see first.",
+      "firstName": {
+        "label": "First name"
+      },
+      "lastName": {
+        "label": "Last name"
+      },
+      "headline": {
+        "label": "Headline",
+        "placeholder": "e.g. I write about B2B sales for early-stage founders",
+        "help": "One line on what you write about and for whom.",
+        "counter": "{count} / {max}"
+      },
+      "country": {
+        "label": "Country",
+        "placeholder": "Choose a country"
+      },
+      "industries": {
+        "label": "Industries",
+        "help": "Pick up to {max}. Brands filter by these.",
+        "counter": "{count} of {max} selected"
+      },
+      "errors": {
+        "firstNameRequired": "Enter your first name.",
+        "lastNameRequired": "Enter your last name.",
+        "nameTooLong": "Keep it under {max} characters.",
+        "headlineRequired": "Add a headline.",
+        "headlineMax": "Keep it under {max} characters.",
+        "countryRequired": "Choose a country.",
+        "industriesMin": "Pick at least one industry.",
+        "industriesMax": "Pick up to {max} industries."
+      }
+    },
+    "pricing": {
+      "title": "Pricing",
+      "description": "Your net price per post: what you receive for each post.",
+      "price": {
+        "label": "Price per post",
+        "help": "Between {min} and {max}.",
+        "recommendation": "Suggested: {amount}",
+        "recommendationNote": "Based on your public audience and engagement. You can change it any time.",
+        "useRecommendation": "Use suggestion"
+      },
+      "bundles": {
+        "title": "Bundles",
+        "description": "Optional. Offer several posts for one total price.",
+        "empty": "No bundles. Brands book one post at a time.",
+        "add": "Add bundle",
+        "remove": "Remove bundle",
+        "posts": "Posts",
+        "total": "Total net price",
+        "perPost": "{amount} per post",
+        "saving": "{percent}% off your single-post price",
+        "limit": "{count, plural, one {Up to # bundle} other {Up to # bundles}}",
+        "item": "Bundle {count}"
+      },
+      "errors": {
+        "priceRequired": "Enter a price.",
+        "priceMin": "The minimum is {amount} per post.",
+        "priceMax": "The maximum is {amount} per post.",
+        "bundlePostsMin": "At least {min} posts.",
+        "bundlePostsMax": "At most {max} posts.",
+        "bundleTotal": "Set a total net price.",
+        "bundlesMax": "Up to {max} bundles."
+      }
+    },
+    "business": {
+      "title": "Business details",
+      "description": "Needed to invoice brands and withdraw your earnings.",
+      "requiredNote": "Required before you apply, accept a booking or withdraw.",
+      "legalCountry": {
+        "label": "Country of residence for tax",
+        "placeholder": "Choose a country"
+      },
+      "registeredBusiness": {
+        "label": "I have a registered business",
+        "helpEu": "In the EU, invoicing brands requires a registered activity: sole trader, company or equivalent.",
+        "helpOutside": "Outside the EU you can work as an individual. We only need the details brands see on invoices."
+      },
+      "legalName": {
+        "label": "Legal name",
+        "help": "Your name or your business name, as it should appear on invoices."
+      },
+      "legalAddress": {
+        "label": "Legal address",
+        "placeholder": "Street, postcode, city"
+      },
+      "taxAcknowledged": {
+        "label": "I'm solely responsible for declaring and paying tax on what I earn here."
+      },
+      "invoicingAuthorized": {
+        "label": "I authorise the platform to issue invoices in my name to the brands I work with."
+      },
+      "errors": {
+        "countryRequired": "Choose a country.",
+        "legalNameRequired": "Enter the legal name.",
+        "legalAddressRequired": "Enter the legal address.",
+        "tooLong": "Keep it under {max} characters.",
+        "confirm": "Please confirm."
+      }
+    },
+    "payouts": {
+      "title": "Payouts",
+      "description": "Where your withdrawals go.",
+      "method": {
+        "label": "Payout method",
+        "stripe": "Stripe",
+        "stripeBody": "Instant transfer to a connected Stripe account.",
+        "stripeStatus": "Not connected",
+        "stripeStub": "Stripe isn't connected in this version. The ledger records withdrawals; no money is sent.",
+        "bank": "Bank transfer",
+        "bankBody": "SEPA transfer. Withdrawals show as in transit until they arrive."
+      },
+      "accountHolder": {
+        "label": "Account holder",
+        "placeholder": "Name on the account"
+      },
+      "iban": {
+        "label": "IBAN",
+        "placeholder": "FR76 …",
+        "onFile": "•••• {last4} on file",
+        "help": "We keep only the last {count} characters."
+      },
+      "save": "Save payout details",
+      "saved": "Payout details saved.",
+      "errors": {
+        "ibanShort": "That IBAN looks too short.",
+        "ibanLong": "That IBAN looks too long.",
+        "accountHolderTooLong": "Keep it under {max} characters.",
+        "saveFailed": "We couldn't save your payout details."
+      }
+    },
+    "account": {
+      "title": "Account",
+      "description": "Your sign-in and public handle.",
+      "email": {
+        "label": "Email"
+      },
+      "handle": {
+        "label": "Handle",
+        "help": "Your card lives at /c/{handle}."
+      },
+      "readOnly": "These can't be changed here.",
+      "delete": {
+        "title": "Delete account",
+        "description": "Removes your profile, sessions and collaborations. This can't be undone.",
+        "button": "Delete account",
+        "demoDisabled": "This is the shared demo account, so it can't be deleted.",
+        "confirm": {
+          "title": "Delete your account?",
+          "body": "This removes your user, profile, sessions and collaborations. It can't be undone.",
+          "confirm": "Delete account",
+          "pending": "Deleting…",
+          "cancel": "Cancel"
+        },
+        "errors": {
+          "demo": "Demo accounts can't be deleted.",
+          "failed": "We couldn't delete the account. Try again.",
+          "notSignedIn": "You're not signed in."
+        }
+      }
+    }
+  },
+  "brand": {
+    "title": "Settings",
+    "description": "The same fields as your sign-up. Each section saves on its own.",
+    "loading": "Loading settings",
+    "error": {
+      "title": "We couldn't load your settings",
+      "body": "Try again in a moment."
+    },
+    "states": {
+      "save": "Save",
+      "saving": "Saving…",
+      "saved": "Changes saved",
+      "error": "We couldn't save your changes. Try again.",
+      "unsaved": "You have unsaved changes.",
+      "discard": "Discard",
+      "sessionExpired": "Your session has expired. Sign in again.",
+      "notBrand": "Sign in as a brand to change these settings."
+    },
+    "company": {
+      "title": "Company",
+      "description": "Creators see this in every brief.",
+      "website": {
+        "label": "Website",
+        "placeholder": "https://yourcompany.com",
+        "help": "We read it to draft your value proposition and ideal customers."
+      },
+      "reread": {
+        "button": "Re-read my website",
+        "stages": {
+          "reading": "Reading your site…",
+          "customers": "Finding your ideal customers…",
+          "brief": "Drafting your brief…"
+        },
+        "confirm": {
+          "title": "Re-read your website?",
+          "body": "This replaces your value proposition and ideal customers with a new draft. Nothing is saved until you save.",
+          "confirm": "Re-read",
+          "cancel": "Cancel"
+        },
+        "done": "New draft ready. Review it, then save.",
+        "fallback": "We couldn't read your site, so the draft starts from your company name. Edit it before saving.",
+        "failed": "Something went wrong on our side. Try again."
+      },
+      "companyName": {
+        "label": "Company name"
+      },
+      "valueProp": {
+        "label": "Value proposition",
+        "help": "What you do, for whom and how, in a few sentences.",
+        "counter": "{count} / {max}"
+      },
+      "errors": {
+        "companyRequired": "Company name is required.",
+        "companyTooLong": "Keep it under {max} characters.",
+        "websiteRequired": "Enter your website address.",
+        "websiteFormat": "Enter a full address like https://yourcompany.com.",
+        "websiteScheme": "Only http and https addresses can be read.",
+        "websiteTooLong": "That address is too long.",
+        "valuePropRequired": "Write the value proposition.",
+        "valuePropTooLong": "Keep it under {max} characters.",
+        "saveFailed": "We couldn't save your profile."
+      }
+    },
+    "idealCustomers": {
+      "title": "Ideal customers",
+      "description": "{count, plural, one {The buyer your creators write for.} other {The # buyers your creators write for.}}",
+      "item": "Customer {count}",
+      "name": {
+        "label": "Who they are",
+        "placeholder": "e.g. Head of Sales at a Series A SaaS company"
+      },
+      "details": {
+        "label": "What they care about",
+        "placeholder": "Their role, their problem, and why your product helps."
+      },
+      "errors": {
+        "nameRequired": "Name this ideal customer.",
+        "nameTooLong": "Keep it under {max} characters.",
+        "detailsRequired": "Describe this ideal customer.",
+        "detailsTooLong": "Keep it under {max} characters.",
+        "count": "Describe {count} ideal customers.",
+        "saveFailed": "We couldn't save your ideal customers."
+      }
+    },
+    "audience": {
+      "title": "Audience",
+      "description": "Where your buyers are. Creators are ranked for you from this.",
+      "industries": {
+        "label": "Target industries",
+        "help": "Pick every industry you sell into."
+      },
+      "regions": {
+        "label": "Target regions",
+        "help": "Pick where your buyers are."
+      },
+      "noneSelected": "None selected",
+      "errors": {
+        "saveFailed": "We couldn't save your audience."
+      }
+    },
+    "team": {
+      "title": "Team",
+      "description": "People who can use this workspace.",
+      "invite": {
+        "title": "Invite a colleague",
+        "email": {
+          "label": "Work email",
+          "placeholder": "colleague@company.com"
+        },
+        "send": "Send invitation",
+        "stub": "Email isn't connected in this version, so invitations aren't sent.",
+        "notSent": "{email} did not receive an invitation: email isn't connected in this version.",
+        "errors": {
+          "emailInvalid": "Enter a valid email address."
+        }
+      },
+      "members": {
+        "title": "{count, plural, one {# person with access} other {# people with access}}",
+        "owner": "Owner",
+        "you": "You",
+        "ownerNote": "Only the owner can invite or remove people."
+      }
+    },
+    "account": {
+      "title": "Account",
+      "description": "Your sign-in.",
+      "email": {
+        "label": "Email"
+      },
+      "readOnly": "This can't be changed here.",
+      "delete": {
+        "title": "Delete account",
+        "description": "Removes your company profile, campaigns, sessions and collaborations. This can't be undone.",
+        "button": "Delete account",
+        "demoDisabled": "This is the shared demo account, so it can't be deleted.",
+        "confirm": {
+          "title": "Delete your account?",
+          "body": "This removes your user, company profile, campaigns, sessions and collaborations. It can't be undone.",
+          "confirm": "Delete account",
+          "pending": "Deleting…",
+          "cancel": "Cancel"
+        },
+        "errors": {
+          "demo": "Demo accounts can't be deleted.",
+          "failed": "We couldn't delete the account. Try again.",
+          "notSignedIn": "You're not signed in."
+        }
+      }
+    }
+  }
+}

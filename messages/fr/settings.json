@@ -1,0 +1,355 @@
+{
+  "creator": {
+    "title": "Paramètres",
+    "description": "Les mêmes champs qu’à l’inscription. Chaque section s’enregistre séparément.",
+    "loading": "Chargement des paramètres",
+    "error": {
+      "title": "Impossible de charger vos paramètres",
+      "body": "Réessayez dans un instant."
+    },
+    "states": {
+      "save": "Enregistrer",
+      "saving": "Enregistrement…",
+      "saved": "Modifications enregistrées",
+      "error": "Impossible d’enregistrer vos modifications. Réessayez.",
+      "unsaved": "Certaines modifications ne sont pas enregistrées.",
+      "discard": "Annuler les modifications",
+      "sessionExpired": "Votre session a expiré. Reconnectez-vous.",
+      "notCreator": "Connectez-vous avec un compte créateur pour modifier ces paramètres."
+    },
+    "linkedin": {
+      "title": "Profil LinkedIn",
+      "description": "Nous lisons une fois votre profil public pour remplir votre fiche.",
+      "stub": "L’import est simulé dans cette version : les chiffres sont générés à partir de l’URL, pas récupérés sur LinkedIn.",
+      "url": {
+        "label": "URL du profil public",
+        "placeholder": "https://www.linkedin.com/in/votre-nom",
+        "help": "Nous ne lisons que des informations publiques : nom, photo, accroche, pays et nombre d’abonnés."
+      },
+      "lastRead": "Dernière lecture le {date}",
+      "reread": "Relire le profil",
+      "reading": "Lecture de votre profil…",
+      "success": "Profil mis à jour depuis votre LinkedIn public.",
+      "errors": {
+        "required": "Collez l’URL de votre profil LinkedIn public.",
+        "format": "Utilisez une URL de profil public, par exemple https://www.linkedin.com/in/votre-nom.",
+        "tooLong": "Cette URL est trop longue.",
+        "notFound": "Aucun profil public trouvé à cette URL."
+      }
+    },
+    "card": {
+      "title": "Fiche",
+      "description": "Ce que les marques voient en premier.",
+      "firstName": {
+        "label": "Prénom"
+      },
+      "lastName": {
+        "label": "Nom"
+      },
+      "headline": {
+        "label": "Accroche",
+        "placeholder": "Ex. : J’écris sur la vente B2B pour les fondateurs de start-up",
+        "help": "Une ligne sur ce que vous écrivez, et pour qui.",
+        "counter": "{count} / {max}"
+      },
+      "country": {
+        "label": "Pays",
+        "placeholder": "Choisissez un pays"
+      },
+      "industries": {
+        "label": "Secteurs",
+        "help": "Jusqu’à {max}. Les marques filtrent selon ces secteurs.",
+        "counter": "{count} sur {max} sélectionnés"
+      },
+      "errors": {
+        "firstNameRequired": "Saisissez votre prénom.",
+        "lastNameRequired": "Saisissez votre nom.",
+        "nameTooLong": "Restez sous {max} caractères.",
+        "headlineRequired": "Ajoutez une accroche.",
+        "headlineMax": "Restez sous {max} caractères.",
+        "countryRequired": "Choisissez un pays.",
+        "industriesMin": "Choisissez au moins un secteur.",
+        "industriesMax": "Choisissez {max} secteurs au maximum."
+      }
+    },
+    "pricing": {
+      "title": "Tarifs",
+      "description": "Votre tarif net par post : ce que vous touchez pour chaque post.",
+      "price": {
+        "label": "Tarif par post",
+        "help": "Entre {min} et {max}.",
+        "recommendation": "Suggestion : {amount}",
+        "recommendationNote": "Calculée à partir de votre audience publique et de votre engagement. Modifiable à tout moment.",
+        "useRecommendation": "Appliquer"
+      },
+      "bundles": {
+        "title": "Offres groupées",
+        "description": "Facultatif. Proposez plusieurs posts pour un prix total.",
+        "empty": "Aucune offre groupée. Les marques réservent un post à la fois.",
+        "add": "Ajouter une offre",
+        "remove": "Supprimer l’offre",
+        "posts": "Posts",
+        "total": "Prix net total",
+        "perPost": "{amount} par post",
+        "saving": "{percent} % de moins que votre tarif unitaire",
+        "limit": "{count, plural, one {# offre au maximum} other {# offres au maximum}}",
+        "item": "Offre {count}"
+      },
+      "errors": {
+        "priceRequired": "Saisissez un tarif.",
+        "priceMin": "Le minimum est de {amount} par post.",
+        "priceMax": "Le maximum est de {amount} par post.",
+        "bundlePostsMin": "Au moins {min} posts.",
+        "bundlePostsMax": "{max} posts au maximum.",
+        "bundleTotal": "Indiquez un prix net total.",
+        "bundlesMax": "{max} offres au maximum."
+      }
+    },
+    "business": {
+      "title": "Informations professionnelles",
+      "description": "Nécessaires pour facturer les marques et retirer vos revenus.",
+      "requiredNote": "Obligatoires avant de postuler, d’accepter une réservation ou de retirer vos revenus.",
+      "legalCountry": {
+        "label": "Pays de résidence fiscale",
+        "placeholder": "Choisissez un pays"
+      },
+      "registeredBusiness": {
+        "label": "J’ai une activité déclarée",
+        "helpEu": "Dans l’UE, facturer des marques nécessite une activité déclarée : micro-entreprise, société ou équivalent.",
+        "helpOutside": "Hors UE, vous pouvez travailler en tant que particulier. Il nous faut seulement les informations qui figurent sur les factures."
+      },
+      "legalName": {
+        "label": "Nom légal",
+        "help": "Votre nom ou celui de votre entreprise, tel qu’il doit figurer sur les factures."
+      },
+      "legalAddress": {
+        "label": "Adresse légale",
+        "placeholder": "Rue, code postal, ville"
+      },
+      "taxAcknowledged": {
+        "label": "La déclaration et le paiement des impôts sur les revenus perçus ici relèvent de ma seule responsabilité."
+      },
+      "invoicingAuthorized": {
+        "label": "J’autorise la plateforme à émettre des factures en mon nom auprès des marques avec lesquelles je travaille."
+      },
+      "errors": {
+        "countryRequired": "Choisissez un pays.",
+        "legalNameRequired": "Saisissez le nom légal.",
+        "legalAddressRequired": "Saisissez l’adresse légale.",
+        "tooLong": "Restez sous {max} caractères.",
+        "confirm": "Merci de confirmer."
+      }
+    },
+    "payouts": {
+      "title": "Versements",
+      "description": "Où arrivent vos retraits.",
+      "method": {
+        "label": "Mode de versement",
+        "stripe": "Stripe",
+        "stripeBody": "Virement immédiat vers un compte Stripe connecté.",
+        "stripeStatus": "Non connecté",
+        "stripeStub": "Stripe n’est pas connecté dans cette version. Le registre enregistre les retraits ; aucun argent n’est envoyé.",
+        "bank": "Virement bancaire",
+        "bankBody": "Virement SEPA. Les retraits restent « en cours de virement » jusqu’à réception."
+      },
+      "accountHolder": {
+        "label": "Titulaire du compte",
+        "placeholder": "Nom inscrit sur le compte"
+      },
+      "iban": {
+        "label": "IBAN",
+        "placeholder": "FR76 …",
+        "onFile": "•••• {last4} enregistré",
+        "help": "Nous ne conservons que les {count} derniers caractères."
+      },
+      "save": "Enregistrer",
+      "saved": "Coordonnées de versement enregistrées.",
+      "errors": {
+        "ibanShort": "Cet IBAN semble trop court.",
+        "ibanLong": "Cet IBAN semble trop long.",
+        "accountHolderTooLong": "Restez sous {max} caractères.",
+        "saveFailed": "Impossible d’enregistrer vos coordonnées de versement."
+      }
+    },
+    "account": {
+      "title": "Compte",
+      "description": "Votre identifiant de connexion et votre pseudo public.",
+      "email": {
+        "label": "E-mail"
+      },
+      "handle": {
+        "label": "Pseudo",
+        "help": "Votre fiche est à l’adresse /c/{handle}."
+      },
+      "readOnly": "Ces informations ne sont pas modifiables ici.",
+      "delete": {
+        "title": "Supprimer le compte",
+        "description": "Supprime votre profil, vos sessions et vos collaborations. Action irréversible.",
+        "button": "Supprimer le compte",
+        "demoDisabled": "Ce compte de démonstration est partagé, il ne peut donc pas être supprimé.",
+        "confirm": {
+          "title": "Supprimer votre compte ?",
+          "body": "Votre utilisateur, votre profil, vos sessions et vos collaborations seront supprimés. Cette action est irréversible.",
+          "confirm": "Supprimer le compte",
+          "pending": "Suppression…",
+          "cancel": "Annuler"
+        },
+        "errors": {
+          "demo": "Les comptes de démonstration ne peuvent pas être supprimés.",
+          "failed": "Impossible de supprimer le compte. Réessayez.",
+          "notSignedIn": "Vous devez vous connecter."
+        }
+      }
+    }
+  },
+  "brand": {
+    "title": "Paramètres",
+    "description": "Les mêmes champs qu’à l’inscription. Chaque section s’enregistre séparément.",
+    "loading": "Chargement des paramètres",
+    "error": {
+      "title": "Impossible de charger vos paramètres",
+      "body": "Réessayez dans un instant."
+    },
+    "states": {
+      "save": "Enregistrer",
+      "saving": "Enregistrement…",
+      "saved": "Modifications enregistrées",
+      "error": "Impossible d’enregistrer vos modifications. Réessayez.",
+      "unsaved": "Certaines modifications ne sont pas enregistrées.",
+      "discard": "Annuler les modifications",
+      "sessionExpired": "Votre session a expiré. Reconnectez-vous.",
+      "notBrand": "Connectez-vous avec un compte marque pour modifier ces paramètres."
+    },
+    "company": {
+      "title": "Entreprise",
+      "description": "Les créateurs voient ces informations dans chaque brief.",
+      "website": {
+        "label": "Site web",
+        "placeholder": "https://votreentreprise.com",
+        "help": "Nous le lisons pour rédiger votre proposition de valeur et vos clients idéaux."
+      },
+      "reread": {
+        "button": "Relire mon site",
+        "stages": {
+          "reading": "Lecture de votre site…",
+          "customers": "Recherche de vos clients idéaux…",
+          "brief": "Rédaction de votre brief…"
+        },
+        "confirm": {
+          "title": "Relire votre site ?",
+          "body": "Votre proposition de valeur et vos clients idéaux seront remplacés par un nouveau brouillon. Rien n’est enregistré tant que vous n’enregistrez pas.",
+          "confirm": "Relire",
+          "cancel": "Annuler"
+        },
+        "done": "Nouveau brouillon prêt. Relisez-le, puis enregistrez.",
+        "fallback": "Impossible de lire votre site : le brouillon part du nom de votre entreprise. Modifiez-le avant d’enregistrer.",
+        "failed": "Une erreur est survenue de notre côté. Réessayez."
+      },
+      "companyName": {
+        "label": "Nom de l’entreprise"
+      },
+      "valueProp": {
+        "label": "Proposition de valeur",
+        "help": "Ce que vous faites, pour qui et comment, en quelques phrases.",
+        "counter": "{count} / {max}"
+      },
+      "errors": {
+        "companyRequired": "Le nom de l’entreprise est obligatoire.",
+        "companyTooLong": "Restez sous {max} caractères.",
+        "websiteRequired": "Saisissez l’adresse de votre site.",
+        "websiteFormat": "Saisissez une adresse complète, par exemple https://votreentreprise.com.",
+        "websiteScheme": "Seules les adresses http et https peuvent être lues.",
+        "websiteTooLong": "Cette adresse est trop longue.",
+        "valuePropRequired": "Rédigez la proposition de valeur.",
+        "valuePropTooLong": "Restez sous {max} caractères.",
+        "saveFailed": "Impossible d’enregistrer votre profil."
+      }
+    },
+    "idealCustomers": {
+      "title": "Clients idéaux",
+      "description": "{count, plural, one {Le client pour lequel vos créateurs écrivent.} other {Les # clients pour lesquels vos créateurs écrivent.}}",
+      "item": "Client {count}",
+      "name": {
+        "label": "Qui ils sont",
+        "placeholder": "Ex. : Directeur commercial d’un SaaS en série A"
+      },
+      "details": {
+        "label": "Ce qui compte pour eux",
+        "placeholder": "Leur rôle, leur problème, et en quoi votre produit les aide."
+      },
+      "errors": {
+        "nameRequired": "Nommez ce client idéal.",
+        "nameTooLong": "Restez sous {max} caractères.",
+        "detailsRequired": "Décrivez ce client idéal.",
+        "detailsTooLong": "Restez sous {max} caractères.",
+        "count": "Décrivez {count} clients idéaux.",
+        "saveFailed": "Impossible d’enregistrer vos clients idéaux."
+      }
+    },
+    "audience": {
+      "title": "Audience",
+      "description": "Où se trouvent vos clients. Les créateurs vous sont proposés en fonction de ces choix.",
+      "industries": {
+        "label": "Secteurs ciblés",
+        "help": "Choisissez tous les secteurs auxquels vous vendez."
+      },
+      "regions": {
+        "label": "Régions ciblées",
+        "help": "Choisissez les régions de vos clients."
+      },
+      "noneSelected": "Aucune sélection",
+      "errors": {
+        "saveFailed": "Impossible d’enregistrer votre audience."
+      }
+    },
+    "team": {
+      "title": "Équipe",
+      "description": "Les personnes qui ont accès à cet espace.",
+      "invite": {
+        "title": "Inviter un collègue",
+        "email": {
+          "label": "E-mail professionnel",
+          "placeholder": "collegue@entreprise.com"
+        },
+        "send": "Envoyer l’invitation",
+        "stub": "L’envoi d’e-mails n’est pas connecté dans cette version : les invitations ne partent pas.",
+        "notSent": "{email} n’a pas reçu d’invitation : l’envoi d’e-mails n’est pas connecté dans cette version.",
+        "errors": {
+          "emailInvalid": "Saisissez une adresse e-mail valide."
+        }
+      },
+      "members": {
+        "title": "{count, plural, one {# personne a accès} other {# personnes ont accès}}",
+        "owner": "Propriétaire",
+        "you": "Vous",
+        "ownerNote": "Seul le propriétaire peut inviter ou retirer des personnes."
+      }
+    },
+    "account": {
+      "title": "Compte",
+      "description": "Votre identifiant de connexion.",
+      "email": {
+        "label": "E-mail"
+      },
+      "readOnly": "Cette information n’est pas modifiable ici.",
+      "delete": {
+        "title": "Supprimer le compte",
+        "description": "Supprime le profil de votre entreprise, vos campagnes, vos sessions et vos collaborations. Action irréversible.",
+        "button": "Supprimer le compte",
+        "demoDisabled": "Ce compte de démonstration est partagé, il ne peut donc pas être supprimé.",
+        "confirm": {
+          "title": "Supprimer votre compte ?",
+          "body": "Votre utilisateur, le profil de l’entreprise, vos campagnes, vos sessions et vos collaborations seront supprimés. Cette action est irréversible.",
+          "confirm": "Supprimer le compte",
+          "pending": "Suppression…",
+          "cancel": "Annuler"
+        },
+        "errors": {
+          "demo": "Les comptes de démonstration ne peuvent pas être supprimés.",
+          "failed": "Impossible de supprimer le compte. Réessayez.",
+          "notSignedIn": "Vous devez vous connecter."
+        }
+      }
+    }
+  }
+}

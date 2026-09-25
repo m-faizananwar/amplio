@@ -1,0 +1,953 @@
+{
+  "overview": {
+    "title": "Vue d’ensemble",
+    "description": "Ce qui vous attend, puis vos trois chiffres.",
+    "loading": "Chargement de votre vue d’ensemble",
+    "error": {
+      "title": "Impossible de charger votre vue d’ensemble",
+      "body": "Vos données ne sont pas perdues. Réessayez dans un instant."
+    },
+    "needsYou": {
+      "title": "À faire",
+      "description": "Le plus urgent d’abord.",
+      "more": "{count, plural, one {# autre élément} other {# autres éléments}}",
+      "viewAll": "Tout voir dans Collaborations",
+      "invitation": {
+        "title": "{brand} vous invite sur {campaign}",
+        "detail": "Rémunération de {amount} provisionnée · réponse avant le {date}",
+        "detailNoDate": "Rémunération de {amount} provisionnée",
+        "action": "Répondre"
+      },
+      "changesRequested": {
+        "title": "{brand} demande des modifications",
+        "detail": "{campaign} · tour {round} sur {max}",
+        "action": "Modifier le brouillon"
+      },
+      "draft": {
+        "title": "Rédigez le brouillon pour {brand}",
+        "detail": "{campaign} · à rendre le {date}",
+        "detailNoDate": "{campaign}",
+        "action": "Rédiger"
+      },
+      "schedule": {
+        "title": "Programmez votre post pour {brand}",
+        "detail": "{campaign} · brouillon validé",
+        "action": "Programmer"
+      },
+      "publish": {
+        "title": "Publiez votre post pour {brand}",
+        "detail": "{campaign} · prévu le {date}",
+        "action": "Ajouter l’URL"
+      },
+      "withdraw": {
+        "title": "{amount} à retirer",
+        "detail": "Montant versé par les marques une fois vos posts en ligne.",
+        "action": "Retirer"
+      },
+      "setup": {
+        "title": "Complétez votre fiche",
+        "detailPrice": "Indiquez votre tarif par post pour que les marques puissent vous réserver.",
+        "detailIndustries": "Choisissez vos secteurs pour que les marques vous trouvent.",
+        "detailBoth": "Indiquez votre tarif et vos secteurs pour que les marques vous trouvent et vous réservent.",
+        "action": "Terminer"
+      }
+    },
+    "allClear": {
+      "title": "Rien ne vous attend pour l’instant",
+      "body": "Les invitations et les retours des marques s’affichent ici. En attendant, parcourez les campagnes ouvertes.",
+      "action": "Voir les opportunités"
+    },
+    "numbers": {
+      "title": "Vos chiffres",
+      "openTrail": "Voir le détail",
+      "earned": {
+        "label": "Gagné à ce jour",
+        "hint": "Collaborations payées"
+      },
+      "clicks": {
+        "label": "Clics sur vos liens",
+        "hint": "Tous les liens suivis"
+      },
+      "livePosts": {
+        "label": "Posts en ligne",
+        "hint": "Publiés pour des marques"
+      }
+    }
+  },
+  "card": {
+    "title": "Ma fiche",
+    "description": "Ce que voient les marques avant de vous réserver.",
+    "loading": "Chargement de votre fiche",
+    "error": {
+      "title": "Impossible de charger votre fiche",
+      "body": "Réessayez dans un instant."
+    },
+    "actions": {
+      "edit": "Modifier",
+      "openPublic": "Voir la fiche publique",
+      "flip": "Retourner la fiche"
+    },
+    "stubNote": "Les chiffres du profil sont importés depuis votre URL LinkedIn publique et simulés dans cette version.",
+    "fields": {
+      "headline": "Accroche",
+      "bio": "À propos",
+      "industries": "Secteurs",
+      "country": "Pays",
+      "followers": "Abonnés",
+      "medianViews": "Vues médianes",
+      "engagementRate": "Taux d’engagement",
+      "engagementRateValue": "{percent} %",
+      "reactionsPerPost": "Réactions par post",
+      "commentsPerPost": "Commentaires par post",
+      "postsAnalyzed": "{count, plural, one {Sur # post} other {Sur # posts}}",
+      "audienceJobTitles": "Audience par fonction",
+      "audienceSeniority": "Audience par séniorité",
+      "publishedCollaborations": "Collaborations publiées",
+      "pricePerPost": "Tarif par post",
+      "bundle": "{count, plural, one {# post pour {amount}} other {# posts pour {amount}}}",
+      "noPrice": "Pas encore de tarif"
+    },
+    "incomplete": {
+      "title": "Les marques ne peuvent pas encore vous réserver",
+      "missingPrice": "Indiquez votre tarif par post.",
+      "missingIndustries": "Choisissez au moins un secteur.",
+      "action": "Aller aux paramètres"
+    },
+    "links": {
+      "title": "Vos liens",
+      "description": "Deux liens, tous deux rattachés à vous.",
+      "deal": {
+        "title": "Lien de réservation",
+        "description": "Votre fiche publique. Les marques vous réservent depuis ce lien.",
+        "hint": "Ajoutez-le à votre profil LinkedIn ou à votre section Sélection.",
+        "referralNote": "Les marques qui s’inscrivent via ce lien comptent comme vos parrainages.",
+        "copy": "Copier le lien",
+        "copied": "Lien de réservation copié",
+        "open": "Ouvrir",
+        "shareLinkedin": "Partager sur LinkedIn",
+        "shareEmail": "Envoyer par e-mail",
+        "shareText": "Ma fiche créateur : audience, chiffres et tarif par post, en un seul lien.",
+        "emailSubject": "Ma fiche créateur"
+      },
+      "referral": {
+        "title": "Lien de parrainage",
+        "description": "Envoyez-le à une marque. Si elle s’inscrit et lance des campagnes, vous touchez une part.",
+        "copy": "Copier le lien",
+        "copied": "Lien de parrainage copié"
+      },
+      "numbers": {
+        "rewardsEarned": "Récompenses gagnées",
+        "brandsIntroduced": "Marques parrainées",
+        "brandsRewarding": "Marques qui rapportent",
+        "earningNow": "En cours",
+        "earningNowHint": "Dans la période de {months} mois"
+      },
+      "terms": "Vous touchez {percent} % de la commission de la plateforme sur chaque marque parrainée, pendant {months} mois à partir de sa première campagne payée. La commission de la plateforme est de {commission} %.",
+      "introduced": {
+        "title": "Marques parrainées",
+        "joined": "Inscrite le {date}",
+        "paid": "{count, plural, one {# collaboration payée} other {# collaborations payées}}",
+        "reward": "Gagné : {amount}",
+        "windowEnds": "Fin de la période le {date}",
+        "windowNotStarted": "La période démarre à sa première campagne payée"
+      },
+      "empty": {
+        "title": "Aucun parrainage pour l’instant",
+        "body": "Partagez votre lien de parrainage avec une marque. Dès qu’elle s’inscrit, elle apparaît ici.",
+        "action": "Copier le lien de parrainage"
+      }
+    }
+  },
+  "publicCard": {
+    "metaTitle": "{name} · Fiche créateur",
+    "metaDescription": "Audience LinkedIn, chiffres et tarif par post de {name}.",
+    "book": "Réserver {name}",
+    "bookHint": "La rémunération est provisionnée à l’envoi de l’invitation et versée à {name} une fois le post en ligne.",
+    "demoLabel": "Créateur de démonstration. Ces chiffres sont fictifs.",
+    "stubNote": "Les chiffres sont importés depuis le profil LinkedIn public et simulés dans cette version.",
+    "sections": {
+      "about": "À propos",
+      "audience": "Audience",
+      "performance": "Performances",
+      "pricing": "Tarifs"
+    },
+    "fields": {
+      "industries": "Secteurs",
+      "country": "Pays",
+      "followers": "Abonnés",
+      "medianViews": "Vues médianes",
+      "engagementRate": "Taux d’engagement",
+      "engagementRateValue": "{percent} %",
+      "reactionsPerPost": "Réactions par post",
+      "commentsPerPost": "Commentaires par post",
+      "postsAnalyzed": "{count, plural, one {Sur # post} other {Sur # posts}}",
+      "audienceJobTitles": "Audience par fonction",
+      "audienceSeniority": "Audience par séniorité",
+      "publishedCollaborations": "Collaborations publiées",
+      "pricePerPost": "Tarif par post",
+      "bundle": "{count, plural, one {# post pour {amount}} other {# posts pour {amount}}}",
+      "noPrice": "Tarif sur demande"
+    },
+    "notFound": {
+      "title": "Cette fiche n’existe pas",
+      "body": "Le lien est peut-être erroné, ou le créateur a supprimé sa fiche.",
+      "action": "Retour à l’accueil"
+    }
+  },
+  "opportunities": {
+    "title": "Opportunités",
+    "description": "Les campagnes ouvertes, classées selon leur adéquation avec votre audience.",
+    "loading": "Chargement des campagnes",
+    "error": {
+      "title": "Impossible de charger les campagnes",
+      "body": "Réessayez dans un instant."
+    },
+    "resultCount": "{count, plural, =0 {Aucune campagne} one {# campagne} other {# campagnes}}",
+    "filters": {
+      "search": "Rechercher",
+      "searchPlaceholder": "Une campagne ou une marque",
+      "industry": "Secteur",
+      "industryAll": "Tous les secteurs",
+      "region": "Région",
+      "regionAll": "Toutes les régions",
+      "deadline": "Échéance",
+      "deadlineAny": "Toutes les échéances",
+      "deadlineWithin": "{count, plural, one {Sous # jour} other {Sous # jours}}",
+      "fit": "Adéquation",
+      "fitAny": "Toutes",
+      "fitAtLeast": "{percent} % ou plus",
+      "sort": "Trier par",
+      "sortFit": "Meilleure adéquation",
+      "sortDeadline": "Échéance la plus proche",
+      "sortBrand": "Marque A–Z",
+      "reset": "Réinitialiser"
+    },
+    "item": {
+      "fitScore": "Adéquation {percent} %",
+      "whyFit": "Pourquoi ça correspond",
+      "postBy": "Publication avant le {date}",
+      "noDeadline": "Sans échéance",
+      "daysLeft": "{count, plural, =0 {Aujourd’hui} one {# jour restant} other {# jours restants}}",
+      "yourPrice": "Votre tarif : {amount}",
+      "channel": "LinkedIn · 1 post",
+      "industries": "Secteurs",
+      "regions": "Régions",
+      "readBrief": "Lire le brief",
+      "apply": "Postuler",
+      "applying": "Envoi…",
+      "existing": "{status} · voir la collaboration",
+      "openCollaboration": "Voir la collaboration"
+    },
+    "fit": {
+      "title": "Comment l’adéquation est calculée",
+      "description": "Quatre signaux pondérés. Ouvrez-en un pour le détail.",
+      "reason": "{first}, et {second}.",
+      "score": "{percent}/100",
+      "weight": "Poids {percent} %",
+      "signals": {
+        "audience": "Recoupement d’audience",
+        "category": "Correspondance de secteur",
+        "engagement": "Qualité d’engagement",
+        "consistency": "Régularité de publication"
+      },
+      "details": {
+        "audienceNoIcp": "La marque n’a pas encore décrit ses clients",
+        "audienceMatch": "{percent} % de votre audience sont des {segment}, les clients de la marque",
+        "audienceMiss": "Votre audience compte peu de {segments}",
+        "categoryMatch": "Vous écrivez déjà sur {industries}",
+        "categoryMiss": "Vous écrivez sur d’autres secteurs",
+        "engagement": "{rate} % d’engagement contre {benchmark} % pour les comptes de votre taille",
+        "consistency": "{count, plural, one {# post par mois} other {# posts par mois}}"
+      },
+      "segments": {
+        "founders": "fondateurs",
+        "marketing": "marketeurs",
+        "sales": "commerciaux",
+        "engineering": "ingénieurs",
+        "product": "profils produit",
+        "hr": "profils RH",
+        "finance": "profils finance",
+        "operations": "profils opérations"
+      }
+    },
+    "briefDrawer": {
+      "title": "Brief : {campaign}",
+      "byBrand": "Par {brand}",
+      "close": "Fermer",
+      "sections": {
+        "objectives": "Ce que le post doit accomplir",
+        "audience": "À qui vous écrivez",
+        "message": "Message clé",
+        "guidelines": "Consignes",
+        "angles": "{count, plural, =0 {Angles de contenu} one {# angle de contenu} other {# angles de contenu}}",
+        "links": "Liens et preuves",
+        "deadline": "Date limite de publication"
+      },
+      "fields": {
+        "brand": "Marque",
+        "valueProp": "Ce qu’elle fait",
+        "icp": "Ses clients",
+        "industries": "Secteurs",
+        "regions": "Régions",
+        "primaryCta": "Appel à l’action principal",
+        "secondaryWin": "Objectif secondaire",
+        "tone": "Ton",
+        "do": "À faire",
+        "avoid": "À éviter",
+        "trackedLink": "Votre lien suivi"
+      },
+      "empty": {
+        "icp": "La marque n’a pas encore décrit ses clients.",
+        "links": "Aucun lien pour l’instant. Tenez-vous aux faits du profil de la marque.",
+        "angles": "Aucun angle pour l’instant. Choisissez le vôtre.",
+        "trackedLink": "Votre lien suivi apparaît une fois la réservation acceptée.",
+        "deadline": "Sans échéance"
+      },
+      "copyMarkdown": "Copier en Markdown",
+      "copyForAi": "Copier pour l’IA",
+      "copiedMarkdown": "Brief copié en Markdown",
+      "copiedForAi": "Prompt copié. Collez-le dans votre outil d’IA.",
+      "copyFailed": "Impossible de copier le brief. Réessayez."
+    },
+    "applyDialog": {
+      "title": "Postuler à {campaign}",
+      "description": "{brand} reçoit votre candidature et votre fiche. Si elle accepte, la réservation est créée à votre tarif.",
+      "yourPrice": "Votre tarif net par post",
+      "deadline": "Date limite de publication",
+      "noDeadline": "Sans échéance",
+      "channel": "Canal",
+      "channelValue": "LinkedIn · 1 post",
+      "confirm": "Envoyer",
+      "pending": "Envoi…",
+      "cancel": "Annuler",
+      "success": "Candidature envoyée. C’est à {brand} de répondre.",
+      "errors": {
+        "profileIncomplete": "Complétez votre profil créateur avant de postuler.",
+        "closed": "Cette campagne n’accepte plus de candidatures.",
+        "duplicate": "Vous avez déjà une collaboration sur cette campagne.",
+        "unknownCampaign": "Campagne introuvable. Rechargez la page."
+      }
+    },
+    "empty": {
+      "none": {
+        "title": "Aucune campagne ouverte pour l’instant",
+        "body": "Les campagnes s’affichent ici dès que les marques les ouvrent. Une fiche complète est mieux classée.",
+        "action": "Revoir ma fiche"
+      },
+      "filtered": {
+        "title": "Aucune campagne ne correspond à ces filtres",
+        "body": "Retirez un ou deux filtres pour en voir davantage.",
+        "action": "Réinitialiser"
+      }
+    }
+  },
+  "collaborations": {
+    "title": "Collaborations",
+    "description": "Chaque ligne indique la prochaine étape et qui doit agir.",
+    "loading": "Chargement des collaborations",
+    "error": {
+      "title": "Impossible de charger vos collaborations",
+      "body": "Réessayez dans un instant."
+    },
+    "filters": {
+      "label": "Afficher",
+      "needsYou": "À faire",
+      "waitingOnBrand": "Chez la marque",
+      "live": "En ligne",
+      "done": "Terminées",
+      "all": "Toutes",
+      "count": "{count}"
+    },
+    "table": {
+      "brand": "Marque",
+      "campaign": "Campagne",
+      "nextAction": "Prochaine étape",
+      "owner": "Qui agit",
+      "status": "Statut",
+      "clicks": "Clics",
+      "clicksNone": "—",
+      "due": "Échéance",
+      "noDue": "Sans échéance",
+      "fee": "Rémunération",
+      "open": "Ouvrir",
+      "sortBy": "Trier par {column}"
+    },
+    "owner": {
+      "you": "Vous",
+      "brand": "{brand}",
+      "done": "Terminé"
+    },
+    "nextAction": {
+      "invited": {
+        "action": "Accepter ou refuser l’invitation",
+        "owner": "Vous"
+      },
+      "applied": {
+        "action": "En attente de la réponse de {brand}",
+        "owner": "{brand}"
+      },
+      "accepted": {
+        "action": "Rédiger le brouillon",
+        "owner": "Vous"
+      },
+      "draft_submitted": {
+        "action": "{brand} relit votre brouillon",
+        "owner": "{brand}"
+      },
+      "changes_requested": {
+        "action": "Modifier votre brouillon (tour {round} sur {max})",
+        "owner": "Vous"
+      },
+      "approved": {
+        "action": "Programmer le post",
+        "owner": "Vous"
+      },
+      "scheduled": {
+        "action": "Publier et ajouter l’URL du post",
+        "owner": "Vous"
+      },
+      "live": {
+        "action": "En attente du versement par {brand}",
+        "owner": "{brand}"
+      },
+      "paid": {
+        "action": "Payé : {amount}",
+        "owner": "Terminé"
+      },
+      "declined": {
+        "action": "Clôturée",
+        "owner": "Terminé"
+      }
+    },
+    "timeLeft": {
+      "minutes": "{count, plural, one {# minute restante} other {# minutes restantes}}",
+      "hours": "{count, plural, one {# heure restante} other {# heures restantes}}",
+      "days": "{count, plural, one {# jour restant} other {# jours restants}}",
+      "expired": "Expiré",
+      "withAction": "{action} · {timeLeft}"
+    },
+    "empty": {
+      "none": {
+        "title": "Aucune collaboration pour l’instant",
+        "body": "Les invitations des marques et vos candidatures acceptées arrivent ici. Commencez par une campagne ouverte.",
+        "action": "Voir les opportunités"
+      },
+      "needsYou": {
+        "title": "Rien ne vous attend pour l’instant",
+        "body": "Le reste est entre les mains des marques ou terminé.",
+        "action": "Tout afficher"
+      },
+      "waitingOnBrand": {
+        "title": "Rien en attente chez une marque",
+        "body": "Quand vous envoyez un brouillon ou une candidature, il attend ici la réponse de la marque.",
+        "action": "Tout afficher"
+      },
+      "live": {
+        "title": "Aucun post en ligne pour l’instant",
+        "body": "Un post passe en ligne quand vous le publiez et ajoutez son URL.",
+        "action": "Tout afficher"
+      },
+      "done": {
+        "title": "Rien de terminé pour l’instant",
+        "body": "Les collaborations payées et clôturées s’affichent ici.",
+        "action": "Tout afficher"
+      }
+    },
+    "detail": {
+      "back": "Toutes les collaborations",
+      "loading": "Chargement de la collaboration",
+      "error": {
+        "title": "Impossible de charger cette collaboration",
+        "body": "Réessayez dans un instant."
+      },
+      "notFound": {
+        "title": "Collaboration introuvable",
+        "body": "Elle a peut-être été supprimée, ou elle appartient à un autre espace.",
+        "action": "Toutes les collaborations"
+      },
+      "header": {
+        "title": "{campaign} · {brand}",
+        "fee": "Votre rémunération",
+        "due": "À rendre le {date}",
+        "message": "Écrire à {brand}",
+        "readBrief": "Lire le brief"
+      },
+      "money": {
+        "title": "Votre rémunération",
+        "held": "Provisionnée",
+        "heldNote": "{brand} a provisionné votre rémunération de {amount}. Le paiement intervient une fois le post en ligne.",
+        "awaitingRelease": "En attente de versement",
+        "awaitingReleaseNote": "Votre post est en ligne. Le montant de {amount} vous est versé quand {brand} paie.",
+        "paid": "Payée",
+        "paidNote": "Montant de {amount} ajouté à votre solde disponible le {date}.",
+        "returned": "Restituée",
+        "returnedNote": "La rémunération a été rendue à {brand}."
+      },
+      "terms": {
+        "title": "Conditions de l’offre",
+        "fee": "Rémunération par post",
+        "listPrice": "Tarif affiché",
+        "discount": "{amount} · remise de {percent} %",
+        "origin": "Origine",
+        "originInvitation": "Invitation de la marque",
+        "originApplication": "Votre candidature",
+        "review": "Relecture",
+        "reviewRequired": "La marque valide avant publication",
+        "reviewNotRequired": "Publication sans relecture",
+        "dueDate": "Échéance",
+        "noDeadline": "Sans échéance",
+        "answerBy": "Réponse avant le",
+        "scheduledFor": "Programmé le",
+        "published": "Publié le",
+        "paid": "Payé le",
+        "offerNote": "Message de {brand}"
+      },
+      "trackedLink": {
+        "title": "Lien suivi",
+        "body": "Utilisez ce lien dans votre post. Chaque clic est enregistré.",
+        "copy": "Copier le lien",
+        "copied": "Lien suivi copié",
+        "clicks": "{count, plural, =0 {Aucun clic pour l’instant} one {# clic} other {# clics}}",
+        "pending": "Les clics s’affichent une fois le post en ligne."
+      },
+      "draftPreview": {
+        "pending": "Brouillon en relecture",
+        "approved": "Brouillon validé",
+        "yours": "Votre brouillon",
+        "viewPost": "Voir le post sur LinkedIn"
+      },
+      "decide": {
+        "title": "Accepter ou refuser cette invitation",
+        "description": "Accepter confirme la réservation à ces conditions. La rémunération de {brand} est déjà provisionnée pour vous.",
+        "accept": "Accepter",
+        "decline": "Refuser",
+        "pending": "Enregistrement…",
+        "declineConfirm": {
+          "title": "Refuser cette invitation ?",
+          "body": "{brand} récupère sa rémunération et cette collaboration est définitivement clôturée.",
+          "confirm": "Refuser",
+          "cancel": "La garder ouverte"
+        }
+      },
+      "draft": {
+        "title": "Rédiger le brouillon",
+        "description": "Rédigez le post tel qu’il sera publié. {brand} le relit avant publication.",
+        "label": "Votre post LinkedIn",
+        "placeholder": "Une accroche d’abord, un seul appel à l’action, mention du partenariat incluse.",
+        "help": "Au moins {min} caractères.",
+        "counter": "{count} / {max}",
+        "submit": "Envoyer en relecture",
+        "pending": "Envoi…"
+      },
+      "resubmit": {
+        "title": "Modifier votre brouillon (tour {round} sur {max})",
+        "description": "{brand} demande des modifications. Retouchez le post et renvoyez-le.",
+        "noteLabel": "Le retour de {brand}",
+        "lastRound": "C’est le dernier tour de modifications.",
+        "submit": "Renvoyer",
+        "pending": "Envoi…"
+      },
+      "schedule": {
+        "title": "Programmer le post",
+        "description": "Brouillon validé. Choisissez le jour de publication, puis revenez ajouter l’URL du post.",
+        "label": "Date de publication",
+        "submit": "Programmer",
+        "pending": "Enregistrement…"
+      },
+      "publish": {
+        "title": "Publier et ajouter l’URL du post",
+        "description": "Une fois le post en ligne sur LinkedIn, collez son URL ici. Les clics sur votre lien suivi commencent à compter.",
+        "label": "URL du post LinkedIn",
+        "placeholder": "https://www.linkedin.com/posts/…",
+        "submit": "Marquer comme publié",
+        "pending": "Enregistrement…"
+      },
+      "waiting": {
+        "applied": "{brand} n’a pas encore répondu à votre candidature.",
+        "draft_submitted": "{brand} relit votre brouillon. Sa décision s’affichera ici.",
+        "live": "Votre post est en ligne. {brand} doit maintenant verser votre rémunération.",
+        "paid": "{brand} a versé {amount}. Le montant figure dans vos revenus.",
+        "declined": "Cette collaboration est clôturée."
+      },
+      "validation": {
+        "draftMin": "Écrivez au moins {min} caractères. La marque relit le post en entier.",
+        "draftMax": "Restez sous {max} caractères (la limite de LinkedIn).",
+        "dateRequired": "Choisissez une date.",
+        "dateInvalid": "Saisissez une date valide.",
+        "dateFuture": "La date de publication doit être dans le futur.",
+        "postUrlInvalid": "Collez l’URL complète du post.",
+        "postUrlLinkedin": "L’URL du post doit être sur linkedin.com."
+      },
+      "timeline": {
+        "title": "Historique",
+        "empty": "Rien ne s’est encore passé.",
+        "events": {
+          "invite": "{brand} a envoyé l’invitation",
+          "apply": "Vous avez postulé à la campagne",
+          "acceptInvitation": "Vous avez accepté l’invitation",
+          "acceptApplication": "{brand} a accepté votre candidature",
+          "declineInvitation": "Vous avez refusé l’invitation",
+          "declineApplication": "{brand} a refusé votre candidature",
+          "submitDraft": "Vous avez envoyé un brouillon",
+          "resubmitDraft": "Vous avez envoyé un brouillon modifié (tour {round})",
+          "approve": "{brand} a validé le brouillon",
+          "requestChanges": "{brand} a demandé des modifications",
+          "schedule": "Vous avez programmé le post pour le {date}",
+          "publish": "Vous avez publié le post",
+          "payBrand": "{brand} a versé le paiement",
+          "paySystem": "Paiement versé",
+          "unknown": "Statut modifié"
+        }
+      }
+    },
+    "toasts": {
+      "accepted": "Réservation confirmée. Votre conversation avec {brand} est ouverte.",
+      "declined": "Invitation refusée. {brand} récupère sa rémunération.",
+      "draftSent": "Brouillon envoyé. {brand} le relit maintenant.",
+      "scheduled": "Post programmé pour le {date}.",
+      "published": "Vous êtes en ligne. {brand} doit maintenant verser votre rémunération.",
+      "rolledBack": "L’opération n’a pas abouti, rien n’a changé.",
+      "errors": {
+        "generic": "Une erreur est survenue de notre côté. Rien n’a été modifié. Réessayez.",
+        "stale": "Cette étape n’est plus disponible. Rechargez pour voir où en est la collaboration.",
+        "staleForm": "Cette page n’est plus à jour. Rechargez-la et réessayez.",
+        "sessionExpired": "Votre session a expiré. Reconnectez-vous.",
+        "notYours": "Cette collaboration ne fait pas partie de votre espace."
+      }
+    }
+  },
+  "analytics": {
+    "title": "Statistiques",
+    "description": "Vos chiffres LinkedIn publics et les clics sur vos liens suivis.",
+    "stubLabel": "Importé depuis votre profil LinkedIn public. Simulé dans cette version.",
+    "loading": "Chargement des statistiques",
+    "error": {
+      "title": "Impossible de charger vos statistiques",
+      "body": "Réessayez dans un instant."
+    },
+    "range": {
+      "label": "Période",
+      "all": "Depuis le début",
+      "last30": "30 derniers jours",
+      "last90": "90 derniers jours"
+    },
+    "metrics": {
+      "followers": "Abonnés",
+      "posts": "Posts",
+      "reach": "Portée",
+      "engagements": "Interactions",
+      "clicks": "Clics",
+      "postsWithReach": "{count, plural, one {Portée sur # post} other {Portée sur # posts}}",
+      "openTrail": "Voir le détail"
+    },
+    "trackedLinks": {
+      "title": "Liens suivis",
+      "description": "Un lien par collaboration. Chaque clic est une ligne.",
+      "headers": {
+        "brand": "Marque",
+        "campaign": "Campagne",
+        "status": "Statut",
+        "link": "Lien",
+        "clicks": "Clics",
+        "published": "Publié le"
+      },
+      "notPublished": "Pas encore publié"
+    },
+    "posts": {
+      "title": "Posts récents",
+      "description": "Vos posts publics sur cette période.",
+      "headers": {
+        "post": "Post",
+        "date": "Date",
+        "impressions": "Impressions",
+        "reactions": "Réactions",
+        "comments": "Commentaires",
+        "reposts": "Republications"
+      },
+      "open": "Voir sur LinkedIn"
+    },
+    "trail": {
+      "followers": "Abonnés",
+      "followersSource": "Importé depuis {url} le {date}",
+      "posts": "Posts de la période",
+      "reach": "Portée, post par post",
+      "engagements": "Interactions, post par post",
+      "clicksAll": "Clics sur tous vos liens",
+      "clicksCampaign": "Clics sur votre lien {campaign}"
+    },
+    "empty": {
+      "noPosts": {
+        "title": "Aucun post public importé pour l’instant",
+        "body": "Les posts s’affichent une fois votre profil LinkedIn lu. Vérifiez l’URL de votre profil dans les paramètres.",
+        "action": "Ouvrir les paramètres"
+      },
+      "noLinks": {
+        "title": "Aucun lien suivi pour l’instant",
+        "body": "Votre lien s’active quand vous publiez une collaboration. Commencez par une campagne ouverte.",
+        "action": "Voir les opportunités"
+      }
+    }
+  },
+  "earnings": {
+    "title": "Revenus",
+    "description": "Ce que vous avez gagné, ce qui est en attente et ce que vous avez retiré.",
+    "loading": "Chargement des revenus",
+    "error": {
+      "title": "Impossible de charger vos revenus",
+      "body": "Réessayez dans un instant."
+    },
+    "stats": {
+      "available": {
+        "label": "Disponible",
+        "hint": "Prêt à être retiré"
+      },
+      "awaitingRelease": {
+        "label": "En attente de versement",
+        "hint": "{count, plural, =0 {Rien en ligne pour l’instant} one {# post en ligne, paiement attendu} other {# posts en ligne, paiements attendus}}"
+      },
+      "withdrawn": {
+        "label": "Retiré",
+        "hint": "Total retiré à ce jour"
+      },
+      "inTransit": {
+        "label": "En cours de virement",
+        "hint": "Retraits bancaires en route"
+      },
+      "earned": {
+        "label": "Gagné à ce jour",
+        "hint": "Collaborations payées"
+      },
+      "openTrail": "Voir le détail"
+    },
+    "chart": {
+      "title": "Revenus par mois",
+      "description": "{count, plural, one {Revenus nets des collaborations, dernier mois} other {Revenus nets des collaborations, # derniers mois}}",
+      "empty": "Aucun revenu sur cette période."
+    },
+    "ledger": {
+      "title": "Registre",
+      "description": "Chaque mouvement, une ligne.",
+      "tabs": {
+        "all": "Tous les mouvements",
+        "awaiting": "En attente de versement",
+        "payments": "Paiements"
+      },
+      "headers": {
+        "date": "Date",
+        "type": "Type",
+        "reference": "Référence",
+        "detail": "Détail",
+        "amount": "Montant",
+        "status": "Statut"
+      },
+      "types": {
+        "booking": "Réservation",
+        "payout": "Paiement de collaboration",
+        "withdrawal": "Retrait",
+        "topup": "Rechargement"
+      },
+      "statuses": {
+        "pending": "En attente",
+        "inTransit": "En cours de virement",
+        "completed": "Effectué"
+      },
+      "descriptions": {
+        "payout": "{brand} · {campaign}",
+        "withdrawalStripe": "Retrait · Stripe (immédiat)",
+        "withdrawalBank": "Retrait · virement bancaire"
+      },
+      "empty": {
+        "all": "Aucun mouvement pour l’instant. Votre premier paiement apparaîtra ici.",
+        "awaiting": "Rien en attente de versement.",
+        "payments": "Aucun paiement pour l’instant. Chaque collaboration payée ajoute une ligne."
+      }
+    },
+    "withdraw": {
+      "button": "Retirer",
+      "disabledReason": "Rien à retirer pour l’instant. L’argent devient disponible quand une marque verse votre rémunération.",
+      "title": "Retirer vos revenus",
+      "description": "Choisissez comment recevoir votre solde disponible.",
+      "stubNote": "Les versements Stripe ne sont pas connectés dans cette version. Le registre enregistre votre retrait ; aucun argent n’est envoyé.",
+      "method": {
+        "label": "Mode de versement",
+        "stripe": "Stripe",
+        "stripeBody": "Virement immédiat vers un compte Stripe connecté.",
+        "stripeStatus": "Non connecté",
+        "bank": "Virement bancaire",
+        "bankBody": "Virement SEPA. Affiché « en cours de virement » jusqu’à réception.",
+        "bankOnFile": "{name} · IBAN se terminant par {last4}",
+        "bankMissing": "Aucune coordonnée bancaire enregistrée",
+        "editDetails": "Modifier dans les paramètres"
+      },
+      "amount": {
+        "label": "Montant",
+        "help": "Disponible : {amount}",
+        "placeholder": "0,00",
+        "withdrawAll": "Tout retirer"
+      },
+      "awaitingNote": "{amount} en attente de versement. Ce montant devient disponible quand la marque paie.",
+      "awaitingNone": "Rien en attente de versement.",
+      "confirm": "Confirmer le retrait",
+      "pending": "Confirmation…",
+      "cancel": "Annuler",
+      "success": "Retrait de {amount} enregistré. Solde disponible : {remaining}.",
+      "validation": {
+        "required": "Saisissez un montant.",
+        "min": "Le retrait minimum est de {amount}.",
+        "overBalance": "Ce montant dépasse votre solde disponible."
+      },
+      "errors": {
+        "failed": "Impossible d’enregistrer le retrait. Aucun montant n’a été déplacé.",
+        "notCreator": "Connectez-vous avec un compte créateur pour retirer vos revenus."
+      }
+    },
+    "empty": {
+      "title": "Aucun revenu pour l’instant",
+      "body": "Le paiement intervient une fois le post en ligne et la rémunération versée par la marque. Commencez par une campagne ouverte.",
+      "action": "Voir les opportunités"
+    }
+  },
+  "messages": {
+    "title": "Messages",
+    "description": "Une conversation par collaboration, ouverte dès que la réservation est acceptée.",
+    "loading": "Chargement des messages",
+    "error": {
+      "title": "Impossible de charger vos messages",
+      "body": "Réessayez dans un instant."
+    },
+    "list": {
+      "title": "Conversations",
+      "search": "Rechercher une conversation",
+      "searchPlaceholder": "Une marque ou une campagne",
+      "campaign": "Campagne",
+      "campaignAll": "Toutes les campagnes",
+      "unread": "{count, plural, one {# non lu} other {# non lus}}",
+      "youPrefix": "Vous : {message}",
+      "noPreview": "Aucun message pour l’instant",
+      "noMatch": "Aucune conversation ne correspond."
+    },
+    "empty": {
+      "noThreads": {
+        "title": "Aucune conversation pour l’instant",
+        "body": "Une conversation s’ouvre quand une réservation est acceptée. Répondez à une invitation ou postulez à une campagne.",
+        "action": "Voir les opportunités"
+      },
+      "noSelection": {
+        "title": "Choisissez une conversation",
+        "body": "Sélectionnez-en une dans la liste."
+      },
+      "noMessages": "Aucun message pour l’instant. Dites bonjour."
+    },
+    "thread": {
+      "back": "Tous les messages",
+      "title": "{brand} · {campaign}",
+      "openCollaboration": "Voir la collaboration",
+      "you": "Vous"
+    },
+    "composer": {
+      "label": "Message",
+      "placeholder": "Écrivez un message…",
+      "hint": "Entrée pour envoyer, Maj + Entrée pour aller à la ligne.",
+      "send": "Envoyer",
+      "sending": "Envoi…",
+      "reactions": "Réactions rapides",
+      "validation": {
+        "empty": "Écrivez d’abord quelque chose.",
+        "max": "Restez sous {max} caractères."
+      }
+    },
+    "errors": {
+      "sendFailed": "Votre message n’a pas été envoyé.",
+      "retry": "Réessayer",
+      "notSent": "Non envoyé",
+      "notFound": {
+        "title": "Conversation introuvable",
+        "body": "Elle appartient peut-être à un autre espace, ou elle n’est pas encore ouverte.",
+        "action": "Tous les messages"
+      }
+    },
+    "bot": {
+      "preview": "Une question sur l’application ? Commencez ici.",
+      "reply": "Bonjour, je suis {name}. Je ne peux pas encore répondre aux questions dans cette version. Vos réservations, briefs et versements sont dans le menu à gauche."
+    }
+  },
+  "trail": {
+    "title": "{metric} · {count, plural, one {# ligne} other {# lignes}}",
+    "description": "Les lignes qui composent ce chiffre.",
+    "close": "Fermer",
+    "loading": "Chargement des lignes",
+    "error": {
+      "title": "Impossible de charger ces lignes",
+      "body": "Réessayez dans un instant."
+    },
+    "demoLabel": "Données de l’espace de démonstration",
+    "total": "Total",
+    "showingLatest": "Les {count} plus récentes",
+    "columns": {
+      "time": "Heure",
+      "date": "Date",
+      "source": "Source",
+      "brand": "Marque",
+      "campaign": "Campagne",
+      "post": "Post",
+      "referrer": "Provenance",
+      "device": "Appareil",
+      "type": "Type",
+      "reference": "Référence",
+      "status": "Statut",
+      "amount": "Montant"
+    },
+    "values": {
+      "referrerDirect": "Accès direct",
+      "deviceDesktop": "Ordinateur",
+      "deviceMobile": "Mobile",
+      "deviceTablet": "Tablette",
+      "deviceUnknown": "Inconnu"
+    },
+    "empty": {
+      "title": "Aucune ligne pour l’instant",
+      "body": "Ce chiffre est à zéro, il n’y a donc rien à afficher."
+    }
+  },
+  "common": {
+    "loading": "Chargement…",
+    "retry": "Réessayer",
+    "error": {
+      "title": "Une erreur est survenue",
+      "body": "Impossible de charger ce contenu. Réessayez dans un instant."
+    },
+    "copyLink": "Copier le lien",
+    "copied": "Copié",
+    "copyFailed": "Copie impossible. Sélectionnez le lien et copiez-le manuellement.",
+    "save": "Enregistrer",
+    "saving": "Enregistrement…",
+    "saved": "Enregistré",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "close": "Fermer",
+    "back": "Retour",
+    "edit": "Modifier",
+    "open": "Ouvrir",
+    "you": "Vous",
+    "demoData": "Données de démonstration",
+    "money": {
+      "fee": "Rémunération",
+      "held": "Provisionnée",
+      "available": "Disponible",
+      "awaitingRelease": "En attente de versement",
+      "withdrawn": "Retiré"
+    },
+    "status": {
+      "invited": "Invitation reçue",
+      "applied": "Candidature envoyée",
+      "accepted": "Acceptée",
+      "declined": "Refusée",
+      "draft_submitted": "Brouillon envoyé",
+      "changes_requested": "Modifications demandées",
+      "approved": "Validée",
+      "scheduled": "Programmée",
+      "live": "En ligne",
+      "paid": "Payée"
+    }
+  }
+}
