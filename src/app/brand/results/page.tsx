@@ -1,58 +1,62 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
+import { getTranslations } from "next-intl/server";
 import { redirect } from "next/navigation";
-import { EmptyState } from "@/components/page/EmptyState";
+import { ErrorState } from "@/components/page/ErrorState";
 import { PageHeader } from "@/components/page/PageHeader";
-import { getViewer } from "@/features/auth/server/session";
-import { AttributionDetails } from "@/features/tracking/components/results/AttributionDetails";
-import { AttributionTable } from "@/features/tracking/components/results/AttributionTable";
-import { ClicksChart } from "@/features/tracking/components/results/ClicksChart";
-import { PixelCard } from "@/features/tracking/components/results/PixelCard";
-import { PublishedPostsTable } from "@/features/tracking/components/results/PublishedPostsTable";
-import { ResultsTiles } from "@/features/tracking/components/results/ResultsTiles";
-import { SERIES_DAYS, type SeriesRange } from "@/features/tracking/constants";
 import { BRAND } from "@/config/brand";
-import {
-  getAttributionByCreator, getAttributionDetails, getClicksSeries, getPixelStatus, getPublishedPosts, getResultsSummary,
-} from "@/features/tracking/server/queries";
+import { getViewer } from "@/features/auth/server/session";
+import { AttributionByCreator } from "@/features/tracking/components/brand-results/AttributionByCreator";
+import { ClickLog } from "@/features/tracking/components/brand-results/ClickLog";
+import { ClicksOverTime } from "@/features/tracking/components/brand-results/ClicksOverTime";
+import { PixelStatusCard } from "@/features/tracking/components/brand-results/PixelStatusCard";
+import { PublishedPosts } from "@/features/tracking/components/brand-results/PublishedPosts";
+import { BrandTrailCard } from "@/features/tracking/components/trail/BrandTrailCard";
+import { SERIES_DAYS, type SeriesRange } from "@/features/tracking/constants";
+import { getAttributionByCreator, getClicksSeries, getPixelStatus, getPublishedPosts, getResultsSummary } from "@/features/tracking/server/queries";
+import { getBrandTrail } from "@/features/tracking/server/trail-queries";
 
 export const metadata: Metadata = { title: `Results · ${BRAND.wordmark}` };
+const EXPORT = "/brand/results/export";
 
 async function currentOrigin() {
   const h = await headers();
-  const proto = h.get("x-forwarded-proto") ?? "http";
-  return `${proto}://${h.get("host") ?? "localhost:3000"}`;
+  return `${h.get("x-forwarded-proto") ?? "http"}://${h.get("host") ?? "localhost:3000"}`;
 }
 
+// The proof page: four numbers that open their rows, then how they build up —
+// over time, per creator, per post — and the raw click log underneath.
 export default async function BrandResultsPage({ searchParams }: { searchParams: Promise<{ range?: string }> }) {
   const viewer = await getViewer();
   if (!viewer?.brand) redirect("/login");
-  const { range: rawRange } = await searchParams;
-  const range: SeriesRange = rawRange && rawRange in SERIES_DAYS ? (rawRange as SeriesRange) : "month";
-  const origin = await currentOrigin();
   const brandId = viewer.brand.id;
-  const [summary, series, attribution, pixel, posts, details] = await Promise.all([
-    getResultsSummary(brandId),
-    getClicksSeries(brandId, range),
-    getAttributionByCreator(brandId),
-    getPixelStatus(brandId),
-    getPublishedPosts(brandId, origin),
-    getAttributionDetails(brandId),
-  ]);
-
+  const [{ range: raw }, t, origin] = await Promise.all([searchParams, getTranslations("brand.results"), currentOrigin()]);
+  const range: SeriesRange = raw && raw in SERIES_DAYS ? (raw as SeriesRange) : "month";
+  const header = <PageHeader title={t("title")} description={t("description")} />;
+  const data = await Promise.all([
+    getResultsSummary(brandId), getClicksSeries(brandId, range), getAttributionByCreator(brandId), getPixelStatus(brandId),
+    getPublishedPosts(brandId, origin), getBrandTrail(brandId, "clicks"),
+  ]).catch((error) => {
+    console.error("[results] failed", { brandId, error });
+    return null;
+  });
+  if (!data) return <>{header}<ErrorState body={t("error")} retryHref="/brand/results" /></>;
+  const [summary, series, attribution, pixel, posts, clickTrail] = data;
   return (
     <>
-      <PageHeader title="Results" description="Est. reach, qualified clicks and committed budget across your campaigns. Every number here is a row you can export." />
-      <div className="grid gap-4">
-        <ResultsTiles summary={summary} />
-        {summary.bookings === 0 ? (
-          <EmptyState title="No published posts yet" body="Results appear as soon as a creator's post goes live and the tracked link gets its first click." cta={{ href: "/brand/creators", label: "Find creators" }} />
-        ) : null}
-        <ClicksChart series={series} range={range} basePath="/brand/results" />
-        <PublishedPostsTable posts={posts} />
-        {pixel ? <PixelCard pixel={pixel} origin={origin} /> : null}
-        <AttributionTable rows={attribution} exportPath="/brand/results/export" />
-        <AttributionDetails details={details} />
+      {header}
+      <div className="grid gap-12">
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <BrandTrailCard kind="reach" label={t("numbers.reach.label")} value={summary.estReach} hint={t("numbers.reach.hint", { count: summary.publishedPosts })} />
+          <BrandTrailCard kind="clicks" label={t("numbers.clicks.label")} value={summary.clicksInWindow} hint={t("numbers.clicks.hint", { days: summary.windowDays })} exportHref={EXPORT} />
+          <BrandTrailCard kind="signups" label={t("numbers.signups.label")} value={summary.signups} hint={t("numbers.signups.hint")} />
+          <BrandTrailCard kind="spend" label={t("numbers.spend.label")} value={summary.committedCents} money hint={t("numbers.spend.hint", { count: summary.bookings })} />
+        </div>
+        {pixel ? <PixelStatusCard pixel={pixel} origin={origin} /> : null}
+        <ClicksOverTime series={series} range={range} />
+        <AttributionByCreator rows={attribution} exportPath={EXPORT} />
+        <PublishedPosts posts={posts} />
+        <ClickLog trail={clickTrail} exportPath={EXPORT} />
       </div>
     </>
   );

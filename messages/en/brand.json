@@ -1,0 +1,290 @@
+{
+  "overview": {
+    "title": "Overview",
+    "description": "What's waiting on you at {company}, then your numbers.",
+    "newCampaign": "New campaign",
+    "error": "We couldn't load your overview. Your data is safe. Try again in a moment.",
+    "needsYou": {
+      "title": "Needs you",
+      "empty": {
+        "title": "Nothing needs you right now",
+        "body": "Applications to answer, drafts to review and live posts to pay appear here. Meanwhile, find a creator for your next campaign.",
+        "action": "Browse creators"
+      },
+      "lowWallet": {
+        "title": "Wallet is at {amount}",
+        "body": "Each invitation holds the creator's fee from your wallet, so a low balance blocks new ones.",
+        "action": "Top up"
+      },
+      "cta": {
+        "invited": "Open",
+        "applied": "Decide",
+        "accepted": "Open",
+        "draft_submitted": "Review",
+        "changes_requested": "Open",
+        "approved": "Open",
+        "scheduled": "Open",
+        "live": "Release payment",
+        "paid": "Open",
+        "declined": "Open"
+      },
+      "more": "{count, plural, one {# more in Collaborations} other {# more in Collaborations}}"
+    },
+    "numbers": {
+      "title": "Your numbers",
+      "clicks": {
+        "label": "Clicks on tracked links",
+        "hint": "{days, plural, one {Last day} other {Last # days}}"
+      },
+      "signups": {
+        "label": "Attributed sign-ups",
+        "hint": "Tied to a creator's click by your pixel"
+      },
+      "spend": {
+        "label": "Committed to creators",
+        "hint": "{count, plural, one {# booking} other {# bookings}}"
+      }
+    },
+    "setup": {
+      "title": "Finish setting up",
+      "progress": "{done} of {total} done",
+      "steps": {
+        "explore": {
+          "title": "Browse creators",
+          "body": "Creators are ranked by fit with your brand. Each score shows the reasons behind it."
+        },
+        "brief": {
+          "title": "Write your first brief",
+          "body": "Say what the post should do, who it's for and what to avoid. Creators write from it."
+        },
+        "invite": {
+          "title": "Invite a creator",
+          "body": "The fee is held from your wallet until they accept. If they decline, it comes back to you."
+        }
+      }
+    }
+  },
+  "collaborations": {
+    "title": "Collaborations",
+    "description": "Each row shows the next step and whose move it is.",
+    "error": "We couldn't load your collaborations. Your data is safe. Try again in a moment.",
+    "filters": {
+      "label": "Show",
+      "needsYou": "Needs you",
+      "waiting": "Waiting on creators",
+      "done": "Done",
+      "all": "All",
+      "campaign": "Campaign",
+      "allCampaigns": "All campaigns"
+    },
+    "empty": {
+      "none": {
+        "title": "No collaborations yet",
+        "body": "A collaboration starts when you invite a creator or accept an application. Start by finding a creator.",
+        "action": "Find creators"
+      },
+      "needsYou": {
+        "title": "Nothing needs you right now",
+        "body": "Everything open is with creators or finished.",
+        "action": "Show all"
+      },
+      "waiting": {
+        "title": "Nothing is waiting on a creator",
+        "body": "Invitations, drafts in progress and scheduled posts wait here while creators work on them.",
+        "action": "Show all"
+      },
+      "done": {
+        "title": "Nothing finished yet",
+        "body": "Paid and closed collaborations appear here.",
+        "action": "Show all"
+      },
+      "all": {
+        "title": "No collaborations for this campaign",
+        "body": "Invite a creator to this campaign, or look across all campaigns.",
+        "action": "All campaigns"
+      }
+    },
+    "table": {
+      "noDue": "No due date"
+    }
+  },
+  "trail": {
+    "direct": "Direct",
+    "device": {
+      "mobile": "Mobile",
+      "desktop": "Desktop"
+    },
+    "held": "Held until the creator accepts",
+    "kind": {
+      "click": "Click",
+      "signup": "Sign-up",
+      "topup": "Top-up",
+      "booking": "Booking",
+      "payout": "Payout",
+      "withdrawal": "Withdrawal"
+    },
+    "total": "{count, plural, one {# row} other {# rows}}",
+    "totalTruncated": "Latest {shown} of {count} rows. The CSV export has them all.",
+    "empty": {
+      "clicks": "Each click on a creator's tracked link appears here once their post is live.",
+      "signups": "Sign-ups appear here when your site pixel ties one to a click on a creator's link.",
+      "spend": "Each booking and payment appears here, starting with your first invitation."
+    },
+    "views": "{views} median views"
+  },
+  "results": {
+    "title": "Results",
+    "description": "What your creators' posts brought in, traced back to each click.",
+    "error": "We couldn't load your results. Your data is safe. Try again in a moment.",
+    "numbers": {
+      "reach": {
+        "label": "Estimated reach",
+        "hint": "{count, plural, one {Estimate: sum of median views · # live post} other {Estimate: sum of median views · # live posts}}"
+      },
+      "clicks": {
+        "label": "Qualified clicks",
+        "hint": "{days, plural, one {Last day} other {Last # days}}"
+      },
+      "signups": {
+        "label": "Attributed sign-ups",
+        "hint": "Tied to a creator's click by your pixel"
+      },
+      "spend": {
+        "label": "Committed to creators",
+        "hint": "{count, plural, one {# booking} other {# bookings}}"
+      }
+    },
+    "pixel": {
+      "title": "Site pixel",
+      "active": "{count, plural, one {Active · # event} other {Active · # events}}",
+      "inactive": "Not installed yet. Add it to see the visits, sign-ups and purchases that follow each click.",
+      "view": "View snippet",
+      "install": "Install the pixel",
+      "copied": "Snippet copied",
+      "copyFailed": "Couldn't copy. Select the snippet and copy it by hand.",
+      "dialog": {
+        "title": "Install the site pixel",
+        "body": "Paste this snippet just before '</head>' on every page of your site. Visits are counted automatically. After a sign-up or purchase succeeds, call {global}('track', …) to send it.",
+        "copy": "Copy snippet",
+        "demo": "Open the demo landing page",
+        "siteKey": "Your site key"
+      }
+    },
+    "chart": {
+      "title": "Clicks over time",
+      "description": "{total} qualified clicks in this range",
+      "range": "Date range",
+      "ranges": {
+        "week": "Week",
+        "month": "Month",
+        "year": "Year"
+      }
+    },
+    "attribution": {
+      "title": "By creator",
+      "description": "Clicks on each creator's tracked link, then what your pixel saw after the click. Each row exports its own clicks.",
+      "exportAll": "Export all clicks",
+      "exportOne": "Export {name}'s clicks",
+      "empty": "Once a creator's post is live, they appear here with their clicks and what your pixel saw after each one.",
+      "columns": {
+        "creator": "Creator",
+        "campaign": "Campaign",
+        "clicks": "Clicks",
+        "visits": "Visits",
+        "signups": "Sign-ups",
+        "purchases": "Purchases",
+        "export": "Export"
+      }
+    },
+    "posts": {
+      "title": "Live posts",
+      "description": "Clicks on each post's tracked link. Reactions and comments are the creator's recent public-post averages; LinkedIn's numbers for the sponsored post aren't imported.",
+      "empty": "No live posts yet. Each post appears here once the creator publishes it, with the clicks on its link.",
+      "view": "View post",
+      "columns": {
+        "creator": "Creator",
+        "published": "Published",
+        "link": "Tracked link",
+        "clicks": "Clicks",
+        "reactions": "Avg. reactions",
+        "comments": "Avg. comments",
+        "post": "Post"
+      }
+    },
+    "log": {
+      "title": "Click log",
+      "description": "{count, plural, one {Latest {shown} of # click. The CSV has all of them.} other {Latest {shown} of # clicks. The CSV has all of them.}}",
+      "export": "Export CSV",
+      "columns": {
+        "time": "Time",
+        "creator": "Creator",
+        "source": "Source",
+        "device": "Device",
+        "country": "Country"
+      }
+    }
+  },
+  "billing": {
+    "title": "Billing",
+    "description": "Where your money is, and every movement behind it.",
+    "error": "We couldn't load billing. Your data is safe. Try again in a moment.",
+    "buckets": {
+      "available": {
+        "label": "Available",
+        "hint": "Ready for new invitations"
+      },
+      "held": {
+        "label": "Held for invitations",
+        "hint": "{count, plural, =0 {No invitations waiting on a reply} one {# invitation not answered yet · fee returned if declined} other {# invitations not answered yet · fees returned if declined}}"
+      },
+      "committed": {
+        "label": "Committed",
+        "hint": "{count, plural, =0 {No accepted collaborations yet} one {# accepted collaboration} other {# accepted collaborations}}"
+      },
+      "paid": {
+        "label": "Paid to creators",
+        "hint": "{count, plural, =0 {No posts paid yet} one {# paid post} other {# paid posts}}"
+      }
+    },
+    "topUp": {
+      "open": "Top up",
+      "title": "Top up your wallet",
+      "description": "Choose an amount. It's credited to your wallet as a ledger row.",
+      "suggested": "Your balance doesn't cover this selection. The suggested amount does.",
+      "amount": "Top-up amount",
+      "custom": "Other",
+      "customLabel": "Amount in euros",
+      "limits": "Between {min} and {max}.",
+      "cancel": "Cancel",
+      "submit": "Add {amount}",
+      "crediting": "Top-up · crediting…",
+      "done": "{amount} added · balance {balance}"
+    },
+    "ledger": {
+      "title": "Ledger",
+      "description": "Every euro in or out, with its reference.",
+      "filter": "Filter movements",
+      "filters": {
+        "all": "All",
+        "booking": "Bookings",
+        "topup": "Top-ups"
+      },
+      "status": {
+        "held": "Held",
+        "paid": "Paid",
+        "credited": "Credited"
+      },
+      "empty": {
+        "title": "No movements yet",
+        "body": "Top-ups, fees held for invitations and payments to creators appear here, each with its reference."
+      },
+      "columns": {
+        "date": "Date",
+        "description": "Description",
+        "reference": "Reference",
+        "status": "Status",
+        "amount": "Amount"
+      }
+    }
+  }
+}

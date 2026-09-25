@@ -1,7 +1,7 @@
 import "server-only";
 import { and, count, desc, eq, gte, sql } from "drizzle-orm";
 import { getDb } from "@/db";
-import { ledgerEntries } from "@/db/schema";
+import { collaborations, ledgerEntries } from "@/db/schema";
 import { EARNINGS_MONTHS } from "../constants";
 import type { LedgerRowDto } from "../schemas";
 import { cachedRead } from "@/db/cache";
@@ -20,6 +20,8 @@ export type EarningsSummary = {
 };
 export type MonthPoint = { month: string; label: string; cents: number };
 export type BillingSummary = { balanceCents: number; topupsCents: number; committedCents: number; entries: number };
+/** Where the brand's money is: held for unanswered invitations, committed to accepted work, paid out. */
+export type BillingBuckets = { heldCents: number; heldCount: number; committedCents: number; committedCount: number; paidCents: number; paidCount: number };
 
 export function toLedgerDto(row: typeof ledgerEntries.$inferSelect): LedgerRowDto {
   return {
@@ -125,4 +127,31 @@ export function getBillingSummary(brandId: string) {
 
 export function getBrandLedger(brandId: string) {
   return cachedRead(loadBrandLedger, ["brand-ledger"], { tags: [tag.brandBilling(brandId)] })(brandId);
+}
+
+// A booking's fee leaves the wallet when the invitation is sent. Until the
+// creator accepts it is "held" (a decline returns it); once accepted it is
+// committed to the work; when the brand pays for the live post it is paid.
+async function loadBillingBuckets(brandId: string): Promise<BillingBuckets> {
+  const [row] = await getDb()
+    .select({
+      held: sql<number>`coalesce(-sum(${ledgerEntries.amountCents}) filter (where ${ledgerEntries.status} = 'pending' and ${collaborations.status} = 'invited'), 0)::int`,
+      heldCount: sql<number>`(count(*) filter (where ${ledgerEntries.status} = 'pending' and ${collaborations.status} = 'invited'))::int`,
+      committed: sql<number>`coalesce(-sum(${ledgerEntries.amountCents}) filter (where ${ledgerEntries.status} = 'pending' and ${collaborations.status} <> 'invited'), 0)::int`,
+      committedCount: sql<number>`(count(*) filter (where ${ledgerEntries.status} = 'pending' and ${collaborations.status} <> 'invited'))::int`,
+      paid: sql<number>`coalesce(-sum(${ledgerEntries.amountCents}) filter (where ${ledgerEntries.status} = 'completed'), 0)::int`,
+      paidCount: sql<number>`(count(*) filter (where ${ledgerEntries.status} = 'completed'))::int`,
+    })
+    .from(ledgerEntries)
+    .innerJoin(collaborations, eq(collaborations.id, ledgerEntries.collaborationId))
+    .where(and(eq(ledgerEntries.brandId, brandId), eq(ledgerEntries.type, "booking")));
+  return {
+    heldCents: row?.held ?? 0, heldCount: row?.heldCount ?? 0,
+    committedCents: row?.committed ?? 0, committedCount: row?.committedCount ?? 0,
+    paidCents: row?.paid ?? 0, paidCount: row?.paidCount ?? 0,
+  };
+}
+
+export function getBillingBuckets(brandId: string) {
+  return cachedRead(loadBillingBuckets, ["billing-buckets"], { tags: [tag.brandBilling(brandId)] })(brandId);
 }

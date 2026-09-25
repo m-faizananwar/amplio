@@ -1,0 +1,290 @@
+{
+  "overview": {
+    "title": "Vue d’ensemble",
+    "description": "Ce qui vous attend chez {company}, puis vos chiffres.",
+    "newCampaign": "Nouvelle campagne",
+    "error": "Impossible de charger votre vue d’ensemble. Vos données ne sont pas perdues. Réessayez dans un instant.",
+    "needsYou": {
+      "title": "À faire",
+      "empty": {
+        "title": "Rien ne vous attend pour l’instant",
+        "body": "Les candidatures à traiter, les brouillons à relire et les posts en ligne à payer s’affichent ici. En attendant, trouvez un créateur pour votre prochaine campagne.",
+        "action": "Voir les créateurs"
+      },
+      "lowWallet": {
+        "title": "Solde du portefeuille : {amount}",
+        "body": "Chaque invitation provisionne la rémunération du créateur sur votre portefeuille. Avec un solde trop bas, vous ne pouvez plus en envoyer.",
+        "action": "Recharger"
+      },
+      "cta": {
+        "invited": "Ouvrir",
+        "applied": "Répondre",
+        "accepted": "Ouvrir",
+        "draft_submitted": "Relire",
+        "changes_requested": "Ouvrir",
+        "approved": "Ouvrir",
+        "scheduled": "Ouvrir",
+        "live": "Libérer le paiement",
+        "paid": "Ouvrir",
+        "declined": "Ouvrir"
+      },
+      "more": "{count, plural, one {# autre dans Collaborations} other {# autres dans Collaborations}}"
+    },
+    "numbers": {
+      "title": "Vos chiffres",
+      "clicks": {
+        "label": "Clics sur les liens suivis",
+        "hint": "{days, plural, one {Dernier jour} other {# derniers jours}}"
+      },
+      "signups": {
+        "label": "Inscriptions attribuées",
+        "hint": "Reliées au clic d’un créateur par votre pixel"
+      },
+      "spend": {
+        "label": "Engagé auprès des créateurs",
+        "hint": "{count, plural, one {# réservation} other {# réservations}}"
+      }
+    },
+    "setup": {
+      "title": "Terminez la configuration",
+      "progress": "{done, plural, one {# étape sur {total} terminée} other {# étapes sur {total} terminées}}",
+      "steps": {
+        "explore": {
+          "title": "Parcourez les créateurs",
+          "body": "Les créateurs sont classés selon leur adéquation à votre marque. Chaque score indique ce qui le justifie."
+        },
+        "brief": {
+          "title": "Rédigez votre premier brief",
+          "body": "Indiquez l’objectif du post, à qui il s’adresse et ce qu’il faut éviter. Les créateurs écrivent à partir de ce brief."
+        },
+        "invite": {
+          "title": "Invitez un créateur",
+          "body": "La rémunération est provisionnée sur votre portefeuille jusqu’à ce qu’il accepte. S’il refuse, elle vous est restituée."
+        }
+      }
+    }
+  },
+  "collaborations": {
+    "title": "Collaborations",
+    "description": "Chaque ligne indique la prochaine étape et qui doit agir.",
+    "error": "Impossible de charger vos collaborations. Vos données ne sont pas perdues. Réessayez dans un instant.",
+    "filters": {
+      "label": "Afficher",
+      "needsYou": "À faire",
+      "waiting": "Chez les créateurs",
+      "done": "Terminées",
+      "all": "Toutes",
+      "campaign": "Campagne",
+      "allCampaigns": "Toutes les campagnes"
+    },
+    "empty": {
+      "none": {
+        "title": "Aucune collaboration pour l’instant",
+        "body": "Une collaboration commence quand vous invitez un créateur ou acceptez une candidature. Commencez par trouver un créateur.",
+        "action": "Trouver des créateurs"
+      },
+      "needsYou": {
+        "title": "Rien ne vous attend pour l’instant",
+        "body": "Le reste est entre les mains des créateurs ou terminé.",
+        "action": "Tout afficher"
+      },
+      "waiting": {
+        "title": "Rien en attente chez un créateur",
+        "body": "Les invitations, les brouillons en cours et les posts programmés attendent ici pendant que les créateurs avancent.",
+        "action": "Tout afficher"
+      },
+      "done": {
+        "title": "Rien de terminé pour l’instant",
+        "body": "Les collaborations payées et clôturées s’affichent ici.",
+        "action": "Tout afficher"
+      },
+      "all": {
+        "title": "Aucune collaboration pour cette campagne",
+        "body": "Invitez un créateur sur cette campagne, ou affichez toutes les campagnes.",
+        "action": "Toutes les campagnes"
+      }
+    },
+    "table": {
+      "noDue": "Sans échéance"
+    }
+  },
+  "trail": {
+    "direct": "Accès direct",
+    "device": {
+      "mobile": "Mobile",
+      "desktop": "Ordinateur"
+    },
+    "held": "Provisionné jusqu’à l’acceptation du créateur",
+    "kind": {
+      "click": "Clic",
+      "signup": "Inscription",
+      "topup": "Rechargement",
+      "booking": "Réservation",
+      "payout": "Paiement",
+      "withdrawal": "Retrait"
+    },
+    "total": "{count, plural, one {# ligne} other {# lignes}}",
+    "totalTruncated": "Les {shown} lignes les plus récentes sur {count}. L’export CSV les contient toutes.",
+    "empty": {
+      "clicks": "Chaque clic sur le lien suivi d’un créateur s’affiche ici, dès que son post est en ligne.",
+      "signups": "Les inscriptions s’affichent ici quand le pixel de votre site en relie une au clic sur le lien d’un créateur.",
+      "spend": "Chaque réservation et chaque paiement s’affichent ici, dès votre première invitation."
+    },
+    "views": "{views} vues médianes"
+  },
+  "results": {
+    "title": "Résultats",
+    "description": "Ce que les posts de vos créateurs ont rapporté, retracé jusqu’à chaque clic.",
+    "error": "Impossible de charger vos résultats. Vos données ne sont pas perdues. Réessayez dans un instant.",
+    "numbers": {
+      "reach": {
+        "label": "Portée estimée",
+        "hint": "{count, plural, one {Estimation : somme des vues médianes · # post en ligne} other {Estimation : somme des vues médianes · # posts en ligne}}"
+      },
+      "clicks": {
+        "label": "Clics qualifiés",
+        "hint": "{days, plural, one {Dernier jour} other {# derniers jours}}"
+      },
+      "signups": {
+        "label": "Inscriptions attribuées",
+        "hint": "Reliées au clic d’un créateur par votre pixel"
+      },
+      "spend": {
+        "label": "Engagé auprès des créateurs",
+        "hint": "{count, plural, one {# réservation} other {# réservations}}"
+      }
+    },
+    "pixel": {
+      "title": "Pixel du site",
+      "active": "{count, plural, one {Actif · # événement} other {Actif · # événements}}",
+      "inactive": "Pas encore installé. Ajoutez-le pour voir les visites, inscriptions et achats qui suivent chaque clic.",
+      "view": "Voir le code",
+      "install": "Installer le pixel",
+      "copied": "Code copié",
+      "copyFailed": "Copie impossible. Sélectionnez le code et copiez-le manuellement.",
+      "dialog": {
+        "title": "Installer le pixel du site",
+        "body": "Collez ce code juste avant '</head>' sur chaque page de votre site. Les visites sont comptées automatiquement. Une fois une inscription ou un achat confirmé, appelez {global}('track', …) pour l’envoyer.",
+        "copy": "Copier le code",
+        "demo": "Ouvrir la page de démonstration",
+        "siteKey": "Votre clé de site"
+      }
+    },
+    "chart": {
+      "title": "Évolution des clics",
+      "description": "{total} clics qualifiés sur la période",
+      "range": "Période",
+      "ranges": {
+        "week": "Semaine",
+        "month": "Mois",
+        "year": "Année"
+      }
+    },
+    "attribution": {
+      "title": "Par créateur",
+      "description": "Les clics sur le lien suivi de chaque créateur, puis ce que votre pixel a observé après le clic. Chaque ligne exporte ses propres clics.",
+      "exportAll": "Exporter tous les clics",
+      "exportOne": "Exporter les clics de {name}",
+      "empty": "Dès que le post d’un créateur est en ligne, il apparaît ici avec ses clics et ce que votre pixel a observé après chacun.",
+      "columns": {
+        "creator": "Créateur",
+        "campaign": "Campagne",
+        "clicks": "Clics",
+        "visits": "Visites",
+        "signups": "Inscriptions",
+        "purchases": "Achats",
+        "export": "Export"
+      }
+    },
+    "posts": {
+      "title": "Posts en ligne",
+      "description": "Les clics sur le lien suivi de chaque post. Réactions et commentaires : moyennes des posts publics récents du créateur. Les chiffres LinkedIn du post sponsorisé ne sont pas importés.",
+      "empty": "Aucun post en ligne pour l’instant. Chaque post s’affiche ici dès que le créateur le publie, avec les clics sur son lien.",
+      "view": "Voir le post",
+      "columns": {
+        "creator": "Créateur",
+        "published": "Publié le",
+        "link": "Lien suivi",
+        "clicks": "Clics",
+        "reactions": "Réactions moy.",
+        "comments": "Commentaires moy.",
+        "post": "Post"
+      }
+    },
+    "log": {
+      "title": "Journal des clics",
+      "description": "{shown, plural, one {Le clic le plus récent sur {count}. Le CSV les contient tous.} other {Les # clics les plus récents sur {count}. Le CSV les contient tous.}}",
+      "export": "Exporter en CSV",
+      "columns": {
+        "time": "Heure",
+        "creator": "Créateur",
+        "source": "Provenance",
+        "device": "Appareil",
+        "country": "Pays"
+      }
+    }
+  },
+  "billing": {
+    "title": "Facturation",
+    "description": "Où se trouve votre argent, et le détail de chaque mouvement.",
+    "error": "Impossible de charger la facturation. Vos données ne sont pas perdues. Réessayez dans un instant.",
+    "buckets": {
+      "available": {
+        "label": "Disponible",
+        "hint": "Prêt pour de nouvelles invitations"
+      },
+      "held": {
+        "label": "Provisionné pour les invitations",
+        "hint": "{count, plural, =0 {Aucune invitation en attente de réponse} one {# invitation sans réponse · rémunération restituée en cas de refus} other {# invitations sans réponse · rémunérations restituées en cas de refus}}"
+      },
+      "committed": {
+        "label": "Engagé",
+        "hint": "{count, plural, =0 {Aucune collaboration acceptée pour l’instant} one {# collaboration acceptée} other {# collaborations acceptées}}"
+      },
+      "paid": {
+        "label": "Versé aux créateurs",
+        "hint": "{count, plural, =0 {Aucun post payé pour l’instant} one {# post payé} other {# posts payés}}"
+      }
+    },
+    "topUp": {
+      "open": "Recharger",
+      "title": "Recharger votre portefeuille",
+      "description": "Choisissez un montant. Il est crédité sur votre portefeuille et inscrit au registre.",
+      "suggested": "Votre solde ne couvre pas cette sélection. Le montant suggéré la couvre.",
+      "amount": "Montant du rechargement",
+      "custom": "Autre",
+      "customLabel": "Montant en euros",
+      "limits": "Entre {min} et {max}.",
+      "cancel": "Annuler",
+      "submit": "Ajouter {amount}",
+      "crediting": "Rechargement · crédit en cours…",
+      "done": "Rechargement de {amount} crédité · solde {balance}"
+    },
+    "ledger": {
+      "title": "Registre",
+      "description": "Chaque euro entré ou sorti, avec sa référence.",
+      "filter": "Filtrer les mouvements",
+      "filters": {
+        "all": "Tous",
+        "booking": "Réservations",
+        "topup": "Rechargements"
+      },
+      "status": {
+        "held": "Provisionné",
+        "paid": "Payé",
+        "credited": "Crédité"
+      },
+      "empty": {
+        "title": "Aucun mouvement pour l’instant",
+        "body": "Les rechargements, les rémunérations provisionnées pour les invitations et les paiements aux créateurs s’affichent ici, chacun avec sa référence."
+      },
+      "columns": {
+        "date": "Date",
+        "description": "Libellé",
+        "reference": "Référence",
+        "status": "Statut",
+        "amount": "Montant"
+      }
+    }
+  }
+}

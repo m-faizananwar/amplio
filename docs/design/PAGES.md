@@ -44,6 +44,35 @@ Stacked sections with a sticky index on wide screens, one form per schema. Each 
 saves on its own, so a validation error in pricing never blocks the card, and the fields
 are the onboarding ones (`src/features/profile-fields`), so editing looks like creating.
 
+## Brand
+
+### Overview — `/brand`
+One column: **Needs you** first — drafts to review, applicants to answer, live posts to pay,
+and a short wallet on top because it blocks every new invitation — each a ruled row with the
+next step in words and the button for it. Then three numbers (clicks, attributed sign-ups,
+committed spend), each opening the rows it is made of. The setup card shows only while
+setup is unfinished. People open the app to act; totals come second.
+
+### Collaborations — `/brand/collaborations`
+The same ruled list as the creator side, from the brand's chair: creator, **next step and
+whose move it is**, due date, fee. Default view Needs you, then Waiting on creators, Done,
+All (a live post counts as Needs you — releasing the payment is the brand's move); a
+campaign filter appears once there is more than one campaign. Status names are chips, not
+the headline.
+
+### Results — `/brand/results`
+The proof page, top to bottom in the order a skeptic asks: four numbers that each open their
+rows (estimated reach, qualified clicks, attributed sign-ups, committed spend), the pixel's
+status in one line, clicks over time, attribution per creator (each row exports its own
+clicks), live posts, and the raw click log with the CSV of every click. The old "more
+metrics" accordion is gone: the click log already carries referrer, device and country.
+
+### Billing — `/brand/billing`
+Four amounts in the order money moves — available, **held for invitations nobody has
+answered yet**, committed to accepted work, paid to creators — then the ledger, filterable
+by bookings and top-ups. Held funds stay visible until the creator accepts (a decline returns
+them). The top-up is presets plus a custom amount and says plainly that no card is charged.
+
 ## Public
 
 Recordings for the landing live in `docs/design/recordings/` (a frame every
@@ -159,3 +188,5 @@ checked for widows at 375.
 | Stripe payout method (Settings › Payouts) | no Stripe Connect; the ledger records the withdrawal | allowed stub, labelled in the section |
 | Creator card figures (My card, `/c/[handle]`) | followers, views, engagement, audience mix come from the (simulated) profile read | labelled under the card; seeded creators carry a "demo creator" note on the public page |
 | Affiliate "invite creators" tab, community Slack button | "not part of this build" | cut with their pages |
+| Brand wallet top-up (Billing) | no Stripe; the credit is a ledger row | stub, the dialog says "no card is charged" |
+| Launch estimator (Campaigns) | rates from Amplio's own live posts, clicks and attributed sign-ups | real; below 3 live posts / 30 clicks it says "not enough data yet" |
