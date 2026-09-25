@@ -39,6 +39,12 @@ Five numbers in a row, each opening the rows it is made of (followers → the pr
 posts, reach, engagements → the posts; clicks → every click), then the tracked links (each
 link's count opens its own clicks) and the posts. A range switch re-queries the server.
 
+### Earnings — `/creator/earnings` (+ withdraw)
+The one action (Withdraw, disabled with the reason when nothing is available) above four
+money numbers — available, awaiting release, withdrawn, earned — each opening the ledger
+rows that add up to it, then the months and the ledger itself. Withdrawing is a dialog:
+amount or all of it, where it goes, one confirm, and the Stripe stub said plainly.
+
 ### Settings — `/creator/settings`
 Stacked sections with a sticky index on wide screens, one form per schema. Each section
 saves on its own, so a validation error in pricing never blocks the card, and the fields
@@ -185,7 +191,7 @@ checked for widows at 375.
 | Where | What | Status |
 |---|---|---|
 | LinkedIn profile read (`readLinkedinProfile`) | audience figures derived from the URL | stub, labelled in Settings › LinkedIn ("simulated from the URL") — the fork is replacing it with a real import |
-| Stripe payout method (Settings › Payouts) | no Stripe Connect; the ledger records the withdrawal | allowed stub, labelled in the section |
+| Stripe payout method (Settings › Payouts, Earnings › Withdraw) | no Stripe Connect; the ledger records the withdrawal | allowed stub, labelled in both places |
 | Creator card figures (My card, `/c/[handle]`) | followers, views, engagement, audience mix come from the (simulated) profile read | labelled under the card; seeded creators carry a "demo creator" note on the public page |
 | Affiliate "invite creators" tab, community Slack button | "not part of this build" | cut with their pages |
 | Brand wallet top-up (Billing) | no Stripe; the credit is a ledger row | stub, the dialog says "no card is charged" |
