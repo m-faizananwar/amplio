@@ -9,6 +9,8 @@ export type ShellViewer = {
   walletCents: number;
   csrfToken: string;
   preview: boolean;
+  /** A demo account: gets the brand/creator switch in the top bar. */
+  demo: boolean;
   notifications: ShellNotification[];
   launchPlan: { explored: boolean; briefed: boolean; invited: boolean; stepsLeft: number } | null;
 };

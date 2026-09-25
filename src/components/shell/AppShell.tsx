@@ -1,35 +1,41 @@
+import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
 import { RouteTransition } from "@/components/motion/RouteTransition";
 import { ViewTransitions } from "@/components/motion/ViewTransitions";
 import { CallOverlayHost } from "@/features/assistant/components/call/CallOverlayHost";
+import { ClientMessages } from "@/i18n/ClientMessages";
 import { AccountMenu } from "./AccountMenu";
 import { AssistantPill } from "./assistant/AssistantPill";
-import { Sidebar } from "./Sidebar";
-import { SidebarFrame } from "./SidebarFrame";
+import { Rail } from "./Rail";
 import { TopBar } from "./TopBar";
 import type { ShellViewer } from "./viewer";
 import { WalletProvider } from "./WalletProvider";
 
-export function AppShell({ viewer, children }: { viewer: ShellViewer; children: ReactNode }) {
+// The signed-in frame: a fixed rail (232px, lg and up), the top bar, and the
+// page in a 1200px column. Client copy for the shell and the role's pages is
+// sent once here, not per page.
+export async function AppShell({ viewer, children }: { viewer: ShellViewer; children: ReactNode }) {
+  const t = await getTranslations("shell");
   return (
-    <WalletProvider initialCents={viewer.walletCents}>
-    <div className="flex min-h-screen bg-muted/40">
-      <SidebarFrame role={viewer.role}>
-        <Sidebar viewer={viewer} />
-      </SidebarFrame>
-      <div className="flex min-w-0 flex-1 flex-col">
-        <TopBar viewer={viewer} />
-        {/* Bottom padding keeps the floating assistant pill off the last row of content on small screens. */}
-        {/* vt-main names the page area for the route crossfade; the shell around it stays put. */}
-        <main className="vt-main flex-1 px-4 pt-6 pb-24 lg:px-8 lg:pt-8">
-          {/* Grid/flex items default to min-width:auto, which lets a wide table stretch the page; wide content must scroll inside its own container. */}
-          <div className="mx-auto w-full min-w-0 max-w-6xl [&_.grid>*]:min-w-0 [&_.flex>*]:min-w-0"><RouteTransition>{children}</RouteTransition></div>
-        </main>
-      </div>
-      <ViewTransitions />
-      <AssistantPill role={viewer.role} workspace={viewer.workspace} csrfToken={viewer.csrfToken} />
-      <CallOverlayHost role={viewer.role} csrfToken={viewer.csrfToken} account={<AccountMenu viewer={viewer} />} />
-    </div>
-    </WalletProvider>
+    <ClientMessages namespaces={["shell", viewer.role, "settings"]}>
+      <WalletProvider initialCents={viewer.walletCents}>
+        <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded-control focus:bg-ink focus:px-3 focus:py-2 focus:text-paper">{t("skipToContent")}</a>
+        <div className="flex min-h-screen bg-paper">
+          <aside className="sticky top-0 hidden h-screen w-58 shrink-0 border-r border-rule bg-paper lg:block">
+            <Rail role={viewer.role} />
+          </aside>
+          <div className="flex min-w-0 flex-1 flex-col">
+            <TopBar viewer={viewer} />
+            {/* vt-main names the page area for the route crossfade; bottom padding keeps the assistant pill off the last row. */}
+            <main id="main" className="vt-main flex-1 px-4 pt-8 pb-24 lg:px-8">
+              <div className="mx-auto w-full min-w-0 max-w-content [&_.grid>*]:min-w-0 [&_.flex>*]:min-w-0"><RouteTransition>{children}</RouteTransition></div>
+            </main>
+          </div>
+          <ViewTransitions />
+          <AssistantPill role={viewer.role} workspace={viewer.workspace} csrfToken={viewer.csrfToken} />
+          <CallOverlayHost role={viewer.role} csrfToken={viewer.csrfToken} account={<AccountMenu viewer={viewer} />} />
+        </div>
+      </WalletProvider>
+    </ClientMessages>
   );
 }

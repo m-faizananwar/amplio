@@ -1,45 +1,40 @@
 import {
-  BarChart3, Briefcase, CalendarCheck, CreditCard, Handshake, IdCard, LayoutGrid, Layers, LineChart,
-  type LucideIcon, MessageCircle, Plug, Settings, Store, UserPlus, Users, Wallet,
+  BarChart3, Briefcase, CreditCard, Handshake, IdCard, LayoutGrid, LineChart, type LucideIcon, MessageCircle, Settings, Store, Users, Wallet,
 } from "lucide-react";
 
-export type NavItem = { href: string; label: string; icon: LucideIcon };
+export type Role = "brand" | "creator";
+// `key` is the message key under shell.nav.<role>; labels never live here.
+export type NavItem = { href: string; key: string; icon: LucideIcon };
 
-// Brand sidebar, exactly as the product map lists it. The account menu shows the
-// same secondary items (Invite Creators · Book a call · Integrations · Settings · Sign out).
-export const BRAND_NAV: NavItem[] = [
-  { href: "/brand", label: "Overview", icon: LayoutGrid },
-  { href: "/brand/creators", label: "Creators", icon: Users },
-  { href: "/brand/campaigns", label: "Campaigns", icon: Briefcase },
-  { href: "/brand/collaborations", label: "Collaborations", icon: Handshake },
-  { href: "/brand/results", label: "Results", icon: BarChart3 },
-  { href: "/brand/messages", label: "Messages", icon: MessageCircle },
-  { href: "/brand/billing", label: "Billing", icon: CreditCard },
-];
-export const BRAND_SECONDARY_NAV: NavItem[] = [
-  { href: "/brand/invite", label: "Invite Creators", icon: UserPlus },
-  { href: "/brand/book-a-call", label: "Book a call", icon: CalendarCheck },
-  { href: "/brand/integrations", label: "Integrations", icon: Plug },
-  { href: "/brand/settings", label: "Settings", icon: Settings },
+// DIRECTION.md: Brand — Overview, Creators, Campaigns, Collaborations,
+// Results, Messages, Billing. Creator — Overview, My card, Opportunities,
+// Collaborations, Analytics, Earnings, Messages. Settings for both, at the
+// foot of the rail. Integrations, Book a call and Invite are cut or merged.
+const BRAND_NAV: NavItem[] = [
+  { href: "/brand", key: "overview", icon: LayoutGrid },
+  { href: "/brand/creators", key: "creators", icon: Users },
+  { href: "/brand/campaigns", key: "campaigns", icon: Briefcase },
+  { href: "/brand/collaborations", key: "collaborations", icon: Handshake },
+  { href: "/brand/results", key: "results", icon: BarChart3 },
+  { href: "/brand/messages", key: "messages", icon: MessageCircle },
+  { href: "/brand/billing", key: "billing", icon: CreditCard },
 ];
 
-export const CREATOR_NAV: NavItem[] = [
-  { href: "/creator", label: "Overview", icon: LayoutGrid },
-  { href: "/creator/card", label: "My card", icon: IdCard },
-  { href: "/creator/opportunities", label: "Opportunities", icon: Store },
-  { href: "/creator/collaborations", label: "Collaborations", icon: Layers },
-  { href: "/creator/analytics", label: "Analytics", icon: LineChart },
-  { href: "/creator/earnings", label: "Earnings", icon: Wallet },
-  { href: "/creator/messages", label: "Messages", icon: MessageCircle },
-];
-export const CREATOR_ACCOUNT_NAV: NavItem[] = [
-  { href: "/creator/settings", label: "Settings", icon: Settings },
+const CREATOR_NAV: NavItem[] = [
+  { href: "/creator", key: "overview", icon: LayoutGrid },
+  { href: "/creator/card", key: "card", icon: IdCard },
+  { href: "/creator/opportunities", key: "opportunities", icon: Store },
+  { href: "/creator/collaborations", key: "collaborations", icon: Handshake },
+  { href: "/creator/analytics", key: "analytics", icon: LineChart },
+  { href: "/creator/earnings", key: "earnings", icon: Wallet },
+  { href: "/creator/messages", key: "messages", icon: MessageCircle },
 ];
 
-export function navFor(role: "brand" | "creator") {
-  return role === "brand"
-    ? { primary: BRAND_NAV, secondary: BRAND_SECONDARY_NAV, account: BRAND_SECONDARY_NAV }
-    : { primary: CREATOR_NAV, secondary: [], account: CREATOR_ACCOUNT_NAV };
+export function navFor(role: Role) {
+  return {
+    primary: role === "brand" ? BRAND_NAV : CREATOR_NAV,
+    settings: { href: `/${role}/settings`, key: "settings", icon: Settings } satisfies NavItem,
+  };
 }
 
 export function isActive(pathname: string, href: string, root: string) {

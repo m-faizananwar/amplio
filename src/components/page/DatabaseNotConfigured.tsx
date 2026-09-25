@@ -3,21 +3,22 @@
 import { DatabaseZap } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BRAND_NAV, BRAND_SECONDARY_NAV, CREATOR_ACCOUNT_NAV, CREATOR_NAV, isActive } from "@/components/shell/nav";
+import { useTranslations } from "next-intl";
+import { isActive, navFor } from "@/components/shell/nav";
 import { buttonVariants } from "@/components/ui/button";
 import { PageHeader } from "./PageHeader";
-
-const ALL_NAV = [...BRAND_NAV, ...BRAND_SECONDARY_NAV, ...CREATOR_NAV, ...CREATOR_ACCOUNT_NAV];
 
 // Rendered by the app layouts instead of the page when DATABASE_URL is unset,
 // so every tab still has its header and an honest state — never a 500.
 export function DatabaseNotConfigured() {
   const pathname = usePathname();
-  const root = pathname.startsWith("/creator") ? "/creator" : "/brand";
-  const current = ALL_NAV.find((item) => item.href.startsWith(root) && isActive(pathname, item.href, root));
+  const role = pathname.startsWith("/creator") ? "creator" : "brand";
+  const t = useTranslations(`shell.nav.${role}`);
+  const nav = navFor(role);
+  const current = [...nav.primary, nav.settings].find((item) => isActive(pathname, item.href, `/${role}`));
   return (
     <>
-      <PageHeader title={current?.label ?? "Workspace"} description="This screen needs the database." />
+      <PageHeader title={current ? t(current.key) : "Workspace"} description="This screen needs the database." />
       <div className="flex flex-col items-center rounded-2xl border border-dashed bg-background px-6 py-16 text-center">
         <span className="flex size-12 items-center justify-center rounded-full bg-muted text-muted-foreground">
           <DatabaseZap className="size-5" aria-hidden="true" />

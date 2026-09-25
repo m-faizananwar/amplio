@@ -8,6 +8,7 @@ import { updateTags } from "@/db/cache";
 import { tagsForMutation } from "@/lib/cache-tags";
 import { brands, creators, users } from "@/db/schema";
 import { destroySession, getViewer } from "@/features/auth/server/session";
+import { type CommandIndex, getCommandIndex } from "./command-queries";
 import { isDemoEmail } from "@/features/auth/constants";
 import {
   type ActionResult, type BrandAudienceInput, type BrandProfileInput, type CreatorIdentityInput, type PayoutDetailsInput,
@@ -117,4 +118,11 @@ export async function deleteAccount(): Promise<ActionResult> {
   }
   await destroySession();
   redirect("/");
+}
+
+// ⌘K's index: a read, exposed as an action because the menu asks for it on
+// first open from the client. Empty for a signed-out caller.
+export async function loadCommandIndex(): Promise<CommandIndex> {
+  const viewer = await getViewer();
+  return viewer ? getCommandIndex(viewer) : { campaigns: [], collaborations: [], creators: [] };
 }

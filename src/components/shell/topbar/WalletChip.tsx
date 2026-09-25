@@ -1,25 +1,26 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { CountUp } from "@/components/motion/CountUp";
+import { RollingNumber } from "@/components/ui/rolling-number";
 import { formatCents } from "@/lib/money";
 import { useWallet } from "../WalletProvider";
 
-const WALLET_COUNT_MS = 600;
+const euros = (cents: number) => formatCents(cents, "EUR");
 
-// Brand → Billing, creator → Earnings. Reads the optimistic balance so top-ups
-// and withdrawals move the chip before the server round-trip.
+// Brand → Billing (the wallet), creator → Earnings (what can be withdrawn).
+// Money is the one thing the accent colour is for. Reads the optimistic
+// balance, so a top-up moves the number before the server confirms.
 export function WalletChip({ role, walletCents }: { role: "brand" | "creator"; walletCents: number }) {
+  const t = useTranslations("shell.topBar.wallet");
   const wallet = useWallet(walletCents);
-  const href = role === "brand" ? "/brand/billing" : "/creator/earnings";
   return (
     <Link
-      href={href}
-      aria-label={`Wallet: ${formatCents(wallet.walletCents, "EUR")}. ${role === "brand" ? "Open billing" : "Open earnings"}`}
-      className="inline-flex h-9 items-center gap-2 rounded-lg border px-3 text-sm font-semibold tabular-nums transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40"
+      href={role === "brand" ? "/brand/billing" : "/creator/earnings"}
+      className="inline-flex h-9 items-center gap-2 rounded-control border border-rule bg-surface px-3 outline-none transition-colors duration-(--duration-fast) ease-ledger hover:border-rule-strong focus-visible:ring-3 focus-visible:ring-ink/15"
     >
-      <span className="size-2 rounded-full bg-brand" aria-hidden="true" />
-      <CountUp value={wallet.walletCents} format="eur" duration={WALLET_COUNT_MS} />
+      <span className="hidden text-caption text-ink-muted sm:inline">{t("label")}</span>
+      <RollingNumber value={wallet.walletCents} format={euros} className="text-small font-medium text-money" />
     </Link>
   );
 }

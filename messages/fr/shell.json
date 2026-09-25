@@ -67,7 +67,8 @@
       "topUp": "Recharger le portefeuille",
       "openResults": "Ouvrir les résultats",
       "toggleTheme": "Changer de thème",
-      "switchLanguage": "Changer de langue"
+      "switchLanguage": "Changer de langue",
+      "call": "Appeler Amplio"
     }
   },
   "pageStates": {

@@ -92,7 +92,7 @@ export function RouteTransition({ children }: { children: ReactNode }) {
     <div className={styles.shell} data-route-shell data-route-stale={pending ? "true" : undefined}>
       <div className={styles.page} aria-busy={pending ? "true" : undefined}>
         <Suspense fallback={<RouteSkeleton />}>
-          {stalled ? <RouteSkeleton /> : <div key={pathname} className="animate-section">{children}</div>}
+          {stalled ? <RouteSkeleton /> : <div key={pathname}>{children}</div>}
         </Suspense>
       </div>
     </div>

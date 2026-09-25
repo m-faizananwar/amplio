@@ -67,7 +67,8 @@
       "topUp": "Top up wallet",
       "openResults": "Open results",
       "toggleTheme": "Change theme",
-      "switchLanguage": "Change language"
+      "switchLanguage": "Change language",
+      "call": "Call Amplio"
     }
   },
   "pageStates": {

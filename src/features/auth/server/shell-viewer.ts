@@ -2,15 +2,15 @@ import "server-only";
 import { redirect } from "next/navigation";
 import { isDbConfigured } from "@/db";
 import type { ShellViewer } from "@/components/shell/viewer";
-import { ROLE_HOME, ROLE_ONBOARDING } from "../constants";
+import { isDemoEmail, ROLE_HOME, ROLE_ONBOARDING } from "../constants";
 import type { Role } from "../schemas";
 import { getLaunchPlan } from "@/features/campaigns/server/queries";
 import { getBrandNotifications, getCreatorNotifications } from "@/features/workspace/server/notifications";
 import { getViewer, type Viewer } from "./session";
 
 const PREVIEW: Record<Role, ShellViewer> = {
-  brand: { role: "brand", firstName: "Demo", lastName: "Brand", workspace: "Preview workspace", avatarUrl: null, walletCents: 0, csrfToken: "", preview: true, notifications: [], launchPlan: null },
-  creator: { role: "creator", firstName: "Demo", lastName: "Creator", workspace: "Preview workspace", avatarUrl: null, walletCents: 0, csrfToken: "", preview: true, notifications: [], launchPlan: null },
+  brand: { role: "brand", firstName: "Demo", lastName: "Brand", workspace: "Preview workspace", avatarUrl: null, walletCents: 0, csrfToken: "", preview: true, demo: false, notifications: [], launchPlan: null },
+  creator: { role: "creator", firstName: "Demo", lastName: "Creator", workspace: "Preview workspace", avatarUrl: null, walletCents: 0, csrfToken: "", preview: true, demo: false, notifications: [], launchPlan: null },
 };
 
 export async function toShellViewer(viewer: Viewer): Promise<ShellViewer> {
@@ -31,6 +31,7 @@ export async function toShellViewer(viewer: Viewer): Promise<ShellViewer> {
     walletCents: viewer.brand?.walletCents ?? viewer.creator?.availableCents ?? 0,
     csrfToken: viewer.csrfToken,
     preview: false,
+    demo: isDemoEmail(viewer.email),
   };
 }
 

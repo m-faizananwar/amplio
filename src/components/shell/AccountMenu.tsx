@@ -1,54 +1,55 @@
 "use client";
 
+import { LogOut, Moon, Settings, Sun } from "lucide-react";
 import Link from "next/link";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useTranslations } from "next-intl";
+import { PersonAvatar } from "@/components/ui/avatar";
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { navFor } from "./nav";
-import { SignOutButton } from "./SignOutButton";
-import { avatarFor } from "@/lib/avatar";
-import { initialsOf, type ShellViewer } from "./viewer";
+import { CSRF_FIELD } from "@/features/auth/constants";
+import { logout } from "@/features/auth/server/actions";
+import { useTheme } from "./theme/useTheme";
+import type { ShellViewer } from "./viewer";
 
+// Avatar → who you are, Settings, the theme, Sign out (a real form POST with
+// the session's CSRF token).
 export function AccountMenu({ viewer }: { viewer: ShellViewer }) {
-  const items = navFor(viewer.role).account;
+  const t = useTranslations("shell.topBar.account");
+  const tTheme = useTranslations("common.theme");
+  const [theme, toggleTheme] = useTheme();
+  const name = `${viewer.firstName} ${viewer.lastName}`.trim();
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger
-        aria-label="Account menu"
-        className="icon-chip relative rounded-full p-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40"
-      >
-        <Avatar className="size-9">
-          <AvatarImage src={viewer.avatarUrl ?? avatarFor(`${viewer.firstName} ${viewer.lastName}`)} alt="" />
-          <AvatarFallback className="bg-foreground text-xs font-semibold text-background">{initialsOf(viewer)}</AvatarFallback>
-        </Avatar>
-        <span className="absolute right-0 bottom-0 size-2.5 rounded-full border-2 border-background bg-emerald-500" aria-hidden="true" />
+      <DropdownMenuTrigger aria-label={t("label")} className="rounded-full outline-none focus-visible:ring-3 focus-visible:ring-ink/15">
+        <PersonAvatar name={name} src={viewer.avatarUrl} />
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56">
+      <DropdownMenuContent align="end" className="w-60">
         <DropdownMenuGroup>
-          <DropdownMenuLabel>
-            <span className="block font-medium">
-              {viewer.firstName} {viewer.lastName}
-            </span>
-            <span className="block text-xs font-normal text-muted-foreground">{viewer.workspace}</span>
+          <DropdownMenuLabel className="grid gap-0.5 py-2">
+            <span className="truncate text-body font-medium text-ink">{name}</span>
+            <span className="truncate text-caption font-normal text-ink-muted">{viewer.workspace}</span>
           </DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          {items.map((item) => (
-            <DropdownMenuItem key={item.href} render={<Link href={item.href} />}>
-              <item.icon aria-hidden="true" />
-              {item.label}
-            </DropdownMenuItem>
-          ))}
         </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem render={<Link href={`/${viewer.role}/settings`} />}>
+          <Settings aria-hidden="true" />
+          {t("settings")}
+        </DropdownMenuItem>
+        <DropdownMenuItem closeOnClick={false} onClick={toggleTheme}>
+          {theme === "dark" ? <Sun aria-hidden="true" /> : <Moon aria-hidden="true" />}
+          {theme === "dark" ? tTheme("light") : tTheme("dark")}
+        </DropdownMenuItem>
         {viewer.preview ? null : (
           <>
             <DropdownMenuSeparator />
-            <div className="px-1 py-0.5">
-              <SignOutButton
-                csrfToken={viewer.csrfToken}
-                className="flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-sm hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40"
-              />
-            </div>
+            <form action={logout}>
+              <input type="hidden" name={CSRF_FIELD} value={viewer.csrfToken} />
+              <DropdownMenuItem nativeButton render={<button type="submit" className="w-full" />}>
+                <LogOut aria-hidden="true" />
+                {t("signOut")}
+              </DropdownMenuItem>
+            </form>
           </>
         )}
       </DropdownMenuContent>
