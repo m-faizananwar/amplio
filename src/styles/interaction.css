@@ -471,3 +471,17 @@ main [aria-busy="true"][aria-label^="Loading"] { animation: skeletonAppear 0s 0.
 .list-stagger > :nth-child(11) { animation-delay: 200ms; }
 .list-stagger > :nth-child(12) { animation-delay: 220ms; }
 @media (prefers-reduced-motion: reduce) { .list-stagger > * { animation: none; } }
+
+/* ---- route crossfade (View Transitions API, where it exists) ----
+   Only the page area is named, so the rail and the top bar stay put while
+   the content under them crossfades; the incoming side is live, so the
+   capsule and the route-enter pops keep running underneath. */
+.vt-main { view-transition-name: app-main; }
+@keyframes vtFadeOut { to { opacity: 0; } }
+@keyframes vtFadeIn { from { opacity: 0; } }
+::view-transition-old(app-main) { animation: vtFadeOut .16s ease-in both; }
+::view-transition-new(app-main) { animation: vtFadeIn .22s var(--ix-ease) .04s both; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: .2s; }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+}
