@@ -1,4 +1,5 @@
 import { getFormatter, getTranslations } from "next-intl/server";
+import { AudienceOrbit } from "@/components/graphics/AudienceOrbit";
 import { PersonAvatar } from "@/components/ui/avatar";
 import { COUNTRIES } from "@/features/creator-onboarding/constants";
 import type { PublicCard } from "../../server/card-queries";
@@ -19,7 +20,9 @@ function Figure({ label, value }: { label: string; value: string }) {
 function CardHeader({ card, industriesLabel }: { card: PublicCard; industriesLabel: string }) {
   return (
       <header className="flex items-start gap-4 border-b border-rule p-5">
-        <PersonAvatar name={card.name} src={card.avatarUrl} size="lg" />
+        <AudienceOrbit followers={card.followers} topTitles={Object.entries(card.audienceJobTitles).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([title]) => title)}>
+          <PersonAvatar name={card.name} src={card.avatarUrl} size="lg" />
+        </AudienceOrbit>
         <div className="min-w-0">
           <h2 className="text-h4">{card.name}</h2>
           <p className="num text-caption text-ink-muted">@{card.handle} · {countryName(card.country)}</p>

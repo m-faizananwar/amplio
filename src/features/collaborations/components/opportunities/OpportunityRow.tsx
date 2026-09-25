@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { PersonAvatar } from "@/components/ui/avatar";
 import type { OpportunityDto } from "../../schemas";
+import { FitRing } from "@/components/graphics/FitRing";
 import { FitBreakdown } from "./FitBreakdown";
 
 type Props = { opportunity: OpportunityDto; pending: boolean; onApply: (o: OpportunityDto) => void; onBrief: (o: OpportunityDto) => void };
@@ -30,6 +31,7 @@ export function OpportunityRow({ opportunity: o, pending, onApply, onBrief }: Pr
             <p className="truncate font-medium text-ink">{o.campaignName}</p>
             <p className="truncate text-small text-ink-muted">{o.brandCompany} · {t("channel")} · <span className="num">{due}</span></p>
             <button type="button" onClick={() => setOpen((v) => !v)} aria-expanded={open} className="mt-1.5 inline-flex items-center gap-1 rounded-chip border border-rule px-2 py-0.5 text-caption text-ink hover:bg-tint">
+              <FitRing score={o.matchScore} className="size-3.5 text-money" />
               <span className="num">{t("fitScore", { percent: o.matchScore })}</span> · {t("whyFit")}
               <ChevronDown className={`size-3 transition-transform duration-(--duration-fast) ${open ? "rotate-180" : ""}`} aria-hidden="true" />
             </button>

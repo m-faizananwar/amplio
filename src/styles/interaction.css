@@ -117,3 +117,8 @@ html { scroll-behavior: smooth; }
   .g-burst { opacity: 0; }
   .g-ripple { opacity: 0.3; }
 }
+@keyframes gRing { from { stroke-dashoffset: 100; } to { stroke-dashoffset: var(--g-to); } }
+.g-ring { animation: gRing 520ms var(--ease-ledger) var(--g-delay, 0ms) both; }
+@keyframes gOrbit { to { transform: rotate(360deg); } }
+.g-orbit { animation: gOrbit 60s linear infinite; }
+@media (prefers-reduced-motion: reduce) { .g-ring, .g-orbit { animation: none; } }
