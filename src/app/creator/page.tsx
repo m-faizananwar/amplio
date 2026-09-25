@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { redirect } from "next/navigation";
 import { ErrorState } from "@/components/page/ErrorState";
 import { getViewer } from "@/features/auth/server/session";
@@ -35,7 +36,7 @@ export default async function CreatorOverviewPage() {
     ]);
   } catch (error) {
     console.error("[overview] creator overview failed", { creatorId, error });
-    return <ErrorState body="We could not load your overview. Try again in a moment." retryHref="/creator" />;
+    return <ErrorState title={(await getTranslations("creator.overview"))("error.title")} body={(await getTranslations("creator.overview"))("error.body")} retryHref="/creator" />;
   }
   const [collaborations, earnings, ledger, card, links, clicks] = data;
   const clickTotal = links.reduce((sum, l) => sum + l.clicks, 0);

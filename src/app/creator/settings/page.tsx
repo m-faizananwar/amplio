@@ -20,7 +20,7 @@ export default async function CreatorSettingsPage() {
     settings = await getCreatorSettings(viewer.creator.id);
   } catch (error) {
     console.error("[settings] creator settings failed", { creatorId: viewer.creator.id, error });
-    return <ErrorState body="We could not load your settings. Try again in a moment." retryHref="/creator/settings" />;
+    return <ErrorState title={(await getTranslations("settings.creator"))("error.title")} body={(await getTranslations("settings.creator"))("error.body")} retryHref="/creator/settings" />;
   }
   if (!settings) redirect("/login");
   const t = await getTranslations("settings.creator");

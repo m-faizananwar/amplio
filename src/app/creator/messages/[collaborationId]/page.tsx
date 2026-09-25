@@ -24,7 +24,7 @@ export default async function CreatorThreadPage({ params }: Props) {
     data = await Promise.all([listThreads(scope), getThread(scope, collaborationId)]);
   } catch (error) {
     console.error("[messages] creator thread failed", { collaborationId, creatorId: scope.ownerId, error });
-    return <ErrorState body="We could not load this conversation. Try again in a moment." retryHref={`/creator/messages/${collaborationId}`} />;
+    return <ErrorState title={(await getTranslations("collaboration.messages"))("error.title")} body={(await getTranslations("collaboration.messages"))("error.body")} retryHref={`/creator/messages/${collaborationId}`} />;
   }
   const [threads, detail] = data;
   if (!detail) notFound();

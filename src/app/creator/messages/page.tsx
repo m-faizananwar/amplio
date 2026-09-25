@@ -21,7 +21,7 @@ export default async function CreatorMessagesPage() {
     threads = await listThreads(scope);
   } catch (error) {
     console.error("[messages] creator list failed", { creatorId: scope.ownerId, error });
-    return <ErrorState body="We could not load your messages. Try again in a moment." retryHref="/creator/messages" />;
+    return <ErrorState title={(await getTranslations("collaboration.messages"))("error.title")} body={(await getTranslations("collaboration.messages"))("error.body")} retryHref="/creator/messages" />;
   }
 
   const t = await getTranslations("collaboration.messages");

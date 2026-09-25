@@ -24,7 +24,7 @@ export default async function CreatorCardPage() {
     data = await Promise.all([getPublicCard(handle), getAffiliateSummary(id), headers(), getTranslations("creator.card")]);
   } catch (error) {
     console.error("[card] my card failed", { creatorId: id, error });
-    return <ErrorState body="We could not load your card. Try again in a moment." retryHref="/creator/card" />;
+    return <ErrorState title={(await getTranslations("creator.card"))("error.title")} body={(await getTranslations("creator.card"))("error.body")} retryHref="/creator/card" />;
   }
   const [card, affiliate, h, t] = data;
   if (!card) redirect("/login");
