@@ -33,6 +33,23 @@ referrer, device. If a number can't be traced to rows, it isn't shown.
 | Guided tour | Replaced by empty states that say what to do next, where you already are |
 | Book-a-call pages | No calendar behind them |
 | Cinematic landing effects (video scrub, glass, splash) | They slowed the first paint and said nothing about the product |
+| Start a campaign from your link | The link was never read: the brief came from the workspace profile, so the path promised something it didn't do |
+| Team invite panel | It took an email and sent nothing. There are no seats behind it |
+| The support-bot thread in Messages | A canned conversation that answered every question with "I can't answer that yet". The assistant does that job, from real data |
+| "Continue with Google / LinkedIn" on sign-up | There is no OAuth behind them |
+
+## Stopped pretending
+
+Claims the reference made that we couldn't back, so we took them out rather than fake them.
+
+| Was | Now | Why |
+|---|---|---|
+| "Has 48 hours to accept" on every invitation | "Asked to answer by {date}" | Nothing expires an invitation; the date is a request, not a rule |
+| A 2-second "thinking" pause after the matching answer had already arrived | The answer shows when it's ready | The delay was theatre |
+| Thumbs up/down on a match "to improve your results" | Thumbs say "noted" | The feedback is stored but doesn't steer the ranking, so it doesn't claim to |
+| "A human replies within a business day" | Removed | No one is on the other end |
+| Launch estimate from the reference's published benchmarks | Estimate from our own live posts, with the sample size; "not enough data yet" below 3 posts / 30 clicks | A number from someone else's customers isn't a forecast for yours |
+| Logged-out assistant quoting benchmark figures | Answers from a checked list of product facts | Every figure it says has to exist in our data |
 
 ## Merged
 
