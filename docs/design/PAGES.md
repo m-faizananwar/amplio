@@ -84,6 +84,12 @@ answered yet**, committed to accepted work, paid to creators — then the ledger
 by bookings and top-ups. Held funds stay visible until the creator accepts (a decline returns
 them). The top-up is presets plus a custom amount and says plainly that no card is charged.
 
+### Messages — `/brand/messages`
+Two panes on wide screens (threads, open conversation), two screens on a phone. One
+thread per collaboration, opened when a booking is accepted — no separate inbox objects
+to manage. The components are shared with the creator side (the motion stream restyled
+them); the brand page adds its header and a campaign filter.
+
 ## Public
 
 Recordings for the landing live in `docs/design/recordings/` (a frame every

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { ErrorState } from "@/components/page/ErrorState";
+import { PageHeader } from "@/components/page/PageHeader";
 import { getViewer } from "@/features/auth/server/session";
 import { MessagesLayout } from "@/features/collaborations/components/messages/MessagesLayout";
 import { ThreadPlaceholder } from "@/features/collaborations/components/messages/ThreadPlaceholder";
@@ -15,18 +17,23 @@ export default async function BrandMessagesPage() {
   const scope = viewer && threadScopeFor(viewer);
   if (!scope) redirect("/login?next=/brand/messages");
 
+  const t = await getTranslations("collaboration.messages");
+  const header = <PageHeader title={t("title")} description={t("description")} />;
   let data;
   try {
     data = await Promise.all([listThreads(scope), listBrandCampaignOptions(scope.ownerId)]);
   } catch (error) {
     console.error("[messages] brand list failed", { brandId: scope.ownerId, error });
-    return <ErrorState body="We could not load your messages. Try again in a moment." retryHref="/brand/messages" />;
+    return <>{header}<ErrorState title={t("error.title")} body={t("error.body")} retryHref="/brand/messages" /></>;
   }
   const [threads, campaigns] = data;
 
   return (
-    <MessagesLayout threads={threads} role="brand" activeId={null} campaigns={campaigns}>
-      <ThreadPlaceholder hasThreads={threads.length > 0} />
-    </MessagesLayout>
+    <>
+      {header}
+      <MessagesLayout threads={threads} role="brand" activeId={null} campaigns={campaigns}>
+        <ThreadPlaceholder hasThreads={threads.length > 0} />
+      </MessagesLayout>
+    </>
   );
 }
