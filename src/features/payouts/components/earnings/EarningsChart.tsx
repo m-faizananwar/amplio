@@ -5,8 +5,11 @@ import type { MonthPoint } from "../../server/queries";
 
 const CENTS = 100;
 const FULL = 100;
+// the smallest earning month still reads as a bar, not a stub
+const MIN_BAR_PERCENT = 4;
 
-// Net earnings per month as ruled bars; the tallest month sets the scale.
+// Net earnings per month as bars on one baseline; the tallest month sets the
+// scale and every bar is proportional to its amount.
 export function EarningsChart({ months }: { months: MonthPoint[] }) {
   const t = useTranslations("creator.earnings.chart");
   const format = useFormatter();
@@ -22,8 +25,14 @@ export function EarningsChart({ months }: { months: MonthPoint[] }) {
           {months.map((m, i) => (
             <li key={m.month} className="grid gap-2 text-center">
               <span className="num text-caption text-ink-muted">{m.cents > 0 ? money(m.cents) : "—"}</span>
-              <span className="flex h-32 items-end rounded-control bg-tint">
-                <span className="block w-full origin-bottom rounded-control bg-ink animate-rise" style={{ height: `${Math.max(2, Math.round((m.cents / max) * FULL))}%`, animationDelay: `${i * 40}ms` }} />
+              {/* no track behind the bars: a month is a bar only if it earned; an
+                  empty month is a 2px stub on the baseline, never a grey column */}
+              <span className="flex h-32 items-end border-b border-rule">
+                {m.cents > 0 ? (
+                  <span className="block w-full origin-bottom rounded-t-control bg-ink animate-rise" style={{ height: `${Math.max(MIN_BAR_PERCENT, Math.round((m.cents / max) * FULL))}%`, animationDelay: `${i * 40}ms` }} />
+                ) : (
+                  <span aria-hidden="true" className="block h-0.5 w-full bg-rule" />
+                )}
               </span>
               <span className="text-caption text-ink">{format.dateTime(new Date(`${m.month}-01T00:00:00Z`), { month: "short" })}</span>
             </li>
