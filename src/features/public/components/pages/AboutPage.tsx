@@ -1,6 +1,7 @@
 import { ABOUT_PAGE } from "../../page-copy";
 import { CreatorAvatar } from "../shared/CreatorAvatar";
 import { CtaSection } from "../shared/CtaSection";
+import { LedMetricCard } from "../shared/LedMetricCard";
 import { PageHero } from "../shared/PageHero";
 
 export function AboutPage() {
@@ -26,14 +27,11 @@ export function AboutPage() {
               <p key={paragraph}>{paragraph}</p>
             ))}
           </div>
-          <dl className="mt-12 grid gap-4 sm:grid-cols-4">
+          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {ABOUT_PAGE.facts.map((fact) => (
-              <div key={fact.label} className="rounded-2xl bg-card p-5 ring-1 ring-border/60">
-                <dt className="text-xs text-muted-foreground">{fact.label}</dt>
-                <dd className="mt-1 text-2xl font-bold tracking-tight">{fact.value}</dd>
-              </div>
+              <LedMetricCard key={fact.label} value={fact.value} label={fact.label} />
             ))}
-          </dl>
+          </div>
         </div>
       </section>
       <section className="px-4 py-24 sm:px-6">

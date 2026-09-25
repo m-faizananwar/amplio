@@ -156,6 +156,7 @@ export const CASE_STUDY_PAGE = {
   sub: `After one €2,000 sponsored post returned just three sign-ups, BlogSEO rebuilt creator marketing on ${BRAND.name}, and turned it into predictable, trackable pipeline.`,
   tags: "B2B SaaS · SEO",
   video: { name: "Vincent Josse", role: "CEO & Founder, BlogSEO" },
+  resultsTitle: "What one rebuilt quarter returned",
   headline: [
     { value: "9", label: "creators activated" },
     { value: "2,940", label: "qualified clicks" },

@@ -2,7 +2,7 @@ import { BENCHMARKS } from "../../benchmarks-data";
 import { CtaSection } from "../shared/CtaSection";
 import { DataTable } from "../shared/DataTable";
 import { PageHero } from "../shared/PageHero";
-import { StatTile } from "../shared/StatTile";
+import { LedMetricCard } from "../shared/LedMetricCard";
 import { BenchmarksCaveats } from "./BenchmarksCaveats";
 import { BenchmarksMethodology } from "./BenchmarksMethodology";
 
@@ -39,7 +39,7 @@ export function BenchmarksPage() {
           </ul>
           <div className="mt-10 grid gap-4 sm:grid-cols-3">
             {b.headline.map((stat) => (
-              <StatTile key={stat.label} value={stat.value} label={stat.label} />
+              <LedMetricCard key={stat.label} value={stat.value} label={stat.label} />
             ))}
           </div>
         </section>
@@ -55,11 +55,10 @@ export function BenchmarksPage() {
           <DataTable columns={b.cplByVertical.columns} rows={b.cplByVertical.rows} caption="Cost per lead by vertical" />
         </Block>
         <Block title={b.funnel.title} body={b.funnel.body}>
-          <ol className="grid gap-4 sm:grid-cols-4">
+          <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {b.funnel.steps.map((step) => (
-              <li key={step.label} className="rounded-2xl bg-card p-5 ring-1 ring-border/60">
-                <p className="text-2xl font-bold tracking-tight">{step.value}</p>
-                <p className="mt-1 text-xs text-muted-foreground">{step.label}</p>
+              <li key={step.label}>
+                <LedMetricCard value={step.value} label={step.label} />
               </li>
             ))}
           </ol>

@@ -1,0 +1,26 @@
+/* The landing metric card's material for the public pages' stat tiles: the
+   ink card, the paper grain, the LED-dot number (metric-cards-spec §"LED DOT
+   TYPE", rendered by the stage's own led-dots renderer) and the same lift on
+   hover. The stage's three cards keep their bespoke art; these carry a number,
+   a label and an optional caption. */
+.led-card {
+  position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 0.75rem; padding: 2rem 1.25rem; min-height: 190px; overflow: hidden;
+  border-radius: 28px; background: #0d0c0b; color: rgba(255, 255, 255, 0.97);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+}
+.led-card:hover { transform: translateY(-3px); box-shadow: 0 22px 48px rgb(13 12 11 / 0.28); }
+.led-card__metric { display: flex; align-items: flex-end; justify-content: center; width: 100%; }
+.led-card__dots { display: block; width: min(62%, 190px); color: #fff; }
+.led-card__dots .dot-svg { width: 100%; height: auto; }
+.led-card__affix { font-size: clamp(22px, 4.4vw, 34px); font-weight: 400; line-height: 1; letter-spacing: -0.02em; }
+.led-card__affix--pre { margin-right: 0.35rem; }
+.led-card__affix--post { margin-left: 0.35rem; }
+.led-card__label { margin: 0; text-align: center; font-size: 0.8125rem; letter-spacing: 0.01em; color: rgba(255, 255, 255, 0.72); }
+.led-card__caption { margin: 0; text-align: center; font-size: 0.75rem; color: rgba(255, 255, 255, 0.55); }
+/* Inside an ink section the card would vanish into the ground: it lifts to the
+   glass material the rest of that section uses. */
+.section-ink .led-card { background: rgb(242 240 236 / 0.06); box-shadow: inset 0 0 0 1px rgb(242 240 236 / 0.14); }
+.section-ink .led-card:hover { box-shadow: inset 0 0 0 1px rgb(242 240 236 / 0.28), 0 22px 48px rgb(0 0 0 / 0.35); }
+@media (prefers-reduced-motion: reduce) { .led-card, .led-card:hover { transition: none; transform: none; } }
+@media (max-width: 480px) { .led-card { min-height: 150px; padding: 1.5rem 1rem; } }

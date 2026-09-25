@@ -9,7 +9,7 @@ import { FaqList } from "../../shared/FaqList";
 import { LogoWall } from "../../shared/LogoWall";
 import { PillLink } from "../../shared/PillLink";
 import { SectionHeading } from "../../shared/SectionHeading";
-import { StatTile } from "../../shared/StatTile";
+import { LedMetricCard } from "../../shared/LedMetricCard";
 import { CreatorMonetizeSection } from "./CreatorMonetizeSection";
 import { CreatorPlatformSection } from "./CreatorPlatformSection";
 
@@ -81,7 +81,7 @@ export function ForCreatorsPage() {
         <div className="mx-auto max-w-6xl rounded-[2rem] bg-muted/40 p-4 sm:p-8">
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {results.stats.map((stat) => (
-              <StatTile key={stat.label} value={stat.value} label={stat.label} />
+              <LedMetricCard key={stat.label} value={stat.value} label={stat.label} />
             ))}
           </div>
         </div>

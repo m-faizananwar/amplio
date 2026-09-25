@@ -6,18 +6,16 @@ import { CreatorAvatar } from "../shared/CreatorAvatar";
 import { interTight } from "../shared/display-font";
 import { CtaSection } from "../shared/CtaSection";
 import { LinkedInMark } from "../shared/LinkedInMark";
+import { LedMetricCard } from "../shared/LedMetricCard";
 import { CaseStudyNarrative } from "./CaseStudyNarrative";
 
-function Stats({ items, large }: { items: readonly { value: string; label: string }[]; large?: boolean }) {
+function Stats({ items }: { items: readonly { value: string; label: string }[] }) {
   return (
-    <dl className="grid grid-cols-3 gap-4 text-center">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
       {items.map((item) => (
-        <div key={item.label}>
-          <dd className={large ? "text-4xl font-bold tracking-tight sm:text-5xl" : "text-3xl font-bold tracking-tight sm:text-4xl"}>{item.value}</dd>
-          <dt className="mt-1 text-xs text-muted-foreground sm:text-sm">{item.label}</dt>
-        </div>
+        <LedMetricCard key={item.label} value={item.value} label={item.label} />
       ))}
-    </dl>
+    </div>
   );
 }
 
@@ -50,10 +48,13 @@ export function CaseStudyPage() {
             <p className="mt-2 text-xs text-background/50">Video poster · no playback in this build</p>
           </div>
         </div>
-        <div className="mx-auto mt-14 max-w-6xl rounded-[2rem] bg-card p-8 ring-1 ring-border/60 sm:p-12">
-          <Stats items={c.headline} large />
-          <div className="my-8 border-t" />
-          <Stats items={c.detail} />
+      </section>
+      {/* the numbers are what this page is for: the one ink section (paper either side) */}
+      <section className="section-ink px-4 sm:px-6" data-morph-group>
+        <div className="mx-auto max-w-6xl">
+          <h2 className="text-3xl font-bold tracking-[-0.03em] sm:text-4xl" data-morph="text">{c.resultsTitle}</h2>
+          <div className="mt-10" data-morph><Stats items={c.headline} /></div>
+          <div className="mt-4" data-morph><Stats items={c.detail} /></div>
         </div>
       </section>
       <CaseStudyNarrative />
