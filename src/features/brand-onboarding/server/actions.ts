@@ -2,6 +2,7 @@
 
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { getLocale } from "next-intl/server";
 import { getDb } from "@/db";
 import { brands, campaigns } from "@/db/schema";
 import { updateTags } from "@/db/cache";
@@ -51,6 +52,7 @@ async function analyze(row: BrandOnboardingRow, url: string): Promise<AnalyzeRes
     companyIsPlaceholder,
     emailDomain: emailDomainOf(row.ownerEmail),
     url,
+    language: (await getLocale()) === "fr" ? "fr" : "en",
   });
   const { profile, industries, generatedWith } = generated;
   await getDb()

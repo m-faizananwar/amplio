@@ -13,6 +13,8 @@ export type ProfileSource = {
   companyIsPlaceholder: boolean;
   emailDomain: string;
   url: string;
+  // the language the brand works in: the draft is written in it
+  language?: "en" | "fr";
 };
 
 const TITLE_SEPARATORS = /\s*[|–—·]\s*|:\s+|\s+-\s+/;

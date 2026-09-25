@@ -22,13 +22,16 @@ const SYSTEM_PROMPT = `You write the onboarding profile for a brand joining ${BR
 Rules:
 - Use only what the website text and the registration say. Never invent customers, figures, awards or features. If the text is thin, stay general and say what the site states.
 - "company" is the short brand name as the company writes it (no tagline, no legal suffix unless it is part of the name).
-- "valueProp" is 4 to 6 sentences: what the company does, for whom, and how — the product, the buyer, the way it is delivered, the outcome the company claims. Third person, plain English, no marketing superlatives that the site does not use.
+- "valueProp" is 4 to 6 sentences: what the company does, for whom, and how — the product, the buyer, the way it is delivered, the outcome the company claims. Third person, plain language, no marketing superlatives that the site does not use.
 - "icps" is exactly ${ICP_COUNT} entries. Each title is a role plus a company type (for example "Founder / CEO of Early-Stage SaaS", "Product Director at Mid-Market B2B Company"). Each description is 3 to 4 sentences: what they own, the situation that makes them look for this product, what they are frustrated by, and why this company's approach fits.
 - Write for a LinkedIn creator who will explain the product to that audience.`;
+
+const LANGUAGE_NAME = { en: "English", fr: "French" } as const;
 
 function userPrompt(source: ProfileSource): string {
   const summary = source.summary;
   return [
+    `Write every field (valueProp, ICP titles and descriptions) in ${LANGUAGE_NAME[source.language ?? "en"]}. Keep the company name as the company writes it.`,
     `Registered company name: ${source.company}${source.companyIsPlaceholder ? " (placeholder derived from the email domain — replace it with the real name from the site)" : ""}`,
     `Email domain: ${source.emailDomain || "(unknown)"}`,
     `Website: ${source.url}`,
