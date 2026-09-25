@@ -18,8 +18,6 @@ export const MAX_THREAD_MESSAGES = 200;
 export const TRACKED_LINK_PATH = "/r";
 
 export const QUICK_REACTIONS = ["👍", "🙏", "🔥", "🎉", "💯", "👏", "😂", "❤️", "🚀", "👀", "✅", "🤝"] as const;
-
-export const BOT_THREAD_ID = "support-bot";
 export const SUPPORT_BOT = {
   name: `${BRAND.bot}`,
   preview: "Have a question or need help? Click here.",

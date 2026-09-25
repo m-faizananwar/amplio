@@ -1,17 +1,17 @@
-import { MessageCircle } from "lucide-react";
+"use client";
 
-// Right pane before a conversation is picked.
+import { useTranslations } from "next-intl";
+
+// Wide screens only: the right pane before a thread is picked.
 export function ThreadPlaceholder({ hasThreads }: { hasThreads: boolean }) {
+  const t = useTranslations("collaboration.messages.empty.noSelection");
+  if (!hasThreads) return null;
   return (
-    <>
-      <header className="border-b px-6 py-4">
-        <h2 className="font-semibold">Messages</h2>
-        <p className="text-sm text-muted-foreground">Select a conversation</p>
-      </header>
-      <div className="flex flex-1 flex-col items-center justify-center gap-2 p-8 text-center text-sm text-muted-foreground">
-        <MessageCircle className="size-6" aria-hidden="true" />
-        {hasThreads ? "Pick a thread on the left." : "No conversations yet."}
+    <div className="grid flex-1 place-items-center p-8 text-center">
+      <div>
+        <p className="font-medium text-ink">{t("title")}</p>
+        <p className="text-small text-ink-muted">{t("body")}</p>
       </div>
-    </>
+    </div>
   );
 }

@@ -1,35 +1,32 @@
-import { cn } from "@/lib/cn";
+"use client";
+
+import { useFormatter, useTranslations } from "next-intl";
 import Link from "next/link";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { messageStamp } from "@/lib/dates";
+import { PersonAvatar } from "@/components/ui/avatar";
 import type { ThreadDto, ViewerRole } from "../../schemas";
 
 type Props = { thread: ThreadDto; role: ViewerRole; active: boolean };
 
 export function ThreadListItem({ thread: t, role, active }: Props) {
+  const tr = useTranslations("collaboration.messages.list");
+  const format = useFormatter();
   return (
     <li>
       <Link
         prefetch={false}
         href={`/${role}/messages/${t.collaborationId}`}
         aria-current={active ? "page" : undefined}
-        className={cn(
-          "flex items-center gap-3 px-4 py-3 transition-colors hover:bg-muted/60 focus-visible:outline-2 focus-visible:outline-ring",
-          active && "bg-brand/5",
-        )}
+        className={`flex items-center gap-3 px-4 py-3 transition-colors duration-(--duration-fast) ease-ledger hover:bg-tint focus-visible:bg-tint focus-visible:outline-none ${active ? "bg-tint" : ""}`}
       >
-        <Avatar size="lg">
-          {t.counterpartAvatarUrl ? <AvatarImage src={t.counterpartAvatarUrl} alt="" /> : null}
-          <AvatarFallback className="bg-foreground font-semibold text-background">{t.counterpartInitial}</AvatarFallback>
-        </Avatar>
-        <div className="min-w-0 flex-1">
-          <div className="flex items-baseline justify-between gap-2">
-            <span className="truncate text-sm font-semibold">{t.counterpartName}</span>
-            {t.lastMessageAt ? <span className="shrink-0 text-xs text-muted-foreground">{messageStamp(t.lastMessageAt)}</span> : null}
-          </div>
-          <p className="truncate text-xs text-muted-foreground">{t.campaignName}</p>
-          <p className="truncate text-xs text-muted-foreground">{t.lastMessagePreview ?? "No messages yet — say hello."}</p>
-        </div>
+        <PersonAvatar name={t.counterpartName} src={t.counterpartAvatarUrl} />
+        <span className="min-w-0 flex-1">
+          <span className="flex items-baseline justify-between gap-2">
+            <span className="truncate text-small font-medium text-ink">{t.counterpartName}</span>
+            {t.lastMessageAt ? <time className="num shrink-0 text-caption text-ink-muted" dateTime={t.lastMessageAt}>{format.relativeTime(new Date(t.lastMessageAt))}</time> : null}
+          </span>
+          <span className="block truncate text-caption text-ink-muted">{t.campaignName}</span>
+          <span className="block truncate text-caption text-ink-muted">{t.lastMessagePreview ?? tr("noPreview")}</span>
+        </span>
       </Link>
     </li>
   );

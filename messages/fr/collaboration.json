@@ -385,5 +385,70 @@
         "unknown": "Statut modifié"
       }
     }
+  },
+  "messages": {
+    "title": "Messages",
+    "description": "Une conversation par collaboration, ouverte dès que la réservation est acceptée.",
+    "loading": "Chargement des messages",
+    "error": {
+      "title": "Impossible de charger vos messages",
+      "body": "Réessayez dans un instant."
+    },
+    "list": {
+      "title": "Conversations",
+      "search": "Rechercher une conversation",
+      "searchPlaceholder": "Chercher un créateur, une marque ou une campagne",
+      "campaign": "Campagne",
+      "campaignAll": "Toutes les campagnes",
+      "unread": "{count, plural, one {# non lu} other {# non lus}}",
+      "youPrefix": "Vous : {message}",
+      "noPreview": "Aucun message pour l’instant",
+      "noMatch": "Aucune conversation ne correspond."
+    },
+    "empty": {
+      "noThreads": {
+        "title": "Aucune conversation pour l’instant",
+        "body": "Une conversation s’ouvre quand une réservation est acceptée. Répondez à une invitation ou postulez à une campagne.",
+        "action": "Voir les opportunités"
+      },
+      "noSelection": {
+        "title": "Choisissez une conversation",
+        "body": "Sélectionnez-en une dans la liste."
+      },
+      "noMessages": "Aucun message pour l’instant. Dites bonjour.",
+      "brandNoThreads": {
+        "title": "Aucune conversation pour l’instant",
+        "body": "Une conversation s’ouvre quand un créateur accepte votre invitation ou que vous acceptez une candidature.",
+        "action": "Trouver des créateurs"
+      }
+    },
+    "thread": {
+      "back": "Tous les messages",
+      "title": "{name} · {campaign}",
+      "openCollaboration": "Voir la collaboration",
+      "you": "Vous"
+    },
+    "composer": {
+      "label": "Message",
+      "placeholder": "Écrivez un message…",
+      "hint": "Entrée pour envoyer, Maj + Entrée pour aller à la ligne.",
+      "send": "Envoyer",
+      "sending": "Envoi…",
+      "reactions": "Réactions rapides",
+      "validation": {
+        "empty": "Écrivez d’abord quelque chose.",
+        "max": "Restez sous {max} caractères."
+      }
+    },
+    "errors": {
+      "sendFailed": "Votre message n’a pas été envoyé.",
+      "retry": "Réessayer",
+      "notSent": "Non envoyé",
+      "notFound": {
+        "title": "Conversation introuvable",
+        "body": "Elle appartient peut-être à un autre espace, ou elle n’est pas encore ouverte.",
+        "action": "Tous les messages"
+      }
+    }
   }
 }

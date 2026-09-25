@@ -45,6 +45,11 @@ money numbers — available, awaiting release, withdrawn, earned — each openin
 rows that add up to it, then the months and the ledger itself. Withdrawing is a dialog:
 amount or all of it, where it goes, one confirm, and the Stripe stub said plainly.
 
+### Messages — `/creator/messages` (shared with the brand side)
+Two panes on wide screens (threads, then the open thread); on a phone they are two screens.
+Only real threads — one per accepted collaboration. The canned "support bot" thread that
+answered "I can't answer questions in this version" is cut; the assistant is the place to ask.
+
 ### Settings — `/creator/settings`
 Stacked sections with a sticky index on wide screens, one form per schema. Each section
 saves on its own, so a validation error in pricing never blocks the card, and the fields
@@ -219,5 +224,6 @@ actually stores and that money doesn't move.
 | Stripe payout method (Settings › Payouts, Earnings › Withdraw) | no Stripe Connect; the ledger records the withdrawal | allowed stub, labelled in both places |
 | Creator card figures (My card, `/c/[handle]`) | followers, views, engagement, audience mix come from the (simulated) profile read | labelled under the card; seeded creators carry a "demo creator" note on the public page |
 | Affiliate "invite creators" tab, community Slack button | "not part of this build" | cut with their pages |
+| Messages "support bot" thread | a fake conversation with a canned reply | cut; `/…/messages/support-bot` now 404s |
 | Brand wallet top-up (Billing) | no Stripe; the credit is a ledger row | stub, the dialog says "no card is charged" |
 | Launch estimator (Campaigns) | rates from Amplio's own live posts, clicks and attributed sign-ups | real; below 3 live posts / 30 clicks it says "not enough data yet" |

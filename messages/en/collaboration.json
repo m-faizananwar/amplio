@@ -385,5 +385,70 @@
         "unknown": "Status changed"
       }
     }
+  },
+  "messages": {
+    "title": "Messages",
+    "description": "One thread per collaboration, open once a booking is accepted.",
+    "loading": "Loading messages",
+    "error": {
+      "title": "We couldn't load your messages",
+      "body": "Try again in a moment."
+    },
+    "list": {
+      "title": "Conversations",
+      "search": "Search conversations",
+      "searchPlaceholder": "Search a creator, brand or campaign",
+      "campaign": "Campaign",
+      "campaignAll": "All campaigns",
+      "unread": "{count, plural, one {# unread} other {# unread}}",
+      "youPrefix": "You: {message}",
+      "noPreview": "No messages yet",
+      "noMatch": "No conversation matches."
+    },
+    "empty": {
+      "noThreads": {
+        "title": "No conversations yet",
+        "body": "A thread opens when a booking is accepted. Answer an invitation or apply to a campaign.",
+        "action": "Browse opportunities"
+      },
+      "noSelection": {
+        "title": "Select a conversation",
+        "body": "Pick a thread from the list."
+      },
+      "noMessages": "No messages yet. Say hello.",
+      "brandNoThreads": {
+        "title": "No conversations yet",
+        "body": "A thread opens when a creator accepts your invitation or you accept an application.",
+        "action": "Find creators"
+      }
+    },
+    "thread": {
+      "back": "All messages",
+      "title": "{name} · {campaign}",
+      "openCollaboration": "Open collaboration",
+      "you": "You"
+    },
+    "composer": {
+      "label": "Message",
+      "placeholder": "Write a message…",
+      "hint": "Enter to send, Shift + Enter for a new line.",
+      "send": "Send",
+      "sending": "Sending…",
+      "reactions": "Quick reactions",
+      "validation": {
+        "empty": "Write something first.",
+        "max": "Keep it under {max} characters."
+      }
+    },
+    "errors": {
+      "sendFailed": "Your message wasn't sent.",
+      "retry": "Retry",
+      "notSent": "Not sent",
+      "notFound": {
+        "title": "Conversation not found",
+        "body": "It may belong to another workspace, or the thread isn't open yet.",
+        "action": "All messages"
+      }
+    }
   }
 }
