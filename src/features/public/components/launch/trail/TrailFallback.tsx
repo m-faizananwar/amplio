@@ -5,7 +5,10 @@ const H = 640;
 
 // The same trail, drawn once: what reduced motion, no WebGL, and the first
 // paint (before three.js has loaded) all see. Scales with its box.
-export function TrailFallback({ signups }: { signups: number }) {
+// `animated`: phones and low-power devices get this drawing instead of the
+// WebGL layer, with a few clicks travelling their paths in plain SVG
+// (animateMotion) — no three.js download or evaluation on a phone.
+export function TrailFallback({ signups, animated = false }: { signups: number; animated?: boolean }) {
   const t = layoutTrail(W, H, { audience: 72, ledgerRows: Math.max(signups, 1) });
   const L = t.ledger;
   return (
@@ -22,6 +25,18 @@ export function TrailFallback({ signups }: { signups: number }) {
         {t.sources.map((p, i) => <circle key={i} cx={p.x} cy={p.y} r="9" />)}
         <circle cx={t.site.x} cy={t.site.y} r="5" />
       </g>
+      {animated ? (
+        <g fill="var(--color-money)">
+          {t.audience.filter((_, i) => i % 5 === 0).map((p, i) => {
+            const s = t.sources[t.parentOf[t.audience.indexOf(p)]];
+            return (
+              <circle key={`m${i}`} r="5">
+                <animateMotion dur={`${2.4 + (i % 4) * 0.5}s`} begin={`${(i * 0.37) % 2.4}s`} repeatCount="indefinite" path={`M${s.x} ${s.y}Q${p.x} ${p.y} ${t.site.x} ${t.site.y}`} />
+              </circle>
+            );
+          })}
+        </g>
+      ) : null}
       {/* a few clicks in flight, so a still frame shows the flow */}
       <g fill="var(--color-money)">
         {t.audience.filter((_, i) => i % 7 === 0).map((p, i) => {

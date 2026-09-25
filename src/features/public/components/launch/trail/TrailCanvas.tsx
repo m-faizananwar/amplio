@@ -23,10 +23,19 @@ export function TrailCanvas({ counts, labels, className }: { counts: TrailCounts
   const host = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
   const [live, setLive] = useState(false);
+  const [lite, setLite] = useState(false);
   const reduced = useReducedMotion();
 
   useEffect(() => {
-    if (reduced || !hasWebgl()) return;
+    if (reduced) return;
+    // phones and low-power devices: no three.js at all (it is ~500KB to parse
+    // and evaluate); the drawing animates its clicks in plain SVG instead
+    const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+    if (window.innerWidth < 768 || (navigator.hardwareConcurrency ?? 8) < 4 || saveData || !hasWebgl()) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- the device is only known after mount
+      setLite(true);
+      return;
+    }
     let scene: TrailScene | null = null;
     let cancelled = false;
     let visible = true;
@@ -96,7 +105,7 @@ export function TrailCanvas({ counts, labels, className }: { counts: TrailCounts
     <div ref={host} className={className ?? "absolute inset-0"} aria-hidden="true">
       <TrailLabels host={host} labels={labels} rows={counts.signups} />
       <div className={live ? "absolute inset-0 opacity-0 transition-opacity duration-300" : "absolute inset-0"}>
-        <TrailFallback signups={counts.signups} />
+        <TrailFallback signups={counts.signups} animated={lite} />
       </div>
       <canvas ref={canvas} className={live ? "absolute inset-0 size-full opacity-100 transition-opacity duration-300" : "absolute inset-0 size-full opacity-0"} />
     </div>
