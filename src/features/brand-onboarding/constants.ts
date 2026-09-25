@@ -1,4 +1,3 @@
-import { BRAND } from "@/config/brand";
 // Brand onboarding: the 3 steps after "register as brand" (product map,
 // "Brand onboarding after email + 6-digit code").
 
@@ -65,14 +64,5 @@ export const INDUSTRY_KEYWORDS: ReadonlyArray<{ industry: string; keywords: read
   { industry: "Real Estate / PropTech", keywords: ["real estate", "property", "proptech"] },
 ];
 
-// The coach mark on the marketplace (goes when that page stops mounting it).
-export const COPY = {
-  coachMark: {
-    title: `${BRAND.copilot} is using your campaign brief`,
-    body: `Your starter brief is attached. Tell ${BRAND.copilot} what matters most, open profiles, and save the creators you want to invite.`,
-    gotIt: "Got it",
-    backToCampaign: "Back to campaign",
-  },
-} as const;
 
 export const WELCOME_PARAMS = { campaign: "welcomeCampaign", step: "welcomeStep", stepValue: "creators" } as const;
