@@ -479,7 +479,8 @@ main [aria-busy="true"][aria-label^="Loading"] { animation: skeletonAppear 0s 0.
 /* ---- route crossfade (View Transitions API, where it exists) ----
    Only the page area is named, so the rail and the top bar stay put while
    the content under them crossfades; the incoming side is live, so the
-   capsule and the route-enter pops keep running underneath. */
+   capsule and the route-enter pops keep running underneath. Navigations
+   slower than the route shell's 120ms grace skip this entirely. */
 .vt-main { view-transition-name: app-main; }
 @keyframes vtFadeOut { to { opacity: 0; } }
 @keyframes vtFadeIn { from { opacity: 0; } }
