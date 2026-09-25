@@ -65,8 +65,9 @@ export async function readLinkedinProfile(input: LinkedinInput): Promise<ActionR
     if (cached) return { ok: true, data: cached };
     const read = await importLinkedinProfile(url);
     if (!read.ok) {
-      // a failed read keeps the URL and marks the card as entered by hand
-      await getDb().update(creators).set({ linkedinUrl: url, linkedinReadAt: null }).where(ownRow(auth.data));
+      // a failed read keeps the URL only: any earlier successful read (its
+      // figures and its date) stays, so null keeps meaning "never read"
+      await getDb().update(creators).set({ linkedinUrl: url }).where(ownRow(auth.data));
       dropCaches(auth.data);
       return { ok: false, error: READ_FAILED };
     }
