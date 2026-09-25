@@ -4,6 +4,7 @@ import { getDb } from "@/db";
 import { brands, campaigns, clicks, collaborations, creatorPosts, creators, trackingLinks } from "@/db/schema";
 import { cachedRead } from "@/db/cache";
 import { tag } from "@/lib/cache-tags";
+import { deviceOf, referrerHost, type Device } from "@/lib/click-source";
 
 export type PublicSnapshot = {
   followers: number;
@@ -31,6 +32,22 @@ export type TrackedLinkPerformance = {
   clicks: number;
   publishedAt: string | null;
 };
+
+// One click on one of the creator's tracked links: the rows behind the
+// "clicks" number. Raw facts only; the view turns them into trail rows so
+// device and "direct" read in the viewer's language.
+export type CreatorClickRow = {
+  id: string;
+  at: string;
+  collaborationId: string;
+  campaign: string;
+  brand: string;
+  referrer: string | null;
+  device: Device;
+  country: string | null;
+};
+// Enough rows to read in a drawer; the total on the card is counted separately.
+export const CLICK_TRAIL_LIMIT = 500;
 
 export const ANALYTICS_RANGES = ["all", "30", "90"] as const;
 export type AnalyticsRange = (typeof ANALYTICS_RANGES)[number];
@@ -103,6 +120,31 @@ async function loadTrackedLinkPerformance(creatorId: string): Promise<TrackedLin
   return rows.map((r) => ({ ...r, publishedAt: r.publishedAt?.toISOString() ?? null }));
 }
 
+async function loadCreatorClicks(creatorId: string, range: AnalyticsRange = "all"): Promise<CreatorClickRow[]> {
+  const db = getDb();
+  const since = sinceFor(range);
+  const rows = await db
+    .select({
+      id: clicks.id,
+      at: clicks.clickedAt,
+      collaborationId: collaborations.id,
+      campaign: campaigns.name,
+      brand: brands.company,
+      referrer: clicks.referrer,
+      userAgent: clicks.userAgent,
+      country: clicks.country,
+    })
+    .from(clicks)
+    .innerJoin(trackingLinks, eq(trackingLinks.id, clicks.trackingLinkId))
+    .innerJoin(collaborations, eq(collaborations.id, trackingLinks.collaborationId))
+    .innerJoin(campaigns, eq(campaigns.id, collaborations.campaignId))
+    .innerJoin(brands, eq(brands.id, campaigns.brandId))
+    .where(since ? and(eq(collaborations.creatorId, creatorId), gte(clicks.clickedAt, since)) : eq(collaborations.creatorId, creatorId))
+    .orderBy(desc(clicks.clickedAt))
+    .limit(CLICK_TRAIL_LIMIT);
+  return rows.map(({ userAgent, referrer, at, ...r }) => ({ ...r, at: at.toISOString(), referrer: referrerHost(referrer), device: deviceOf(userAgent) }));
+}
+
 // The creator's own analytics: clicks on their links, and their posts.
 export function getPublicSnapshot(creatorId: string, range: AnalyticsRange = "all") {
   return cachedRead(loadPublicSnapshot, ["public-snapshot"], { tags: [tag.creatorAnalytics(creatorId)] })(creatorId, range);
@@ -114,4 +156,8 @@ export function getPublicPosts(creatorId: string, range: AnalyticsRange = "all")
 
 export function getTrackedLinkPerformance(creatorId: string) {
   return cachedRead(loadTrackedLinkPerformance, ["tracked-link-performance"], { tags: [tag.creatorAnalytics(creatorId)] })(creatorId);
+}
+
+export function listCreatorClicks(creatorId: string, range: AnalyticsRange = "all") {
+  return cachedRead(loadCreatorClicks, ["creator-clicks"], { tags: [tag.creatorAnalytics(creatorId)] })(creatorId, range);
 }
