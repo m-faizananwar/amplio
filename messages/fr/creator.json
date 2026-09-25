@@ -338,48 +338,6 @@
       "brand": "{brand}",
       "done": "Terminé"
     },
-    "nextAction": {
-      "invited": {
-        "action": "Accepter ou refuser l’invitation",
-        "owner": "Vous"
-      },
-      "applied": {
-        "action": "En attente de la réponse de {brand}",
-        "owner": "{brand}"
-      },
-      "accepted": {
-        "action": "Rédiger le brouillon",
-        "owner": "Vous"
-      },
-      "draft_submitted": {
-        "action": "{brand} relit votre brouillon",
-        "owner": "{brand}"
-      },
-      "changes_requested": {
-        "action": "Modifier votre brouillon (tour {round} sur {max})",
-        "owner": "Vous"
-      },
-      "approved": {
-        "action": "Programmer le post",
-        "owner": "Vous"
-      },
-      "scheduled": {
-        "action": "Publier et ajouter l’URL du post",
-        "owner": "Vous"
-      },
-      "live": {
-        "action": "En attente du versement par {brand}",
-        "owner": "{brand}"
-      },
-      "paid": {
-        "action": "Payé : {amount}",
-        "owner": "Terminé"
-      },
-      "declined": {
-        "action": "Clôturée",
-        "owner": "Terminé"
-      }
-    },
     "timeLeft": {
       "minutes": "{count, plural, one {# minute restante} other {# minutes restantes}}",
       "hours": "{count, plural, one {# heure restante} other {# heures restantes}}",
@@ -897,18 +855,6 @@
       "available": "Disponible",
       "awaitingRelease": "En attente de versement",
       "withdrawn": "Retiré"
-    },
-    "status": {
-      "invited": "Invitation reçue",
-      "applied": "Candidature envoyée",
-      "accepted": "Acceptée",
-      "declined": "Refusée",
-      "draft_submitted": "Brouillon envoyé",
-      "changes_requested": "Modifications demandées",
-      "approved": "Validée",
-      "scheduled": "Programmée",
-      "live": "En ligne",
-      "paid": "Payée"
     }
   }
 }

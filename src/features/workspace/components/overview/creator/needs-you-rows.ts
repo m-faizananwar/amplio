@@ -1,5 +1,5 @@
 import type { CollaborationDto } from "@/features/collaborations/schemas";
-import type { NeedsYouItem } from "@/lib/creator-next-step";
+import type { NeedsYouItem } from "@/lib/next-step";
 
 export type NeedsYouRow = { key: string; title: string; detail: string; href: string; cta: string };
 

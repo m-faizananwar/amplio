@@ -17,7 +17,7 @@ const CENTS = 100;
 // four signals in place), when, what it pays, and the two things to do.
 export function OpportunityRow({ opportunity: o, pending, onApply, onBrief }: Props) {
   const t = useTranslations("creator.opportunities.item");
-  const ts = useTranslations("creator.common.status");
+  const ts = useTranslations("collaboration.status");
   const format = useFormatter();
   const [open, setOpen] = useState(false);
   const due = o.daysToDeadline === null ? t("noDeadline") : t("daysLeft", { count: Math.max(0, o.daysToDeadline) });

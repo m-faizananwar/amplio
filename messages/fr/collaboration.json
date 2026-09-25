@@ -50,5 +50,103 @@
     "viewBrief": "Lire le brief",
     "secondaryWinValue": "Des commentaires et des messages des bonnes personnes.",
     "any": "Toutes"
+  },
+  "status": {
+    "invited": "Invitation reçue",
+    "applied": "Candidature envoyée",
+    "accepted": "Acceptée",
+    "declined": "Refusée",
+    "draft_submitted": "Brouillon envoyé",
+    "changes_requested": "Modifications demandées",
+    "approved": "Validée",
+    "scheduled": "Programmée",
+    "live": "En ligne",
+    "paid": "Payée"
+  },
+  "nextAction": {
+    "creator": {
+      "invited": {
+        "action": "Accepter ou refuser l’invitation",
+        "owner": "Vous"
+      },
+      "applied": {
+        "action": "En attente de la réponse de {brand}",
+        "owner": "{brand}"
+      },
+      "accepted": {
+        "action": "Rédiger le brouillon",
+        "owner": "Vous"
+      },
+      "draft_submitted": {
+        "action": "{brand} relit votre brouillon",
+        "owner": "{brand}"
+      },
+      "changes_requested": {
+        "action": "Modifier votre brouillon (tour {round} sur {max})",
+        "owner": "Vous"
+      },
+      "approved": {
+        "action": "Programmer le post",
+        "owner": "Vous"
+      },
+      "scheduled": {
+        "action": "Publier et ajouter l’URL du post",
+        "owner": "Vous"
+      },
+      "live": {
+        "action": "En attente du versement par {brand}",
+        "owner": "{brand}"
+      },
+      "paid": {
+        "action": "Payé : {amount}",
+        "owner": "Terminé"
+      },
+      "declined": {
+        "action": "Clôturée",
+        "owner": "Terminé"
+      }
+    },
+    "brand": {
+      "invited": {
+        "action": "En attente de la réponse de {creator}",
+        "owner": "{creator}"
+      },
+      "applied": {
+        "action": "Acceptez ou refusez la candidature de {creator}",
+        "owner": "Vous"
+      },
+      "accepted": {
+        "action": "En attente du brouillon de {creator}",
+        "owner": "{creator}"
+      },
+      "draft_submitted": {
+        "action": "Brouillon prêt : à vous de le relire",
+        "owner": "Vous"
+      },
+      "changes_requested": {
+        "action": "En attente du brouillon révisé de {creator} (tour {round} sur {max})",
+        "owner": "{creator}"
+      },
+      "approved": {
+        "action": "En attente de la programmation du post par {creator}",
+        "owner": "{creator}"
+      },
+      "scheduled": {
+        "action": "En attente de la publication par {creator}",
+        "owner": "{creator}"
+      },
+      "live": {
+        "action": "En ligne : libérez le paiement",
+        "owner": "Vous"
+      },
+      "paid": {
+        "action": "Payé {amount}",
+        "owner": "Terminée"
+      },
+      "declined": {
+        "action": "Clôturée",
+        "owner": "Terminée"
+      }
+    }
   }
 }

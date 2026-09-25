@@ -338,48 +338,6 @@
       "brand": "{brand}",
       "done": "Done"
     },
-    "nextAction": {
-      "invited": {
-        "action": "Accept or decline the invitation",
-        "owner": "You"
-      },
-      "applied": {
-        "action": "Waiting for {brand} to answer",
-        "owner": "{brand}"
-      },
-      "accepted": {
-        "action": "Write the draft",
-        "owner": "You"
-      },
-      "draft_submitted": {
-        "action": "Waiting for {brand} to review your draft",
-        "owner": "{brand}"
-      },
-      "changes_requested": {
-        "action": "Update your draft (round {round} of {max})",
-        "owner": "You"
-      },
-      "approved": {
-        "action": "Schedule the post",
-        "owner": "You"
-      },
-      "scheduled": {
-        "action": "Publish and add the post URL",
-        "owner": "You"
-      },
-      "live": {
-        "action": "Waiting for {brand} to release payment",
-        "owner": "{brand}"
-      },
-      "paid": {
-        "action": "Paid {amount}",
-        "owner": "Done"
-      },
-      "declined": {
-        "action": "Closed",
-        "owner": "Done"
-      }
-    },
     "timeLeft": {
       "minutes": "{count, plural, one {# minute left} other {# minutes left}}",
       "hours": "{count, plural, one {# hour left} other {# hours left}}",
@@ -897,18 +855,6 @@
       "available": "Available",
       "awaitingRelease": "Awaiting release",
       "withdrawn": "Withdrawn"
-    },
-    "status": {
-      "invited": "Invited",
-      "applied": "Applied",
-      "accepted": "Accepted",
-      "declined": "Declined",
-      "draft_submitted": "Draft sent",
-      "changes_requested": "Changes requested",
-      "approved": "Approved",
-      "scheduled": "Scheduled",
-      "live": "Live",
-      "paid": "Paid"
     }
   }
 }

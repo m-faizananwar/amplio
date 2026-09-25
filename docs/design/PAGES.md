@@ -17,11 +17,17 @@ program was a separate page saying the same thing twice; one place for your link
 The public page is the same card in one column with the single action a brand came for,
 and seeded creators are labelled as demo data.
 
-### Opportunities —  (+ brief drawer, apply)
+### Opportunities — `/creator/opportunities` (+ brief drawer, apply)
 A ranked ledger, not a card grid: open campaigns are compared on the same few facts (fit,
 deadline, what they pay), so one row each, best fit first. The fit percentage opens its
 four weighted signals in place (DECISIONS: a number you can question); the brief is a
 drawer so the list stays put; applying is one confirm showing the price and deadline.
+
+### Collaborations — `/creator/collaborations`
+A ruled list, one row per collaboration, led by the **next step and who owns it** instead
+of a status name; the default view is Needs you, then Waiting on brand, Live, Done, All
+(the filter lives in the URL so the Overview can link to Live). The whole row opens the
+collaboration, where the action is.
 
 ### Settings — `/creator/settings`
 Stacked sections with a sticky index on wide screens, one form per schema. Each section

@@ -3,7 +3,7 @@ import type { CollaborationDto } from "@/features/collaborations/schemas";
 import type { LedgerRowDto } from "@/features/payouts/schemas";
 import type { EarningsSummary } from "@/features/payouts/server/queries";
 import type { CreatorClickRow } from "@/features/tracking/server/creator-queries";
-import { needsYou } from "@/lib/creator-next-step";
+import { needsYou } from "@/lib/next-step";
 import { CreatorNumbers } from "./CreatorNumbers";
 import { NeedsYouList } from "./NeedsYouList";
 import { toNeedsYouRows } from "./needs-you-rows";

@@ -1,19 +1,22 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { redirect } from "next/navigation";
 import { ErrorState } from "@/components/page/ErrorState";
 import { PageHeader } from "@/components/page/PageHeader";
 import { getViewer } from "@/features/auth/server/session";
-import { CreatorCollaborationsView } from "@/features/collaborations/components/table/CreatorCollaborationsView";
+import { CreatorCollaborationsList, type ListFilter } from "@/features/collaborations/components/creator-list/CreatorCollaborationsList";
 import { listCreatorCollaborations } from "@/features/collaborations/server/queries";
-import { COPY } from "@/features/collaborations/ui-constants";
 
 import { BRAND } from "@/config/brand";
 export const metadata: Metadata = { title: `Collaborations · ${BRAND.wordmark}` };
 
-export default async function CreatorCollaborationsPage() {
+const FILTERS: readonly ListFilter[] = ["needs_you", "waiting", "live", "done", "all"];
+
+export default async function CreatorCollaborationsPage({ searchParams }: { searchParams: Promise<{ filter?: string }> }) {
   const viewer = await getViewer();
   if (!viewer?.creator) redirect("/login?next=/creator/collaborations");
-
+  const [{ filter }, t] = await Promise.all([searchParams, getTranslations("creator.collaborations")]);
+  const initial = (FILTERS as readonly string[]).includes(filter ?? "") ? (filter as ListFilter) : "needs_you";
   let rows;
   try {
     rows = await listCreatorCollaborations(viewer.creator.id);
@@ -21,16 +24,15 @@ export default async function CreatorCollaborationsPage() {
     console.error("[collaborations] creator list failed", { creatorId: viewer.creator.id, error });
     return (
       <>
-        <PageHeader title={COPY.collaborationsTitle} description={COPY.creatorCollaborationsDescription} />
-        <ErrorState body="We could not load your collaborations. Try again in a moment." retryHref="/creator/collaborations" />
+        <PageHeader title={t("title")} description={t("description")} />
+        <ErrorState body={t("error.body")} retryHref="/creator/collaborations" />
       </>
     );
   }
-
   return (
     <>
-      <PageHeader title={COPY.collaborationsTitle} description={COPY.creatorCollaborationsDescription} />
-      <CreatorCollaborationsView rows={rows} />
+      <PageHeader title={t("title")} description={t("description")} />
+      <CreatorCollaborationsList rows={rows} initialFilter={initial} />
     </>
   );
 }
