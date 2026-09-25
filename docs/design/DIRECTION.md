@@ -38,6 +38,34 @@ rows. Pages fade up 8px on enter. Reduced motion: no movement, instant state.
 **Mark.** A new logo: three dots joined by one line (post → click → lead), drawn in ink.
 Wordmark "Amplio" in Geist 600.
 
+## The landing is the launch
+
+The app is calm; the landing is the one place that performs. It should feel like a product
+launch: fast, energetic, clever enough that someone who doesn't know what a CPL is still
+scrolls to the end.
+
+- **The one thing to say.** Amplio turns a LinkedIn post into money you can trace: every
+  click and every sign-up comes back as a row, to the post and the creator that caused it.
+  Every section serves that sentence; nothing explains architecture.
+- **The story, as scenes.** A post goes out → it travels through a creator's audience →
+  clicks light up → sign-ups land → each one snaps into a ledger row with a name on it →
+  the brand sees the bill and the proof side by side. Then: how to start, what it costs,
+  questions, sign up.
+- **The hero is alive.** A WebGL layer (three.js with a small shader) draws the trail: the
+  mark's three dots become a living network — posts as sources, clicks as particles
+  travelling along lines, sign-ups as dots that settle into a column of ledger rows. It is
+  driven by the real demo-workspace counts and reacts to the cursor and to scroll.
+- **Rhythm.** Scenes change on scroll with quick cuts (250–400 ms), numbers count up hard,
+  text lands word by word, one idea per screen. No slow fades, no long empty scrolls.
+- **Palette holds.** Paper, ink and the one green; the energy comes from motion, scale
+  and contrast, not from new colours. Big type (up to 120px) is allowed here only.
+- **Cost.** The WebGL layer loads after first paint, pauses off-screen, caps at 60fps and
+  0.75 device pixel ratio, and falls back to a static drawing under reduced motion or
+  without WebGL. The landing still has to load fast on a phone.
+- **Two passes.** Build it, then watch it at normal speed at 1440 and 375 and critique
+  the pace: where it drags, where it's boring, what a ten-year-old would skip. Then a second
+  version that fixes each of those, sharper and more playful. Both passes are recorded.
+
 ## Signature pattern: the trail
 
 Any metric (clicks, leads, CPL, earnings) is clickable and opens a drawer listing the
