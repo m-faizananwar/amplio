@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { type RefObject, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
 import { useSplashGate } from "../splash/useSplashGate";
 
@@ -56,7 +56,12 @@ export function useGlassNav({ controller, capsule, cells, classes }: Input) {
   const entered = useSplashGate();
   const lock = useRef(false);
   const focused = useRef<number | null>(null);
-  const parked = useRef(0);
+  // On a page of its own (/for-creators, /for-agencies) the capsule parks on
+  // that page's cell; on the landing the in-view section decides (below).
+  const pathname = usePathname();
+  const home = Math.max(0, cells.findIndex((cell) => cell.href === pathname));
+  const parked = useRef(home);
+  const homeRef = useRef(home);
 
   // Capsule over cell `index`: its measured box, plus the 5px protrusion on the outer cells.
   const setCapsule = (index: number) => {
@@ -128,7 +133,15 @@ export function useGlassNav({ controller, capsule, cells, classes }: Input) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [compressed]);
 
-  // Active section: the cell whose anchor section is in view parks the capsule; otherwise cell 0.
+  // The nav lives in the layout and survives navigation: re-park on route change.
+  useEffect(() => {
+    homeRef.current = home;
+    parked.current = home;
+    if (!lock.current && focused.current === null) park();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
+
+  // Active section: the cell whose anchor section is in view parks the capsule; otherwise the page's own cell.
   useEffect(() => {
     const targets = [
       ...cells.map((cell, index) => ({ index, id: cell.href.includes("#") ? cell.href.slice(cell.href.indexOf("#") + 1) : null })),
@@ -142,7 +155,7 @@ export function useGlassNav({ controller, capsule, cells, classes }: Input) {
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => { const t = targets.find((x) => x.el === e.target); if (t) visible.set(t.index, e.isIntersecting); });
       const active = targets.find((t) => visible.get(t.index));
-      parked.current = active ? active.index : 0;
+      parked.current = active ? active.index : homeRef.current;
       if (!lock.current && focused.current === null && !controller.current?.matches(":hover")) park();
     }, { threshold: SECTION_THRESHOLD });
     targets.forEach((t) => io.observe(t.el));

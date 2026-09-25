@@ -22,8 +22,8 @@ export function BenchmarksPage() {
   const b = BENCHMARKS;
   return (
     <>
-      <PageHero tone="navy" align="left" eyebrow={b.hero.eyebrow} title={b.hero.title} sub={b.hero.sub}>
-        <p className="mt-8 text-sm text-background/60">{b.hero.meta}</p>
+      <PageHero align="left" eyebrow={b.hero.eyebrow} title={b.hero.title} sub={b.hero.sub}>
+        <p className="page-hero-muted mt-8 text-sm">{b.hero.meta}</p>
       </PageHero>
       <Reveal>
         <article className="mx-auto max-w-4xl px-4 py-16 sm:px-6">
