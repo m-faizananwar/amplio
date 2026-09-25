@@ -10,8 +10,8 @@ import { brands, creators, users } from "@/db/schema";
 import { destroySession, getViewer } from "@/features/auth/server/session";
 import { isDemoEmail } from "@/features/auth/constants";
 import {
-  type ActionResult, type BrandAudienceInput, type BrandProfileInput, type CreatorProfileInput, type PayoutDetailsInput,
-  brandAudienceSchema, brandProfileSchema, creatorProfileSchema, payoutDetailsSchema,
+  type ActionResult, type BrandAudienceInput, type BrandProfileInput, type CreatorIdentityInput, type PayoutDetailsInput,
+  brandAudienceSchema, brandProfileSchema, creatorIdentitySchema, payoutDetailsSchema,
 } from "../schemas";
 
 function firstIssue(error: { issues: Array<{ message: string }> }) {
@@ -56,31 +56,23 @@ export async function updateBrandAudience(input: BrandAudienceInput): Promise<Ac
   return { ok: true, data: undefined };
 }
 
-export async function updateCreatorProfile(input: CreatorProfileInput): Promise<ActionResult> {
+
+export async function updateCreatorIdentity(input: CreatorIdentityInput): Promise<ActionResult> {
   const viewer = await getViewer();
   if (!viewer?.creator) return { ok: false, error: "Sign in as a creator." };
-  const parsed = creatorProfileSchema.safeParse(input);
+  const parsed = creatorIdentitySchema.safeParse(input);
   if (!parsed.success) return { ok: false, error: firstIssue(parsed.error) };
-  const db = getDb();
+  const creatorId = viewer.creator.id;
   try {
-    await db.transaction(async (tx) => {
+    await getDb().transaction(async (tx) => {
       await tx.update(users).set({ firstName: parsed.data.firstName, lastName: parsed.data.lastName }).where(eq(users.id, viewer.userId));
-      await tx
-        .update(creators)
-        .set({
-          headline: parsed.data.headline,
-          linkedinUrl: parsed.data.linkedinUrl,
-          industries: parsed.data.industries,
-          priceCents: parsed.data.priceCents,
-          xHandle: parsed.data.xHandle ? parsed.data.xHandle.replace(/^@/, "") : null,
-        })
-        .where(eq(creators.id, viewer.creator?.id ?? ""));
+      await tx.update(creators).set({ xHandle: parsed.data.xHandle ? parsed.data.xHandle.replace(/^@/, "") : null }).where(eq(creators.id, creatorId));
     });
   } catch (error) {
-    console.error("[workspace] creator profile update failed", { creatorId: viewer.creator.id, error });
-    return { ok: false, error: "We couldn't save your profile." };
+    console.error("[workspace] creator identity update failed", { creatorId, error });
+    return { ok: false, error: "We couldn't save your name." };
   }
-  updateTags(tagsForMutation("creator-profile", { creatorId: viewer.creator.id, userIds: [viewer.userId] }));
+  updateTags(tagsForMutation("creator-profile", { creatorId, userIds: [viewer.userId] }));
   revalidatePath("/creator", "layout");
   return { ok: true, data: undefined };
 }

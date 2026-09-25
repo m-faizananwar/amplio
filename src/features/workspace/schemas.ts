@@ -25,6 +25,11 @@ export const creatorProfileSchema = z.object({
 });
 export type CreatorProfileInput = z.infer<typeof creatorProfileSchema>;
 
+// Settings › You: only the fields onboarding doesn't collect, saved on their
+// own so this form can never overwrite the card or the price.
+export const creatorIdentitySchema = creatorProfileSchema.pick({ firstName: true, lastName: true, xHandle: true });
+export type CreatorIdentityInput = z.infer<typeof creatorIdentitySchema>;
+
 const IBAN_MIN = 15;
 const IBAN_MAX = 34;
 export const payoutDetailsSchema = z.object({

@@ -44,6 +44,19 @@ export type CreatorSettings = {
   handle: string;
   xHandle: string;
   payout: { method: "stripe" | "bank" | null; accountHolder: string; ibanLast4: string };
+  // The onboarding fields, so Settings edits exactly what onboarding created.
+  country: string;
+  bundles: Array<{ posts: number; totalCents: number }>;
+  followers: number;
+  engagementRate: number;
+  professional: {
+    legalCountry: string | null;
+    registeredBusiness: boolean;
+    legalName: string;
+    legalAddress: string;
+    taxAcknowledged: boolean;
+    invoicingAuthorized: boolean;
+  };
 };
 
 async function loadCreatorSettings(creatorId: string): Promise<CreatorSettings | null> {
@@ -67,6 +80,18 @@ async function loadCreatorSettings(creatorId: string): Promise<CreatorSettings |
       method: row.creator.payoutMethod === "stripe" || row.creator.payoutMethod === "bank" ? row.creator.payoutMethod : null,
       accountHolder: row.creator.payoutAccountHolder ?? "",
       ibanLast4: row.creator.payoutIbanLast4 ?? "",
+    },
+    country: row.creator.country,
+    bundles: row.creator.bundles,
+    followers: row.creator.followers,
+    engagementRate: row.creator.engagementRate,
+    professional: {
+      legalCountry: row.creator.legalCountry,
+      registeredBusiness: row.creator.registeredBusiness ?? false,
+      legalName: row.creator.legalName ?? "",
+      legalAddress: row.creator.legalAddress ?? "",
+      taxAcknowledged: row.creator.taxAcknowledged ?? false,
+      invoicingAuthorized: row.creator.invoicingAuthorized ?? false,
     },
   };
 }
