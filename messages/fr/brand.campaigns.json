@@ -1,0 +1,284 @@
+{
+  "list": {
+    "title": "Campagnes",
+    "description": "Chaque brief à partir duquel vos créateurs écrivent, avec ses chiffres.",
+    "new": "Nouvelle campagne",
+    "error": "Impossible de charger vos campagnes. Vos données ne sont pas perdues. Réessayez dans un instant.",
+    "empty": {
+      "title": "Aucune campagne pour l’instant",
+      "body": "Une campagne est le brief à partir duquel les créateurs écrivent. Chaque collaboration part d’un brief.",
+      "action": "Créer une campagne"
+    },
+    "noDescription": "Pas encore de description",
+    "columns": {
+      "campaign": "Campagne",
+      "status": "Statut",
+      "creators": "Créateurs",
+      "published": "Publiés",
+      "committed": "Engagé"
+    },
+    "status": {
+      "draft": "Brouillon — non lancée",
+      "active": "Active",
+      "completed": "Terminée"
+    },
+    "continue": "Terminer la configuration",
+    "open": "Ouvrir"
+  },
+  "detail": {
+    "back": "Campagnes",
+    "continue": "Terminer la configuration",
+    "invite": "Inviter un créateur",
+    "switch": "Changer de campagne",
+    "error": "Impossible de charger cette campagne. Vos données ne sont pas perdues. Réessayez dans un instant.",
+    "projection": {
+      "notEnough": "{posts, plural, =0 {Projection : aucun post en ligne sur Amplio pour l’instant} one {Projection : pas encore assez de posts en ligne sur Amplio (# pour l’instant)} other {Projection : pas encore assez de posts en ligne sur Amplio (# pour l’instant)}}",
+      "line": "Projection : {clicks} clics pour {creators, plural, one {# créateur} other {# créateurs}} · d’après {posts, plural, one {# post en ligne} other {# posts en ligne}} sur Amplio",
+      "actual": "Réel à ce jour : {clicks}"
+    },
+    "tabs": {
+      "label": "Sections de la campagne",
+      "collaborations": "Collaborations",
+      "brief": "Brief",
+      "shortlist": "Présélection",
+      "analytics": "Statistiques"
+    },
+    "delete": {
+      "label": "Supprimer",
+      "confirm": "Supprimer — rémunérations restituées",
+      "done": "Campagne supprimée"
+    },
+    "notFound": {
+      "title": "Campagne introuvable",
+      "body": "Cette campagne n’existe pas, ou elle appartient à un autre espace de travail."
+    },
+    "shortlist": {
+      "empty": {
+        "title": "Aucun créateur présélectionné pour ce brief",
+        "body": "Ajoutez des créateurs avec le signet de leur ligne, dans Créateurs, pour les retrouver ici, prêts à être invités.",
+        "action": "Trouver des créateurs"
+      },
+      "launchFirst": "Les invitations s’ouvrent une fois la campagne lancée."
+    }
+  },
+  "creatorRow": {
+    "noIndustries": "Aucun secteur renseigné",
+    "fit": "Adéquation {score} %",
+    "price": "{price} par post",
+    "invite": "Inviter",
+    "inviting": "Invitation en cours…",
+    "alreadyInvited": "Invitation envoyée",
+    "invited": "Invitation envoyée à {name}"
+  },
+  "analytics": {
+    "reach": {
+      "label": "Portée estimée",
+      "none": "Aucun post en ligne pour l’instant",
+      "hint": "{count, plural, one {Somme des vues médianes · # post en ligne} other {Somme des vues médianes · # posts en ligne}}"
+    },
+    "clicks": {
+      "label": "Clics qualifiés",
+      "hint": "Depuis le lancement de la campagne"
+    },
+    "committed": {
+      "label": "Engagé",
+      "hint": "{count, plural, one {# réservation} other {# réservations}}"
+    },
+    "chart": {
+      "title": "Clics par jour",
+      "window": "12 derniers jours",
+      "empty": "Aucun clic pour l’instant. Chaque créateur reçoit un lien suivi quand il accepte, et chaque clic sur ce lien s’affiche ici."
+    },
+    "byCreator": {
+      "title": "Par créateur",
+      "empty": "Aucun clic pour l’instant. Les créateurs s’affichent ici dès que leur post est en ligne.",
+      "creator": "Créateur",
+      "clicks": "Clics"
+    },
+    "posts": {
+      "title": "Posts en ligne",
+      "empty": "Aucun post en ligne pour l’instant. Chaque post s’affiche ici dès que le créateur le publie.",
+      "clicks": "{count, plural, one {# clic} other {# clics}}",
+      "view": "Voir le post"
+    }
+  },
+  "brief": {
+    "error": "Impossible de charger le brief. Vos données ne sont pas perdues. Réessayez dans un instant.",
+    "edit": "Modifier le brief",
+    "editTitle": "Modifier le brief",
+    "editDescription": "Chaque créateur que vous invitez reçoit ce brief. L’aperçu le montre tel qu’il le lira.",
+    "readHint": "Ce que lit chaque créateur invité.",
+    "sections": {
+      "context": "Ce qu’il faut dire, et pourquoi",
+      "audience": "À qui il s’adresse",
+      "rules": "Règles",
+      "angles": "Angles et exemples de posts"
+    },
+    "fields": {
+      "whatToTell": "Ce que les créateurs doivent dire",
+      "links": "Liens et exemples",
+      "industries": "Secteurs ciblés",
+      "geos": "Zones géographiques ciblées",
+      "tone": "Ton",
+      "do": "À faire",
+      "avoid": "À éviter",
+      "angle": "Angle",
+      "hook": "Accroche",
+      "direction": "Ligne éditoriale",
+      "example": "Exemple de post"
+    },
+    "empty": {
+      "whatToTell": "Rien d’écrit pour l’instant",
+      "industries": "Aucun secteur pour l’instant",
+      "geos": "Aucune zone pour l’instant",
+      "tone": "Aucun ton défini",
+      "rules": "Aucune règle pour l’instant",
+      "angles": "Aucun angle pour l’instant"
+    },
+    "placeholders": {
+      "do": "Une règle que les créateurs doivent suivre",
+      "avoid": "Ce que les créateurs ne doivent pas faire"
+    },
+    "errors": {
+      "whatToTell": "Indiquez aux créateurs ce qu’ils doivent dire",
+      "tone": "Décrivez le ton en quelques mots",
+      "angle": "Donnez un nom à l’angle"
+    },
+    "actions": {
+      "preview": "Aperçu",
+      "backToEdit": "Revenir à l’édition",
+      "cancel": "Annuler",
+      "save": "Enregistrer le brief",
+      "saving": "Enregistrement…",
+      "saved": "Brief enregistré",
+      "remove": "Retirer",
+      "addLine": "Ajouter une ligne",
+      "addAngle": "Ajouter un angle",
+      "removeLine": "Retirer la ligne {n} de « {label} »"
+    }
+  },
+  "create": {
+    "title": "Nouvelle campagne",
+    "description": "Répondez à trois questions. Vous obtenez un brief modifiable avant le lancement.",
+    "note": "Le brief est rédigé à partir de vos réponses et du profil de votre espace de travail — par le fournisseur d’IA s’il est configuré, sinon à partir d’un gabarit.",
+    "preparing": "Préparation de votre brief…",
+    "try": "Essayez : « {example} »",
+    "generate": "Rédiger le brief",
+    "next": "Répondre et continuer",
+    "progress": "Question {step} sur {total}",
+    "questions": {
+      "selling": {
+        "ask": "D’abord, que vendez-vous ? Une phrase suffit.",
+        "placeholder": "Ce que vous vendez, en une phrase",
+        "example": "Un logiciel de paie pour les entreprises de 20 à 200 salariés"
+      },
+      "buyer": {
+        "ask": "Qui ces posts doivent-ils toucher ?",
+        "placeholder": "Postes, taille d’entreprise, secteur",
+        "example": "Les DAF et responsables financiers d’éditeurs SaaS européens"
+      },
+      "goal": {
+        "ask": "Quel est l’objectif : inscriptions, démos, notoriété ?",
+        "placeholder": "Ce que le lecteur doit faire après le post",
+        "example": "Des demandes de démo d’entreprises de plus de 50 salariés"
+      }
+    },
+    "generated": {
+      "ai": "Brief rédigé avec l’IA",
+      "template": "Brief rédigé à partir d’un gabarit"
+    }
+  },
+  "launch": {
+    "back": "Campagnes",
+    "saveContinue": "Enregistrer et continuer",
+    "steps": {
+      "label": "Étapes du lancement",
+      "basics": "L’essentiel",
+      "brief": "Brief",
+      "creators": "Choisir les créateurs",
+      "review": "Vérifier et lancer"
+    },
+    "stepHints": {
+      "basics": "Nommez la campagne, puis fixez la date limite de mise en ligne et la rémunération proposée par post.",
+      "brief": "Chaque créateur invité écrit à partir de ce brief. Tout reste modifiable avant le lancement.",
+      "creators": "Classés selon leur adéquation à ce brief, les mieux placés déjà cochés. Chaque invitation est provisionnée sur votre portefeuille.",
+      "review": "Vérifiez les chiffres, puis lancez : la campagne devient active et les invitations partent."
+    },
+    "generated": {
+      "ai": "Rédigé avec l’IA à partir de vos réponses. Tout ce qui suit est modifiable.",
+      "template": "Rédigé à partir d’un gabarit — aucun fournisseur d’IA n’est configuré. Tout ce qui suit est modifiable."
+    },
+    "basics": {
+      "name": "Nom de la campagne",
+      "description": "Description",
+      "deadline": "En ligne au plus tard le",
+      "deadlinePlaceholder": "Choisir une date",
+      "fee": "Rémunération par défaut par post (€)",
+      "saving": "Enregistrement…",
+      "saveContinue": "Enregistrer et continuer",
+      "cancel": "Annuler",
+      "errors": {
+        "name": "Donnez un nom à la campagne",
+        "description": "Raccourcissez la description",
+        "deadline": "Choisissez une date",
+        "fee": "1 500 € maximum par post"
+      }
+    },
+    "pick": {
+      "empty": {
+        "title": "Aucun créateur ne correspond encore à ce brief",
+        "body": "Élargissez les secteurs ciblés dans le brief pour voir plus de créateurs.",
+        "action": "Revenir au brief"
+      },
+      "select": "Sélectionner {name}",
+      "summary": "{count, plural, =0 {Aucun sélectionné} one {# sélectionné} other {# sélectionnés}} · {total} à provisionner · portefeuille : {wallet}",
+      "back": "Retour",
+      "review": "Vérifier et lancer"
+    },
+    "review": {
+      "edit": "Modifier",
+      "deadline": "En ligne au plus tard le",
+      "noDeadline": "Pas encore de date",
+      "fee": "Rémunération par défaut",
+      "brief": "Brief",
+      "angles": "{count, plural, =0 {Aucun angle} one {# angle} other {# angles}}",
+      "editBrief": "Modifier le brief",
+      "toInvite": "{count, plural, =0 {Aucun créateur} one {# créateur} other {# créateurs}} à inviter",
+      "change": "Changer",
+      "noneSelected": "Aucun créateur sélectionné. Vous pourrez en inviter depuis Créateurs après le lancement.",
+      "held": "Nous provisionnerons {total} sur votre portefeuille (solde disponible : {wallet}).",
+      "heldShort": "Il faudrait provisionner {total}, mais votre portefeuille contient {wallet} — les invitations au-delà du solde sont listées, pas envoyées.",
+      "back": "Retour"
+    },
+    "launch": {
+      "toast": "Campagne lancée · {count, plural, =0 {aucune invitation envoyée} one {# invitation envoyée} other {# invitations envoyées}}",
+      "done": "La campagne est active. {count, plural, =0 {Aucune invitation n’a été envoyée.} one {# invitation a été envoyée.} other {# invitations ont été envoyées.}}",
+      "unfunded": "Votre portefeuille n’a pas couvert ces créateurs :",
+      "shortBy": "{name} — il manque {amount}",
+      "topUp": "Recharger dans Facturation",
+      "skipped": {
+        "duplicate": "{name} — déjà sur cette campagne",
+        "failed": "{name} — l’invitation n’a pas pu être envoyée"
+      },
+      "open": "Ouvrir la campagne",
+      "launching": "Lancement…",
+      "withoutInvites": "Lancer sans invitation",
+      "launchAndInvite": "Lancer et inviter {count, plural, one {# créateur} other {# créateurs}}"
+    }
+  },
+  "estimator": {
+    "title": "À quoi vous attendre",
+    "notEnough": "Pas encore assez de données",
+    "clicks": "Clics estimés",
+    "signups": "Inscriptions estimées",
+    "perSignup": "Coût estimé par inscription",
+    "perClick": "Coût estimé par clic",
+    "spend": "Total à provisionner",
+    "confidence": {
+      "high": "Confiance élevée",
+      "medium": "Confiance moyenne",
+      "low": "Confiance faible"
+    },
+    "source": "D’après les données propres à Amplio : {posts, plural, =0 {aucun post en ligne} one {# post en ligne} other {# posts en ligne}}, {clicks, plural, =0 {aucun clic} one {# clic} other {# clics}}, {signups, plural, =0 {aucune inscription attribuée} one {# inscription attribuée} other {# inscriptions attribuées}}. Portée connue pour {withReach} sur {creators, plural, one {# créateur sélectionné} other {# créateurs sélectionnés}}."
+  }
+}

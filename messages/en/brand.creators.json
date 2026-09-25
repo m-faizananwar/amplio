@@ -1,0 +1,226 @@
+{
+  "title": "Creators",
+  "description": "Ranked by fit for your campaign. Open a score to see why.",
+  "error": "We couldn't load creators. Your data is safe. Try again in a moment.",
+  "fitFor": "Fit for",
+  "modes": {
+    "label": "How to find creators",
+    "list": "Ranked list",
+    "match": "Describe who you want"
+  },
+  "noCampaign": {
+    "title": "Create a campaign to rank creators",
+    "body": "Fit is scored against a campaign brief: who you want to reach and in which industry. Once you have one, creators are ranked for it.",
+    "action": "Create a campaign"
+  },
+  "lists": {
+    "label": "Creator lists",
+    "all": "All creators",
+    "shortlist": "Shortlist"
+  },
+  "empty": {
+    "shortlist": {
+      "title": "Your shortlist is empty",
+      "body": "Bookmark creators on their row to compare them here.",
+      "action": "Browse all creators"
+    },
+    "filters": {
+      "title": "No creator matches these filters",
+      "body": "Widen the price range, industry or country, or clear the search.",
+      "action": "Reset filters"
+    }
+  },
+  "columns": {
+    "creator": "Creator",
+    "fit": "Fit",
+    "followers": "Followers",
+    "views": "Median views",
+    "price": "Per post"
+  },
+  "more": "Show more ({shown} of {total})",
+  "all": "{total, plural, one {# creator shown} other {All # creators shown}}",
+  "row": {
+    "fit": "{score}% fit",
+    "followers": "Followers",
+    "views": "Median views",
+    "price": "Per post",
+    "save": "Save {name} to your shortlist",
+    "unsave": "Remove {name} from your shortlist",
+    "needCampaign": "Create a campaign to invite creators",
+    "invite": "Invite"
+  },
+  "fit": {
+    "against": "Scored against {campaign}",
+    "noCampaign": "Pick a campaign to score against",
+    "weight": "weight {percent}%",
+    "reason": "{first}, and {second}.",
+    "signals": {
+      "audience": "Audience overlap",
+      "category": "Category match",
+      "engagement": "Engagement quality",
+      "consistency": "Posting consistency"
+    },
+    "detail": {
+      "audience": "{case, select, noIcp {No ICP titles on the campaign yet} match {{percent}% of their audience are {bucket} — your ICP} other {Their audience rarely includes {buckets}}}",
+      "category": "{case, select, match {Already writes about {industries}} other {Writes about other categories}}",
+      "engagement": "{case, select, zero {No engagement measured yet} none {{rate}% engagement, nothing on Amplio to compare it with yet} tier {{rate}% engagement vs a {median}% median for creators their size on Amplio} other {{rate}% engagement vs a {median}% median on Amplio}}",
+      "consistency": "{perMonth, plural, one {# post a month} other {# posts a month}}"
+    },
+    "buckets": {
+      "Founders": "founders",
+      "Marketing": "marketers",
+      "Sales": "salespeople",
+      "Engineering": "engineers",
+      "Product": "product people",
+      "HR": "HR people",
+      "Finance": "finance people",
+      "Operations": "operations people"
+    }
+  },
+  "filters": {
+    "search": "Search creators",
+    "searchPlaceholder": "Search a creator…",
+    "industry": "Industry",
+    "industrySearch": "Search an industry…",
+    "country": "Country",
+    "countrySearch": "Search a country…",
+    "reset": "Reset filters",
+    "noMatch": "No match",
+    "clear": "Clear",
+    "activity": {
+      "label": "Activity",
+      "legend": "Last public post",
+      "active": "Active · {window}",
+      "apply": "Apply",
+      "windows": {
+        "30": "30 days",
+        "60": "60 days",
+        "90": "90 days",
+        "any": "Any time"
+      }
+    },
+    "price": {
+      "label": "Price per post",
+      "min": "Min (€)",
+      "max": "Max (€)",
+      "clear": "Clear",
+      "apply": "{count, plural, =0 {No creators in this range} one {Show # creator} other {Show # creators}}"
+    },
+    "sort": {
+      "label": "Sort by",
+      "options": {
+        "best": "Best fit",
+        "price": "Price, lowest first",
+        "followers": "Most followers",
+        "engagement": "Best engagement"
+      }
+    }
+  },
+  "booking": {
+    "title": "Invite {name}",
+    "forCampaign": "For {campaign}",
+    "noCampaign": "Pick a campaign first, or create one. The creator writes from its brief.",
+    "single": "Single post",
+    "bundle": "Bundle · {count, plural, one {# post} other {# posts}}",
+    "singleHint": "One post at the listed price, or make an offer below it.",
+    "bundleHint": "One invitation and one fee for the whole series.",
+    "negotiate": "Make an offer",
+    "invite": "Invite · {amount}",
+    "inviting": "Inviting…",
+    "held": "The fee is held from your wallet until they answer, and returned if they decline.",
+    "cancel": "Cancel",
+    "sentToast": "Invitation sent to {name}",
+    "short": {
+      "body": "Your wallet has {balance}. This invitation holds {fee}.",
+      "action": "Add {amount} to your wallet"
+    },
+    "sent": {
+      "title": "Invitation sent",
+      "body": "{name} can accept or decline. The fee stays held until then.",
+      "bodyBy": "{name} is asked to answer by {date}. The fee stays held until then, and a decline returns it.",
+      "done": "Done"
+    },
+    "offer": {
+      "title": "Make an offer",
+      "subtitle": "{name} · listed at {price} per post",
+      "back": "Back",
+      "discount": "Discount from the listed price",
+      "other": "Other",
+      "amount": "Your offer (€)",
+      "discountNote": "{percent}% below their listed price",
+      "postBy": "Post by",
+      "postByPlaceholder": "Pick a date",
+      "postByHint": "The latest date the post can go up. {days, plural, one {# day} other {# days}} from today by default.",
+      "campaign": "Campaign",
+      "campaignPlaceholder": "Pick a campaign",
+      "campaignHint": "They write the post from this campaign's brief.",
+      "approveFirst": "Let me approve the draft before it's published",
+      "sending": "Sending…",
+      "send": "Send offer · {amount}",
+      "held": "The offer is held from your wallet until they answer, and returned if they decline.",
+      "sentToast": "Offer sent to {name}"
+    }
+  },
+  "profile": {
+    "price": "{price} per post",
+    "bundle": "{count, plural, one {# post} other {# posts}} for {price}",
+    "save": "Save to shortlist",
+    "saved": "On your shortlist",
+    "numbers": {
+      "followers": "Followers",
+      "views": "Median views",
+      "engagement": "Engagement",
+      "cpm": "Cost per 1,000 views"
+    },
+    "audience": {
+      "title": "Audience",
+      "sample": "Estimated from {count, plural, one {# recent public engager} other {# recent public engagers}}",
+      "jobTitle": "Job title",
+      "seniority": "Seniority",
+      "none": "No audience data yet"
+    },
+    "posts": {
+      "title": "Recent posts",
+      "description": "Their latest public posts. Views are estimates.",
+      "open": "Open on LinkedIn",
+      "numbers": "{views} views · {reactions, plural, one {# reaction} other {# reactions}} · {comments, plural, one {# comment} other {# comments}}"
+    },
+    "background": {
+      "title": "Background",
+      "country": "Country",
+      "networks": "Networks",
+      "since": "On Amplio since"
+    }
+  },
+  "match": {
+    "intro": "Describe who you want. The assistant ranks creators against this campaign's brief and says why.",
+    "promptLabel": "Describe the creators you want",
+    "send": "Send",
+    "stop": "Stop",
+    "ranking": "Ranking creators against your brief…",
+    "defaultPrompt": "Find 4 creators for {campaign}. Use the brief and favour audience and content fit.",
+    "suggestions": {
+      "icp": "Find creators who already reach {icp}",
+      "industry": "Find creators with credible content about {industry}",
+      "balanced": "Build a balanced shortlist for {company}"
+    },
+    "noCampaign": {
+      "title": "Create a campaign to rank against",
+      "body": "The assistant ranks creators against a campaign brief: who you want to reach and in which industry. Create a campaign first.",
+      "action": "Create a campaign"
+    },
+    "headline": "{count, plural, =0 {No creators} one {# creator} other {# creators}} for {company}, ranked by fit with your brief, then performance and cost.",
+    "tradeoff": "Trade-off:",
+    "copy": "Copy the write-up",
+    "good": "Good answer",
+    "bad": "Bad answer",
+    "byModel": "Written by the assistant",
+    "byTemplate": "Template write-up — no AI provider was available",
+    "noMatch": "No creator matched this request. Try a broader one.",
+    "feedback": {
+      "up": "Thanks, noted.",
+      "down": "Thanks, noted.",
+      "copy": "Copied"
+    }
+  }
+}

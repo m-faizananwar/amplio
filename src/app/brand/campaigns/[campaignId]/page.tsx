@@ -1,42 +1,38 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { ErrorState } from "@/components/page/ErrorState";
+import { BRAND } from "@/config/brand";
 import { CampaignHeader } from "@/features/campaigns/components/detail/CampaignHeader";
 import { CampaignNotFound } from "@/features/campaigns/components/detail/CampaignNotFound";
-import { CollaborationsTab } from "@/features/campaigns/components/detail/CollaborationsTab";
-import { COLLAB_TABS, type CollabTabKey, DEFAULT_ROWS_PER_PAGE, ROWS_PER_PAGE_OPTIONS } from "@/features/campaigns/constants";
-import { countCollaborationsByTab, getCampaignShell, listCollaborationRows } from "@/features/campaigns/server/queries";
+import { getCampaignShell } from "@/features/campaigns/server/queries";
 import { requireBrand } from "@/features/campaigns/server/require-brand";
 import { safeQuery } from "@/features/campaigns/server/safe-query";
+import { BrandCollaborationsList, type BrandListFilter } from "@/features/collaborations/components/brand-list/BrandCollaborationsList";
+import { listBrandCollaborations } from "@/features/collaborations/server/queries";
 
-import { BRAND } from "@/config/brand";
 export const metadata: Metadata = { title: `Campaign · ${BRAND.wordmark}` };
 
-type Props = { params: Promise<{ campaignId: string }>; searchParams: Promise<{ status?: string; per?: string; page?: string }> };
+type Props = { params: Promise<{ campaignId: string }>; searchParams: Promise<{ filter?: string }> };
+const FILTERS: readonly BrandListFilter[] = ["needs_you", "waiting", "done", "all"];
 
-function tabOf(value: string | undefined): CollabTabKey {
-  return COLLAB_TABS.some((t) => t.key === value) ? (value as CollabTabKey) : "all";
-}
-
+// The campaign's collaborations: the same next-step rows as Collaborations,
+// scoped to this campaign.
 export default async function CampaignCollaborationsPage({ params, searchParams }: Props) {
-  const { campaignId } = await params;
-  const query = await searchParams;
+  const [{ campaignId }, { filter }] = await Promise.all([params, searchParams]);
   const viewer = await requireBrand(`/brand/campaigns/${campaignId}`);
-  const tab = tabOf(query.status);
-  const perPage = ROWS_PER_PAGE_OPTIONS.find((n) => String(n) === query.per) ?? DEFAULT_ROWS_PER_PAGE;
-  const page = Math.max(1, Number(query.page) || 1);
-
+  const t = await getTranslations("brand.campaigns.detail");
+  const initial = (FILTERS as readonly string[]).includes(filter ?? "") ? (filter as BrandListFilter) : "needs_you";
   const result = await safeQuery("campaign collaborations", { brandId: viewer.brand.id, campaignId }, async () => {
     const shell = await getCampaignShell(viewer.brand.id, campaignId);
     if (!shell) return null;
-    const [rows, counts] = await Promise.all([listCollaborationRows(campaignId, tab), countCollaborationsByTab(campaignId)]);
-    return { shell, rows, counts };
+    const rows = (await listBrandCollaborations(viewer.brand.id)).filter((r) => r.campaignId === campaignId);
+    return { shell, rows };
   });
-  if (!result.ok) return <ErrorState body="We could not load this campaign." retryHref={`/brand/campaigns/${campaignId}`} />;
+  if (!result.ok) return <ErrorState body={t("error")} retryHref={`/brand/campaigns/${campaignId}`} />;
   if (!result.data) return <CampaignNotFound />;
-  const { shell, rows, counts } = result.data;
   return (
-    <CampaignHeader shell={shell} tab="collaborations">
-      <CollaborationsTab campaignId={campaignId} tab={tab} rows={rows} counts={counts} page={page} perPage={perPage} />
+    <CampaignHeader shell={result.data.shell} tab="collaborations">
+      <BrandCollaborationsList rows={result.data.rows} campaigns={[]} initialFilter={initial} />
     </CampaignHeader>
   );
 }

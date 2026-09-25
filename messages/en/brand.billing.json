@@ -1,0 +1,63 @@
+{
+  "title": "Billing",
+  "description": "Where your money is, and every movement behind it.",
+  "error": "We couldn't load billing. Your data is safe. Try again in a moment.",
+  "buckets": {
+    "available": {
+      "label": "Available",
+      "hint": "Ready for new invitations"
+    },
+    "held": {
+      "label": "Held for invitations",
+      "hint": "{count, plural, =0 {No invitations waiting on a reply} one {# invitation not answered yet · fee returned if declined} other {# invitations not answered yet · fees returned if declined}}"
+    },
+    "committed": {
+      "label": "Committed",
+      "hint": "{count, plural, =0 {No accepted collaborations yet} one {# accepted collaboration} other {# accepted collaborations}}"
+    },
+    "paid": {
+      "label": "Paid to creators",
+      "hint": "{count, plural, =0 {No posts paid yet} one {# paid post} other {# paid posts}}"
+    }
+  },
+  "topUp": {
+    "open": "Top up",
+    "title": "Top up your wallet",
+    "description": "Choose an amount. It's credited to your wallet as a ledger row.",
+    "suggested": "Your balance doesn't cover this selection. The suggested amount does.",
+    "amount": "Top-up amount",
+    "custom": "Other",
+    "customLabel": "Amount in euros",
+    "limits": "Between {min} and {max}.",
+    "cancel": "Cancel",
+    "submit": "Add {amount}",
+    "crediting": "Top-up · crediting…",
+    "done": "{amount} added · balance {balance}"
+  },
+  "ledger": {
+    "title": "Ledger",
+    "description": "Every euro in or out, with its reference.",
+    "filter": "Filter movements",
+    "filters": {
+      "all": "All",
+      "booking": "Bookings",
+      "topup": "Top-ups"
+    },
+    "status": {
+      "held": "Held",
+      "paid": "Paid",
+      "credited": "Credited"
+    },
+    "empty": {
+      "title": "No movements yet",
+      "body": "Top-ups, fees held for invitations and payments to creators appear here, each with its reference."
+    },
+    "columns": {
+      "date": "Date",
+      "description": "Description",
+      "reference": "Reference",
+      "status": "Status",
+      "amount": "Amount"
+    }
+  }
+}

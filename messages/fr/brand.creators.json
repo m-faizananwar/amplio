@@ -1,0 +1,226 @@
+{
+  "title": "Créateurs",
+  "description": "Classés selon leur adéquation à votre campagne. Ouvrez un score pour voir ce qui le justifie.",
+  "error": "Impossible de charger les créateurs. Vos données ne sont pas perdues. Réessayez dans un instant.",
+  "fitFor": "Adéquation pour",
+  "modes": {
+    "label": "Façon de trouver des créateurs",
+    "list": "Liste classée",
+    "match": "Décrivez qui vous cherchez"
+  },
+  "noCampaign": {
+    "title": "Créez une campagne pour classer les créateurs",
+    "body": "L’adéquation se calcule à partir d’un brief de campagne : qui vous voulez toucher et dans quel secteur. Une fois la campagne créée, les créateurs sont classés en fonction.",
+    "action": "Créer une campagne"
+  },
+  "lists": {
+    "label": "Listes de créateurs",
+    "all": "Tous les créateurs",
+    "shortlist": "Présélection"
+  },
+  "empty": {
+    "shortlist": {
+      "title": "Votre présélection est vide",
+      "body": "Ajoutez des créateurs avec le signet de leur ligne pour les comparer ici.",
+      "action": "Voir tous les créateurs"
+    },
+    "filters": {
+      "title": "Aucun créateur ne correspond à ces filtres",
+      "body": "Élargissez le prix, le secteur ou le pays, ou effacez la recherche.",
+      "action": "Réinitialiser les filtres"
+    }
+  },
+  "columns": {
+    "creator": "Créateur",
+    "fit": "Adéquation",
+    "followers": "Abonnés",
+    "views": "Vues médianes",
+    "price": "Par post"
+  },
+  "more": "Voir plus ({shown} sur {total})",
+  "all": "{total, plural, one {# créateur affiché} other {Les # créateurs sont affichés}}",
+  "row": {
+    "fit": "Adéquation {score} %",
+    "followers": "Abonnés",
+    "views": "Vues médianes",
+    "price": "Par post",
+    "save": "Ajouter {name} à votre présélection",
+    "unsave": "Retirer {name} de votre présélection",
+    "needCampaign": "Créez une campagne pour inviter des créateurs",
+    "invite": "Inviter"
+  },
+  "fit": {
+    "against": "Calculée pour {campaign}",
+    "noCampaign": "Choisissez une campagne pour calculer l’adéquation",
+    "weight": "poids {percent} %",
+    "reason": "{first}, et {second}.",
+    "signals": {
+      "audience": "Recoupement d’audience",
+      "category": "Correspondance de secteur",
+      "engagement": "Qualité d’engagement",
+      "consistency": "Régularité de publication"
+    },
+    "detail": {
+      "audience": "{case, select, noIcp {Aucun poste cible sur la campagne pour l’instant} match {{percent} % de leur audience sont des {bucket}, vos clients cibles} other {Leur audience touche rarement ces profils : {buckets}}}",
+      "category": "{case, select, match {Écrit déjà sur {industries}} other {Écrit sur d’autres secteurs}}",
+      "engagement": "{case, select, zero {Aucun engagement mesuré pour l’instant} none {{rate} % d’engagement, rien de comparable sur Amplio pour l’instant} tier {{rate} % d’engagement contre une médiane de {median} % pour les créateurs de sa taille sur Amplio} other {{rate} % d’engagement contre une médiane de {median} % sur Amplio}}",
+      "consistency": "{perMonth, plural, one {# post par mois} other {# posts par mois}}"
+    },
+    "buckets": {
+      "Founders": "fondateurs",
+      "Marketing": "marketeurs",
+      "Sales": "commerciaux",
+      "Engineering": "ingénieurs",
+      "Product": "profils produit",
+      "HR": "profils RH",
+      "Finance": "profils finance",
+      "Operations": "profils opérations"
+    }
+  },
+  "filters": {
+    "search": "Rechercher un créateur",
+    "searchPlaceholder": "Rechercher un créateur…",
+    "industry": "Secteur",
+    "industrySearch": "Rechercher un secteur…",
+    "country": "Pays",
+    "countrySearch": "Rechercher un pays…",
+    "reset": "Réinitialiser les filtres",
+    "noMatch": "Aucun résultat",
+    "clear": "Effacer",
+    "activity": {
+      "label": "Activité",
+      "legend": "Dernier post public",
+      "active": "Actif · {window}",
+      "apply": "Appliquer",
+      "windows": {
+        "30": "30 jours",
+        "60": "60 jours",
+        "90": "90 jours",
+        "any": "Toute période"
+      }
+    },
+    "price": {
+      "label": "Prix par post",
+      "min": "Min (€)",
+      "max": "Max (€)",
+      "clear": "Effacer",
+      "apply": "{count, plural, =0 {Aucun créateur dans cette fourchette} one {Voir # créateur} other {Voir # créateurs}}"
+    },
+    "sort": {
+      "label": "Trier par",
+      "options": {
+        "best": "Meilleure adéquation",
+        "price": "Prix croissant",
+        "followers": "Plus d’abonnés",
+        "engagement": "Meilleur engagement"
+      }
+    }
+  },
+  "booking": {
+    "title": "Inviter {name}",
+    "forCampaign": "Pour {campaign}",
+    "noCampaign": "Choisissez d’abord une campagne, ou créez-en une. Le créateur écrit à partir de son brief.",
+    "single": "Post unique",
+    "bundle": "Lot · {count, plural, one {# post} other {# posts}}",
+    "singleHint": "Un post au prix affiché, ou faites une offre en dessous.",
+    "bundleHint": "Une seule invitation et une seule rémunération pour toute la série.",
+    "negotiate": "Faire une offre",
+    "invite": "Inviter · {amount}",
+    "inviting": "Invitation en cours…",
+    "held": "La rémunération est provisionnée sur votre portefeuille jusqu’à la réponse du créateur, et restituée en cas de refus.",
+    "cancel": "Annuler",
+    "sentToast": "Invitation envoyée à {name}",
+    "short": {
+      "body": "Votre portefeuille contient {balance}. Cette invitation provisionne {fee}.",
+      "action": "Ajouter {amount} à votre portefeuille"
+    },
+    "sent": {
+      "title": "Invitation envoyée",
+      "body": "{name} peut accepter ou refuser. La rémunération reste provisionnée d’ici là.",
+      "bodyBy": "Nous avons demandé à {name} de répondre d’ici le {date}. La rémunération reste provisionnée d’ici là, et vous est restituée en cas de refus.",
+      "done": "Terminé"
+    },
+    "offer": {
+      "title": "Faire une offre",
+      "subtitle": "{name} · prix affiché : {price} par post",
+      "back": "Retour",
+      "discount": "Remise sur le prix affiché",
+      "other": "Autre",
+      "amount": "Votre offre (€)",
+      "discountNote": "{percent} % sous son prix affiché",
+      "postBy": "En ligne au plus tard le",
+      "postByPlaceholder": "Choisir une date",
+      "postByHint": "La date limite de mise en ligne du post. Par défaut, dans {days, plural, one {# jour} other {# jours}}.",
+      "campaign": "Campagne",
+      "campaignPlaceholder": "Choisir une campagne",
+      "campaignHint": "Le créateur écrit le post à partir du brief de cette campagne.",
+      "approveFirst": "Je veux valider le brouillon avant sa publication",
+      "sending": "Envoi en cours…",
+      "send": "Envoyer l’offre · {amount}",
+      "held": "Le montant de l’offre est provisionné sur votre portefeuille jusqu’à la réponse du créateur, et restitué en cas de refus.",
+      "sentToast": "Offre envoyée à {name}"
+    }
+  },
+  "profile": {
+    "price": "{price} par post",
+    "bundle": "{count, plural, one {# post} other {# posts}} pour {price}",
+    "save": "Ajouter à la présélection",
+    "saved": "Dans votre présélection",
+    "numbers": {
+      "followers": "Abonnés",
+      "views": "Vues médianes",
+      "engagement": "Engagement",
+      "cpm": "Coût pour 1 000 vues"
+    },
+    "audience": {
+      "title": "Audience",
+      "sample": "Estimation d’après {count, plural, one {# personne ayant récemment interagi avec ses posts publics} other {# personnes ayant récemment interagi avec ses posts publics}}",
+      "jobTitle": "Poste",
+      "seniority": "Niveau hiérarchique",
+      "none": "Pas encore de données d’audience"
+    },
+    "posts": {
+      "title": "Posts récents",
+      "description": "Ses derniers posts publics. Les vues sont des estimations.",
+      "open": "Ouvrir sur LinkedIn",
+      "numbers": "{views} vues · {reactions, plural, one {# réaction} other {# réactions}} · {comments, plural, one {# commentaire} other {# commentaires}}"
+    },
+    "background": {
+      "title": "Informations",
+      "country": "Pays",
+      "networks": "Réseaux",
+      "since": "Sur Amplio depuis"
+    }
+  },
+  "match": {
+    "intro": "Décrivez qui vous cherchez : l’assistant classe les créateurs selon le brief de cette campagne et explique pourquoi.",
+    "promptLabel": "Décrivez les créateurs que vous cherchez",
+    "send": "Envoyer",
+    "stop": "Arrêter",
+    "ranking": "Classement des créateurs selon votre brief…",
+    "defaultPrompt": "Trouvez 4 créateurs pour {campaign}. Appuyez-vous sur le brief et privilégiez l’adéquation d’audience et de contenu.",
+    "suggestions": {
+      "icp": "Trouvez des créateurs qui touchent déjà {icp}",
+      "industry": "Trouvez des créateurs au contenu crédible sur {industry}",
+      "balanced": "Constituez une présélection équilibrée pour {company}"
+    },
+    "noCampaign": {
+      "title": "Créez une campagne pour lancer le classement",
+      "body": "L’assistant classe les créateurs d’après un brief de campagne : qui vous voulez toucher et dans quel secteur. Créez d’abord une campagne.",
+      "action": "Créer une campagne"
+    },
+    "headline": "{count, plural, =0 {Aucun créateur} one {# créateur} other {# créateurs}} pour {company}, par ordre d’adéquation à votre brief, puis de performance et de coût.",
+    "tradeoff": "Compromis :",
+    "copy": "Copier l’analyse",
+    "good": "Bonne réponse",
+    "bad": "Mauvaise réponse",
+    "byModel": "Rédigé par l’assistant",
+    "byTemplate": "Analyse générée à partir d’un gabarit — aucun fournisseur d’IA n’était disponible",
+    "noMatch": "Aucun créateur ne correspond à cette demande. Essayez une demande plus large.",
+    "feedback": {
+      "up": "Merci, c’est noté.",
+      "down": "Merci, c’est noté.",
+      "copy": "Copié"
+    }
+  }
+}

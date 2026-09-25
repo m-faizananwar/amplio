@@ -47,10 +47,6 @@ export const createFromAiSchema = z.object({
 });
 export type CreateFromAiInput = z.infer<typeof createFromAiSchema>;
 
-export const createFromLinkSchema = z.object({
-  url: z.string().trim().url("Paste a full link, starting with https://").max(LINK_URL_MAX_CHARS),
-});
-export type CreateFromLinkInput = z.infer<typeof createFromLinkSchema>;
 
 export const basicsSchema = z.object({
   campaignId: z.string().uuid(),
@@ -123,6 +119,8 @@ export type CreatorPickDto = {
   priceCents: number;
   fit: number;
   reason: string;
+  /** The four signals, so a view can word the reason in the reader's language. */
+  signals: import("@/lib/fit-score").FitSignal[];
   alreadyInvited: boolean;
 };
 
@@ -170,5 +168,6 @@ export type LaunchResultDto = {
   campaignId: string;
   invited: string[];
   unfunded: Array<{ creatorId: string; name: string; shortfallCents: number }>;
-  skipped: Array<{ creatorId: string; name: string; reason: string }>;
+  /** Why an invitation wasn't sent: already on the campaign, or the insert failed. */
+  skipped: Array<{ creatorId: string; name: string; reason: "duplicate" | "failed" }>;
 };

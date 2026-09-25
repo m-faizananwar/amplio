@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -22,14 +23,10 @@ type Props = { campaignId: string; initial: Brief; cancelHref: string; afterSave
 function TextField({ id, label, error, children }: { id: string; label: string; error?: string; children: React.ReactNode }) {
   return (
     <div className="grid gap-1.5">
-      <label htmlFor={id} className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-        {label}
-      </label>
+      <label htmlFor={id} className="text-small font-medium">{label}</label>
       {children}
       {error ? (
-        <p role="alert" className="text-sm text-destructive">
-          {error}
-        </p>
+        <p role="alert" className="text-caption text-failure">{error}</p>
       ) : null}
     </div>
   );
@@ -37,7 +34,8 @@ function TextField({ id, label, error, children }: { id: string; label: string; 
 
 // The brief editor: exactly naano's fields, in their order. Used by the launch
 // stepper and by Brief › "Edit the brief".
-export function BriefEditor({ campaignId, initial, cancelHref, afterSaveHref, saveLabel = "Save" }: Props) {
+export function BriefEditor({ campaignId, initial, cancelHref, afterSaveHref, saveLabel }: Props) {
+  const t = useTranslations("brand.campaigns.brief");
   const router = useRouter();
   const [preview, setPreview] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
@@ -51,22 +49,16 @@ export function BriefEditor({ campaignId, initial, cancelHref, afterSaveHref, sa
       setServerError(result.error);
       return;
     }
-    toast.success("Brief saved");
+    toast.success(t("actions.saved"));
     router.push(afterSaveHref);
     router.refresh();
   }
 
   const actions = (
     <div className="flex flex-wrap items-center gap-2">
-      <Button type="button" variant="outline" onClick={() => setPreview((p) => !p)} aria-pressed={preview}>
-        {preview ? "Back to editing" : "Preview"}
-      </Button>
-      <Link href={cancelHref} className={buttonVariants({ variant: "ghost" })}>
-        Cancel
-      </Link>
-      <Button type="submit" disabled={isSubmitting} className="bg-brand text-brand-foreground hover:bg-brand/90">
-        {isSubmitting ? "Saving…" : saveLabel}
-      </Button>
+      <Button type="button" variant="secondary" onClick={() => setPreview((p) => !p)} aria-pressed={preview}>{preview ? t("actions.backToEdit") : t("actions.preview")}</Button>
+      <Link href={cancelHref} className={buttonVariants({ variant: "ghost" })}>{t("actions.cancel")}</Link>
+      <Button type="submit" disabled={isSubmitting}>{isSubmitting ? t("actions.saving") : saveLabel ?? t("actions.save")}</Button>
     </div>
   );
 
@@ -75,25 +67,23 @@ export function BriefEditor({ campaignId, initial, cancelHref, afterSaveHref, sa
       {preview ? (
         <BriefReadView brief={briefSchema.safeParse(form.getValues()).data ?? initial} />
       ) : (
-        <div className="grid gap-6 rounded-2xl border bg-background p-5">
-          <TextField id="whatToTell" label="What creators should tell" error={errors.whatToTell?.message}>
+        <div className="grid gap-6 rounded-card border border-rule bg-surface p-5">
+          <TextField id="whatToTell" label={t("fields.whatToTell")} error={errors.whatToTell ? t("errors.whatToTell") : undefined}>
             <Textarea id="whatToTell" rows={6} {...form.register("whatToTell")} />
           </TextField>
-          <ChipSelectField control={form.control} name="targetIndustries" label="Target industries" options={INDUSTRIES} />
-          <ChipSelectField control={form.control} name="targetGeos" label="Target geographies" options={GEOGRAPHIES} />
-          <TextField id="tone" label="Tone" error={errors.tone?.message}>
+          <ChipSelectField control={form.control} name="targetIndustries" label={t("fields.industries")} options={INDUSTRIES} />
+          <ChipSelectField control={form.control} name="targetGeos" label={t("fields.geos")} options={GEOGRAPHIES} />
+          <TextField id="tone" label={t("fields.tone")} error={errors.tone ? t("errors.tone") : undefined}>
             <Input id="tone" {...form.register("tone")} />
           </TextField>
-          <LineListField control={form.control} name="do" label="Do" placeholder="A rule creators should follow" />
-          <LineListField control={form.control} name="avoid" label="Avoid" placeholder="Something creators must not do" />
-          <LineListField control={form.control} name="links" label="Links and examples" placeholder="https://" type="url" />
+          <LineListField control={form.control} name="do" label={t("fields.do")} placeholder={t("placeholders.do")} />
+          <LineListField control={form.control} name="avoid" label={t("fields.avoid")} placeholder={t("placeholders.avoid")} />
+          <LineListField control={form.control} name="links" label={t("fields.links")} placeholder="https://" type="url" />
           <AngleFields control={form.control} register={form.register} errors={errors} />
         </div>
       )}
       {serverError ? (
-        <p role="alert" className="rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">
-          {serverError}
-        </p>
+        <p role="alert" className="rounded-control border border-failure/30 bg-failure-soft px-3 py-2 text-small text-failure">{serverError}</p>
       ) : null}
       {actions}
     </form>

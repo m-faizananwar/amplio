@@ -94,6 +94,18 @@ separate Invite page. The profile is a wide drawer over the list, so the next cr
 click away. The second mode lets the assistant rank the same list from a sentence and say
 why, with one trade-off; its answer lands as the same rows.
 
+### Campaigns — `/brand/campaigns` (+ detail, brief, new, launch)
+The list is a ledger of campaigns — name, state, creators, published, committed, and the
+next step (a draft says "Finish setup"). A campaign's page opens the same way on every tab:
+back, name and state, the next step, and the projection from Amplio's own data next to what
+actually happened; its Collaborations tab is the brand list scoped to it (next step and
+owner per row), then Brief (read as a creator reads it), Shortlist, Analytics. A new
+campaign is three questions and an editable brief — the "start from a link" path is cut,
+the link was never read. Launch is four URL-addressed steps ending on the numbers: who gets
+a funded invitation, what that holds from the wallet, and what to expect, with "not enough
+data yet" where Amplio's sample is too small. Delete is a two-click button that says held
+fees come back.
+
 ### Messages — `/brand/messages`
 Two panes on wide screens (threads, open conversation), two screens on a phone. One
 thread per collaboration, opened when a booking is accepted — no separate inbox objects

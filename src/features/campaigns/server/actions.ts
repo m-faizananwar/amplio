@@ -11,8 +11,8 @@ import { createCollaboration, DuplicateCollaborationError } from "@/features/col
 import { InsufficientFundsError } from "@/features/collaborations/server/side-effects";
 import { DAY_MS, DEFAULT_FEE_CENTS, DEFAULT_POST_DEADLINE_DAYS } from "../constants";
 import {
-  type ActionResult, basicsSchema, type BasicsInput, createFromAiSchema, type CreateFromAiInput, createFromLinkSchema,
-  type CreateFromLinkInput, inviteSchema, type InviteInput, type LaunchInput, type LaunchResultDto, launchSchema,
+  type ActionResult, basicsSchema, type BasicsInput, createFromAiSchema, type CreateFromAiInput, 
+   inviteSchema, type InviteInput, type LaunchInput, type LaunchResultDto, launchSchema,
   saveBriefSchema, type SaveBriefInput,
 } from "../schemas";
 import { generateCampaignDraft } from "./brief-ai";
@@ -83,16 +83,6 @@ export async function createCampaignFromAi(input: CreateFromAiInput) {
   }
 }
 
-export async function createCampaignFromLink(input: CreateFromLinkInput) {
-  const parsed = createFromLinkSchema.safeParse(input);
-  if (!parsed.success) return { ok: false as const, error: firstIssue(parsed.error) };
-  try {
-    return await createDraft("link", { prompt: null, url: parsed.data.url });
-  } catch (error) {
-    console.error("[campaigns] createCampaignFromLink failed", { error });
-    return { ok: false as const, error: GENERIC };
-  }
-}
 
 export async function updateCampaignBasics(input: BasicsInput): Promise<ActionResult<{ campaignId: string }>> {
   const parsed = basicsSchema.safeParse(input);
@@ -141,11 +131,11 @@ async function inviteOne(campaignId: string, creator: { id: string; name: string
       return;
     }
     if (error instanceof DuplicateCollaborationError) {
-      result.skipped.push({ creatorId: creator.id, name: creator.name, reason: "Already on this campaign" });
+      result.skipped.push({ creatorId: creator.id, name: creator.name, reason: "duplicate" });
       return;
     }
     console.error("[campaigns] invitation failed", { campaignId, creatorId: creator.id, error });
-    result.skipped.push({ creatorId: creator.id, name: creator.name, reason: "Could not send the invitation" });
+    result.skipped.push({ creatorId: creator.id, name: creator.name, reason: "failed" });
   }
 }
 

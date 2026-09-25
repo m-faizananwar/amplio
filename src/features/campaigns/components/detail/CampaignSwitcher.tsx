@@ -1,30 +1,21 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
-import { CAMPAIGN_STATUS_LABEL } from "../../constants";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import type { CampaignSummaryDto } from "../../schemas";
 
 type Props = { current: string; summaries: CampaignSummaryDto[]; tab: string };
 
+// Jump to the same section of another campaign.
 export function CampaignSwitcher({ current, summaries, tab }: Props) {
+  const t = useTranslations("brand.campaigns.detail");
   const router = useRouter();
+  if (summaries.length < 2) return null;
   return (
-    <>
-      <label htmlFor="campaign-switcher" className="sr-only">
-        Switch campaign
-      </label>
-      <select
-        id="campaign-switcher"
-        value={current}
-        onChange={(event) => router.push(`/brand/campaigns/${event.target.value}${tab}`)}
-        className="h-8 max-w-56 rounded-lg border border-input bg-background px-2 text-sm focus-visible:ring-3 focus-visible:ring-ring/50"
-      >
-        {summaries.map((c) => (
-          <option key={c.id} value={c.id}>
-            {c.name} · {CAMPAIGN_STATUS_LABEL[c.status]}
-          </option>
-        ))}
-      </select>
-    </>
+    <Select value={current} items={Object.fromEntries(summaries.map((c) => [c.id, c.name]))} onValueChange={(v) => router.push(`/brand/campaigns/${String(v)}${tab}`)}>
+      <SelectTrigger size="sm" className="max-w-56" aria-label={t("switch")}><SelectValue /></SelectTrigger>
+      <SelectContent>{summaries.map((c) => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}</SelectContent>
+    </Select>
   );
 }

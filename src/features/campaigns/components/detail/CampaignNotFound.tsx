@@ -1,5 +1,7 @@
+import { getTranslations } from "next-intl/server";
 import { ErrorState } from "@/components/page/ErrorState";
 
-export function CampaignNotFound() {
-  return <ErrorState title="Campaign not found" body="This campaign does not exist or belongs to another workspace." retryHref="/brand/campaigns" />;
+export async function CampaignNotFound() {
+  const t = await getTranslations("brand.campaigns.detail.notFound");
+  return <ErrorState title={t("title")} body={t("body")} retryHref="/brand/campaigns" />;
 }

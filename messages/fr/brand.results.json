@@ -1,0 +1,92 @@
+{
+  "title": "Résultats",
+  "description": "Ce que les posts de vos créateurs ont rapporté, retracé jusqu’à chaque clic.",
+  "error": "Impossible de charger vos résultats. Vos données ne sont pas perdues. Réessayez dans un instant.",
+  "numbers": {
+    "reach": {
+      "label": "Portée estimée",
+      "hint": "{count, plural, one {Estimation : somme des vues médianes · # post en ligne} other {Estimation : somme des vues médianes · # posts en ligne}}"
+    },
+    "clicks": {
+      "label": "Clics qualifiés",
+      "hint": "{days, plural, one {Dernier jour} other {# derniers jours}}"
+    },
+    "signups": {
+      "label": "Inscriptions attribuées",
+      "hint": "Reliées au clic d’un créateur par votre pixel"
+    },
+    "spend": {
+      "label": "Engagé auprès des créateurs",
+      "hint": "{count, plural, one {# réservation} other {# réservations}}"
+    }
+  },
+  "pixel": {
+    "title": "Pixel du site",
+    "active": "{count, plural, one {Actif · # événement} other {Actif · # événements}}",
+    "inactive": "Pas encore installé. Ajoutez-le pour voir les visites, inscriptions et achats qui suivent chaque clic.",
+    "view": "Voir le code",
+    "install": "Installer le pixel",
+    "copied": "Code copié",
+    "copyFailed": "Copie impossible. Sélectionnez le code et copiez-le manuellement.",
+    "dialog": {
+      "title": "Installer le pixel du site",
+      "body": "Collez ce code juste avant '</head>' sur chaque page de votre site. Les visites sont comptées automatiquement. Une fois une inscription ou un achat confirmé, appelez {global}('track', …) pour l’envoyer.",
+      "copy": "Copier le code",
+      "demo": "Ouvrir la page de démonstration",
+      "siteKey": "Votre clé de site"
+    }
+  },
+  "chart": {
+    "title": "Évolution des clics",
+    "description": "{total} clics qualifiés sur la période",
+    "range": "Période",
+    "ranges": {
+      "week": "Semaine",
+      "month": "Mois",
+      "year": "Année"
+    }
+  },
+  "attribution": {
+    "title": "Par créateur",
+    "description": "Les clics sur le lien suivi de chaque créateur, puis ce que votre pixel a observé après le clic. Chaque ligne exporte ses propres clics.",
+    "exportAll": "Exporter tous les clics",
+    "exportOne": "Exporter les clics de {name}",
+    "empty": "Dès que le post d’un créateur est en ligne, il apparaît ici avec ses clics et ce que votre pixel a observé après chacun.",
+    "columns": {
+      "creator": "Créateur",
+      "campaign": "Campagne",
+      "clicks": "Clics",
+      "visits": "Visites",
+      "signups": "Inscriptions",
+      "purchases": "Achats",
+      "export": "Export"
+    }
+  },
+  "posts": {
+    "title": "Posts en ligne",
+    "description": "Les clics sur le lien suivi de chaque post. Réactions et commentaires : moyennes des posts publics récents du créateur. Les chiffres LinkedIn du post sponsorisé ne sont pas importés.",
+    "empty": "Aucun post en ligne pour l’instant. Chaque post s’affiche ici dès que le créateur le publie, avec les clics sur son lien.",
+    "view": "Voir le post",
+    "columns": {
+      "creator": "Créateur",
+      "published": "Publié le",
+      "link": "Lien suivi",
+      "clicks": "Clics",
+      "reactions": "Réactions moy.",
+      "comments": "Commentaires moy.",
+      "post": "Post"
+    }
+  },
+  "log": {
+    "title": "Journal des clics",
+    "description": "{shown, plural, one {Le clic le plus récent sur {count}. Le CSV les contient tous.} other {Les # clics les plus récents sur {count}. Le CSV les contient tous.}}",
+    "export": "Exporter en CSV",
+    "columns": {
+      "time": "Heure",
+      "creator": "Créateur",
+      "source": "Provenance",
+      "device": "Appareil",
+      "country": "Pays"
+    }
+  }
+}

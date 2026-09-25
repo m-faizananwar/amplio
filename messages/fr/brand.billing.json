@@ -1,0 +1,63 @@
+{
+  "title": "Facturation",
+  "description": "Où se trouve votre argent, et le détail de chaque mouvement.",
+  "error": "Impossible de charger la facturation. Vos données ne sont pas perdues. Réessayez dans un instant.",
+  "buckets": {
+    "available": {
+      "label": "Disponible",
+      "hint": "Prêt pour de nouvelles invitations"
+    },
+    "held": {
+      "label": "Provisionné pour les invitations",
+      "hint": "{count, plural, =0 {Aucune invitation en attente de réponse} one {# invitation sans réponse · rémunération restituée en cas de refus} other {# invitations sans réponse · rémunérations restituées en cas de refus}}"
+    },
+    "committed": {
+      "label": "Engagé",
+      "hint": "{count, plural, =0 {Aucune collaboration acceptée pour l’instant} one {# collaboration acceptée} other {# collaborations acceptées}}"
+    },
+    "paid": {
+      "label": "Versé aux créateurs",
+      "hint": "{count, plural, =0 {Aucun post payé pour l’instant} one {# post payé} other {# posts payés}}"
+    }
+  },
+  "topUp": {
+    "open": "Recharger",
+    "title": "Recharger votre portefeuille",
+    "description": "Choisissez un montant. Il est crédité sur votre portefeuille et inscrit au registre.",
+    "suggested": "Votre solde ne couvre pas cette sélection. Le montant suggéré la couvre.",
+    "amount": "Montant du rechargement",
+    "custom": "Autre",
+    "customLabel": "Montant en euros",
+    "limits": "Entre {min} et {max}.",
+    "cancel": "Annuler",
+    "submit": "Ajouter {amount}",
+    "crediting": "Rechargement · crédit en cours…",
+    "done": "Rechargement de {amount} crédité · solde {balance}"
+  },
+  "ledger": {
+    "title": "Registre",
+    "description": "Chaque euro entré ou sorti, avec sa référence.",
+    "filter": "Filtrer les mouvements",
+    "filters": {
+      "all": "Tous",
+      "booking": "Réservations",
+      "topup": "Rechargements"
+    },
+    "status": {
+      "held": "Provisionné",
+      "paid": "Payé",
+      "credited": "Crédité"
+    },
+    "empty": {
+      "title": "Aucun mouvement pour l’instant",
+      "body": "Les rechargements, les rémunérations provisionnées pour les invitations et les paiements aux créateurs s’affichent ici, chacun avec sa référence."
+    },
+    "columns": {
+      "date": "Date",
+      "description": "Libellé",
+      "reference": "Référence",
+      "status": "Statut",
+      "amount": "Montant"
+    }
+  }
+}

@@ -1,0 +1,284 @@
+{
+  "list": {
+    "title": "Campaigns",
+    "description": "Every brief your creators write from, with its numbers.",
+    "new": "New campaign",
+    "error": "We couldn't load your campaigns. Your data is safe. Try again in a moment.",
+    "empty": {
+      "title": "No campaigns yet",
+      "body": "A campaign is the brief creators write from. Every collaboration starts from one.",
+      "action": "Create a campaign"
+    },
+    "noDescription": "No description yet",
+    "columns": {
+      "campaign": "Campaign",
+      "status": "Status",
+      "creators": "Creators",
+      "published": "Published",
+      "committed": "Committed"
+    },
+    "status": {
+      "draft": "Draft — not launched",
+      "active": "Active",
+      "completed": "Completed"
+    },
+    "continue": "Finish setup",
+    "open": "Open"
+  },
+  "detail": {
+    "back": "Campaigns",
+    "continue": "Finish setup",
+    "invite": "Invite a creator",
+    "switch": "Switch campaign",
+    "error": "We couldn't load this campaign. Your data is safe. Try again in a moment.",
+    "projection": {
+      "notEnough": "{posts, plural, =0 {Projection: no live posts on Amplio yet} one {Projection: not enough live posts on Amplio yet (# so far)} other {Projection: not enough live posts on Amplio yet (# so far)}}",
+      "line": "Projected {clicks} clicks from {creators, plural, one {# creator} other {# creators}} · based on {posts, plural, one {# live post} other {# live posts}} on Amplio",
+      "actual": "Actual {clicks} so far"
+    },
+    "tabs": {
+      "label": "Campaign sections",
+      "collaborations": "Collaborations",
+      "brief": "Brief",
+      "shortlist": "Shortlist",
+      "analytics": "Analytics"
+    },
+    "delete": {
+      "label": "Delete",
+      "confirm": "Delete — held fees come back",
+      "done": "Campaign deleted"
+    },
+    "notFound": {
+      "title": "Campaign not found",
+      "body": "This campaign doesn't exist, or it belongs to another workspace."
+    },
+    "shortlist": {
+      "empty": {
+        "title": "No creators saved for this brief",
+        "body": "Bookmark creators on the Creators page and they appear here, ready to invite.",
+        "action": "Find creators"
+      },
+      "launchFirst": "Invitations open once the campaign is launched."
+    }
+  },
+  "creatorRow": {
+    "noIndustries": "No industries listed",
+    "fit": "{score}% fit",
+    "price": "{price} / post",
+    "invite": "Invite",
+    "inviting": "Inviting…",
+    "alreadyInvited": "Invited",
+    "invited": "Invitation sent to {name}"
+  },
+  "analytics": {
+    "reach": {
+      "label": "Estimated reach",
+      "none": "No live posts yet",
+      "hint": "{count, plural, one {Sum of median views · # live post} other {Sum of median views · # live posts}}"
+    },
+    "clicks": {
+      "label": "Qualified clicks",
+      "hint": "Since the campaign started"
+    },
+    "committed": {
+      "label": "Committed",
+      "hint": "{count, plural, one {# booking} other {# bookings}}"
+    },
+    "chart": {
+      "title": "Clicks per day",
+      "window": "Last 12 days",
+      "empty": "No clicks yet. Each creator gets a tracked link when they accept, and every click on it shows here."
+    },
+    "byCreator": {
+      "title": "By creator",
+      "empty": "No clicks yet. Creators appear here once their post is live.",
+      "creator": "Creator",
+      "clicks": "Clicks"
+    },
+    "posts": {
+      "title": "Live posts",
+      "empty": "No live posts yet. Each post appears here once the creator publishes it.",
+      "clicks": "{count, plural, one {# click} other {# clicks}}",
+      "view": "View post"
+    }
+  },
+  "brief": {
+    "error": "We couldn't load the brief. Your data is safe. Try again in a moment.",
+    "edit": "Edit the brief",
+    "editTitle": "Edit the brief",
+    "editDescription": "Every creator you invite receives this brief. Preview shows it the way they'll read it.",
+    "readHint": "What every invited creator reads.",
+    "sections": {
+      "context": "What to say and why",
+      "audience": "Who it's for",
+      "rules": "Rules",
+      "angles": "Angles and example posts"
+    },
+    "fields": {
+      "whatToTell": "What creators should say",
+      "links": "Links and examples",
+      "industries": "Target industries",
+      "geos": "Target geographies",
+      "tone": "Tone",
+      "do": "Do",
+      "avoid": "Avoid",
+      "angle": "Angle",
+      "hook": "Hook",
+      "direction": "Editorial direction",
+      "example": "Example post"
+    },
+    "empty": {
+      "whatToTell": "Nothing written yet",
+      "industries": "No industries yet",
+      "geos": "No geographies yet",
+      "tone": "No tone set",
+      "rules": "No rules yet",
+      "angles": "No angles yet"
+    },
+    "placeholders": {
+      "do": "A rule creators should follow",
+      "avoid": "Something creators must not do"
+    },
+    "errors": {
+      "whatToTell": "Tell creators what to say",
+      "tone": "Keep the tone to a few words",
+      "angle": "Give the angle a name"
+    },
+    "actions": {
+      "preview": "Preview",
+      "backToEdit": "Back to editing",
+      "cancel": "Cancel",
+      "save": "Save the brief",
+      "saving": "Saving…",
+      "saved": "Brief saved",
+      "remove": "Remove",
+      "addLine": "Add a line",
+      "addAngle": "Add an angle",
+      "removeLine": "Remove {label} line {n}"
+    }
+  },
+  "create": {
+    "title": "New campaign",
+    "description": "Answer three questions. You get a brief you can edit before launch.",
+    "note": "The brief is drafted from your answers and your workspace profile — by the AI provider when one is configured, otherwise from a template.",
+    "preparing": "Preparing your brief…",
+    "try": "Try: “{example}”",
+    "generate": "Draft the brief",
+    "next": "Answer and continue",
+    "progress": "Question {step} of {total}",
+    "questions": {
+      "selling": {
+        "ask": "First — what are you selling? A sentence is enough.",
+        "placeholder": "What you sell, in one sentence",
+        "example": "Payroll software for companies with 20 to 200 employees"
+      },
+      "buyer": {
+        "ask": "Who should these posts reach?",
+        "placeholder": "Job titles, company size, industry",
+        "example": "Finance leads and CFOs at European SaaS companies"
+      },
+      "goal": {
+        "ask": "What's the goal — sign-ups, demos, awareness?",
+        "placeholder": "What a reader should do after the post",
+        "example": "Demo requests from companies with more than 50 employees"
+      }
+    },
+    "generated": {
+      "ai": "Brief drafted with AI",
+      "template": "Brief drafted from a template"
+    }
+  },
+  "launch": {
+    "back": "Campaigns",
+    "saveContinue": "Save and continue",
+    "steps": {
+      "label": "Launch steps",
+      "basics": "Basics",
+      "brief": "Brief",
+      "creators": "Pick creators",
+      "review": "Review and launch"
+    },
+    "stepHints": {
+      "basics": "Name the campaign, then set the post-by date and the fee you offer per post.",
+      "brief": "Every creator you invite writes from this brief. Edit anything before launch.",
+      "creators": "Ranked by fit with this brief, the best few already ticked. Each invitation is funded from your wallet.",
+      "review": "Check the numbers, then launch: the campaign goes live and invitations go out."
+    },
+    "generated": {
+      "ai": "Drafted with AI from your answers. Everything below is editable.",
+      "template": "Drafted from a template — no AI provider is configured. Everything below is editable."
+    },
+    "basics": {
+      "name": "Campaign name",
+      "description": "Description",
+      "deadline": "Post by",
+      "deadlinePlaceholder": "Pick a date",
+      "fee": "Default fee per post (€)",
+      "saving": "Saving…",
+      "saveContinue": "Save and continue",
+      "cancel": "Cancel",
+      "errors": {
+        "name": "Name the campaign",
+        "description": "Shorten the description",
+        "deadline": "Pick a date",
+        "fee": "Up to €1,500 per post"
+      }
+    },
+    "pick": {
+      "empty": {
+        "title": "No creator matches this brief yet",
+        "body": "Widen the target industries in the brief to see more creators.",
+        "action": "Back to the brief"
+      },
+      "select": "Select {name}",
+      "summary": "{count, plural, =0 {None selected} one {# selected} other {# selected}} · {total} to hold · wallet {wallet}",
+      "back": "Back",
+      "review": "Review and launch"
+    },
+    "review": {
+      "edit": "Edit",
+      "deadline": "Post by",
+      "noDeadline": "No date yet",
+      "fee": "Default fee",
+      "brief": "Brief",
+      "angles": "{count, plural, =0 {No angles} one {# angle} other {# angles}}",
+      "editBrief": "Edit the brief",
+      "toInvite": "{count, plural, =0 {No creators} one {# creator} other {# creators}} to invite",
+      "change": "Change",
+      "noneSelected": "No creators selected. You can invite them from Creators after launch.",
+      "held": "{total} will be held from your wallet ({wallet} available).",
+      "heldShort": "{total} would be held but your wallet has {wallet} — invitations beyond it are listed, not sent.",
+      "back": "Back"
+    },
+    "launch": {
+      "toast": "Campaign launched · {count, plural, =0 {no invitations sent} one {# invitation sent} other {# invitations sent}}",
+      "done": "The campaign is active. {count, plural, =0 {No invitations were sent.} one {# invitation was sent.} other {# invitations were sent.}}",
+      "unfunded": "Your wallet didn't cover these creators:",
+      "shortBy": "{name} — {amount} short",
+      "topUp": "Top up in Billing",
+      "skipped": {
+        "duplicate": "{name} — already on this campaign",
+        "failed": "{name} — the invitation couldn't be sent"
+      },
+      "open": "Open the campaign",
+      "launching": "Launching…",
+      "withoutInvites": "Launch without invitations",
+      "launchAndInvite": "Launch and invite {count, plural, one {# creator} other {# creators}}"
+    }
+  },
+  "estimator": {
+    "title": "What to expect",
+    "notEnough": "Not enough data yet",
+    "clicks": "Est. clicks",
+    "signups": "Est. sign-ups",
+    "perSignup": "Est. cost per sign-up",
+    "perClick": "Est. cost per click",
+    "spend": "Total to hold",
+    "confidence": {
+      "high": "High confidence",
+      "medium": "Medium confidence",
+      "low": "Low confidence"
+    },
+    "source": "From Amplio's own data: {posts, plural, =0 {no live posts} one {# live post} other {# live posts}}, {clicks, plural, =0 {no clicks} one {# click} other {# clicks}}, {signups, plural, =0 {no attributed sign-ups} one {# attributed sign-up} other {# attributed sign-ups}}. Reach data for {withReach} of {creators, plural, one {# selected creator} other {# selected creators}}."
+  }
+}

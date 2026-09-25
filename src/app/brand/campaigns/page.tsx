@@ -1,32 +1,22 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { ErrorState } from "@/components/page/ErrorState";
 import { PageHeader } from "@/components/page/PageHeader";
-import { CampaignsList } from "@/features/campaigns/components/list/CampaignsList";
-import { getLaunchPlan, listCampaignCards } from "@/features/campaigns/server/queries";
+import { buttonVariants } from "@/components/ui/button";
+import { BRAND } from "@/config/brand";
+import { CampaignsLedger } from "@/features/campaigns/components/list/CampaignsLedger";
+import { listCampaignCards } from "@/features/campaigns/server/queries";
 import { requireBrand } from "@/features/campaigns/server/require-brand";
 import { safeQuery } from "@/features/campaigns/server/safe-query";
 
-import { BRAND } from "@/config/brand";
 export const metadata: Metadata = { title: `Campaigns · ${BRAND.wordmark}` };
 
 export default async function BrandCampaignsPage() {
   const viewer = await requireBrand("/brand/campaigns");
-  const result = await safeQuery("campaigns list", { brandId: viewer.brand.id }, () =>
-    Promise.all([listCampaignCards(viewer.brand.id), getLaunchPlan(viewer.brand.id)]),
-  );
-  if (!result.ok) {
-    return (
-      <>
-        <PageHeader title="Campaigns" />
-        <ErrorState body="We could not load your campaigns. The details are in the server log." retryHref="/brand/campaigns" />
-      </>
-    );
-  }
-  const [campaigns, plan] = result.data;
-  return (
-    <>
-      <PageHeader title="Campaigns" description="Every brief your creators work from, with the numbers behind it." />
-      <CampaignsList campaigns={campaigns} plan={plan} />
-    </>
-  );
+  const t = await getTranslations("brand.campaigns.list");
+  const header = <PageHeader title={t("title")} description={t("description")} actions={<Link href="/brand/campaigns/new" className={buttonVariants()}>{t("new")}</Link>} />;
+  const result = await safeQuery("campaigns list", { brandId: viewer.brand.id }, () => listCampaignCards(viewer.brand.id));
+  if (!result.ok) return <>{header}<ErrorState body={t("error")} retryHref="/brand/campaigns" /></>;
+  return <>{header}<CampaignsLedger campaigns={result.data} /></>;
 }

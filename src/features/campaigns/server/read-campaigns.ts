@@ -2,7 +2,6 @@ import "server-only";
 import { and, desc, eq, inArray, sql } from "drizzle-orm";
 import { getDb } from "@/db";
 import { brands, campaigns, collaborations, creators, ledgerEntries, shortlist, users } from "@/db/schema";
-import { AI_HISTORY_LIMIT, COLLAB_TAB_STATUSES, type CollabTabKey } from "../constants";
 import type { BrandProfile, CampaignCardDto, CampaignDto, CampaignSummaryDto, CollaborationRowDto, LaunchPlanDto } from "../schemas";
 import { toCampaignDto, toCollaborationRowDto } from "./dto";
 import { cachedRead } from "@/db/cache";
@@ -78,58 +77,8 @@ async function loadCampaignSummaries(brandId: string): Promise<CampaignSummaryDt
     .orderBy(desc(campaigns.createdAt));
 }
 
-// HISTORY rail on "Create with AI": past AI-generated campaigns, newest first.
-async function loadAiHistory(brandId: string): Promise<CampaignSummaryDto[]> {
-  return getDb()
-    .select({ id: campaigns.id, name: campaigns.name, status: campaigns.status })
-    .from(campaigns)
-    .where(and(eq(campaigns.brandId, brandId), eq(campaigns.source, "ai")))
-    .orderBy(desc(campaigns.createdAt))
-    .limit(AI_HISTORY_LIMIT);
-}
 
-async function loadCollaborationRows(campaignId: string, tab: CollabTabKey): Promise<CollaborationRowDto[]> {
-  const statusFilter = tab === "all" ? undefined : inArray(collaborations.status, [...COLLAB_TAB_STATUSES[tab]]);
-  const rows = await getDb()
-    .select({
-      collab: collaborations,
-      campaignName: campaigns.name,
-      creator: { id: creators.id, avatarUrl: creators.avatarUrl },
-      firstName: users.firstName,
-      lastName: users.lastName,
-    })
-    .from(collaborations)
-    .innerJoin(campaigns, eq(campaigns.id, collaborations.campaignId))
-    .innerJoin(creators, eq(creators.id, collaborations.creatorId))
-    .innerJoin(users, eq(users.id, creators.userId))
-    .where(and(eq(collaborations.campaignId, campaignId), statusFilter))
-    .orderBy(desc(collaborations.updatedAt));
-  return rows.map(toCollaborationRowDto);
-}
 
-async function loadCountCollaborationsByTab(campaignId: string): Promise<Record<CollabTabKey, number> & { committedCents: number }> {
-  const db = getDb();
-  const rows = await db
-    .select({ status: collaborations.status, n: sql<number>`count(*)::int`, fee: sql<number>`coalesce(sum(${collaborations.feeCents}), 0)::int` })
-    .from(collaborations)
-    .where(eq(collaborations.campaignId, campaignId))
-    .groupBy(collaborations.status);
-  const count = (statuses: readonly string[]) => rows.filter((r) => statuses.includes(r.status)).reduce((s, r) => s + r.n, 0);
-  const [committed] = await db
-    .select({ cents: sql<number>`coalesce(-sum(${ledgerEntries.amountCents}), 0)::int` })
-    .from(ledgerEntries)
-    .innerJoin(collaborations, eq(collaborations.id, ledgerEntries.collaborationId))
-    .where(and(eq(collaborations.campaignId, campaignId), eq(ledgerEntries.type, "booking")));
-  return {
-    all: rows.reduce((s, r) => s + r.n, 0),
-    active: count(COLLAB_TAB_STATUSES.active),
-    received: count(COLLAB_TAB_STATUSES.received),
-    sent: count(COLLAB_TAB_STATUSES.sent),
-    todo: count(COLLAB_TAB_STATUSES.todo),
-    completed: count(COLLAB_TAB_STATUSES.completed),
-    committedCents: committed?.cents ?? 0,
-  };
-}
 
 // GET STARTED popover: each step is true when a row proves it happened.
 async function loadLaunchPlan(brandId: string): Promise<LaunchPlanDto> {
@@ -168,17 +117,8 @@ export function listCampaignSummaries(brandId: string) {
   return cachedRead(loadCampaignSummaries, ["campaign-summaries"], { tags: [tag.brandCampaigns(brandId)] })(brandId);
 }
 
-export function listAiHistory(brandId: string) {
-  return cachedRead(loadAiHistory, ["ai-history"], { tags: [tag.brandCampaigns(brandId)] })(brandId);
-}
 
-export function listCollaborationRows(campaignId: string, tab: CollabTabKey) {
-  return cachedRead(loadCollaborationRows, ["collaboration-rows"], { tags: [tag.campaign(campaignId)] })(campaignId, tab);
-}
 
-export function countCollaborationsByTab(campaignId: string) {
-  return cachedRead(loadCountCollaborationsByTab, ["collaboration-tab-counts"], { tags: [tag.campaign(campaignId)] })(campaignId);
-}
 
 export function getLaunchPlan(brandId: string) {
   return cachedRead(loadLaunchPlan, ["launch-plan"], { tags: [tag.brandCampaigns(brandId)] })(brandId);

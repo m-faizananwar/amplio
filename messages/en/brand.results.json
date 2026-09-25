@@ -1,0 +1,92 @@
+{
+  "title": "Results",
+  "description": "What your creators' posts brought in, traced back to each click.",
+  "error": "We couldn't load your results. Your data is safe. Try again in a moment.",
+  "numbers": {
+    "reach": {
+      "label": "Estimated reach",
+      "hint": "{count, plural, one {Estimate: sum of median views · # live post} other {Estimate: sum of median views · # live posts}}"
+    },
+    "clicks": {
+      "label": "Qualified clicks",
+      "hint": "{days, plural, one {Last day} other {Last # days}}"
+    },
+    "signups": {
+      "label": "Attributed sign-ups",
+      "hint": "Tied to a creator's click by your pixel"
+    },
+    "spend": {
+      "label": "Committed to creators",
+      "hint": "{count, plural, one {# booking} other {# bookings}}"
+    }
+  },
+  "pixel": {
+    "title": "Site pixel",
+    "active": "{count, plural, one {Active · # event} other {Active · # events}}",
+    "inactive": "Not installed yet. Add it to see the visits, sign-ups and purchases that follow each click.",
+    "view": "View snippet",
+    "install": "Install the pixel",
+    "copied": "Snippet copied",
+    "copyFailed": "Couldn't copy. Select the snippet and copy it by hand.",
+    "dialog": {
+      "title": "Install the site pixel",
+      "body": "Paste this snippet just before '</head>' on every page of your site. Visits are counted automatically. After a sign-up or purchase succeeds, call {global}('track', …) to send it.",
+      "copy": "Copy snippet",
+      "demo": "Open the demo landing page",
+      "siteKey": "Your site key"
+    }
+  },
+  "chart": {
+    "title": "Clicks over time",
+    "description": "{total} qualified clicks in this range",
+    "range": "Date range",
+    "ranges": {
+      "week": "Week",
+      "month": "Month",
+      "year": "Year"
+    }
+  },
+  "attribution": {
+    "title": "By creator",
+    "description": "Clicks on each creator's tracked link, then what your pixel saw after the click. Each row exports its own clicks.",
+    "exportAll": "Export all clicks",
+    "exportOne": "Export {name}'s clicks",
+    "empty": "Once a creator's post is live, they appear here with their clicks and what your pixel saw after each one.",
+    "columns": {
+      "creator": "Creator",
+      "campaign": "Campaign",
+      "clicks": "Clicks",
+      "visits": "Visits",
+      "signups": "Sign-ups",
+      "purchases": "Purchases",
+      "export": "Export"
+    }
+  },
+  "posts": {
+    "title": "Live posts",
+    "description": "Clicks on each post's tracked link. Reactions and comments are the creator's recent public-post averages; LinkedIn's numbers for the sponsored post aren't imported.",
+    "empty": "No live posts yet. Each post appears here once the creator publishes it, with the clicks on its link.",
+    "view": "View post",
+    "columns": {
+      "creator": "Creator",
+      "published": "Published",
+      "link": "Tracked link",
+      "clicks": "Clicks",
+      "reactions": "Avg. reactions",
+      "comments": "Avg. comments",
+      "post": "Post"
+    }
+  },
+  "log": {
+    "title": "Click log",
+    "description": "{count, plural, one {Latest {shown} of # click. The CSV has all of them.} other {Latest {shown} of # clicks. The CSV has all of them.}}",
+    "export": "Export CSV",
+    "columns": {
+      "time": "Time",
+      "creator": "Creator",
+      "source": "Source",
+      "device": "Device",
+      "country": "Country"
+    }
+  }
+}

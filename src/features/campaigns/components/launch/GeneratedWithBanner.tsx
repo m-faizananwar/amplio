@@ -1,18 +1,22 @@
-import { Sparkles } from "lucide-react";
-import { AI_NOTE, LINK_NOTE, TEMPLATE_NOTE } from "../../constants";
+"use client";
 
-const COPY = { ai: AI_NOTE, template: TEMPLATE_NOTE, link: LINK_NOTE } as const;
-export type GeneratedWith = keyof typeof COPY;
+import { Sparkles } from "lucide-react";
+import { useTranslations } from "next-intl";
+
+export type GeneratedWith = "ai" | "template";
 
 export function isGeneratedWith(value: string | undefined): value is GeneratedWith {
-  return value === "ai" || value === "template" || value === "link";
+  return value === "ai" || value === "template";
 }
 
+// Says how the draft brief was written — by the AI provider, or from the
+// template when none is configured — and that all of it is editable.
 export function GeneratedWithBanner({ generatedWith }: { generatedWith: GeneratedWith }) {
+  const t = useTranslations("brand.campaigns.launch.generated");
   return (
-    <p className="flex items-start gap-2 rounded-xl border border-brand/30 bg-brand/5 px-4 py-3 text-sm">
-      <Sparkles className="mt-0.5 size-4 shrink-0 text-brand" aria-hidden="true" />
-      <span>{COPY[generatedWith]}. Everything below is editable before launch.</span>
+    <p className="flex items-start gap-2 rounded-control border border-rule bg-tint px-4 py-3 text-small">
+      <Sparkles className="mt-0.5 size-4 shrink-0 text-ink-muted" aria-hidden="true" />
+      <span>{t(generatedWith)}</span>
     </p>
   );
 }

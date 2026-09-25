@@ -27,6 +27,7 @@ function toPick(join: CreatorJoin, { campaign, brand, invitedIds, baseline }: Pi
     priceCents: join.creator.priceCents,
     fit: fit.score,
     reason: fit.reason,
+    signals: fit.signals,
     alreadyInvited: invitedIds.has(join.creator.id),
   };
 }
