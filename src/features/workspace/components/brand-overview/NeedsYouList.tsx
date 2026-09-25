@@ -43,7 +43,7 @@ export async function NeedsYouList({ items, lowWalletCents }: Props) {
               <Link href={`/brand/collaborations/${c.id}`} className="group flex flex-wrap items-center gap-3 px-5 py-4 outline-none transition-colors duration-(--duration-fast) ease-ledger hover:bg-tint focus-visible:bg-tint">
                 <PersonAvatar name={c.creatorName} src={c.creatorAvatarUrl} size="sm" />
                 <span className="min-w-0 flex-1">
-                  <span className="block truncate font-medium text-ink">{tc(`nextAction.brand.${c.status}.action`, vars)}</span>
+                  <span className="line-clamp-2 font-medium text-ink">{tc(`nextAction.brand.${c.status}.action`, vars)}</span>
                   <span className="block truncate text-small text-ink-muted">{c.creatorName} · {c.campaignName}</span>
                 </span>
                 <span className="inline-flex items-center gap-1 text-small font-medium text-ink">
