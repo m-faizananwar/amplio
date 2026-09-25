@@ -3,7 +3,7 @@ import { and, asc, desc, eq } from "drizzle-orm";
 import { getDb } from "@/db";
 import { brands, campaigns, collaborationEvents, collaborations } from "@/db/schema";
 import type { CampaignOption, CollaborationDetailDto, CollaborationDto, ViewerRole } from "../schemas";
-import { trackedUrlFor } from "./app-url";
+import { appOrigin, trackedUrlFor } from "./app-url";
 import { collaborationSelect, isUuid, toBriefDto, toCollaborationDto, toEventDto } from "./dto";
 import { cachedRead } from "@/db/cache";
 import { tag } from "@/lib/cache-tags";
@@ -31,10 +31,11 @@ async function loadBrandCampaignOptions(brandId: string): Promise<CampaignOption
 }
 
 type DetailScope = { id: string; role: ViewerRole; ownerId: string };
+type DetailArgs = DetailScope & { origin: string };
 
 // Ownership is part of the query: a creator only sees their own rows, a brand
 // only rows on its campaigns. Anything else is "not found", never "forbidden".
-async function loadCollaborationDetail(scope: DetailScope): Promise<CollaborationDetailDto | null> {
+async function loadCollaborationDetail(scope: DetailArgs): Promise<CollaborationDetailDto | null> {
   if (!isUuid(scope.id)) return null;
   const owner = scope.role === "creator" ? eq(collaborations.creatorId, scope.ownerId) : eq(campaigns.brandId, scope.ownerId);
   const [row] = await collaborationSelect().where(and(eq(collaborations.id, scope.id), owner));
@@ -55,7 +56,7 @@ async function loadCollaborationDetail(scope: DetailScope): Promise<Collaboratio
   ]);
   if (!campaignRow) return null;
 
-  const trackedUrl = await trackedUrlFor(row.trackingCode);
+  const trackedUrl = trackedUrlFor(row.trackingCode, scope.origin);
   return {
     collaboration: toCollaborationDto(row, scope.role),
     events: events.map(toEventDto),
@@ -77,6 +78,10 @@ export function listBrandCampaignOptions(brandId: string) {
   return cachedRead(loadBrandCampaignOptions, ["brand-campaign-options"], { tags: [tag.brandCampaigns(brandId)] })(brandId);
 }
 
-export function getCollaborationDetail(scope: DetailScope) {
-  return cachedRead(loadCollaborationDetail, ["collaboration-detail"], { tags: [scope.role === "creator" ? tag.creatorCollaborations(scope.ownerId) : tag.brandCollaborations(scope.ownerId)] })(scope);
+// The origin (for the absolute tracked link) is read here, outside the cache:
+// headers() inside a cached function throws, which took down every
+// collaboration that already had a tracked link.
+export async function getCollaborationDetail(scope: DetailScope) {
+  const origin = await appOrigin();
+  return cachedRead(loadCollaborationDetail, ["collaboration-detail"], { tags: [scope.role === "creator" ? tag.creatorCollaborations(scope.ownerId) : tag.brandCollaborations(scope.ownerId)] })({ ...scope, origin });
 }

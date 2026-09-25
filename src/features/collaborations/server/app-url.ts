@@ -11,7 +11,9 @@ export async function appOrigin() {
   return `${proto}://${host}`;
 }
 
-export async function trackedUrlFor(code: string | null) {
+// Pure on purpose: callers read the origin outside any cached function
+// (headers() inside unstable_cache throws) and pass it in.
+export function trackedUrlFor(code: string | null, origin: string) {
   if (!code) return null;
-  return `${await appOrigin()}${TRACKED_LINK_PATH}/${code}`;
+  return `${origin}${TRACKED_LINK_PATH}/${code}`;
 }
