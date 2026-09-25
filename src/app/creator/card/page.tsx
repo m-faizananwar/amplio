@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { ErrorState } from "@/components/page/ErrorState";
+import { PageHeader } from "@/components/page/PageHeader";
 import { getViewer } from "@/features/auth/server/session";
 import { CardIncomplete } from "@/features/workspace/components/card/CardIncomplete";
 import { CreatorCardView } from "@/features/workspace/components/card/CreatorCardView";
@@ -30,17 +31,12 @@ export default async function CreatorCardPage() {
   if (!card) redirect("/login");
   const origin = `${h.get("x-forwarded-proto") ?? "http"}://${h.get("host") ?? "localhost:3000"}`;
   return (
-    <div className="grid gap-6 animate-rise">
-      <header className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <h1 className="text-h2">{t("title")}</h1>
-          <p className="mt-1 text-ink-muted">{t("description")}</p>
-        </div>
-        <div className="flex gap-2">
-          <Link href="/creator/settings#card" className={buttonVariants({ variant: "secondary" })}>{t("actions.edit")}</Link>
-          <Link href={`/c/${card.handle}`} target="_blank" className={buttonVariants({ variant: "ghost" })}>{t("actions.openPublic")}</Link>
-        </div>
-      </header>
+    <>
+      <PageHeader title={t("title")} description={t("description")} actions={<>
+        <Link href="/creator/settings#card" className={buttonVariants({ variant: "secondary" })}>{t("actions.edit")}</Link>
+        <Link href={`/c/${card.handle}`} target="_blank" className={buttonVariants({ variant: "ghost" })}>{t("actions.openPublic")}</Link>
+      </>} />
+      <div className="grid gap-6">
       <CardIncomplete missingPrice={card.priceCents <= 0} missingIndustries={card.industries.length === 0} />
       <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,26rem)_minmax(0,1fr)]">
         <div className="grid gap-2">
@@ -49,6 +45,7 @@ export default async function CreatorCardPage() {
         </div>
         <LinksSection dealUrl={`${origin}/c/${card.handle}`} referralUrl={`${origin}/register/brand?ref=${card.handle}`} affiliate={affiliate} />
       </div>
-    </div>
+      </div>
+    </>
   );
 }

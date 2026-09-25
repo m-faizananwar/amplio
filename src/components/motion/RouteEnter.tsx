@@ -5,11 +5,10 @@ import { type ReactNode, useLayoutEffect, useRef } from "react";
 import { registerMorph } from "@/lib/motion/scroll-morph";
 
 // Route-enter motion for the app shells (mounted from template.tsx, so it
-// remounts on every client navigation): the page heading runs textReveal and
-// the page's direct children — tiles, cards, tables as whole blocks — pop in
-// on blovio's spring 80ms apart, one shot per visit. Blocks that already
-// carry their own Reveal group are left to it. The page streams behind a
-// loading skeleton, so the children are (re)marked whenever they change.
+// remounts on every client navigation): the page's direct children — tiles,
+// cards, tables as whole blocks — rise 8px, 20ms apart, one shot per visit.
+// A page header whose title lands word by word (WordReveal) animates itself.
+// The page streams in, so the children are (re)marked whenever they change.
 // Opacity + transform only, so nothing shifts; reduced motion is instant.
 export function RouteEnter({ children }: { children: ReactNode }) {
   const pathname = usePathname();
@@ -24,8 +23,8 @@ export function RouteEnter({ children }: { children: ReactNode }) {
       Array.from(root.children).forEach((child, i) => {
         const el = child as HTMLElement;
         if (el.hasAttribute("data-morph-group") || el.hasAttribute("data-morph") || el.getAttribute("aria-busy") === "true") return;
-        const heading = i === 0 ? el.querySelector<HTMLElement>("h1") : null;
-        if (heading) { heading.setAttribute("data-morph", "text"); targets.push(heading); return; }
+        // a page header whose title lands word by word animates itself
+        if (i === 0 && el.querySelector("[data-word-reveal]")) return;
         el.setAttribute("data-morph", "");
         targets.push(el);
       });

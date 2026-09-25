@@ -3,6 +3,7 @@ import type { CollaborationDto } from "@/features/collaborations/schemas";
 import type { LedgerRowDto } from "@/features/payouts/schemas";
 import type { EarningsSummary } from "@/features/payouts/server/queries";
 import type { CreatorClickRow } from "@/features/tracking/server/creator-queries";
+import { PageHeader } from "@/components/page/PageHeader";
 import { needsYou } from "@/lib/next-step";
 import { CreatorNumbers } from "./CreatorNumbers";
 import { NeedsYouList } from "./NeedsYouList";
@@ -33,11 +34,9 @@ export async function CreatorOverview({ collaborations, earnings, ledger, clicks
   const live = liveRows(collaborations);
   const count = (metric: string, n: number) => tt("title", { metric, count: n });
   return (
-    <div className="grid gap-8 animate-rise">
-      <header>
-        <h1 className="text-h2">{t("title")}</h1>
-        <p className="mt-1 text-ink-muted">{rows.length > 0 ? `${tn("title")} · ${tn("description")}` : t("description")}</p>
-      </header>
+    <>
+      <PageHeader title={t("title")} description={rows.length > 0 ? `${tn("title")} · ${tn("description")}` : t("description")} />
+      <div className="grid gap-8">
       <NeedsYouList rows={rows} labels={{ title: tn("title"), emptyTitle: t("allClear.title"), emptyBody: t("allClear.body"), emptyAction: t("allClear.action") }} />
       <CreatorNumbers
         labels={{ region: t("numbers.title"), open: t("numbers.openTrail"), empty: tt("empty.body") }}
@@ -47,6 +46,7 @@ export async function CreatorOverview({ collaborations, earnings, ledger, clicks
           { key: "live", label: t("numbers.livePosts.label"), hint: t("numbers.livePosts.hint"), value: live.length, rows: live, drawerTitle: count(t("numbers.livePosts.label"), live.length) },
         ]}
       />
-    </div>
+      </div>
+    </>
   );
 }
