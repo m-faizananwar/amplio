@@ -1,28 +1,20 @@
 import "server-only";
-import { BRAND } from "@/config/brand";
 import type { Viewer } from "@/features/auth/server/session";
 import { listCampaignSummaries } from "@/features/campaigns/server/read-campaigns";
 import { listOpportunities } from "@/features/collaborations/server/opportunities-queries";
 import { listBrandCollaborations, listCreatorCollaborations } from "@/features/collaborations/server/queries";
 import { getEarningsSummary } from "@/features/payouts/server/queries";
-import { HOW_IT_WORKS, PRICING } from "@/features/public/constants";
 import { STATUS_LABELS } from "@/lib/collaboration-labels";
 import { formatCents } from "@/lib/money";
 import { CONTEXT_LIST_MAX } from "../constants";
+import { PRODUCT_FACTS } from "../facts";
 
 const eur = (cents: number) => formatCents(cents, "EUR", "de-DE");
 const ACTION_STATUSES = new Set(["applied", "draft_submitted", "approved", "live"]);
 
-// What a visitor can ask about: the product, the numbers, the pricing.
+// What a visitor can ask about: only what the product does (../facts.ts).
 export function publicContext(): string {
-  const steps = HOW_IT_WORKS.steps.map((s) => `${s.n} ${s.label}`).join("; ");
-  const plans = PRICING.plans.map((p) => `${p.eyebrow}: ${p.price}${p.priceNote} — ${p.priceDetail}`).join(" | ");
-  return [
-    `${BRAND.name} is a B2B LinkedIn creator marketplace: brands book vetted creators for sponsored posts at a fixed price per post, brief them, approve drafts, and track every click back to the post.`,
-    `How it works: ${steps}.`,
-    `Pricing: ${plans}. ${PRICING.footnote}`,
-    "Sign up at /register (brands: /register/brand, creators: /register/creator). Demo accounts are one click on /login.",
-  ].join("\n");
+  return PRODUCT_FACTS.join("\n");
 }
 
 // A compact, read-only picture of the signed-in user's workspace.
