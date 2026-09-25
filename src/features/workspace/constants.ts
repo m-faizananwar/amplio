@@ -15,12 +15,3 @@ export const INDUSTRIES = [
   "Data / Analytics", "Customer Support", "Design", "Real Estate / PropTech", "LegalTech",
 ] as const;
 export const REGIONS = ["Europe", "North America", "Latin America", "Asia", "Africa", "Oceania", "Middle East", "Worldwide"] as const;
-
-
-export const CREATOR_TOUR = [
-  { step: 1, title: "Your Marketplace card", body: "This is your private preview and editor. Brands discover your positioning, audience and collaboration offer here.", href: "/creator/card", cta: "Open my card" },
-  { step: 2, title: "Opportunities", body: "Open brand campaigns ranked by audience fit. Apply, the brand accepts, and the booking is created on your terms.", href: "/creator/opportunities", cta: "Browse opportunities" },
-  { step: 3, title: "Collaborations", body: "Every step tells you where you stand, what to do, and what happens if you do nothing.", href: "/creator/collaborations", cta: "See collaborations" },
-  { step: 4, title: "Analytics", body: "Public LinkedIn performance plus the clicks on every tracked link you publish.", href: "/creator/analytics", cta: "Open analytics" },
-  { step: 5, title: "Earnings", body: "Net earnings per collaboration, what is awaiting release, and withdrawals.", href: "/creator/earnings", cta: "See earnings" },
-] as const;
