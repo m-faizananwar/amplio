@@ -10,6 +10,8 @@ import { layoutTrail, type Point, type TrailLayout } from "./trail-layout";
 export type TrailCounts = { posts: number; links: number; clicks: number; signups: number };
 type Particle = { active: boolean; path: [Point, Point, Point]; t: number; speed: number; signup: boolean };
 
+// the theme's ink and money, read from the tokens (light and dark differ);
+// setColors() updates them in place when the theme changes
 const INK = new THREE.Color("#111111");
 const MONEY = new THREE.Color("#0f7b4a");
 const AUDIENCE = 56;
@@ -219,6 +221,15 @@ export function createTrailScene(canvas: HTMLCanvasElement, counts: TrailCounts)
     /** 1 while the hero is in view, easing to 0 as it scrolls away */
     setFade(value: number) {
       fade = value;
+    },
+    /** the theme changed: repaint with its ink and money */
+    setColors(ink: string, money: string) {
+      INK.set(ink);
+      MONEY.set(money);
+      edges.material.color.copy(INK);
+      markLine.material.color.copy(INK);
+      rowMat.color.copy(INK);
+      resize(camera.right, camera.bottom);
     },
     /** a tap sends a handful of clicks at once — the playful bit */
     burst(count = 14) {

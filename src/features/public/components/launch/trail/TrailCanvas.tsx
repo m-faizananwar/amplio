@@ -51,10 +51,19 @@ export function TrailCanvas({ counts, labels, className }: { counts: TrailCounts
     });
     const ro = new ResizeObserver(resize);
 
+    const paint = () => {
+      const css = getComputedStyle(document.documentElement);
+      const ink = css.getPropertyValue("--ink").trim();
+      const money = css.getPropertyValue("--money").trim();
+      if (ink && money) scene?.setColors(ink, money);
+    };
+    const themeWatch = new MutationObserver(paint);
     const load = () =>
       import("./trail-scene").then(({ createTrailScene }) => {
         if (cancelled) return;
         scene = createTrailScene(c, counts);
+        paint();
+        themeWatch.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
         resize();
         onScroll();
         setLive(true);
@@ -74,6 +83,7 @@ export function TrailCanvas({ counts, labels, className }: { counts: TrailCounts
       else globalThis.clearTimeout(idle);
       io.disconnect();
       ro.disconnect();
+      themeWatch.disconnect();
       window.removeEventListener("pointermove", onPointer);
       el.removeEventListener("pointerdown", onTap);
       window.removeEventListener("scroll", onScroll);

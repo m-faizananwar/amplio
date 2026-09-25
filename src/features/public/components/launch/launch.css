@@ -48,3 +48,5 @@
 /* the money green on ink is the dark palette's (tokens: dark accent) */
 .launch-scene { --scene-money: var(--color-money); }
 .launch-scene--ink { --scene-money: #34c77b; }
+/* in dark mode the inverted beat is light, so the green goes back to the light-mode one */
+.dark .launch-scene--ink { --scene-money: #0f7b4a; }
