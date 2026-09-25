@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import type { VoiceIntent } from "@/features/voice/schemas";
@@ -22,6 +23,7 @@ function readStored(): ChatMessage[] {
 // gated tool's pending intent echoed back with the next message ("yes").
 export function useAssistantChat(csrfToken: string | undefined) {
   const router = useRouter();
+  const t = useTranslations("common.assistant");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [pending, setPending] = useState<VoiceIntent | null>(null);
   const [busy, setBusy] = useState(false);
@@ -45,13 +47,13 @@ export function useAssistantChat(csrfToken: string | undefined) {
       setMessages((m) => [...m, { role: "user", text: message }]);
       setBusy(true);
       const history = messages.slice(-HISTORY_MAX);
-      const response = await post({ message, pending, history, csrfToken });
+      const response = (await post({ message, pending, history, csrfToken })) ?? { ok: false, text: t("offline"), source: "template" as const };
       setPending(response.pending ?? null);
       setMessages((m) => [...m, { role: "assistant", text: response.text }]);
       setBusy(false);
       if (response.navigate) window.setTimeout(() => router.push(response.navigate as string), NAVIGATE_DELAY_MS);
     },
-    [busy, messages, pending, csrfToken, router],
+    [busy, messages, pending, csrfToken, router, t],
   );
 
   const clear = useCallback(() => {
@@ -62,7 +64,7 @@ export function useAssistantChat(csrfToken: string | undefined) {
   return { messages, busy, send, clear };
 }
 
-async function post(input: { message: string; pending: VoiceIntent | null; history: ChatMessage[]; csrfToken?: string }): Promise<ChatResponse> {
+async function post(input: { message: string; pending: VoiceIntent | null; history: ChatMessage[]; csrfToken?: string }): Promise<ChatResponse | null> {
   try {
     const res = await fetch("/api/assistant/chat", {
       method: "POST",
@@ -71,6 +73,6 @@ async function post(input: { message: string; pending: VoiceIntent | null; histo
     });
     return (await res.json()) as ChatResponse;
   } catch {
-    return { ok: false, text: "I couldn't reach the server. Try again.", source: "template" };
+    return null;
   }
 }

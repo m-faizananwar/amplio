@@ -245,6 +245,14 @@ Ideal customers (the onboarding value proposition and three customers, saved thr
 onboarding's own action), Audience (industries and regions onboarding doesn't ask), Account.
 The Team section is cut: it validated an email and then said no invitation was sent.
 
+## Assistant and call mode (every surface)
+A calm pill at the bottom — type or talk — with the conversation above it and a corner
+button when hidden. The mark's three dots are its state: still, bouncing while it listens,
+pulsing while it thinks. Call mode is a full page on paper with the mark as the voice
+visualiser (each dot grows with the live mic level), the transcript, mute, end, or type.
+Same brain: tools go through the confirm gate, so anything that moves money or changes a
+collaboration is described and waits for "yes".
+
 ## Real vs stubbed
 
 | Where | What | Status |

@@ -41,6 +41,7 @@ async function creatorLines(creatorId: string): Promise<string[]> {
   return [
     `Open opportunities (${opps.length}): ${opps.slice(0, CONTEXT_LIST_MAX).map((o) => `${o.campaignName} by ${o.brandCompany}`).join("; ") || "none right now"}.`,
     `Active collaborations (${active.length}): ${active.map((c) => `${c.campaignName} (${c.brandCompany}) — ${STATUS_LABELS[c.status]}, ${eur(c.feeCents)}`).join("; ") || "none"}.`,
-    `Earnings: total ${eur(earnings.totalEarnedCents)} over ${earnings.paidCollaborations} paid collaborations, ${eur(earnings.awaitingReleaseCents)} awaiting release, ${eur(earnings.withdrawnCents)} withdrawn.`,
+    // Spelled out: "awaiting release" is not money the creator can withdraw yet.
+    `Earnings: ${eur(earnings.availableCents)} available to withdraw now. ${eur(earnings.awaitingReleaseCents)} is awaiting release (brands still have to pay it; it cannot be withdrawn yet). ${eur(earnings.totalEarnedCents)} earned in total over ${earnings.paidCollaborations} paid collaborations; ${eur(earnings.withdrawnCents)} already withdrawn.`,
   ];
 }

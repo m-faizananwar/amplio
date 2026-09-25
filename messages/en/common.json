@@ -47,5 +47,41 @@
   "stub": {
     "stripe": "Demo top-up — no card is charged",
     "linkedin": "LinkedIn import is simulated from the profile URL"
+  },
+  "assistant": {
+    "title": "Assistant",
+    "listening": "Listening…",
+    "onCall": "On a call…",
+    "talk": "Talk to the assistant",
+    "stopListening": "Stop listening",
+    "hangUp": "Hang up",
+    "send": "Send",
+    "close": "Close",
+    "clear": "Clear",
+    "collapse": "Hide the assistant",
+    "expand": "Open the assistant",
+    "call": "Call Amplio",
+    "thinking": "Thinking…",
+    "intro": "Ask about your collaborations, earnings or campaigns, by text or by voice. I ask before anything that moves money or changes a collaboration.",
+    "introPublic": "Ask how Amplio works, what it costs, or how attribution is traced.",
+    "offline": "I couldn’t reach the server. Try again.",
+    "micBlocked": "The microphone is blocked. Allow it in your browser to talk, or type instead.",
+    "micUnsupported": "Voice input isn’t supported in this browser. Type instead.",
+    "label": "Message the assistant",
+    "placeholder1": "What would you like to see?",
+    "placeholder2": "What would you like to do?",
+    "placeholder3": "What can I help you find?",
+    "callMode": {
+      "title": "On a call with Amplio",
+      "prompt": "Say something, or type below.",
+      "mute": "Mute",
+      "unmute": "Unmute",
+      "end": "End call",
+      "typeInstead": "Type instead…",
+      "send": "Send",
+      "transcript": "Transcript",
+      "faultUnsupported": "Voice needs Chrome or Edge. Typing works.",
+      "faultBlocked": "Allow the microphone in your browser. Typing works."
+    }
   }
 }

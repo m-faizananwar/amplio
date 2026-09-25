@@ -47,5 +47,41 @@
   "stub": {
     "stripe": "Rechargement de démonstration — aucune carte n’est débitée",
     "linkedin": "L’import LinkedIn est simulé à partir de l’URL du profil"
+  },
+  "assistant": {
+    "title": "Assistant",
+    "listening": "À l’écoute…",
+    "onCall": "Appel en cours…",
+    "talk": "Parler à l’assistant",
+    "stopListening": "Arrêter l’écoute",
+    "hangUp": "Raccrocher",
+    "send": "Envoyer",
+    "close": "Fermer",
+    "clear": "Effacer",
+    "collapse": "Masquer l’assistant",
+    "expand": "Ouvrir l’assistant",
+    "call": "Appeler Amplio",
+    "thinking": "Réflexion…",
+    "intro": "Posez vos questions sur vos collaborations, vos revenus ou vos campagnes, à l’écrit ou à l’oral. Je vous demande confirmation avant tout ce qui engage de l’argent ou modifie une collaboration.",
+    "introPublic": "Demandez comment fonctionne Amplio, ce qu’il coûte ou comment l’attribution est tracée.",
+    "offline": "Impossible de joindre le serveur. Réessayez.",
+    "micBlocked": "Le micro est bloqué. Autorisez-le dans votre navigateur pour parler, ou écrivez.",
+    "micUnsupported": "La saisie vocale n’est pas prise en charge par ce navigateur. Écrivez plutôt.",
+    "label": "Écrire à l’assistant",
+    "placeholder1": "Que voulez-vous voir ?",
+    "placeholder2": "Que voulez-vous faire ?",
+    "placeholder3": "Que puis-je vous trouver ?",
+    "callMode": {
+      "title": "En appel avec Amplio",
+      "prompt": "Parlez, ou écrivez ci-dessous.",
+      "mute": "Couper le micro",
+      "unmute": "Réactiver le micro",
+      "end": "Raccrocher",
+      "typeInstead": "Écrire plutôt…",
+      "send": "Envoyer",
+      "transcript": "Transcription",
+      "faultUnsupported": "La voix nécessite Chrome ou Edge. Vous pouvez écrire.",
+      "faultBlocked": "Autorisez le micro dans votre navigateur. Vous pouvez écrire."
+    }
   }
 }

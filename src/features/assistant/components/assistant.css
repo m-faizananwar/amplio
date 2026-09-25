@@ -1,60 +1,15 @@
-/* The assistant's glass — the same material on the pill, the panel and the
-   tooltip: 72% white, 12px blur, hairline border, soft shadow. The pill's
-   surface is the liquid-gooey silhouette (LIQUID.fill) so the bar can flow
-   into the bubble; the panel is a plain glass card anchored above it. */
-.assistant-glass {
-  background: rgb(255 255 255 / 0.72);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgb(13 12 11 / 0.08);
-  box-shadow: 0 20px 60px rgb(13 12 11 / 0.1);
-}
-.assistant-pill {
-  background: transparent;
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
-}
-.assistant-bubble {
-  background: rgb(13 12 11);
-}
-.assistant-msg--user {
-  background: rgb(13 12 11 / 0.06);
-  border-radius: 999px;
-  font-size: 14px;
-  padding: 8px 14px;
-}
-.assistant-msg--assistant {
-  font-size: 15px;
-  line-height: 1.5;
-}
-.assistant-ink60 {
-  color: rgb(13 12 11 / 0.6);
-}
-
-/* Motion model from the reference widget: one spring curve for everything that
-   moves, an ease for fades. Keyframes for pieces that are cheaper as CSS. */
-@keyframes chatPop {
-  from { opacity: 0; transform: translateY(14px) scale(0.9); }
-  to   { opacity: 1; transform: none; }
-}
-@keyframes chatSwap {
-  from { opacity: 0; transform: rotate(-60deg) scale(0.4); }
-  to   { opacity: 1; transform: none; }
-}
-@keyframes chatDot {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-4px); }
-}
-.chat-swap { animation: chatSwap 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
-.chat-dot { animation: chatDot 0.9s ease-in-out infinite; }
-.chat-hover-x { transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
-.chat-hover-x:hover { transform: rotate(90deg) scale(1.1); }
-.chat-hover-send { transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
-.chat-hover-send:hover { transform: scale(1.1) rotate(6deg); }
-.chat-hover-send:active { transform: scale(0.9); }
-.chat-hover-lift { transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
-.chat-hover-lift:hover { transform: translateY(-2px); }
+/* The assistant in the ledger system: a surface pill with a hairline and the
+   float shadow, a panel that pops from the pill, and the mark's three dots as
+   the voice / thinking indicator. Transform and opacity only. */
+@keyframes trailBounce { 0%, 100% { transform: translateY(0) scaleY(1); } 50% { transform: translateY(-2px) scaleY(1.35); } }
+@keyframes trailPulse { 0%, 100% { opacity: 0.25; } 40% { opacity: 1; } }
+.trail-dots circle { transform-box: fill-box; transform-origin: center; }
+.trail-dots[data-state="listening"] circle { animation: trailBounce 520ms var(--ease-ledger) infinite; }
+.trail-dots[data-state="listening"] circle:nth-of-type(2) { animation-delay: 90ms; }
+.trail-dots[data-state="listening"] circle:nth-of-type(3) { animation-delay: 180ms; }
+.trail-dots[data-state="thinking"] circle { animation: trailPulse 900ms var(--ease-ledger) infinite; }
+.trail-dots[data-state="thinking"] circle:nth-of-type(2) { animation-delay: 150ms; }
+.trail-dots[data-state="thinking"] circle:nth-of-type(3) { animation-delay: 300ms; }
 @media (prefers-reduced-motion: reduce) {
-  .chat-swap, .chat-dot { animation: none !important; opacity: 1 !important; transform: none !important; }
-  .chat-hover-x:hover, .chat-hover-send:hover, .chat-hover-send:active, .chat-hover-lift:hover { transform: none; }
+  .trail-dots circle { animation: none !important; }
 }

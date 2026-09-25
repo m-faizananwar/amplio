@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import type { VoiceProvider, VoiceProviderEvents } from "@/features/voice/providers/types";
 import { createVapiProvider } from "@/features/voice/providers/vapi";
@@ -12,8 +13,6 @@ type Handlers = { onPartial: (text: string) => void; onFinal: (text: string) => 
 type SessionInfo = { provider: "vapi"; assistantId: string; publicKey: string; voiceToken: string } | { provider: "web-speech" };
 
 const SILENCE_MS = 1500;
-const UNSUPPORTED = "Voice needs Chrome or Edge — type instead";
-const BLOCKED = "Mic blocked — allow it in the address bar";
 
 // The pill's mic. Web Speech API: interim results stream into the input, the
 // final result (or a stop click, or 1.5s of silence) submits through the same
@@ -21,6 +20,9 @@ const BLOCKED = "Mic blocked — allow it in the address bar";
 // call instead (click again to hang up). Never a silent no-op: unsupported
 // browsers and a blocked mic get a toast and the input gets focus.
 export function useSpeechInput(handlers: Handlers, focusInput: () => void) {
+  const t = useTranslations("common.assistant");
+  const UNSUPPORTED = t("micUnsupported");
+  const BLOCKED = t("micBlocked");
   const [status, setStatus] = useState<SpeechStatus>("idle");
   const [fault, setFault] = useState<SpeechFault>(null);
   const provider = useRef<VoiceProvider | null>(null);
@@ -94,7 +96,7 @@ export function useSpeechInput(handlers: Handlers, focusInput: () => void) {
       stop();
       focusInput();
     }
-  }, [finish, focusInput, stop]);
+  }, [finish, focusInput, stop, BLOCKED, UNSUPPORTED]);
 
   const toggle = useCallback(() => {
     if (status === "listening") finish(latest.current);
