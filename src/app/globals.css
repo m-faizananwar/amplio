@@ -243,8 +243,7 @@
 }
 
 /* ---------------------------------------------------------------------------
-   Motion. Keyframes, easings and durations are naano's own (pulled from their
-   CSS); nothing here is invented. Every animation shows its end state under
+   Motion. Keyframes the primitives and sections share. Every animation shows its end state under
    prefers-reduced-motion. Rules are unlayered on purpose so they win over the
    utility layer where a primitive sets its own duration.
 --------------------------------------------------------------------------- */
@@ -347,7 +346,7 @@ details.accordion.closing > :not(summary) { animation: accordion-up 0.2s ease-ou
 
 /* Line charts draw themselves on mount (recharts paints the path with a dasharray; this is the fallback for plain SVG). */
 
-/* Enter/exit timings for the primitives, naano's numbers. */
+/* Enter/exit timings for the primitives: dialogs 200 ms, on the ledger's ease-out. */
 [data-slot="dialog-content"], [data-slot="alert-dialog-content"] { animation-duration: 0.2s; transition-duration: 0.2s; }
 [data-slot="dialog-content"][data-open], [data-slot="alert-dialog-content"][data-open] { animation-name: dialogIn; animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1); }
 @keyframes dialogIn {

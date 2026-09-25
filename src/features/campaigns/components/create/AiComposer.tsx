@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
-import { AiOrb } from "@/components/motion/AiOrb";
+import { TrailLoader } from "@/components/graphics/TrailLoader";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { BRIEF_PROMPT_MAX_CHARS } from "../../constants";
@@ -72,7 +72,7 @@ export function AiComposer() {
             ) : <p className="max-w-[85%] rounded-card rounded-br-sm bg-ink px-3 py-2 text-body text-paper">{turn.text}</p>}
           </li>
         ))}
-        {pending ? <li className="flex items-center gap-2 text-small text-ink-muted"><AiOrb state="composing" label={t("preparing")} /> {t("preparing")}</li> : null}
+        {pending ? <li className="flex items-center gap-2 text-small text-ink-muted"><TrailLoader /> {t("preparing")}</li> : null}
       </ol>
       {!done ? (
         <div>

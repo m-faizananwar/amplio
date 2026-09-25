@@ -1,13 +1,16 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { EmptyState } from "@/components/page/EmptyState";
+import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
+import { EmptyState } from "@/components/ui/empty-state";
 import { DemoLandingActions } from "@/features/tracking/components/demo/DemoLandingActions";
 import { getDemoSite } from "@/features/tracking/server/demo-queries";
 
 import { BRAND } from "@/config/brand";
 export const metadata: Metadata = { title: "Demo landing page · pixel test" };
 
-// A stand-in for a customer's website with the naano pixel installed. Arrive
+// A stand-in for a customer's website with our pixel installed. English only:
+// it plays the customer's site, not our product. Arrive
 // through a tracked link (/r/{code}) and the visit + any sign-up is attributed.
 export default async function DemoLandingPage({ searchParams }: { searchParams: Promise<{ site?: string }> }) {
   const { site } = await searchParams;
@@ -15,7 +18,11 @@ export default async function DemoLandingPage({ searchParams }: { searchParams: 
   if (!demo) {
     return (
       <main className="mx-auto max-w-2xl p-8">
-        <EmptyState title="Demo site unavailable" body="This page needs the database (or a valid site key) to load a brand's pixel." cta={{ href: "/", label: `Back to ${BRAND.wordmark}` }} />
+        <EmptyState
+          title="Demo site unavailable"
+          body="This page needs the database (or a valid site key) to load a brand's pixel."
+          action={<Link href="/" className={buttonVariants({ variant: "secondary" })}>{`Back to ${BRAND.wordmark}`}</Link>}
+        />
       </main>
     );
   }
@@ -26,14 +33,14 @@ export default async function DemoLandingPage({ searchParams }: { searchParams: 
       </Script>
       <Script src="/n.js" data-site={demo.siteKey} strategy="afterInteractive" />
       <div>
-        <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Demo landing page · {demo.company}</p>
-        <h1 className="mt-3 text-4xl font-semibold tracking-tight">This is {demo.company}&apos;s website, with the {BRAND.wordmark} pixel installed.</h1>
-        <p className="mt-4 text-muted-foreground">
+        <p className="text-caption font-medium uppercase tracking-wider text-ink-muted">Demo landing page · {demo.company}</p>
+        <h1 className="mt-3 text-h2 font-semibold tracking-(--tracking-heading)">This is {demo.company}&apos;s website, with the {BRAND.wordmark} pixel installed.</h1>
+        <p className="mt-4 text-lead text-ink-muted">
           {demo.valueProp ?? "A product page like any other."} Land here from a creator&apos;s tracked link and every action below is
-          attributed to that creator — same snippet, same API as naano&apos;s.
+          attributed to that creator.
         </p>
-        <p className="mt-4 text-xs text-muted-foreground">
-          Site key <code className="rounded bg-muted px-1">{demo.siteKey}</code> · script <code className="rounded bg-muted px-1">/n.js</code>
+        <p className="mt-4 text-caption text-ink-muted">
+          Site key <code className="num rounded-chip bg-tint px-1">{demo.siteKey}</code> · script <code className="num rounded-chip bg-tint px-1">/n.js</code>
         </p>
       </div>
       <DemoLandingActions />
