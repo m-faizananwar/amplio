@@ -1,5 +1,4 @@
-import { Tabs, TabsContent, TabsTrigger } from "@/components/ui/tabs";
-import { SlideTabsList } from "@/components/motion/SlideTabsList";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { LedgerRowDto } from "../../schemas";
 import { LedgerTable } from "../LedgerTable";
 
@@ -11,11 +10,11 @@ export function InvoicesTabs({ rows }: { rows: LedgerRowDto[] }) {
       <h2 className="font-semibold">Invoices</h2>
       <p className="text-sm text-muted-foreground">Every top-up and booking, with its reference.</p>
       <Tabs defaultValue="all" className="mt-4">
-        <SlideTabsList className="h-auto max-w-full flex-wrap">
+        <TabsList className="h-auto max-w-full flex-wrap">
           <TabsTrigger value="all">All · {rows.length}</TabsTrigger>
           <TabsTrigger value="topups">Top-ups · {topups.length}</TabsTrigger>
           <TabsTrigger value="bookings">Bookings · {bookings.length}</TabsTrigger>
-        </SlideTabsList>
+        </TabsList>
         <TabsContent value="all">
           <LedgerTable rows={rows} emptyText="No invoices or entries yet." />
         </TabsContent>

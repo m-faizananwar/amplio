@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { PageHeader } from "@/components/page/PageHeader";
-import { Tabs, TabsContent, TabsTrigger } from "@/components/ui/tabs";
-import { SlideTabsList } from "@/components/motion/SlideTabsList";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getViewer } from "@/features/auth/server/session";
 import { BrandAudienceForm } from "@/features/workspace/components/settings/BrandAudienceForm";
 import Link from "next/link";
@@ -27,12 +26,12 @@ export default async function BrandSettingsPage({ searchParams }: { searchParams
     <>
       <PageHeader eyebrow={`${BRAND.name} workspace`} title="Settings" description="Manage your company profile and the audience you want to reach." />
       <Tabs defaultValue={tab === "audience" || tab === "team" || tab === "integrations" ? tab : "profile"}>
-        <SlideTabsList className="h-auto max-w-full flex-wrap">
+        <TabsList className="h-auto max-w-full flex-wrap">
           <TabsTrigger value="profile">Profile</TabsTrigger>
           <TabsTrigger value="audience">Audience</TabsTrigger>
           <TabsTrigger value="team">Team &amp; access</TabsTrigger>
           <TabsTrigger value="integrations">Integrations</TabsTrigger>
-        </SlideTabsList>
+        </TabsList>
         <TabsContent value="profile" className="rounded-2xl border bg-background p-5">
           <BrandProfileForm defaults={{ company: settings.company, website: settings.website, valueProp: settings.valueProp }} />
         </TabsContent>

@@ -1,14 +1,14 @@
 // Section reveals, blovio's model (customers/tanguy_blovio/src/useScrollMorph.ts):
-// a one-shot spring pop per [data-morph] element, staggered 80ms by its
-// position within its section (max 400ms), fired by an IntersectionObserver a
+// a one-shot 8px rise per [data-morph] element, staggered 20ms by its
+// position within its section (max 220ms), fired by an IntersectionObserver a
 // touch before the element is on screen (rootMargin 0 0 -10% 0); a section a
 // full viewport clear of the view is released so it replays on the way back
 // down, keyed to the section so its tiles pop together. Hidden state lives
 // only behind html.pop-ready, so nothing is invisible without JS. Pure DOM,
 // no framework imports.
 
-const STAGGER = 80; // ms between tiles of one section
-const MAX_DELAY = 400;
+const STAGGER = 20; // ms between tiles of one section (DIRECTION: lists stagger 20ms)
+const MAX_DELAY = 220;
 const POP = "is-pop";
 const POP_Y_PERCENT = 8;
 const POP_SCALE = "0.94";

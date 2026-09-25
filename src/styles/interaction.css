@@ -1,318 +1,41 @@
-/* ══ Interaction language — the shared hover/entrance css for the whole site.
-   Imported once from src/app/layout.tsx. Unlayered on purpose so it wins
-   over the tailwind utilities on the same elements; transform/opacity/colour
-   only — nothing here moves layout.
+/* ══ Motion the primitives don't own ══════════════════════════════════════
+   DIRECTION.md: 150–220 ms, ease-ledger, opacity and transform only, and no
+   movement at all under reduced motion. Buttons, tabs, overlays, toasts and
+   table hovers animate inside src/components/ui; this file only carries what
+   spans many components: list staggers, the status beat, the rail's sliding
+   indicator, section entrances and the route crossfade. The first version's
+   interaction language (inverting buttons, icon chips, glass, ink sections,
+   spring overshoots) is gone with the design it belonged to. */
 
-   Sources, lifted verbatim (curves and timings kept, accent colours → ink):
-   - /Users/nexxus/Documents/MotionSites-Prompts/site/src/index.css
-     "Premium Navbar": navSlideDown / navFadeIn, .nav-root, .nav-link::after,
-     .nav-pill, .nav-logo, .nav-link-1..4
-   - /Users/nexxus/Documents/MotionSites-Prompts/site/src/App.css
-     social/button pattern: transition box-shadow .3s, hover var(--shadow),
-     focus-visible outline 2px + offset 2px
-   - /Users/nexxus/Projects/customers/tanguy_blovio/src/index.css
-     "Interaction language, from the MotionSites site": .btn-glow / .card-lift
-     curves (the button and card rules further down) */
+/* ---- lists: rows arrive 20 ms apart, the first twelve only ---- */
+@keyframes rowIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+[data-slot="table-body"] > tr,
+.list-stagger > * { animation: rowIn var(--duration-base) var(--ease-ledger) both; }
+[data-slot="table-body"] > tr:nth-child(n+13),
+.list-stagger > :nth-child(n+13) { animation: none; }
+:is([data-slot="table-body"] > tr, .list-stagger > *):nth-child(2) { animation-delay: 20ms; }
+:is([data-slot="table-body"] > tr, .list-stagger > *):nth-child(3) { animation-delay: 40ms; }
+:is([data-slot="table-body"] > tr, .list-stagger > *):nth-child(4) { animation-delay: 60ms; }
+:is([data-slot="table-body"] > tr, .list-stagger > *):nth-child(5) { animation-delay: 80ms; }
+:is([data-slot="table-body"] > tr, .list-stagger > *):nth-child(6) { animation-delay: 100ms; }
+:is([data-slot="table-body"] > tr, .list-stagger > *):nth-child(7) { animation-delay: 120ms; }
+:is([data-slot="table-body"] > tr, .list-stagger > *):nth-child(8) { animation-delay: 140ms; }
+:is([data-slot="table-body"] > tr, .list-stagger > *):nth-child(9) { animation-delay: 160ms; }
+:is([data-slot="table-body"] > tr, .list-stagger > *):nth-child(10) { animation-delay: 180ms; }
+:is([data-slot="table-body"] > tr, .list-stagger > *):nth-child(11) { animation-delay: 200ms; }
+:is([data-slot="table-body"] > tr, .list-stagger > *):nth-child(12) { animation-delay: 220ms; }
 
-:root { --ix-ease: cubic-bezier(0.16, 1, 0.3, 1); --ix-shadow: 0 10px 26px rgb(13 12 11 / 0.14); --ix-card-shadow: 0 14px 34px rgb(13 12 11 / 0.12); --shadow: 0 6px 16px rgb(13 12 11 / 0.10); }
+/* A panel swapped by a filter (keyed on the filter) rises in once. */
+.tab-swap { animation: var(--animate-rise); }
 
-/* ── Premium Navbar (MotionSites site/src/index.css) ── */
-@keyframes navSlideDown {
-  from { opacity: 0; transform: translateY(-18px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes navFadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
+/* ---- the status beat: a chip that changes state settles in once ---- */
+.status-chip { transition: background-color var(--duration-base) var(--ease-ledger), color var(--duration-base) var(--ease-ledger); }
+@keyframes statusBeat { from { opacity: 0.4; transform: scale(0.94); } to { opacity: 1; transform: none; } }
+.status-pop { animation: statusBeat var(--duration-slow) var(--ease-ledger) both; }
 
-.nav-root {
-  animation: navSlideDown 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-/* Nav link with sliding underline — every text link in the footers and the app's inline links */
-.nav-link, .site-footer .link-list a, .site-footer .legal a, .site-footer .contact-list a, .gaze .footer-nav a, a.hover\:underline {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  padding-bottom: 2px;
-  text-decoration: none;
-}
-.nav-link::after, .site-footer .link-list a::after, .site-footer .legal a::after, .site-footer .contact-list a::after, .gaze .footer-nav a::after, a.hover\:underline::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 1.5px;
-  border-radius: 2px;
-  background: currentColor;
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.nav-link:hover::after, .site-footer .link-list a:hover::after, .site-footer .legal a:hover::after, .site-footer .contact-list a:hover::after, .gaze .footer-nav a:hover::after, a.hover\:underline:hover::after {
-  transform: scaleX(1);
-  transform-origin: left;
-}
-.site-footer .link-list a:hover, .site-footer .legal a:hover, .site-footer .contact-list a:hover, a.hover\:underline:hover { text-decoration: none; }
-
-/* Pill CTA bounce-in — the base for every pill button (rounded-full buttons and links; the spec pills keep their own) */
-.nav-pill, .group\/button.rounded-full, :is(a, button).rounded-full.inline-flex:not(.group\/button):not([class*="glass-nav-module"]):not([class*="chamfer"]) {
-  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, color 0.3s var(--ix-ease), border-color 0.3s var(--ix-ease);
-}
-.nav-pill { animation: navFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both; }
-.nav-pill:hover, .group\/button.rounded-full:not(:disabled):hover, :is(a, button).rounded-full.inline-flex:not(.group\/button):not([class*="glass-nav-module"]):not([class*="chamfer"]):hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(13, 12, 11, 0.18);
-}
-.nav-pill:active, .group\/button.rounded-full:not(:disabled):active, :is(a, button).rounded-full.inline-flex:not(.group\/button):not([class*="glass-nav-module"]):not([class*="chamfer"]):active {
-  transform: translateY(0);
-}
-
-/* contrast inversion on the custom pills, same rule as the buttons */
-:is(a, button).rounded-full.inline-flex:not(.group\/button):not([class*="glass-nav-module"]):not([class*="chamfer"]).bg-foreground:hover { background-color: var(--background); color: var(--foreground); box-shadow: 0 6px 20px rgba(13, 12, 11, 0.18), inset 0 0 0 1px var(--foreground); }
-:is(a, button).rounded-full.inline-flex:not(.group\/button):not([class*="glass-nav-module"]):not([class*="chamfer"]).bg-brand:hover { background-color: var(--background); color: var(--brand); box-shadow: 0 6px 20px rgba(13, 12, 11, 0.18), inset 0 0 0 1px var(--brand); }
-:is(a, button).rounded-full.inline-flex:not(.group\/button):not([class*="glass-nav-module"]):not([class*="chamfer"]).bg-background:hover, :is(a, button).rounded-full.inline-flex:not(.group\/button):not([class*="glass-nav-module"]):not([class*="chamfer"]).bg-muted:hover { background-color: var(--foreground); color: var(--background); }
-
-/* Logo stagger */
-.nav-logo {
-  animation: navSlideDown 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
-}
-
-/* Individual link stagger delays */
-.nav-link-1 { animation: navFadeIn 0.5s cubic-bezier(0.16,1,0.3,1) 0.12s both; }
-.nav-link-2 { animation: navFadeIn 0.5s cubic-bezier(0.16,1,0.3,1) 0.18s both; }
-.nav-link-3 { animation: navFadeIn 0.5s cubic-bezier(0.16,1,0.3,1) 0.24s both; }
-.nav-link-4 { animation: navFadeIn 0.5s cubic-bezier(0.16,1,0.3,1) 0.30s both; }
-
-/* ── Buttons, icon chips, cards (tanguy_blovio .btn-glow / .card-lift curves, our ink) ── */
-
-/* Buttons: every Button and every buttonVariants() link (both carry group/button).
-   Icon-only sizes are excluded here — they get the chip below. */
-.group\/button:not(.size-6):not(.size-7):not(.size-8):not(.size-9):not(.rounded-full) {
-  transition: background-color .3s var(--ix-ease), color .3s var(--ix-ease), border-color .3s var(--ix-ease), transform .3s var(--ix-ease), box-shadow .3s ease, opacity .2s ease;
-}
-.group\/button:not(.size-6):not(.size-7):not(.size-8):not(.size-9):not(.rounded-full):not(:disabled):hover { transform: translateY(-2px); box-shadow: var(--ix-shadow); }
-.group\/button:not(.size-6):not(.size-7):not(.size-8):not(.size-9):not(:disabled):active { transform: translateY(0) scale(.97); box-shadow: none; }
-/* dark buttons invert to white / ink / 1px ink border */
-.group\/button.bg-primary:not(.size-6):not(.size-7):not(.size-8):not(.size-9):not(:disabled):hover, .group\/button.bg-foreground:not(.size-6):not(.size-7):not(.size-8):not(.size-9):not(:disabled):hover { background-color: var(--background); color: var(--foreground); border-color: var(--foreground); }
-.group\/button.bg-brand:not(.size-6):not(.size-7):not(.size-8):not(.size-9):not(:disabled):hover { background-color: var(--background); color: var(--brand); border-color: var(--brand); }
-/* white / outlined / secondary / ghost text buttons invert to ink / white */
-.group\/button.bg-background:not(.size-6):not(.size-7):not(.size-8):not(.size-9):not(:disabled):hover, .group\/button.bg-secondary:not(.size-6):not(.size-7):not(.size-8):not(.size-9):not(:disabled):hover, .group\/button.bg-transparent:not(.size-6):not(.size-7):not(.size-8):not(.size-9):not(:disabled):hover,
-.group\/button:not([class*="bg-"]):not(.size-6):not(.size-7):not(.size-8):not(.size-9):not(:disabled):hover { background-color: var(--foreground); color: var(--background); border-color: var(--foreground); }
-.group\/button.text-primary.underline-offset-4:hover { background-color: transparent; color: var(--primary); border-color: transparent; transform: none; box-shadow: none; }
-/* nav + footer text links keep the ink footer's move (opacity .62 + translateX(2px)); the nav folder is another stream's. */
-
-/* Icon-only controls: a white chip scales in behind the icon; the icon lifts 1px.
-   `.icon-chip` marks the rest (sidebar rail, account, socials); ::before carries the chip. */
-.group\/button.size-6, .group\/button.size-7, .group\/button.size-8, .group\/button.size-9, .icon-chip, [data-slot="dialog-close"], .site-footer .socials a, .gaze .socials span {
-  position: relative; isolation: isolate; transition: color .2s ease, background-color .2s ease;
-}
-.group\/button.size-6::before, .group\/button.size-7::before, .group\/button.size-8::before, .group\/button.size-9::before, .icon-chip::before, [data-slot="dialog-close"]::before, .site-footer .socials a::before, .gaze .socials span::before {
-  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: 999px; background: var(--ix-chip, #fff);
-  transform: scale(.8); opacity: 0; transition: transform .2s var(--ix-ease), opacity .2s ease; pointer-events: none;
-  box-shadow: 0 6px 16px rgb(13 12 11 / 0.10);
-}
-.icon-chip.chip-dark::before, .dark .icon-chip::before { --ix-chip: rgb(255 255 255 / 0.14); box-shadow: none; }
-:is(.group\/button.size-6, .group\/button.size-7, .group\/button.size-8, .group\/button.size-9, .icon-chip, [data-slot="dialog-close"], .site-footer .socials a, .gaze .socials span):not(:disabled):hover::before { transform: scale(1); opacity: 1; }
-:is(.group\/button.size-6, .group\/button.size-7, .group\/button.size-8, .group\/button.size-9, .icon-chip, [data-slot="dialog-close"], .site-footer .socials a, .gaze .socials span) > svg,
-:is(.group\/button.size-6, .group\/button.size-7, .group\/button.size-8, .group\/button.size-9, .icon-chip, [data-slot="dialog-close"], .site-footer .socials a, .gaze .socials span) > img { transition: transform .2s var(--ix-ease); }
-:is(.group\/button.size-6, .group\/button.size-7, .group\/button.size-8, .group\/button.size-9, .icon-chip, [data-slot="dialog-close"]):not(:disabled):hover > svg { transform: translateY(-1px); }
-/* socials tilt 6° */
-:is(.site-footer .socials a, .gaze .socials span):hover > svg, :is(.site-footer .socials a, .gaze .socials span):hover > img { transform: translateY(-1px) rotate(6deg); }
-.site-footer .socials a:hover { opacity: 1; transform: none; }
-/* the icon buttons keep their own bg hover off so the chip reads */
-.group\/button.size-8:hover, .group\/button.size-6:hover, .group\/button.size-7:hover, .group\/button.size-9:hover { background-color: transparent; }
-
-/* App.css social/button pattern on the icon chips: box-shadow .3s, hover var(--shadow), focus ring */
-:is(.group\/button.size-6, .group\/button.size-7, .group\/button.size-8, .group\/button.size-9, .icon-chip, [data-slot="dialog-close"], .site-footer .socials a, .gaze .socials span) { transition: box-shadow 0.3s, color .2s ease, background-color .2s ease; }
-:is(.group\/button.size-6, .group\/button.size-7, .group\/button.size-8, .group\/button.size-9, .icon-chip, [data-slot="dialog-close"], .site-footer .socials a, .gaze .socials span):hover { box-shadow: var(--shadow); border-radius: 999px; }
-:is(.icon-chip, .site-footer .socials a, .gaze .socials span):focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
-
-/* Cards: lift + shadow, for cards that are not glass cards. */
-.card-lift { transition: transform .3s var(--ix-ease), box-shadow .3s ease, border-color .3s ease; }
-.card-lift:hover { transform: translateY(-3px); box-shadow: var(--ix-card-shadow); }
-
-@media (prefers-reduced-motion: reduce) {
-  .group\/button:hover, .group\/button:active, .card-lift:hover { transform: none; }
-  :is(.icon-chip, [data-slot="dialog-close"], .site-footer .socials a, .gaze .socials span):hover > svg { transform: none; }
-}
-
-/* ── Arrow nudge (blovio ArrowButton: group-hover:translate-x-0.5, 300ms) ──
-   Every link/button that carries a lucide arrow-right nudges it 2px in its
-   own direction on hover. */
-:is(a, button) svg.lucide-arrow-right, :is(a, button) svg.lucide-arrow-up-right, :is(a, button) svg.lucide-chevron-right, .arrow-nudge > svg { transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1); }
-:is(a, button):hover svg.lucide-arrow-right, :is(a, button):hover svg.lucide-chevron-right, .arrow-nudge:hover > svg { transform: translateX(2px); }
-:is(a, button):hover svg.lucide-arrow-up-right { transform: translate(2px, -2px); }
-:is(a, button):hover svg.lucide-arrow-down { transform: translateY(2px); }
-.arrow-glyph { display: inline-block; margin-left: 0.25em; transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1); }
-:is(a, button):hover .arrow-glyph { transform: translateX(2px); }
-
-/* ── Glass secondary button (the nav capsule's material, glass-nav-spec §8 verbatim) ──
-   Button variant "glass" and the landing's secondary pills. Hover inverts to
-   ink / paper and lifts 2px; active presses .97. The conic edge is a ::after
-   at .30, masked to a 1px perimeter. */
-.btn-glass {
-  position: relative; isolation: isolate;
-  background: rgb(246 251 255 / 0.24);
-  border: 1px solid rgb(255 255 255 / 0.28);
-  -webkit-backdrop-filter: blur(13px) saturate(128%) contrast(107%) brightness(105%);
-          backdrop-filter: blur(13px) saturate(128%) contrast(107%) brightness(105%);
-  box-shadow: 0 11px 28px rgb(4 24 43 / 0.17), 0 2px 6px rgb(4 24 43 / 0.1), inset 1px 1px 0 rgb(255 255 255 / 0.62), inset -1px -1px 0 rgb(20 49 73 / 0.18), inset 0 0 12px rgb(255 255 255 / 0.055);
-  transition: background-color .3s var(--ix-ease), color .3s var(--ix-ease), border-color .3s var(--ix-ease), transform .3s var(--ix-ease), box-shadow .3s ease;
-}
-.btn-glass::after {
-  content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none; opacity: 0.30;
-  background: conic-gradient(from 225deg, #7fe3ff, rgb(255 255 255 / 0.35), #ffffff, #ffd7e6, rgb(255 255 255 / 0.35), #7fe3ff);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor; mask-composite: exclude;
-  transition: opacity .3s ease;
-}
-.btn-glass:not(:disabled):hover { background-color: var(--foreground); color: var(--background); border-color: var(--foreground); transform: translateY(-2px); box-shadow: var(--ix-shadow); }
-.btn-glass:not(:disabled):hover::after { opacity: 0; }
-.btn-glass:not(:disabled):active { transform: translateY(0) scale(.97); box-shadow: none; }
-/* the glass variant is a Button too: keep it out of the generic inversion rules above */
-.group\/button.btn-glass:not(:disabled):hover { background-color: var(--foreground); color: var(--background); border-color: var(--foreground); transform: translateY(-2px); }
-
-/* ── Card inversion (landing GlassCards: showcase stats, how-it-works, posts, pricing) ──
-   The card body inverts like the buttons: ink at 92% over 350ms, text and
-   hairline to paper, lift 3px, deeper shadow. Mini UI inside marked
-   .card-keep keeps its colours (it sits on a white inner card). The hero's
-   refracting "Latest results" card is a different component and is exempt. */
-.card-invert { transition: background-color .35s var(--ix-ease), color .35s var(--ix-ease), border-color .35s var(--ix-ease), translate .35s var(--ix-ease), box-shadow .35s ease; }
-/* `translate`, not transform: the card's entrance animation holds `transform` with fill-mode both */
-.card-invert:hover { background-color: rgb(13 12 11 / 0.92) !important; color: #f2f0ec; border-color: rgb(242 240 236 / 0.28) !important; translate: 0 -3px; box-shadow: 0 22px 48px rgb(13 12 11 / 0.28) !important; }
-.card-invert:hover :is(h2, h3, h4, p, span, li, dt, dd, time, strong, a):not(.card-keep *) { color: #f2f0ec; }
-.card-invert:hover .text-muted-foreground:not(.card-keep *) { color: rgb(242 240 236 / 0.72); }
-.card-invert:hover .border-b, .card-invert:hover .border-t, .card-invert:hover .border { border-color: rgb(242 240 236 / 0.22); }
-.card-invert:hover .card-keep { color: var(--foreground); }
-.card-invert:hover .card-keep .text-muted-foreground { color: var(--muted-foreground); }
-.card-invert:hover .card-keep .text-brand { color: var(--brand); }
-/* The inversion is painted ON the glass layer, like the chamfer button: the frost
-   (z1, above the refraction canvas, below the text) fills ink and the refracted
-   duplicate fades out, so the card reads as solid ink instead of a ghost. */
-.card-invert > [class*="frost"] { transition: background-color .35s var(--ix-ease), box-shadow .35s var(--ix-ease); }
-.card-invert > [class*="dup"] { transition: opacity .35s var(--ix-ease); }
-.card-invert:hover > [class*="frost"] { background: #0d0c0b !important; box-shadow: none; opacity: 1; }
-.card-invert:hover > [class*="dup"] { opacity: 0; }
-.card-invert:hover [class*="index"]:not(.card-keep *) { color: rgb(242 240 236 / 0.6); }
-.card-invert:hover :is(.text-brand, .text-primary):not(.card-keep *) { color: #f2f0ec; }
-.card-invert:hover :is([class*="border-"], hr):not(.card-keep *) { border-color: rgb(242 240 236 / 0.2); }
-@media (prefers-reduced-motion: reduce) { .card-invert:hover { translate: none; } }
-
-/* ── Stopgap for the scroll hero (hero files are another stream's): the spec gives
-   every panel's .cta pointer-events:auto, so the invisible panels' pills sit over
-   the chamfer at scroll 0 and swallow its hover and click. While a panel is
-   faded out (the scrub writes pointer-events:none on it) its links stay inert. */
-[data-panel][style*="pointer-events: none"] * { pointer-events: none !important; }
-
-/* ── Scroll pops (customers/tanguy_blovio/src/index.css .pop-ready / [data-morph] / morphPop,
-   textReveal for headings). Hidden only behind html.pop-ready, which the observer adds. */
-html { scroll-behavior: smooth; }
-.pop-ready [data-morph] { opacity: 0; }
-.pop-ready [data-morph].is-pop {
-  animation: morphPop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) var(--pop-d, 0ms) both;
-}
-.pop-ready [data-morph="text"].is-pop {
-  animation: textReveal 1s cubic-bezier(0.16, 1, 0.3, 1) var(--pop-d, 0ms) both;
-}
-@keyframes morphPop {
-  from { opacity: 0; transform: translateY(var(--pop-y, 8%)) scale(var(--pop-s, 0.94)); }
-  to   { opacity: 1; transform: none; }
-}
-@keyframes textReveal {
-  from { opacity: 0; transform: translateY(40px) skewY(3deg); filter: blur(4px); }
-  to   { opacity: 1; transform: translateY(0) skewY(0deg); filter: blur(0); }
-}
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  .pop-ready [data-morph] { opacity: 1; }
-  .pop-ready [data-morph].is-pop { animation: none; }
-}
-
-/* ── Skeleton delay: a route's loading skeleton only appears if the new page has
-   not streamed within 300ms, so warm navigations never flash it — the top
-   progress bar carries the wait. */
-@keyframes skeletonAppear { from { opacity: 0; } to { opacity: 1; } }
-main [aria-busy="true"][aria-label^="Loading"] { animation: skeletonAppear 0s 0.3s both; }
-
-/* ---- case-study block hover: solid ink above the frost, paper text ----
-   The card's inner white panels (bg-card/80, the author chip, the stat
-   hairlines) used to keep their paper fill while the text went paper, so
-   the block ghosted grey-on-grey. On hover they dissolve into the ink and
-   keep only a paper/20% hairline; the avatar photo is untouched. */
-.card-invert:hover :is(.bg-card\/80, .bg-brand-soft\/70):not(.card-keep *) { background-color: rgb(242 240 236 / 0.06); --tw-ring-color: rgb(242 240 236 / 0.2); --tw-shadow: 0 0 #0000; box-shadow: 0 0 0 1px rgb(242 240 236 / 0.2); }
-.card-invert:hover .divide-x > :not(:last-child):not(.card-keep *) { border-color: rgb(242 240 236 / 0.2); }
-.card-invert:hover :is(.bg-foreground\/80):not(.card-keep *) { background-color: rgb(242 240 236 / 0.92); color: #0d0c0b; }
-.card-invert:hover .bg-background\/90:not(.card-keep *) { background-color: rgb(242 240 236 / 0.92); color: #0d0c0b; }
-.card-invert:hover .bg-background\/90 svg:not(.card-keep *) { color: #0d0c0b; }
-.card-invert:hover img:not(.card-keep *) { filter: none; opacity: 1; }
-.card-invert:hover :is(.bg-card\/80, .bg-brand-soft\/70) { transition: background-color .35s var(--ix-ease), box-shadow .35s var(--ix-ease); }
-
-/* the card body is a flex column in the module; a body that asks for a
-   grid (case study: 2fr/3fr on lg) must get one, or the video panel goes
-   full-width and 800px tall. */
-[class*="chromeBody"].grid { display: grid; }
-
-/* ---- ink sections: the same page, tokens flipped for one subtree ----
-   .section-ink paints solid ink edge to edge (hard edges, 96px top/bottom)
-   and re-points the theme tokens so every utility inside — text, borders,
-   rings, bg-card, bg-primary — reads paper on ink without touching the
-   components. Glass cards become ink-on-ink glass (paper/6% fill,
-   paper/12% hairline) and invert to PAPER with ink text on hover, the
-   mirror of the paper sections. Primary pills are paper with ink text and
-   invert to ink/paper; glass secondaries keep their capsule material. Two
-   ink sections are never adjacent, the page order keeps paper between. */
-.section-ink {
-  --background: #0d0c0b; --foreground: #f2f0ec;
-  --card: #0d0c0b; --card-foreground: #f2f0ec;
-  --popover: #0d0c0b; --popover-foreground: #f2f0ec;
-  --primary: #f2f0ec; --primary-foreground: #0d0c0b;
-  --secondary: rgb(242 240 236 / 0.08); --secondary-foreground: #f2f0ec;
-  --muted: rgb(242 240 236 / 0.08); --muted-foreground: rgb(242 240 236 / 0.6);
-  --accent: rgb(242 240 236 / 0.08); --accent-foreground: #f2f0ec;
-  --border: rgb(242 240 236 / 0.14); --input: rgb(242 240 236 / 0.14); --ring: rgb(242 240 236 / 0.4);
-  --brand-soft: rgb(242 240 236 / 0.08); --brand-sky: rgb(242 240 236 / 0.14);
-  background-color: #0d0c0b !important; color: #f2f0ec;
-  padding-top: 96px !important; padding-bottom: 96px !important;
-  border-radius: 0; color-scheme: dark;
-}
-.section-ink > [class*="backdropImage"] { display: none; }
-.section-ink :is([class*="border-"], hr, .divide-x > :not(:last-child)):not(.card-keep *) { border-color: rgb(242 240 236 / 0.14); }
-.section-ink [class*="index"] { color: rgb(242 240 236 / 0.6); }
-/* ink-on-ink glass cards */
-.section-ink .card-invert { background-color: rgb(242 240 236 / 0.06) !important; border-color: rgb(242 240 236 / 0.12) !important; color: #f2f0ec; }
-.section-ink .card-invert > [class*="frost"] { background: transparent !important; box-shadow: none; }
-.section-ink .card-invert > [class*="dup"] { display: none; }
-.section-ink .card-invert:hover { background-color: #f2f0ec !important; color: #0d0c0b; border-color: rgb(13 12 11 / 0.2) !important; box-shadow: 0 22px 48px rgb(0 0 0 / 0.45) !important; }
-.section-ink .card-invert:hover > [class*="frost"] { background: #f2f0ec !important; }
-.section-ink .card-invert:hover :is(h2, h3, h4, p, span, li, dt, dd, time, strong, a):not(.card-keep *) { color: #0d0c0b; }
-.section-ink .card-invert:hover .text-muted-foreground:not(.card-keep *) { color: rgb(13 12 11 / 0.6); }
-.section-ink .card-invert:hover :is(.text-brand, .text-primary):not(.card-keep *) { color: #0d0c0b; }
-.section-ink .card-invert:hover [class*="index"]:not(.card-keep *) { color: rgb(13 12 11 / 0.55); }
-.section-ink .card-invert:hover :is([class*="border-"], hr, .divide-x > :not(:last-child), .border-b, .border-t, .border):not(.card-keep *) { border-color: rgb(13 12 11 / 0.2); }
-.section-ink .card-invert:hover :is(.bg-card\/80, .bg-brand-soft\/70):not(.card-keep *) { background-color: rgb(13 12 11 / 0.05); box-shadow: 0 0 0 1px rgb(13 12 11 / 0.2); }
-.section-ink .card-invert:hover :is(.bg-foreground\/80, .bg-background\/90):not(.card-keep *) { background-color: rgb(13 12 11 / 0.92); color: #f2f0ec; }
-.section-ink .card-invert:hover .bg-background\/90 svg { color: #f2f0ec; }
-/* buttons: primary pills paper/ink → ink/paper, hairline links paper */
-.section-ink :is(a, button).group\/button:not(.btn-glass):not(.size-icon):not(.size-icon-sm):not(.size-icon-lg):not(.size-icon-xs) { background-color: #f2f0ec !important; color: #0d0c0b !important; border-color: #f2f0ec !important; }
-.section-ink :is(a, button).group\/button:not(.btn-glass):not(.size-icon):not(.size-icon-sm):not(.size-icon-lg):not(.size-icon-xs):hover { background-color: #0d0c0b !important; color: #f2f0ec !important; border-color: rgb(242 240 236 / 0.6) !important; }
-.section-ink :is(a, button).rounded-full.inline-flex:not(.group\/button):not(.btn-glass):not([class*="glass-nav-module"]):not([class*="chamfer"]) { background-color: #f2f0ec !important; color: #0d0c0b !important; border-color: #f2f0ec !important; }
-.section-ink :is(a, button).rounded-full.inline-flex:not(.group\/button):not(.btn-glass):not([class*="glass-nav-module"]):not([class*="chamfer"]):hover { background-color: #0d0c0b !important; color: #f2f0ec !important; border-color: rgb(242 240 236 / 0.6) !important; }
-.section-ink .btn-glass { color: #f2f0ec; }
-.section-ink .btn-glass:hover { background-color: #f2f0ec; color: #0d0c0b; }
-.section-ink .card-invert:hover .btn-glass { color: #0d0c0b; }
-.section-ink .card-invert:hover .btn-glass:hover { background-color: #0d0c0b; color: #f2f0ec; }
-
-/* ---- the sliding indicator: one capsule, measured from the items ----
-   The public nav's capsule, brought into the app. A .slide-track holds one
-   .slide-ind and positions it from --ind-x/y/w/h, written by the component
-   after it measures whichever child is active. Movement is a spring (the
-   blovio overshoot), size a shorter ease so a wide tab doesn't wobble.
-   Pointing at another item previews the move at .55 opacity. */
-:root { --ix-spring: cubic-bezier(0.34, 1.3, 0.56, 1); }
+/* ---- the sliding indicator: one element that moves to the active item ----
+   SlidingIndicator measures the items and writes --ind-x/y/w/h; the rail and
+   any hand-built strip use it (the Tabs primitive has its own). */
 .slide-track { position: relative; }
 .slide-track > :not(.slide-ind) { position: relative; z-index: 1; }
 .slide-ind {
@@ -321,172 +44,42 @@ main [aria-busy="true"][aria-label^="Loading"] { animation: skeletonAppear 0s 0.
   transform: translate3d(var(--ind-x, 0px), var(--ind-y, 0px), 0);
 }
 .slide-track[data-ready="true"] > .slide-ind { opacity: 1; }
-.slide-track[data-ready="true"][data-preview="true"] > .slide-ind { opacity: 0.55; }
+.slide-track[data-ready="true"][data-preview="true"] > .slide-ind { opacity: 0.5; }
 .slide-track[data-anim="true"] > .slide-ind {
-  transition: transform .42s var(--ix-spring), width .34s var(--ix-ease), height .34s var(--ix-ease), opacity .2s linear;
+  transition: transform var(--duration-base) var(--ease-ledger), width var(--duration-base) var(--ease-ledger), height var(--duration-base) var(--ease-ledger), opacity var(--duration-fast) linear;
 }
-/* the rail capsule: app-light glass, the nav's inset highlights at paper values */
-.slide-ind[data-variant="capsule"] {
-  border-radius: 0.5rem;
-  background: color-mix(in oklab, var(--brand) 10%, transparent);
-  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--brand) 16%, transparent), 0 1px 2px rgb(13 12 11 / 0.04);
-}
-/* the segmented pill (Creators' two tabs): the white chip that used to be a class */
-.slide-ind[data-variant="pill"] {
-  border-radius: calc(var(--radius) - 2px);
-  background: var(--background);
-  box-shadow: 0 1px 2px rgb(13 12 11 / 0.08), inset 0 0 0 1px rgb(13 12 11 / 0.04);
-}
-/* the strip underline: 2px on the track's baseline, width only */
+.slide-ind[data-variant="capsule"] { border-radius: var(--radius-control, 8px); background: var(--color-tint); }
+.slide-ind[data-variant="pill"] { border-radius: var(--radius-control, 8px); background: var(--color-surface); box-shadow: inset 0 0 0 1px var(--color-rule); }
 .slide-ind[data-variant="underline"] {
-  top: auto; bottom: -1px; height: 2px; border-radius: 2px;
-  background: var(--brand);
+  top: auto; bottom: -1px; height: 2px; border-radius: 2px; background: var(--color-ink);
   transform: translate3d(var(--ind-x, 0px), 0, 0);
 }
-.slide-track[data-axis="x"] > .slide-ind[data-variant="capsule"],
-.slide-track[data-axis="x"] > .slide-ind[data-variant="pill"] { transform: translate3d(var(--ind-x, 0px), var(--ind-y, 0px), 0); }
-@media (prefers-reduced-motion: reduce) {
-  .slide-track[data-anim="true"] > .slide-ind { transition: opacity .2s linear; }
-}
 
-/* ---- tab strips: the indicator is the only marker ----
-   The primitives paint the active tab themselves (a white chip, or an ::after
-   underline). Inside a .slide-track that job belongs to the indicator, so the
-   per-tab paint is switched off and only the text colour still changes.
-   Panels crossfade on swap: the same 180ms rise the route enter uses. */
-.slide-track [data-slot="tabs-trigger"][data-active] { background-color: transparent; box-shadow: none; }
-.slide-track [data-slot="tabs-trigger"][data-active]::after { opacity: 0; }
-.slide-track [data-slot="tabs-list"] { background-color: transparent; padding: 0; }
-@keyframes tabPanelIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
-/* base-ui mounts only the selected panel, so the panel animates on swap. */
-[data-slot="tabs-content"], .tab-swap { animation: tabPanelIn .22s var(--ix-ease) both; }
-/* a swapped panel that is also a scroll-pop target takes the shorter swap: a
-   700ms overshoot belongs to arriving content, not to a filter change. */
-.pop-ready [data-morph].tab-swap, .pop-ready [data-morph].tab-swap.is-pop { opacity: 1; animation: tabPanelIn .22s var(--ix-ease) both; }
-@media (prefers-reduced-motion: reduce) {
-  [data-slot="tabs-content"], .tab-swap,
-  .pop-ready [data-morph].tab-swap, .pop-ready [data-morph].tab-swap.is-pop { animation: none; opacity: 1; }
-}
-
-/* ---- overlays on the assistant's spring ----
-   The widget opens with chatPop: rise 14px, scale .9, cubic-bezier(.34,1.56,
-   .64,1). Every other surface that appears over the page now speaks that
-   language — dialogs, the brief drawer and booking sheets, the notifications
-   and account popovers, and toasts — while the primitives keep their own
-   focus trapping and aria (this file only touches paint and timing).
-   Exits stay short and unsprung: an overshoot on the way out reads as a
-   bounce off the screen edge. */
-:root { --ix-pop: cubic-bezier(0.34, 1.56, 0.64, 1); }
-
-/* Tailwind v4 centres the dialog with the independent `translate` property,
-   so these keyframes touch `transform` only — writing translate(-50%,-50%)
-   here as well would move it half a dialog too far left. */
-@keyframes overlayPop { from { opacity: 0; transform: translateY(14px) scale(0.9); } to { opacity: 1; transform: none; } }
-@keyframes overlayDrop { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(6px) scale(0.98); } }
-[data-slot="dialog-content"][data-open], [data-slot="alert-dialog-content"][data-open] {
-  animation: overlayPop 0.42s var(--ix-pop) both;
-}
-[data-slot="dialog-content"][data-closed], [data-slot="alert-dialog-content"][data-closed],
-[data-slot="dialog-content"][data-ending-style], [data-slot="alert-dialog-content"][data-ending-style] {
-  animation: overlayDrop 0.16s ease-in both;
-}
-[data-slot="dialog-overlay"], [data-slot="alert-dialog-overlay"], [data-slot="sheet-overlay"] { transition-duration: 0.28s; transition-timing-function: var(--ix-ease); }
-
-/* drawers and sheets: the spring on the way in, a plain ease on the way out */
-[data-slot="sheet-content"] { transition-duration: 0.42s; transition-timing-function: var(--ix-pop); }
-[data-slot="sheet-content"][data-ending-style] { transition-duration: 0.2s; transition-timing-function: ease-in; }
-
-/* popovers and menus: the same pop, from whichever corner they hang off */
-@keyframes anchorPop { from { opacity: 0; transform: translateY(6px) scale(0.94); } to { opacity: 1; transform: none; } }
-[data-slot="popover-content"][data-open], [data-slot="dropdown-menu-content"][data-open] {
-  animation: anchorPop 0.3s var(--ix-pop) both;
-  transform-origin: var(--transform-origin, center);
-}
-[data-slot="popover-content"][data-ending-style], [data-slot="dropdown-menu-content"][data-ending-style] {
-  animation: none; transition: opacity 0.14s ease-in, transform 0.14s ease-in; opacity: 0; transform: translateY(4px) scale(0.98);
-}
-
-/* toasts: sonner drives --y itself, so only the curve and the mount pop are ours */
-[data-sonner-toast] { transition-timing-function: var(--ix-pop) !important; }
-@keyframes toastPop { from { opacity: 0; transform: translateY(14px) scale(0.9); } to { opacity: 1; transform: none; } }
-[data-sonner-toast][data-mounted="true"][data-removed="false"] > * { animation: toastPop 0.4s var(--ix-pop) both; }
-
-@media (prefers-reduced-motion: reduce) {
-  [data-slot="dialog-content"], [data-slot="alert-dialog-content"], [data-slot="sheet-content"],
-  [data-slot="popover-content"], [data-slot="dropdown-menu-content"], [data-sonner-toast],
-  [data-sonner-toast][data-mounted="true"][data-removed="false"] > * {
-    animation: none !important; transition-duration: 0.01ms !important; transform: none !important; opacity: 1;
-  }
-}
-
-
-/* ---- tables and lists ----
-   Rows arrive one after another (20ms apart, the first twelve only — past
-   that the stagger reads as lag, not rhythm) and lift a hair under the
-   pointer with a brand hairline down the leading edge, which also tells you
-   which row a stretched link belongs to. */
-@keyframes rowIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-[data-slot="table-body"] > tr { animation: rowIn .34s var(--ix-ease) both; }
-[data-slot="table-body"] > tr:nth-child(n+13) { animation: none; }
-[data-slot="table-body"] > tr:nth-child(1) { animation-delay: 0ms; }
-[data-slot="table-body"] > tr:nth-child(2) { animation-delay: 20ms; }
-[data-slot="table-body"] > tr:nth-child(3) { animation-delay: 40ms; }
-[data-slot="table-body"] > tr:nth-child(4) { animation-delay: 60ms; }
-[data-slot="table-body"] > tr:nth-child(5) { animation-delay: 80ms; }
-[data-slot="table-body"] > tr:nth-child(6) { animation-delay: 100ms; }
-[data-slot="table-body"] > tr:nth-child(7) { animation-delay: 120ms; }
-[data-slot="table-body"] > tr:nth-child(8) { animation-delay: 140ms; }
-[data-slot="table-body"] > tr:nth-child(9) { animation-delay: 160ms; }
-[data-slot="table-body"] > tr:nth-child(10) { animation-delay: 180ms; }
-[data-slot="table-body"] > tr:nth-child(11) { animation-delay: 200ms; }
-[data-slot="table-body"] > tr:nth-child(12) { animation-delay: 220ms; }
-/* A table row ignores `transform` in Chrome, so the lift rides the
-   independent `translate` property (the same trick the card inversion uses). */
-[data-slot="table-body"] > tr { transition: background-color .2s var(--ix-ease), box-shadow .2s var(--ix-ease), translate .2s var(--ix-ease); }
-[data-slot="table-body"] > tr:hover { box-shadow: inset 2px 0 0 var(--brand); translate: 0 -1px; }
-
-/* A status chip that changes state pops once — the same beat the creator and
-   the brand see right after an accept or an approve — and crossfades its tone
-   rather than cutting to it. */
-.status-chip { transition: background-color .3s var(--ix-ease), color .3s var(--ix-ease); }
-@keyframes statusPop { 0% { transform: scale(0.82); } 55% { transform: scale(1.08); } 100% { transform: none; } }
-.status-pop { animation: statusPop .42s var(--ix-pop) both; }
-
-@media (prefers-reduced-motion: reduce) {
-  [data-slot="table-body"] > tr { animation: none; transition: background-color .2s linear; }
-  [data-slot="table-body"] > tr:hover { translate: none; }
-  .status-pop { animation: none; }
-  .status-chip { transition: none; }
-}
-
-/* The same rhythm for lists that aren't tables (the notifications popover). */
-.list-stagger > * { animation: rowIn .34s var(--ix-ease) both; }
-.list-stagger > :nth-child(n+13) { animation: none; }
-.list-stagger > :nth-child(1) { animation-delay: 0ms; }
-.list-stagger > :nth-child(2) { animation-delay: 20ms; }
-.list-stagger > :nth-child(3) { animation-delay: 40ms; }
-.list-stagger > :nth-child(4) { animation-delay: 60ms; }
-.list-stagger > :nth-child(5) { animation-delay: 80ms; }
-.list-stagger > :nth-child(6) { animation-delay: 100ms; }
-.list-stagger > :nth-child(7) { animation-delay: 120ms; }
-.list-stagger > :nth-child(8) { animation-delay: 140ms; }
-.list-stagger > :nth-child(9) { animation-delay: 160ms; }
-.list-stagger > :nth-child(10) { animation-delay: 180ms; }
-.list-stagger > :nth-child(11) { animation-delay: 200ms; }
-.list-stagger > :nth-child(12) { animation-delay: 220ms; }
-@media (prefers-reduced-motion: reduce) { .list-stagger > * { animation: none; } }
+/* ---- section entrances (Reveal / RouteEnter mark [data-morph]) ----
+   Hidden only once html.pop-ready is set by the observer; each group rises
+   8px, 20 ms apart. */
+html { scroll-behavior: smooth; }
+.pop-ready [data-morph] { opacity: 0; }
+.pop-ready [data-morph].is-pop { animation: sectionRise var(--duration-slow) var(--ease-ledger) var(--pop-d, 0ms) both; }
+@keyframes sectionRise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+/* a swapped panel that is also a pop target keeps its own, shorter rise */
+.pop-ready [data-morph].tab-swap, .pop-ready [data-morph].tab-swap.is-pop { opacity: 1; animation: var(--animate-rise); }
 
 /* ---- route crossfade (View Transitions API, where it exists) ----
-   Only the page area is named, so the rail and the top bar stay put while
-   the content under them crossfades; the incoming side is live, so the
-   capsule and the route-enter pops keep running underneath. Navigations
-   slower than the route shell's 120ms grace skip this entirely. */
+   Only the page area is named, so the rail and top bar stay put. Navigations
+   slower than the route shell's 120 ms grace skip it entirely. */
 .vt-main { view-transition-name: app-main; }
 @keyframes vtFadeOut { to { opacity: 0; } }
 @keyframes vtFadeIn { from { opacity: 0; } }
-::view-transition-old(app-main) { animation: vtFadeOut .16s ease-in both; }
-::view-transition-new(app-main) { animation: vtFadeIn .22s var(--ix-ease) .04s both; }
-::view-transition-old(root), ::view-transition-new(root) { animation-duration: .2s; }
+::view-transition-old(app-main) { animation: vtFadeOut var(--duration-fast) var(--ease-ledger) both; }
+::view-transition-new(app-main) { animation: vtFadeIn var(--duration-base) var(--ease-ledger) both; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: var(--duration-fast); }
+
 @media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  [data-slot="table-body"] > tr, .list-stagger > *, .tab-swap, .status-pop,
+  .pop-ready [data-morph].is-pop, .pop-ready [data-morph].tab-swap { animation: none; }
+  .pop-ready [data-morph] { opacity: 1; }
+  .status-chip, .slide-track[data-anim="true"] > .slide-ind { transition: none; }
   ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
 }

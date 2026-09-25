@@ -3,8 +3,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ProfileModalSkeleton } from "@/components/skeleton/Skeletons";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsTrigger } from "@/components/ui/tabs";
-import { SlideTabsList } from "@/components/motion/SlideTabsList";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ShortlistButton } from "../cards/ShortlistButton";
 import { useMarketplace } from "../useMarketplace";
 import { AudienceSnapshot } from "./AudienceSnapshot";
@@ -36,11 +35,11 @@ export function CreatorProfileDialog() {
                 <ShortlistButton creator={creator} size="icon" />
               </header>
               <Tabs defaultValue="overview" className="mt-5">
-                <SlideTabsList variant="line">
+                <TabsList variant="line">
                   <TabsTrigger value="overview">Overview</TabsTrigger>
                   <TabsTrigger value="audience">Audience</TabsTrigger>
                   <TabsTrigger value="content">Content</TabsTrigger>
-                </SlideTabsList>
+                </TabsList>
                 <TabsContent value="overview" className="mt-4">
                   <ProfileOverview creator={creator} campaignName={campaignName} />
                 </TabsContent>

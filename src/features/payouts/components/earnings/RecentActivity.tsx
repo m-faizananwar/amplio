@@ -1,5 +1,4 @@
-import { Tabs, TabsContent, TabsTrigger } from "@/components/ui/tabs";
-import { SlideTabsList } from "@/components/motion/SlideTabsList";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { LedgerRowDto } from "../../schemas";
 import { LedgerTable } from "../LedgerTable";
 
@@ -11,11 +10,11 @@ export function RecentActivity({ rows }: { rows: LedgerRowDto[] }) {
       <h2 className="font-semibold">Recent activity</h2>
       <p className="text-sm text-muted-foreground">Collaboration earnings, withdrawals and invoices in one place.</p>
       <Tabs defaultValue="movements" className="mt-4">
-        <SlideTabsList className="h-auto max-w-full flex-wrap">
+        <TabsList className="h-auto max-w-full flex-wrap">
           <TabsTrigger value="movements">Earnings and withdrawals</TabsTrigger>
           <TabsTrigger value="awaiting">Awaiting release · {awaiting.length}</TabsTrigger>
           <TabsTrigger value="invoices">Invoices · {movements.filter((r) => r.type === "payout").length}</TabsTrigger>
-        </SlideTabsList>
+        </TabsList>
         <TabsContent value="movements">
           <LedgerTable rows={movements} emptyText="No movements yet. Your first payment will appear here." />
         </TabsContent>
