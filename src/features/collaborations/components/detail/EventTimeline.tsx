@@ -1,55 +1,41 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { eventLabel } from "@/lib/collaboration-labels";
-import { formatDateTime } from "@/lib/dates";
-import { drawPath, stagger } from "@/lib/motion/anime";
-import type { CollaborationEventDto } from "../../schemas";
-import { StatusBadge } from "../table/StatusBadge";
+import { useTranslations } from "next-intl";
+import { StatusChip, statusTone } from "@/components/ui/status-chip";
+import type { Actor, CollaborationEvent } from "@/lib/collaboration-status";
+import { timelineKey } from "@/lib/timeline-key";
+import type { CollaborationDto, CollaborationEventDto, ViewerRole } from "../../schemas";
+import { useDetailFormat } from "./useDetailFormat";
 
-const EVENT_EACH_MS = 90;
-const CONNECTOR_MS = 700;
+type Props = { events: CollaborationEventDto[]; role: ViewerRole; collaboration: CollaborationDto };
 
-// Every collaboration_events row, oldest first: who did what, when. The
-// connector draws top to bottom and each event pops in in sequence (anime,
-// through src/lib/motion/anime — reduced motion shows the end state).
-export function EventTimeline({ events }: { events: CollaborationEventDto[] }) {
-  const list = useRef<HTMLOListElement>(null);
-  const line = useRef<SVGLineElement>(null);
-  useEffect(() => {
-    const items = list.current?.querySelectorAll<HTMLElement>("[data-event]") ?? [];
-    const drawn = drawPath(line.current, { duration: CONNECTOR_MS });
-    const popped = stagger(items, { each: EVENT_EACH_MS, y: 8 });
-    return () => { drawn.cancel(); popped.cancel(); };
-  }, [events.length]);
-
+// Every collaboration_events row, oldest first: who did what, and when —
+// written from the viewer's side ("You accepted…" / "{brand} accepted…").
+export function EventTimeline({ events, role, collaboration: c }: Props) {
+  const t = useTranslations("collaboration");
+  const fmt = useDetailFormat();
   return (
-    <section className="rounded-2xl border bg-background p-5">
-      <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Timeline</h2>
-      <div className="relative mt-4">
-        {events.length > 1 ? (
-          <svg className="pointer-events-none absolute top-1.5 bottom-3 left-[4px] w-px overflow-visible" aria-hidden="true" preserveAspectRatio="none" viewBox="0 0 1 100">
-            <line ref={line} x1="0.5" y1="0" x2="0.5" y2="100" stroke="var(--color-border)" strokeWidth="1" vectorEffect="non-scaling-stroke" />
-          </svg>
-        ) : null}
-        <ol ref={list} className="space-y-4">
-          {events.map((e, i) => (
-            <li key={e.id} data-event className="relative flex gap-3 pl-5">
-              <span aria-hidden="true" className={`absolute top-1.5 left-0 size-2.5 rounded-full ${i === events.length - 1 ? "bg-brand" : "bg-border"}`} />
-              <div className="min-w-0 flex-1">
-                <div className="flex flex-wrap items-center gap-2 text-sm">
-                  <span className="font-medium">{eventLabel(e.event, e.actor, e.fromStatus)}</span>
-                  <StatusBadge status={e.toStatus} />
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  <time dateTime={e.createdAt}>{formatDateTime(e.createdAt)}</time>
-                </p>
-                {e.note ? <blockquote className="mt-1 rounded-lg border-l-2 border-brand/40 bg-muted/50 px-3 py-2 text-sm">{e.note}</blockquote> : null}
-              </div>
+    <section className="rounded-card border border-rule bg-surface p-5">
+      <h2 className="text-small font-medium text-ink-muted">{t("detail.timelineTitle")}</h2>
+      {events.length === 0 ? <p className="mt-3 text-small text-ink-muted">{t("detail.timelineEmpty")}</p> : null}
+      <ol className="list-stagger relative mt-4 grid gap-4 before:absolute before:top-2 before:bottom-2 before:left-[3px] before:w-px before:bg-rule">
+        {events.map((e, i) => {
+          const key = timelineKey(e.event as CollaborationEvent, e.actor as Actor, e.fromStatus);
+          const round = events.slice(0, i + 1).filter((x) => x.event === "submit_draft").length;
+          const vars = { brand: c.brandCompany, creator: c.creatorName, round, date: c.scheduledAt ? fmt.date(c.scheduledAt) : "" };
+          return (
+            <li key={e.id} className="relative grid gap-1 pl-5">
+              <span aria-hidden="true" className={`absolute top-1.5 left-0 size-[7px] rounded-chip ${i === events.length - 1 ? "bg-ink" : "bg-rule-strong"}`} />
+              <p className="flex flex-wrap items-center gap-2 text-small">
+                <span className="font-medium text-ink">{t(`detail.${role}.timeline.${key}`, vars)}</span>
+                <StatusChip tone={statusTone(e.toStatus)}>{t(`status.${e.toStatus}`)}</StatusChip>
+              </p>
+              <time dateTime={e.createdAt} className="num text-caption text-ink-muted">{fmt.dateTime(e.createdAt)}</time>
+              {e.note ? <blockquote className="rounded-control bg-paper px-3 py-2 text-small">{e.note}</blockquote> : null}
             </li>
-          ))}
-        </ol>
-      </div>
+          );
+        })}
+      </ol>
     </section>
   );
 }

@@ -1,37 +1,43 @@
-import { timeLeftLabel } from "@/lib/collaboration-labels";
-import { formatDate } from "@/lib/dates";
-import { formatCents } from "@/lib/money";
-import type { CollaborationDto } from "../../schemas";
+"use client";
 
-function Term({ label, value }: { label: string; value: string }) {
+import { useTranslations } from "next-intl";
+import type { CollaborationDto } from "../../schemas";
+import { useDetailFormat } from "./useDetailFormat";
+
+function Term({ label, value, money }: { label: string; value: string; money?: boolean }) {
   return (
     <div className="flex items-baseline justify-between gap-4 py-2">
-      <dt className="text-sm text-muted-foreground">{label}</dt>
-      <dd className="text-right text-sm font-medium">{value}</dd>
+      <dt className="text-small text-ink-muted">{label}</dt>
+      <dd className={`num text-right text-small ${money ? "text-money" : "text-ink"}`}>{value}</dd>
     </div>
   );
 }
 
-// The offer as it was made: list price, discount, review rule, deadline to answer.
+// The offer as it was made: fee, list price and discount, review rule, dates.
 export function OfferTerms({ collaboration: c }: { collaboration: CollaborationDto }) {
-  const timeLeft = c.status === "invited" ? timeLeftLabel(c.acceptBy) : null;
+  const t = useTranslations("collaboration.detail.terms");
+  const fmt = useDetailFormat();
+  const discounted = c.listPriceCents !== null && c.listPriceCents !== c.feeCents;
   return (
-    <section className="rounded-2xl border bg-background p-5">
-      <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Offer terms</h2>
-      <dl className="mt-2 divide-y">
-        <Term label="Fee per post" value={formatCents(c.feeCents, "EUR")} />
-        {c.listPriceCents !== null && c.listPriceCents !== c.feeCents ? (
-          <Term label="List price" value={`${formatCents(c.listPriceCents, "EUR")} · ${c.discountPercent}% off`} />
-        ) : null}
-        <Term label="Origin" value={c.origin === "invitation" ? "Brand invitation" : "Creator application"} />
-        <Term label="Review" value={c.approveBeforePublish ? "Approve before publish" : "Publish without review"} />
-        <Term label="Due date" value={formatDate(c.dueDate, "No deadline")} />
-        {c.acceptBy ? <Term label="Answer by" value={`${formatDate(c.acceptBy)}${timeLeft ? ` · ${timeLeft}` : ""}`} /> : null}
-        {c.scheduledAt ? <Term label="Scheduled for" value={formatDate(c.scheduledAt)} /> : null}
-        {c.publishedAt ? <Term label="Published" value={formatDate(c.publishedAt)} /> : null}
-        {c.paidAt ? <Term label="Paid" value={formatDate(c.paidAt)} /> : null}
+    <section className="rounded-card border border-rule bg-surface p-5">
+      <h2 className="text-small font-medium text-ink-muted">{t("title")}</h2>
+      <dl className="mt-2 divide-y divide-rule">
+        <Term label={t("fee")} value={fmt.money(c.feeCents)} money />
+        {discounted && c.listPriceCents !== null ? <Term label={t("listPrice")} value={t("discount", { amount: fmt.money(c.listPriceCents), percent: c.discountPercent })} /> : null}
+        <Term label={t("origin")} value={c.origin === "invitation" ? t("originInvitation") : t("originApplication")} />
+        <Term label={t("review")} value={c.approveBeforePublish ? t("reviewRequired") : t("reviewNotRequired")} />
+        <Term label={t("dueDate")} value={c.dueDate ? fmt.date(c.dueDate) : t("noDeadline")} />
+        {c.acceptBy && c.status === "invited" ? <Term label={t("answerBy")} value={fmt.dateTime(c.acceptBy)} /> : null}
+        {c.scheduledAt ? <Term label={t("scheduledFor")} value={fmt.date(c.scheduledAt)} /> : null}
+        {c.publishedAt ? <Term label={t("published")} value={fmt.date(c.publishedAt)} /> : null}
+        {c.paidAt ? <Term label={t("paid")} value={fmt.date(c.paidAt)} /> : null}
       </dl>
-      {c.offerNote ? <p className="mt-3 rounded-lg bg-muted/50 px-3 py-2 text-sm">{c.offerNote}</p> : null}
+      {c.offerNote ? (
+        <blockquote className="mt-3 rounded-control bg-paper px-3 py-2 text-small">
+          <span className="block text-caption text-ink-muted">{t("offerNote", { brand: c.brandCompany })}</span>
+          {c.offerNote}
+        </blockquote>
+      ) : null}
     </section>
   );
 }

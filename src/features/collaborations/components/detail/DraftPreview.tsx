@@ -1,23 +1,18 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import type { CollaborationDto, ViewerRole } from "../../schemas";
 
-type Props = { collaboration: CollaborationDto; role: ViewerRole };
-
 // The draft as last submitted, once the creator is no longer editing it.
-export function DraftPreview({ collaboration: c, role }: Props) {
+export function DraftPreview({ collaboration: c, role }: { collaboration: CollaborationDto; role: ViewerRole }) {
+  const t = useTranslations("collaboration.detail.draftPreview");
   const editing = role === "creator" && c.allowedEvents.includes("submit_draft");
   if (!c.draftText || editing) return null;
+  const title = c.status === "draft_submitted" ? t("pending") : role === "creator" ? t("yours") : t("approved");
   return (
-    <section className="rounded-2xl border bg-background p-5">
-      <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-        {c.status === "draft_submitted" ? "Draft awaiting review" : "Approved draft"}
-      </h2>
-      <p className="mt-3 text-sm leading-relaxed whitespace-pre-line">{c.draftText}</p>
-      {c.reviewNote && c.status === "changes_requested" ? (
-        <blockquote className="mt-3 rounded-lg border-l-2 border-amber-400 bg-muted/50 px-3 py-2 text-sm">
-          <span className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground">Your note</span>
-          {c.reviewNote}
-        </blockquote>
-      ) : null}
+    <section className="rounded-card border border-rule bg-surface p-5">
+      <h2 className="text-small font-medium text-ink-muted">{title}</h2>
+      <p className="mt-3 whitespace-pre-line text-body leading-relaxed">{c.draftText}</p>
     </section>
   );
 }

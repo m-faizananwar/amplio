@@ -148,5 +148,242 @@
         "owner": "Done"
       }
     }
+  },
+  "detail": {
+    "back": "All collaborations",
+    "loading": "Loading collaboration",
+    "error": {
+      "title": "We couldn't load this collaboration",
+      "body": "Try again in a moment."
+    },
+    "notFound": {
+      "title": "Collaboration not found",
+      "body": "It may have been removed, or it belongs to another workspace.",
+      "action": "All collaborations"
+    },
+    "terms": {
+      "title": "Offer terms",
+      "fee": "Fee per post",
+      "listPrice": "List price",
+      "discount": "{amount} · {percent}% off",
+      "origin": "Origin",
+      "originInvitation": "Brand invitation",
+      "originApplication": "Your application",
+      "review": "Review",
+      "reviewRequired": "Brand approves before you publish",
+      "reviewNotRequired": "Publish without review",
+      "dueDate": "Due date",
+      "noDeadline": "No deadline",
+      "answerBy": "Answer by",
+      "scheduledFor": "Scheduled for",
+      "published": "Published",
+      "paid": "Paid",
+      "offerNote": "Note from {brand}"
+    },
+    "trackedLink": {
+      "title": "Tracked link",
+      "body": "Use this link in your post. Every click is recorded.",
+      "copy": "Copy link",
+      "copied": "Tracked link copied",
+      "clicks": "{count, plural, =0 {No clicks yet} one {# click} other {# clicks}}",
+      "pending": "Clicks appear once the post is live."
+    },
+    "draftPreview": {
+      "pending": "Draft awaiting review",
+      "approved": "Approved draft",
+      "yours": "Your draft",
+      "viewPost": "View post on LinkedIn"
+    },
+    "validation": {
+      "draftMin": "Write at least {min} characters. The brand reviews the full post.",
+      "draftMax": "Keep it under {max} characters (LinkedIn's limit).",
+      "dateRequired": "Pick a date.",
+      "dateInvalid": "Enter a valid date.",
+      "dateFuture": "The publish date must be in the future.",
+      "postUrlInvalid": "Paste the full URL of the post.",
+      "postUrlLinkedin": "The post URL must be on linkedin.com."
+    },
+    "timelineTitle": "History",
+    "timelineEmpty": "Nothing has happened yet.",
+    "creator": {
+      "header": {
+        "title": "{campaign} · {brand}",
+        "fee": "Your fee",
+        "due": "Due {date}",
+        "message": "Message {brand}",
+        "readBrief": "Read brief"
+      },
+      "money": {
+        "title": "Your fee",
+        "held": "Held",
+        "heldNote": "{brand}'s fee of {amount} is held. You're paid after the post is live.",
+        "awaitingRelease": "Awaiting release",
+        "awaitingReleaseNote": "Your post is live. {amount} is released when {brand} pays.",
+        "paid": "Paid",
+        "paidNote": "{amount} was added to your available balance on {date}.",
+        "returned": "Returned",
+        "returnedNote": "The fee went back to {brand}."
+      },
+      "decide": {
+        "title": "Accept or decline this invitation",
+        "description": "Accepting confirms the booking on these terms. {brand}'s fee is already held for you.",
+        "accept": "Accept",
+        "decline": "Decline",
+        "pending": "Saving…",
+        "declineConfirm": {
+          "title": "Decline this invitation?",
+          "body": "{brand} gets its fee back and this collaboration closes for good.",
+          "confirm": "Decline",
+          "cancel": "Keep it open"
+        }
+      },
+      "draft": {
+        "title": "Write the draft",
+        "description": "Write the post as it will go out. {brand} reviews it before you publish.",
+        "label": "Your LinkedIn post",
+        "placeholder": "Hook first, one clear call to action, disclosure included.",
+        "help": "At least {min} characters.",
+        "counter": "{count} / {max}",
+        "submit": "Send for review",
+        "pending": "Sending…"
+      },
+      "resubmit": {
+        "title": "Update your draft (round {round} of {max})",
+        "description": "{brand} asked for changes. Edit the post and send it back.",
+        "noteLabel": "{brand}'s note",
+        "lastRound": "This is the last round of changes.",
+        "submit": "Resubmit draft",
+        "pending": "Sending…"
+      },
+      "schedule": {
+        "title": "Schedule the post",
+        "description": "Draft approved. Pick the day you'll publish, then come back to add the post URL.",
+        "label": "Publish date",
+        "submit": "Schedule",
+        "pending": "Saving…"
+      },
+      "publish": {
+        "title": "Publish and add the post URL",
+        "description": "Once the post is on LinkedIn, paste its URL here. Clicks on your tracked link start counting.",
+        "label": "LinkedIn post URL",
+        "placeholder": "https://www.linkedin.com/posts/…",
+        "submit": "Mark as published",
+        "pending": "Saving…"
+      },
+      "waiting": {
+        "applied": "{brand} hasn't answered your application yet.",
+        "draft_submitted": "{brand} is reviewing your draft. Their decision appears here.",
+        "live": "Your post is live. {brand} releases your fee next.",
+        "paid": "{brand} paid {amount}. It's in your earnings.",
+        "declined": "This collaboration is closed."
+      },
+      "timeline": {
+        "invite": "{brand} sent the invitation",
+        "apply": "You applied to the campaign",
+        "acceptInvitation": "You accepted the invitation",
+        "acceptApplication": "{brand} accepted your application",
+        "declineInvitation": "You declined the invitation",
+        "declineApplication": "{brand} declined your application",
+        "submitDraft": "You sent a draft",
+        "resubmitDraft": "You sent a revised draft (round {round})",
+        "approve": "{brand} approved the draft",
+        "requestChanges": "{brand} asked for changes",
+        "schedule": "You scheduled the post for {date}",
+        "publish": "You published the post",
+        "payBrand": "{brand} released the payment",
+        "paySystem": "Payment released",
+        "unknown": "Status changed"
+      },
+      "toasts": {
+        "accepted": "Booking confirmed. Your thread with {brand} is open.",
+        "declined": "Invitation declined. {brand} gets its fee back.",
+        "draftSent": "Draft sent. {brand} reviews it next.",
+        "scheduled": "Post scheduled for {date}.",
+        "published": "You're live. {brand} releases your fee next.",
+        "rolledBack": "That didn't go through, so nothing changed.",
+        "errors": {
+          "generic": "Something went wrong on our side. Nothing was changed. Try again.",
+          "stale": "This step is no longer available. Reload to see where things stand.",
+          "staleForm": "This page is out of date. Reload and try again.",
+          "sessionExpired": "Your session has expired. Sign in again.",
+          "notYours": "This collaboration isn't in your workspace."
+        }
+      }
+    },
+    "brand": {
+      "header": {
+        "fee": "Fee",
+        "message": "Message {creator}"
+      },
+      "decide": {
+        "title": "Accept or decline this application",
+        "description": "Accepting books {creator} for {amount}: the fee is held from your wallet and the thread opens.",
+        "accept": "Accept and book",
+        "decline": "Decline",
+        "declineConfirm": {
+          "title": "Decline this application?",
+          "body": "{creator} is told the application was not selected. This can’t be undone.",
+          "confirm": "Decline",
+          "cancel": "Keep it open"
+        }
+      },
+      "review": {
+        "title": "A draft is waiting for your review",
+        "description": "Read the whole post, then approve it or ask for changes.",
+        "open": "Review the post",
+        "dialogTitle": "Review the LinkedIn post",
+        "dialogDescription": "Approve it as written, or say exactly what should change.",
+        "round": "Round {round} of {max}",
+        "noDraft": "No draft text was attached.",
+        "noteLabel": "What should change?",
+        "notePlaceholder": "Be concrete: what to keep, what to move, what to cut.",
+        "capReached": "All {max} revision rounds are used, so this draft can only be approved. Talk it through in Messages if something is still off.",
+        "approve": "Approve",
+        "approving": "Approving…",
+        "requestChanges": "Request changes",
+        "sendChanges": "Send the changes",
+        "sending": "Sending…",
+        "back": "Back"
+      },
+      "pay": {
+        "title": "The post is live",
+        "description": "Release the held fee to {creator}. The ledger records the payout.",
+        "action": "Release {amount}"
+      },
+      "waiting": {
+        "invited": "{creator} hasn’t answered your invitation yet.",
+        "accepted": "{creator} is writing the draft.",
+        "changes_requested": "{creator} is revising the draft.",
+        "approved": "{creator} schedules the post next.",
+        "scheduled": "{creator} publishes the post next.",
+        "paid": "You paid {amount}.",
+        "declined": "This collaboration is closed."
+      },
+      "toasts": {
+        "accepted": "{creator} is booked. The fee is held in your wallet.",
+        "declined": "Application declined.",
+        "approved": "Draft approved. {creator} schedules the post next.",
+        "changesRequested": "Changes requested.",
+        "paid": "{amount} released to {creator}.",
+        "topUp": "Top up"
+      },
+      "timeline": {
+        "invite": "You invited {creator}",
+        "apply": "{creator} applied",
+        "acceptInvitation": "{creator} accepted the invitation",
+        "acceptApplication": "You accepted the application",
+        "declineInvitation": "{creator} declined the invitation",
+        "declineApplication": "You declined the application",
+        "submitDraft": "{creator} sent a draft",
+        "resubmitDraft": "{creator} sent a revised draft",
+        "approve": "You approved the draft",
+        "requestChanges": "You asked for changes",
+        "schedule": "{creator} scheduled the post",
+        "publish": "{creator} published the post",
+        "payBrand": "You released the payment",
+        "paySystem": "Payment released",
+        "unknown": "Status changed"
+      }
+    }
   }
 }

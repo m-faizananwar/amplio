@@ -148,5 +148,242 @@
         "owner": "Terminée"
       }
     }
+  },
+  "detail": {
+    "back": "Toutes les collaborations",
+    "loading": "Chargement de la collaboration",
+    "error": {
+      "title": "Impossible de charger cette collaboration",
+      "body": "Réessayez dans un instant."
+    },
+    "notFound": {
+      "title": "Collaboration introuvable",
+      "body": "Elle a peut-être été supprimée, ou elle appartient à un autre espace.",
+      "action": "Toutes les collaborations"
+    },
+    "terms": {
+      "title": "Conditions de l’offre",
+      "fee": "Rémunération par post",
+      "listPrice": "Tarif affiché",
+      "discount": "{amount} · remise de {percent} %",
+      "origin": "Origine",
+      "originInvitation": "Invitation de la marque",
+      "originApplication": "Votre candidature",
+      "review": "Relecture",
+      "reviewRequired": "La marque valide avant publication",
+      "reviewNotRequired": "Publication sans relecture",
+      "dueDate": "Échéance",
+      "noDeadline": "Sans échéance",
+      "answerBy": "Réponse avant le",
+      "scheduledFor": "Programmé le",
+      "published": "Publié le",
+      "paid": "Payé le",
+      "offerNote": "Message de {brand}"
+    },
+    "trackedLink": {
+      "title": "Lien suivi",
+      "body": "Utilisez ce lien dans votre post. Chaque clic est enregistré.",
+      "copy": "Copier le lien",
+      "copied": "Lien suivi copié",
+      "clicks": "{count, plural, =0 {Aucun clic pour l’instant} one {# clic} other {# clics}}",
+      "pending": "Les clics s’affichent une fois le post en ligne."
+    },
+    "draftPreview": {
+      "pending": "Brouillon en relecture",
+      "approved": "Brouillon validé",
+      "yours": "Votre brouillon",
+      "viewPost": "Voir le post sur LinkedIn"
+    },
+    "validation": {
+      "draftMin": "Écrivez au moins {min} caractères. La marque relit le post en entier.",
+      "draftMax": "Restez sous {max} caractères (la limite de LinkedIn).",
+      "dateRequired": "Choisissez une date.",
+      "dateInvalid": "Saisissez une date valide.",
+      "dateFuture": "La date de publication doit être dans le futur.",
+      "postUrlInvalid": "Collez l’URL complète du post.",
+      "postUrlLinkedin": "L’URL du post doit être sur linkedin.com."
+    },
+    "timelineTitle": "Historique",
+    "timelineEmpty": "Rien ne s’est encore passé.",
+    "creator": {
+      "header": {
+        "title": "{campaign} · {brand}",
+        "fee": "Votre rémunération",
+        "due": "À rendre le {date}",
+        "message": "Écrire à {brand}",
+        "readBrief": "Lire le brief"
+      },
+      "money": {
+        "title": "Votre rémunération",
+        "held": "Provisionnée",
+        "heldNote": "{brand} a provisionné votre rémunération de {amount}. Le paiement intervient une fois le post en ligne.",
+        "awaitingRelease": "En attente de versement",
+        "awaitingReleaseNote": "Votre post est en ligne. Le montant de {amount} vous est versé quand {brand} paie.",
+        "paid": "Payée",
+        "paidNote": "Montant de {amount} ajouté à votre solde disponible le {date}.",
+        "returned": "Restituée",
+        "returnedNote": "La rémunération a été rendue à {brand}."
+      },
+      "decide": {
+        "title": "Accepter ou refuser cette invitation",
+        "description": "Accepter confirme la réservation à ces conditions. La rémunération de {brand} est déjà provisionnée pour vous.",
+        "accept": "Accepter",
+        "decline": "Refuser",
+        "pending": "Enregistrement…",
+        "declineConfirm": {
+          "title": "Refuser cette invitation ?",
+          "body": "{brand} récupère sa rémunération et cette collaboration est définitivement clôturée.",
+          "confirm": "Refuser",
+          "cancel": "La garder ouverte"
+        }
+      },
+      "draft": {
+        "title": "Rédiger le brouillon",
+        "description": "Rédigez le post tel qu’il sera publié. {brand} le relit avant publication.",
+        "label": "Votre post LinkedIn",
+        "placeholder": "Une accroche d’abord, un seul appel à l’action, mention du partenariat incluse.",
+        "help": "Au moins {min} caractères.",
+        "counter": "{count} / {max}",
+        "submit": "Envoyer en relecture",
+        "pending": "Envoi…"
+      },
+      "resubmit": {
+        "title": "Modifier votre brouillon (tour {round} sur {max})",
+        "description": "{brand} demande des modifications. Retouchez le post et renvoyez-le.",
+        "noteLabel": "Le retour de {brand}",
+        "lastRound": "C’est le dernier tour de modifications.",
+        "submit": "Renvoyer",
+        "pending": "Envoi…"
+      },
+      "schedule": {
+        "title": "Programmer le post",
+        "description": "Brouillon validé. Choisissez le jour de publication, puis revenez ajouter l’URL du post.",
+        "label": "Date de publication",
+        "submit": "Programmer",
+        "pending": "Enregistrement…"
+      },
+      "publish": {
+        "title": "Publier et ajouter l’URL du post",
+        "description": "Une fois le post en ligne sur LinkedIn, collez son URL ici. Les clics sur votre lien suivi commencent à compter.",
+        "label": "URL du post LinkedIn",
+        "placeholder": "https://www.linkedin.com/posts/…",
+        "submit": "Marquer comme publié",
+        "pending": "Enregistrement…"
+      },
+      "waiting": {
+        "applied": "{brand} n’a pas encore répondu à votre candidature.",
+        "draft_submitted": "{brand} relit votre brouillon. Sa décision s’affichera ici.",
+        "live": "Votre post est en ligne. {brand} doit maintenant verser votre rémunération.",
+        "paid": "{brand} a versé {amount}. Le montant figure dans vos revenus.",
+        "declined": "Cette collaboration est clôturée."
+      },
+      "timeline": {
+        "invite": "{brand} a envoyé l’invitation",
+        "apply": "Vous avez postulé à la campagne",
+        "acceptInvitation": "Vous avez accepté l’invitation",
+        "acceptApplication": "{brand} a accepté votre candidature",
+        "declineInvitation": "Vous avez refusé l’invitation",
+        "declineApplication": "{brand} a refusé votre candidature",
+        "submitDraft": "Vous avez envoyé un brouillon",
+        "resubmitDraft": "Vous avez envoyé un brouillon modifié (tour {round})",
+        "approve": "{brand} a validé le brouillon",
+        "requestChanges": "{brand} a demandé des modifications",
+        "schedule": "Vous avez programmé le post pour le {date}",
+        "publish": "Vous avez publié le post",
+        "payBrand": "{brand} a versé le paiement",
+        "paySystem": "Paiement versé",
+        "unknown": "Statut modifié"
+      },
+      "toasts": {
+        "accepted": "Réservation confirmée. Votre conversation avec {brand} est ouverte.",
+        "declined": "Invitation refusée. {brand} récupère sa rémunération.",
+        "draftSent": "Brouillon envoyé. {brand} le relit maintenant.",
+        "scheduled": "Post programmé pour le {date}.",
+        "published": "Vous êtes en ligne. {brand} doit maintenant verser votre rémunération.",
+        "rolledBack": "L’opération n’a pas abouti, rien n’a changé.",
+        "errors": {
+          "generic": "Une erreur est survenue de notre côté. Rien n’a été modifié. Réessayez.",
+          "stale": "Cette étape n’est plus disponible. Rechargez pour voir où en est la collaboration.",
+          "staleForm": "Cette page n’est plus à jour. Rechargez-la et réessayez.",
+          "sessionExpired": "Votre session a expiré. Reconnectez-vous.",
+          "notYours": "Cette collaboration ne fait pas partie de votre espace."
+        }
+      }
+    },
+    "brand": {
+      "header": {
+        "fee": "Rémunération",
+        "message": "Écrire à {creator}"
+      },
+      "decide": {
+        "title": "Acceptez ou refusez cette candidature",
+        "description": "Accepter réserve {creator} pour {amount} : la rémunération est provisionnée depuis votre portefeuille et la conversation s’ouvre.",
+        "accept": "Accepter et réserver",
+        "decline": "Refuser",
+        "declineConfirm": {
+          "title": "Refuser cette candidature ?",
+          "body": "{creator} sera informé que sa candidature n’a pas été retenue. C’est définitif.",
+          "confirm": "Refuser",
+          "cancel": "Garder ouverte"
+        }
+      },
+      "review": {
+        "title": "Un brouillon attend votre relecture",
+        "description": "Lisez le post en entier, puis approuvez-le ou demandez des modifications.",
+        "open": "Relire le post",
+        "dialogTitle": "Relire le post LinkedIn",
+        "dialogDescription": "Approuvez-le tel quel, ou dites précisément ce qui doit changer.",
+        "round": "Tour {round} sur {max}",
+        "noDraft": "Aucun texte de brouillon joint.",
+        "noteLabel": "Que faut-il changer ?",
+        "notePlaceholder": "Soyez concret : ce qu’il faut garder, déplacer, couper.",
+        "capReached": "Les {max} tours de modification sont utilisés, ce brouillon ne peut donc qu’être approuvé. Parlez-en dans la messagerie si quelque chose ne va pas.",
+        "approve": "Approuver",
+        "approving": "Approbation…",
+        "requestChanges": "Demander des modifications",
+        "sendChanges": "Envoyer les modifications",
+        "sending": "Envoi…",
+        "back": "Retour"
+      },
+      "pay": {
+        "title": "Le post est en ligne",
+        "description": "Versez la rémunération provisionnée à {creator}. Le registre enregistre le versement.",
+        "action": "Verser {amount}"
+      },
+      "waiting": {
+        "invited": "{creator} n’a pas encore répondu à votre invitation.",
+        "accepted": "{creator} rédige le brouillon.",
+        "changes_requested": "{creator} révise le brouillon.",
+        "approved": "{creator} va programmer le post.",
+        "scheduled": "{creator} va publier le post.",
+        "paid": "Vous avez versé {amount}.",
+        "declined": "Cette collaboration est clôturée."
+      },
+      "toasts": {
+        "accepted": "{creator} est réservé. La rémunération est provisionnée dans votre portefeuille.",
+        "declined": "Candidature refusée.",
+        "approved": "{creator} va maintenant programmer le post.",
+        "changesRequested": "Modifications demandées.",
+        "paid": "{amount} versés à {creator}.",
+        "topUp": "Recharger"
+      },
+      "timeline": {
+        "invite": "Vous avez invité {creator}",
+        "apply": "{creator} a candidaté",
+        "acceptInvitation": "{creator} a accepté l’invitation",
+        "acceptApplication": "Vous avez accepté la candidature",
+        "declineInvitation": "{creator} a refusé l’invitation",
+        "declineApplication": "Vous avez refusé la candidature",
+        "submitDraft": "{creator} a envoyé un brouillon",
+        "resubmitDraft": "{creator} a envoyé un brouillon révisé",
+        "approve": "Vous avez approuvé le brouillon",
+        "requestChanges": "Vous avez demandé des modifications",
+        "schedule": "{creator} a programmé le post",
+        "publish": "{creator} a publié le post",
+        "payBrand": "Vous avez versé le paiement",
+        "paySystem": "Paiement versé",
+        "unknown": "Statut modifié"
+      }
+    }
   }
 }

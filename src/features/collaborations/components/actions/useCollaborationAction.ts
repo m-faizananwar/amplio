@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { toast } from "sonner";
@@ -13,6 +14,7 @@ type StatusResult = ActionResult<{ collaborationId: string; status: Collaboratio
 // revalidated page replaces it when it succeeds.
 export function useCollaborationAction(setOptimisticStatus: (status: CollaborationStatus) => void) {
   const router = useRouter();
+  const t = useTranslations("collaboration.detail.brand.toasts");
   const [isPending, startTransition] = useTransition();
 
   function run(optimistic: CollaborationStatus, action: () => Promise<StatusResult>, success: string) {
@@ -24,7 +26,7 @@ export function useCollaborationAction(setOptimisticStatus: (status: Collaborati
           toast.error(result.error, {
             action:
               result.code === "insufficient_funds"
-                ? { label: "Top up", onClick: () => router.push("/brand/billing") }
+                ? { label: t("topUp"), onClick: () => router.push("/brand/billing") }
                 : undefined,
           });
           resolve(false);

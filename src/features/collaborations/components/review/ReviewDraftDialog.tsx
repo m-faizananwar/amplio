@@ -1,41 +1,52 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import { useMotionDialog } from "@/components/motion/useMotionDialog";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { type CollaborationDto, type ReviewFormInput, reviewFormSchema } from "../../schemas";
-import { COPY } from "../../ui-constants";
 
-type Props = {
-  collaboration: CollaborationDto;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  disabled: boolean;
-  onSubmit: (values: ReviewFormInput) => Promise<boolean>;
-};
+type Props = { collaboration: CollaborationDto; open: boolean; onOpenChange: (open: boolean) => void; disabled: boolean; onSubmit: (values: ReviewFormInput) => Promise<boolean> };
 
 const NOTE_ROWS = 4;
 
-// "Review LinkedIn post": the full draft, then approve or send it back with a
-// required comment. Request changes is capped by MAX_REVISION_ROUNDS.
+type FooterProps = { changing: boolean; setChanging: (v: boolean) => void; capReached: boolean; busy: boolean; disabled: boolean; submit: (d: ReviewFormInput["decision"]) => void };
+
+function ReviewFooter({ changing, setChanging, capReached, busy, disabled, submit }: FooterProps) {
+  const t = useTranslations("collaboration.detail.brand.review");
+  return (
+    <DialogFooter>
+      {changing ? (
+        <>
+          <Button type="button" variant="secondary" disabled={busy} onClick={() => setChanging(false)}>{t("back")}</Button>
+          <Button type="button" disabled={disabled || busy} onClick={() => submit("request_changes")}>{busy ? t("sending") : t("sendChanges")}</Button>
+        </>
+      ) : (
+        <>
+          <Button type="button" variant="secondary" disabled={disabled || capReached} onClick={() => setChanging(true)}>{t("requestChanges")}</Button>
+          <Button type="button" disabled={disabled || busy} onClick={() => submit("approve")}>{busy ? t("approving") : t("approve")}</Button>
+        </>
+      )}
+    </DialogFooter>
+  );
+}
+
+// The full draft, then approve it or send it back with a required note.
+// Requesting changes stops once the revision rounds are used up.
 export function ReviewDraftDialog({ collaboration: c, open, onOpenChange, disabled, onSubmit }: Props) {
-  const { attachContent, handleOpenChange: requestOpenChange } = useMotionDialog(onOpenChange);
+  const t = useTranslations("collaboration.detail.brand.review");
   const [changing, setChanging] = useState(false);
   const form = useForm<ReviewFormInput>({ resolver: zodResolver(reviewFormSchema), defaultValues: { decision: "approve", note: "" } });
   const { errors, isSubmitting } = form.formState;
   const capReached = c.revisionRound >= c.maxRevisionRounds;
-  const roundLabel = `Round ${Math.min(c.revisionRound + 1, c.maxRevisionRounds)} of ${c.maxRevisionRounds}`;
 
   async function submit(decision: ReviewFormInput["decision"]) {
     form.setValue("decision", decision);
     await form.handleSubmit(async (values) => {
-      const ok = await onSubmit(values);
-      if (ok) {
+      if (await onSubmit(values)) {
         onOpenChange(false);
         setChanging(false);
         form.reset();
@@ -44,66 +55,25 @@ export function ReviewDraftDialog({ collaboration: c, open, onOpenChange, disabl
   }
 
   return (
-    <Dialog open={open} onOpenChange={requestOpenChange}>
-      <DialogContent ref={attachContent} className="max-h-[90vh] overflow-y-auto sm:max-w-2xl data-open:animate-none data-closed:animate-none">
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl">
         <DialogHeader>
-          <DialogTitle>{COPY.reviewTitle}</DialogTitle>
-          <DialogDescription>{COPY.reviewDescription}</DialogDescription>
+          <DialogTitle>{t("dialogTitle")}</DialogTitle>
+          <DialogDescription>{t("dialogDescription")}</DialogDescription>
         </DialogHeader>
-        <div className="flex items-center justify-between text-xs text-muted-foreground">
-          <span>
-            {c.creatorName} · {c.campaignName}
-          </span>
-          <span>{roundLabel}</span>
-        </div>
-        <article className="max-h-80 overflow-y-auto rounded-xl border bg-muted/40 p-4 text-sm leading-relaxed whitespace-pre-line">
-          {c.draftText ?? "No draft text was attached."}
-        </article>
+        <p className="flex justify-between gap-3 text-caption text-ink-muted">
+          <span>{c.creatorName} · {c.campaignName}</span>
+          <span className="num">{t("round", { round: Math.min(c.revisionRound + 1, c.maxRevisionRounds), max: c.maxRevisionRounds })}</span>
+        </p>
+        <article className="max-h-80 overflow-y-auto whitespace-pre-line rounded-control border border-rule bg-paper p-4 text-body leading-relaxed">{c.draftText ?? t("noDraft")}</article>
         {changing ? (
-          <form className="grid gap-1.5" onSubmit={(e) => e.preventDefault()} noValidate>
-            <Label htmlFor="reviewNote">What should change?</Label>
-            <Textarea
-              id="reviewNote"
-              rows={NOTE_ROWS}
-              autoFocus
-              aria-invalid={Boolean(errors.note)}
-              placeholder="Be concrete: what to keep, what to move, what to cut."
-              {...form.register("note")}
-            />
-            {errors.note ? <p className="text-xs text-destructive">{errors.note.message}</p> : null}
-          </form>
-        ) : capReached ? (
-          <p className="rounded-lg bg-muted px-3 py-2 text-xs text-muted-foreground">
-            {c.maxRevisionRounds} revision rounds have been used — this draft can only be approved. Talk it through in Messages if
-            something is still off.
-          </p>
-        ) : null}
-        <DialogFooter>
-          {changing ? (
-            <>
-              <Button type="button" variant="glass" disabled={isSubmitting} onClick={() => setChanging(false)}>
-                Back
-              </Button>
-              <Button type="button" disabled={disabled || isSubmitting} onClick={() => submit("request_changes")}>
-                {isSubmitting ? "Sending…" : "Send the changes"}
-              </Button>
-            </>
-          ) : (
-            <>
-              <Button type="button" variant="glass" disabled={disabled || capReached} onClick={() => setChanging(true)}>
-                Request changes
-              </Button>
-              <Button
-                type="button"
-                disabled={disabled || isSubmitting}
-                className="bg-brand text-brand-foreground hover:bg-brand/90"
-                onClick={() => submit("approve")}
-              >
-                {isSubmitting ? "Approving…" : "Approve"}
-              </Button>
-            </>
-          )}
-        </DialogFooter>
+          <div className="grid gap-1.5">
+            <label htmlFor="reviewNote" className="text-small font-medium">{t("noteLabel")}</label>
+            <Textarea id="reviewNote" rows={NOTE_ROWS} autoFocus aria-invalid={Boolean(errors.note)} placeholder={t("notePlaceholder")} {...form.register("note")} />
+            {errors.note ? <p role="alert" className="text-caption text-failure">{errors.note.message}</p> : null}
+          </div>
+        ) : capReached ? <p className="rounded-control bg-tint px-3 py-2 text-caption text-ink-muted">{t("capReached", { max: c.maxRevisionRounds })}</p> : null}
+        <ReviewFooter changing={changing} setChanging={setChanging} capReached={capReached} busy={isSubmitting} disabled={disabled} submit={submit} />
       </DialogContent>
     </Dialog>
   );
