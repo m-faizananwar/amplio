@@ -4,11 +4,12 @@ import { LocaleToggle } from "./topbar/LocaleToggle";
 import { NotificationsButton } from "./topbar/NotificationsButton";
 import { RoleSwitch } from "./topbar/RoleSwitch";
 import { ShellCommandMenu } from "./topbar/ShellCommandMenu";
+import { ThemeToggle } from "./topbar/ThemeToggle";
 import { WalletChip } from "./topbar/WalletChip";
 import type { ShellViewer } from "./viewer";
 
 // Search (⌘K) on the left where the eye starts; on the right the workspace
-// switch (demo accounts), the wallet, language, the bell, the account.
+// switch (demo accounts), the wallet, language, theme, the bell, the account.
 export function TopBar({ viewer }: { viewer: ShellViewer }) {
   return (
     <header className="sticky top-0 z-30 border-b border-rule bg-paper/95">
@@ -18,6 +19,7 @@ export function TopBar({ viewer }: { viewer: ShellViewer }) {
         {viewer.demo ? <div className="hidden md:block"><RoleSwitch role={viewer.role} /></div> : null}
         <WalletChip role={viewer.role} walletCents={viewer.walletCents} />
         <div className="hidden sm:block"><LocaleToggle /></div>
+        <div className="hidden lg:block"><ThemeToggle /></div>
         <NotificationsButton notifications={viewer.notifications} role={viewer.role} />
         <AccountMenu viewer={viewer} />
       </div>

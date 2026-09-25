@@ -1,23 +1,25 @@
 "use client";
 
-import { LogOut, Moon, Settings, Sun } from "lucide-react";
+import { LogOut, Settings } from "lucide-react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { PersonAvatar } from "@/components/ui/avatar";
 import {
-  DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger,
+  DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem,
+  DropdownMenuSeparator, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { CSRF_FIELD } from "@/features/auth/constants";
 import { logout } from "@/features/auth/server/actions";
+import { isThemeChoice, THEME_CHOICES } from "./theme/theme";
 import { useTheme } from "./theme/useTheme";
 import type { ShellViewer } from "./viewer";
 
-// Avatar → who you are, Settings, the theme, Sign out (a real form POST with
+// Avatar → who you are, Settings, the theme (the only place phones get it), Sign out (a real form POST with
 // the session's CSRF token).
 export function AccountMenu({ viewer }: { viewer: ShellViewer }) {
   const t = useTranslations("shell.topBar.account");
   const tTheme = useTranslations("common.theme");
-  const [theme, toggleTheme] = useTheme();
+  const { choice, choose } = useTheme();
   const name = `${viewer.firstName} ${viewer.lastName}`.trim();
   return (
     <DropdownMenu>
@@ -36,10 +38,15 @@ export function AccountMenu({ viewer }: { viewer: ShellViewer }) {
           <Settings aria-hidden="true" />
           {t("settings")}
         </DropdownMenuItem>
-        <DropdownMenuItem closeOnClick={false} onClick={toggleTheme}>
-          {theme === "dark" ? <Sun aria-hidden="true" /> : <Moon aria-hidden="true" />}
-          {theme === "dark" ? tTheme("light") : tTheme("dark")}
-        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuLabel>{tTheme("label")}</DropdownMenuLabel>
+          <DropdownMenuRadioGroup value={choice} onValueChange={(next: string) => { if (isThemeChoice(next)) choose(next); }}>
+            {THEME_CHOICES.map((value) => (
+              <DropdownMenuRadioItem key={value} value={value} closeOnClick={false}>{tTheme(value)}</DropdownMenuRadioItem>
+            ))}
+          </DropdownMenuRadioGroup>
+        </DropdownMenuGroup>
         {viewer.preview ? null : (
           <>
             <DropdownMenuSeparator />

@@ -3,10 +3,11 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { BrandLockup } from "@/components/brand/BrandLockup";
 import { LocaleToggle } from "@/components/shell/topbar/LocaleToggle";
+import { ThemeToggle } from "@/components/shell/topbar/ThemeToggle";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
 
-// The public site's nav: the lockup, three links, the language switch, sign
+// The public site's nav: the lockup, three links, the language and theme switches, sign
 // in / sign up. Solid paper and a hairline — no glass. Phones get the lockup,
 // Sign up and a menu.
 export async function PublicNav() {
@@ -28,6 +29,7 @@ export async function PublicNav() {
         </nav>
         <div className="ml-auto flex items-center gap-2">
           <div className="hidden sm:block"><LocaleToggle /></div>
+          <div className="hidden lg:block"><ThemeToggle /></div>
           <Link href="/login" className={cn(buttonVariants({ variant: "ghost" }), "hidden sm:inline-flex")}>{t("signIn")}</Link>
           <Link href="/register" className={buttonVariants()}>{t("signUp")}</Link>
           <details className="relative md:hidden">
@@ -38,7 +40,7 @@ export async function PublicNav() {
               {[...links, { href: "/login", label: t("signIn") }].map((l) => (
                 <Link key={l.href} href={l.href} className="block rounded-control px-3 py-2.5 text-body hover:bg-tint">{l.label}</Link>
               ))}
-              <div className="border-t border-rule px-1 pt-2"><LocaleToggle /></div>
+              <div className="flex flex-wrap gap-2 border-t border-rule px-1 pt-2"><LocaleToggle /><ThemeToggle /></div>
             </div>
           </details>
         </div>

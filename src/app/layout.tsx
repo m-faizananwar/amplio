@@ -1,8 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
-import { cookies } from "next/headers";
 import { getLocale } from "next-intl/server";
-import { THEME_COOKIE } from "@/components/shell/theme/theme";
+import { THEME_BOOT_SCRIPT } from "@/components/shell/theme/theme";
 import { ClientMessages } from "@/i18n/ClientMessages";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -41,11 +40,19 @@ export const metadata: Metadata = {
   },
 };
 
+// The canvas behind the page follows the OS until the boot script has run.
+export const viewport: Viewport = { colorScheme: "light dark" };
+
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const locale = await getLocale();
-  const dark = (await cookies()).get(THEME_COOKIE)?.value === "dark";
   return (
-    <html lang={locale} className={`${geist.variable} ${geistMono.variable} ${cormorant.variable} h-full antialiased${dark ? " dark" : ""}`}>
+    // The boot script adds `dark` before hydration, so the class the server
+    // sent is expected to differ from the one React finds.
+    <html lang={locale} suppressHydrationWarning className={`${geist.variable} ${geistMono.variable} ${cormorant.variable} h-full antialiased`}>
+      <head>
+        {/* Before first paint: light, dark, or whatever the OS says. */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
+      </head>
       <body className="flex min-h-full flex-col">
         <ClientMessages namespaces={[]}>
         <RouteProgress />

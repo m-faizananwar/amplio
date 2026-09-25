@@ -20,7 +20,8 @@ export function ShellCommandMenu({ role }: Props) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState<CommandIndex | null>(null);
-  const [, toggleTheme] = useTheme();
+  const { resolved, choose } = useTheme();
+  const toggleTheme = () => choose(resolved === "dark" ? "light" : "dark");
   const locale = useLocale();
 
   const show = useCallback((next: boolean) => {

@@ -1,25 +1,50 @@
 "use client";
 
 import { useCallback, useSyncExternalStore } from "react";
-import { setTheme } from "./actions";
-import type { Theme } from "./theme";
+import { isThemeChoice, THEME_COOKIE, type Theme, type ThemeChoice } from "./theme";
 
-// The `.dark` class on <html> is the source of truth on the client (the root
-// layout set it from the cookie); toggling flips it at once and saves the
-// cookie in the background so the next server render agrees.
+const YEAR_S = 60 * 60 * 24 * 365;
+const CHOICE_EVENT = "amplio-theme-choice";
+const darkQuery = () => window.matchMedia("(prefers-color-scheme: dark)");
+
+// The class on <html> (set by the boot script) is the truth for what shows;
+// the cookie is the truth for what was picked. Both are observed, so every
+// toggle on the page agrees without a context.
 const subscribe = (cb: () => void) => {
   const mo = new MutationObserver(cb);
   mo.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-  return () => mo.disconnect();
+  window.addEventListener(CHOICE_EVENT, cb);
+  return () => {
+    mo.disconnect();
+    window.removeEventListener(CHOICE_EVENT, cb);
+  };
 };
-const read = (): Theme => (document.documentElement.classList.contains("dark") ? "dark" : "light");
+const readChoice = (): ThemeChoice => {
+  const match = document.cookie.match(new RegExp(`(?:^|; )${THEME_COOKIE}=([a-z]+)`));
+  return match && isThemeChoice(match[1]) ? match[1] : "system";
+};
+const readResolved = (): Theme => (document.documentElement.classList.contains("dark") ? "dark" : "light");
 
-export function useTheme(): [Theme, () => void] {
-  const theme = useSyncExternalStore(subscribe, read, () => "light" as Theme);
-  const toggle = useCallback(() => {
-    const next: Theme = read() === "dark" ? "light" : "dark";
-    document.documentElement.classList.toggle("dark", next === "dark");
-    void setTheme(next);
+function apply(choice: ThemeChoice) {
+  const dark = choice === "dark" || (choice === "system" && darkQuery().matches);
+  const root = document.documentElement;
+  root.classList.toggle("dark", dark);
+  root.style.colorScheme = dark ? "dark" : "light";
+}
+
+function persist(choice: ThemeChoice) {
+  document.cookie = choice === "system"
+    ? `${THEME_COOKIE}=; path=/; max-age=0; samesite=lax`
+    : `${THEME_COOKIE}=${choice}; path=/; max-age=${YEAR_S}; samesite=lax`;
+}
+
+export function useTheme() {
+  const choice = useSyncExternalStore(subscribe, readChoice, () => "system" as ThemeChoice);
+  const resolved = useSyncExternalStore(subscribe, readResolved, () => "light" as Theme);
+  const choose = useCallback((next: ThemeChoice) => {
+    persist(next);
+    apply(next);
+    window.dispatchEvent(new Event(CHOICE_EVENT));
   }, []);
-  return [theme, toggle];
+  return { choice, resolved, choose };
 }
