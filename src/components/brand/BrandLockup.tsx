@@ -4,24 +4,23 @@ import { BrandMark } from "./BrandMark";
 
 type Size = "sm" | "md" | "lg";
 
-// Mark height ≈ the wordmark's cap-to-descender height plus a little; gap ~.35em.
 const SIZES: Record<Size, { mark: number; text: string }> = {
-  sm: { mark: 22, text: "text-[1.25rem]" },
-  md: { mark: 28, text: "text-[1.6rem]" },
-  lg: { mark: 40, text: "text-[2.25rem]" },
+  sm: { mark: 20, text: "text-[1.0625rem]" },
+  md: { mark: 24, text: "text-[1.25rem]" },
+  lg: { mark: 32, text: "text-[1.75rem]" },
 };
 
 type Props = { size?: Size; className?: string; wordClassName?: string; markClassName?: string };
 
-// Mark + "Amplio" in Cormorant Garamond 500 (loaded once in the root layout as
-// --font-cormorant). Colour inherits: ink in the app and nav, the footer's teal
-// in the footer, white on dark hover states.
+// The mark + "Amplio" in the product sans at 600, tight tracking
+// (docs/design/DIRECTION.md: Geist 600 — the wordmark follows whatever the
+// tokens load as the sans, so it becomes Geist with them, no second face).
 export function BrandLockup({ size = "md", className, wordClassName, markClassName }: Props) {
   const s = SIZES[size];
   return (
-    <span className={cn("inline-flex items-center gap-[0.35em] leading-none", s.text, className)}>
+    <span className={cn("inline-flex items-center gap-[0.4em] leading-none", s.text, className)}>
       <BrandMark size={s.mark} className={markClassName} />
-      <span className={cn("font-[family-name:var(--font-cormorant)] font-medium tracking-normal", wordClassName)}>{BRAND.wordmark}</span>
+      <span className={cn("font-sans font-semibold tracking-[-0.02em]", wordClassName)}>{BRAND.wordmark}</span>
     </span>
   );
 }

@@ -1,13 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
-  <!-- White disc so the ink mark reads on a dark tab bar; a 1px inner ring of the
-       ink at 10% keeps the disc visible on a white one. The mark itself is
-       unchanged (oval, stem, centre leaf pair — the full sprig turns to mud at 16px),
-       drawn at ~70% of the disc. -->
-  <circle cx="64" cy="64" r="64" fill="#ffffff"/>
-  <circle cx="64" cy="64" r="63" fill="none" stroke="#175A67" stroke-opacity="0.1" stroke-width="1"/>
-  <g transform="translate(64 64) scale(0.7466) translate(-48 -60)" fill="none" stroke="#175A67" stroke-width="2">
-    <ellipse cx="48" cy="60" rx="45" ry="57"/>
-    <path d="M48 92V40" stroke-linecap="round"/>
-    <path d="M48 74c-9-2-15-8-17-17 10 0 16 6 17 17Zm0 0c9-2 15-8 17-17-10 0-16 6-17 17Z"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- The mark on a paper disc so it reads on dark tab bars; a 1px ink ring at
+       10% keeps the disc visible on a white one. Heavier strokes for tab size. -->
+  <circle cx="16" cy="16" r="16" fill="#FAFAF7"/>
+  <circle cx="16" cy="16" r="15.5" fill="none" stroke="#111111" stroke-opacity="0.1" stroke-width="1"/>
+  <g transform="translate(4 4)">
+    <path d="M3.5 18.5L11.5 15L20.5 5" fill="none" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="3.5" cy="18.5" r="2.8" fill="#111111"/>
+    <circle cx="11.5" cy="15" r="2.8" fill="#111111"/>
+    <circle cx="20.5" cy="5" r="2.8" fill="#111111"/>
   </g>
 </svg>

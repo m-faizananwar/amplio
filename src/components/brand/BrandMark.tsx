@@ -1,25 +1,24 @@
 import { cn } from "cn";
 
-// The product mark: the ink footer's oval-and-sprig (docs/reference/ink-footer-spec.md,
-// exact paths). Strokes in currentColor, so it takes the colour of wherever it sits.
-export function BrandMark({ size = 28, className }: { size?: number; className?: string }) {
+// The mark: three dots joined by one line — post → click → lead, the trail
+// every number in the product is made of (docs/design/DIRECTION.md, "Mark").
+// Drawn in currentColor so it takes the ink of wherever it sits. Below 20px the
+// line and dots get heavier so the trail survives at tab size.
+export const MARK_POINTS = [
+  [3.5, 18.5],
+  [11.5, 15],
+  [20.5, 5],
+] as const;
+
+export function BrandMark({ size = 24, className }: { size?: number; className?: string }) {
+  const small = size < 20;
+  const [a, b, c] = MARK_POINTS;
   return (
-    <svg
-      viewBox="0 0 96 120"
-      width={size}
-      height={size * (120 / 96)}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      aria-hidden="true"
-      className={cn("shrink-0", className)}
-    >
-      <ellipse cx="48" cy="60" rx="45" ry="57" />
-      <path d="M48 88V46" strokeLinecap="round" />
-      <path d="M48 58c-8-2-14-8-16-16 9 0 15 5 16 16Zm0 0c8-2 14-8 16-16-9 0-15 5-16 16Z" />
-      <path d="M48 74c-9-2-15-8-17-17 10 0 16 6 17 17Zm0 0c9-2 15-8 17-17-10 0-16 6-17 17Z" />
-      <path d="M48 46c-6-3-9-9-8-16 6 3 9 9 8 16Zm0 0c6-3 9-9 8-16-6 3-9 9-8 16Z" />
-      <path d="M30 44c-5 1-9-1-12-5 5-2 9-1 12 5Zm36 0c5 1 9-1 12-5-5-2-9-1-12 5Z" />
+    <svg viewBox="0 0 24 24" width={size} height={size} fill="none" aria-hidden="true" className={cn("shrink-0", className)}>
+      <path d={`M${a[0]} ${a[1]}L${b[0]} ${b[1]}L${c[0]} ${c[1]}`} stroke="currentColor" strokeWidth={small ? 2 : 1.6} strokeLinecap="round" strokeLinejoin="round" />
+      {MARK_POINTS.map(([x, y]) => (
+        <circle key={x} cx={x} cy={y} r={small ? 2.8 : 2.5} fill="currentColor" />
+      ))}
     </svg>
   );
 }

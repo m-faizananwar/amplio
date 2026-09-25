@@ -25,7 +25,7 @@ const TOAST_MS = 3000;
 export const metadata: Metadata = {
   title: `${BRAND.wordmark}`,
   description: "Creator marketplace — rebuild",
-  // The oval-sprig mark (scripts/icons.mjs renders the PNGs from public/favicon.svg and public/mark.svg).
+  // The three-dot trail mark (scripts/icons.mjs renders the PNGs from public/favicon.svg and public/mark.svg).
   icons: {
     icon: [
       { url: "/favicon.svg", type: "image/svg+xml" },
