@@ -1,15 +1,16 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Suspense, useEffect, useState, type ReactNode } from "react";
 import { RouteSkeleton } from "./RouteSkeleton";
 import styles from "./route-transition.module.css";
 
 // A per-segment loading.tsx replaces the page the moment you click, so every
 // sidebar swap flashed a skeleton even when the next page was 200 ms away.
-// This keeps the page you are looking at on screen instead: dimmed, with a
-// progress bar, and only falls back to a skeleton when the wait gets long
-// enough that a frozen page would read as a broken one.
+// This keeps the page you are looking at on screen instead, dimmed, and only
+// falls back to a skeleton when the wait gets long enough that a frozen page
+// would read as a broken one. The progress bar is RouteProgress in the root
+// layout, which already starts on the same click.
 //
 // The Suspense boundary is what streams the shell on a cold load. It is
 // already mounted during a client navigation, so react keeps the old children
@@ -19,6 +20,9 @@ const SKELETON_AFTER_MS = 300;
 // A click that never becomes a navigation (a dialog trigger, a blocked link,
 // a redirect back to where we are): let the page go solid again.
 const GIVE_UP_MS = 8000;
+// Back after this long in another window or tab: re-read the page. Shorter
+// gaps are alt-tabs and don't warrant a round trip.
+const REFRESH_AFTER_HIDDEN_MS = 5000;
 
 function isPlainLeftClick(event: MouseEvent) {
   return !event.defaultPrevented && event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey;
@@ -33,8 +37,29 @@ function navigatesAway(anchor: HTMLAnchorElement, pathname: string) {
   return url.pathname !== pathname;
 }
 
+// The client router keeps a page's payload for 30 s (next.config staleTimes),
+// and it has no way to know another session wrote something meanwhile. The
+// moment that matters is coming back to this window, so that is when we
+// re-read — the same rule as revalidate-on-focus in a data-fetching library.
+function useRefreshOnReturn() {
+  const router = useRouter();
+  useEffect(() => {
+    let hiddenAt = 0;
+    function onVisibility() {
+      if (document.visibilityState === "hidden") {
+        hiddenAt = Date.now();
+        return;
+      }
+      if (hiddenAt && Date.now() - hiddenAt > REFRESH_AFTER_HIDDEN_MS) router.refresh();
+    }
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => document.removeEventListener("visibilitychange", onVisibility);
+  }, [router]);
+}
+
 export function RouteTransition({ children }: { children: ReactNode }) {
   const pathname = usePathname();
+  useRefreshOnReturn();
   // The path we were on when the click happened. While it still matches, the
   // navigation has not committed — deriving it this way means the commit ends
   // the pending state on its own, with no effect to clean up after it.
@@ -65,8 +90,6 @@ export function RouteTransition({ children }: { children: ReactNode }) {
 
   return (
     <div className={styles.shell} data-route-shell data-route-stale={pending ? "true" : undefined}>
-      {/* The bar is the only thing that moves while we wait; aria-busy tells the rest. */}
-      <div className={styles.progress} aria-hidden="true" />
       <div className={styles.page} aria-busy={pending ? "true" : undefined}>
         <Suspense fallback={<RouteSkeleton />}>
           {stalled ? <RouteSkeleton /> : <div key={pathname} className="animate-section">{children}</div>}

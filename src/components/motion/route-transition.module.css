@@ -17,40 +17,10 @@
   pointer-events: none;
 }
 
-.progress {
-  position: absolute;
-  inset-inline: 0;
-  top: -0.75rem;
-  height: 2px;
-  border-radius: 999px;
-  background: var(--color-brand, currentColor);
-  transform-origin: left center;
-  transform: scaleX(0);
-  opacity: 0;
-}
-
-/* Runs to ~90% and waits: the last 10% is the commit, which ends the state. */
-.shell[data-route-stale="true"] .progress {
-  opacity: 1;
-  animation: routeProgress 8s cubic-bezier(0, 0.6, 0.2, 1) forwards;
-}
-
-@keyframes routeProgress {
-  0% { transform: scaleX(0.02); }
-  30% { transform: scaleX(0.5); }
-  70% { transform: scaleX(0.82); }
-  100% { transform: scaleX(0.94); }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .page,
   .shell[data-route-stale="true"] .page {
     transition: none;
     opacity: 1;
-  }
-  .shell[data-route-stale="true"] .progress {
-    animation: none;
-    transform: scaleX(1);
-    opacity: 0.5;
   }
 }
