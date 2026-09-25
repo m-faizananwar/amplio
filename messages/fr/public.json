@@ -47,7 +47,7 @@
     "money": {
       "title": "Payé au post, pas au clic.",
       "body": "Vous touchez votre prix fixe pour chaque post publié. Quand une marque paie un post en ligne, une ligne est inscrite au registre et apparaît dans vos revenus.",
-      "stubNote": "Dans cette version, les virements bancaires sont simulés avec Stripe : vous voyez tout le parcours, mais aucun argent réel ne circule."
+      "stubNote": "Dans cette version, les virements bancaires sont fictifs (Stripe n’est pas encore branché) : vous voyez tout le parcours, mais aucun argent réel ne circule."
     },
     "cta": {
       "title": "Fixez votre prix.",
@@ -106,7 +106,7 @@
         "Un forfait récurrent"
       ]
     },
-    "stubNote": "Dans cette version, les recharges par carte et les virements bancaires sont simulés avec Stripe : vous voyez tout le parcours, mais aucun argent réel ne circule.",
+    "stubNote": "Dans cette version, les recharges par carte et les virements bancaires sont fictifs (Stripe n’est pas encore branché) : vous voyez tout le parcours, mais aucun argent réel ne circule.",
     "coin": {
       "brand": "La marque paie",
       "creator": "Le créateur reçoit",
@@ -144,7 +144,7 @@
         },
         {
           "q": "Quand et comment dois-je payer ?",
-          "a": "Vous disposez d’un portefeuille. Une fois le post en ligne, vous le payez depuis ce portefeuille et une ligne est inscrite au registre. Dans cette version, les recharges par carte sont simulées avec Stripe : le parcours est visible, mais aucun argent réel ne circule."
+          "a": "Vous disposez d’un portefeuille. Une fois le post en ligne, vous le payez depuis ce portefeuille et une ligne est inscrite au registre. Dans cette version, les recharges par carte sont fictives (Stripe n’est pas encore branché) : le parcours est visible, mais aucun argent réel ne circule."
         },
         {
           "q": "Les chiffres de ce site sont-ils réels ?",
@@ -173,7 +173,7 @@
         },
         {
           "q": "Comment suis-je payé ?",
-          "a": "Quand une marque paie votre post en ligne, une ligne est inscrite au registre et le paiement apparaît dans vos revenus. Dans cette version, les virements bancaires sont simulés avec Stripe : le parcours est visible, mais aucun argent réel ne circule."
+          "a": "Quand une marque paie votre post en ligne, une ligne est inscrite au registre et le paiement apparaît dans vos revenus. Dans cette version, les virements bancaires sont fictifs (Stripe n’est pas encore branché) : le parcours est visible, mais aucun argent réel ne circule."
         },
         {
           "q": "À quoi sert l’import LinkedIn ?",
@@ -255,7 +255,7 @@
           "id": "payments",
           "title": "Aucun argent réel ne circule",
           "paragraphs": [
-            "Le solde du portefeuille, les versements et les retraits sont des lignes de registre, pas des paiements. Les recharges par carte et les virements bancaires sont simulés avec Stripe : le parcours est visible, mais rien n’est débité et rien n’est versé.",
+            "Le solde du portefeuille, les versements et les retraits sont des lignes de registre, pas des paiements. Les recharges par carte et les virements bancaires sont fictifs (Stripe n’est pas encore branché) : le parcours est visible, mais rien n’est débité et rien n’est versé.",
             "Aucune facture n’est émise."
           ]
         },

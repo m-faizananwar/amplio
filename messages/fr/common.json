@@ -45,8 +45,7 @@
   },
   "demoData": "Données de l’espace de démonstration",
   "stub": {
-    "stripe": "Rechargement de démonstration — aucune carte n’est débitée",
-    "linkedin": "L’import LinkedIn est simulé à partir de l’URL du profil"
+    "stripe": "Rechargement de démonstration — aucune carte n’est débitée"
   },
   "assistant": {
     "title": "Assistant",

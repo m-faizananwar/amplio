@@ -20,7 +20,6 @@
     "linkedin": {
       "title": "Profil LinkedIn",
       "description": "Nous lisons une fois votre profil public pour remplir votre fiche.",
-      "stub": "L’import est simulé dans cette version : les chiffres sont générés à partir de l’URL, pas récupérés sur LinkedIn.",
       "url": {
         "label": "URL du profil public",
         "placeholder": "https://www.linkedin.com/in/votre-nom",

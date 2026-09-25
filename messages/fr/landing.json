@@ -108,7 +108,7 @@
         "Ni paiement au clic, ni à la vue. Votre prix reste votre prix."
       ]
     },
-    "stubNote": "Dans cette version, les recharges par carte et les virements bancaires sont simulés avec Stripe : vous voyez tout le parcours, mais aucun argent réel ne circule.",
+    "stubNote": "Dans cette version, les recharges par carte et les virements bancaires sont fictifs (Stripe n’est pas encore branché) : vous voyez tout le parcours, mais aucun argent réel ne circule.",
     "coin": {
       "brand": "La marque paie",
       "creator": "Le créateur reçoit",
@@ -128,7 +128,7 @@
       },
       {
         "q": "Comment les créateurs sont-ils payés ?",
-        "a": "Chaque marque dispose d’un portefeuille. Quand un post est en ligne et que la marque le paie, une ligne est inscrite au registre et le créateur la retrouve dans ses gains. Dans cette version, les recharges par carte et les virements bancaires sont simulés avec Stripe : le parcours est complet, mais aucun argent réel ne circule."
+        "a": "Chaque marque dispose d’un portefeuille. Quand un post est en ligne et que la marque le paie, une ligne est inscrite au registre et le créateur la retrouve dans ses gains. Dans cette version, les recharges par carte et les virements bancaires sont fictifs (Stripe n’est pas encore branché) : le parcours est complet, mais aucun argent réel ne circule."
       },
       {
         "q": "Faut-il signer un contrat longue durée ?",

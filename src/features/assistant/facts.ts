@@ -9,6 +9,6 @@ export const PRODUCT_FACTS: readonly string[] = [
   "Booking is a funded invitation: the fee is held from the brand's wallet when the invitation is sent, shown as held until the creator accepts, and returned if they decline.",
   "Creators are paid the full fee when the brand pays for a live post; in this build no commission is deducted.",
   "Attribution: each collaboration gets a tracked link; the brand's site pixel ties sign-ups and purchases back to the click that brought them.",
-  "Stubs in this build: wallet top-ups are a demo with no card charged (no Stripe yet), and the LinkedIn profile import is simulated from the profile URL.",
+  "The only stub in this build is payments: wallet top-ups and bank payouts run the full flow as ledger rows, but no card is charged and no money is sent (Stripe is not connected yet). The LinkedIn profile import is real: it reads the creator's public profile.",
   "Sign up at /register (brands: /register/brand, creators: /register/creator). Demo accounts for both sides are one click on /login.",
 ];

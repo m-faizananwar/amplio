@@ -45,8 +45,7 @@
   },
   "demoData": "Demo workspace data",
   "stub": {
-    "stripe": "Demo top-up — no card is charged",
-    "linkedin": "LinkedIn import is simulated from the profile URL"
+    "stripe": "Demo top-up — no card is charged"
   },
   "assistant": {
     "title": "Assistant",

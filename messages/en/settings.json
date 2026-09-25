@@ -20,7 +20,6 @@
     "linkedin": {
       "title": "LinkedIn profile",
       "description": "We read your public profile once to fill your card.",
-      "stub": "Import is simulated in this version: the figures are generated from the URL, not fetched from LinkedIn.",
       "url": {
         "label": "Public profile URL",
         "placeholder": "https://www.linkedin.com/in/your-name",
