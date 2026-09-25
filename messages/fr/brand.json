@@ -121,7 +121,9 @@
       "topup": "Rechargement",
       "booking": "Réservation",
       "payout": "Paiement",
-      "withdrawal": "Retrait"
+      "withdrawal": "Retrait",
+      "post": "Publication",
+      "held": "Provisionné"
     },
     "total": "{count, plural, one {# ligne} other {# lignes}}",
     "totalTruncated": "Les {shown} lignes les plus récentes sur {count}. L’export CSV les contient toutes.",

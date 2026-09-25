@@ -109,7 +109,7 @@ async function loadSpendTrail(brandId: string): Promise<BrandTrail> {
   const ledger = await getBrandLedger(brandId);
   return trail(ledger.map((r) => ({
     id: r.id, at: r.date, creator: null, campaign: null, referrerHost: null, device: null, country: null,
-    kind: r.type, amountCents: r.amountCents, description: r.description, pending: r.status === "pending",
+    kind: r.type, amountCents: r.amountCents, description: r.detail ?? r.description, pending: r.status === "pending",
   })));
 }
 

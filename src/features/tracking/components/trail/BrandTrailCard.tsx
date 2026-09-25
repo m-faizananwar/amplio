@@ -45,8 +45,8 @@ export function BrandTrailCard({ kind, label, value, hint, money, exportHref }: 
       ? t("views", { views: format.number(r.views) })
       : r.creator
       ? [r.referrerHost ?? t("direct"), r.device ? t(`device.${r.device}`) : null, r.country].filter(Boolean).join(" · ")
-      : r.pending ? t("held") : undefined,
-    source: t(`kind.${r.kind}`),
+      : undefined,
+    source: r.pending ? t("kind.held") : t(`kind.${r.kind}`),
     amountCents: r.amountCents,
   });
 

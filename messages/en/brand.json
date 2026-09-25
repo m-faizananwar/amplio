@@ -121,7 +121,9 @@
       "topup": "Top-up",
       "booking": "Booking",
       "payout": "Payout",
-      "withdrawal": "Withdrawal"
+      "withdrawal": "Withdrawal",
+      "post": "Live post",
+      "held": "Held"
     },
     "total": "{count, plural, one {# row} other {# rows}}",
     "totalTruncated": "Latest {shown} of {count} rows. The CSV export has them all.",
