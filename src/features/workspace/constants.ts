@@ -3,7 +3,6 @@ export const NEW_CREATORS_LIMIT = 5;
 export const NEW_CREATORS_POOL = 60;
 export const RECOMMENDED_OPPORTUNITIES = 3;
 export const LOW_WALLET_CENTS = 100_000;
-export const LEADERBOARD_SIZE = 10;
 export const NOTIFICATION_LIMIT = 6;
 export const AFFILIATE_SHARE_PERCENT = 25;
 export const AFFILIATE_MONTHS = 3;

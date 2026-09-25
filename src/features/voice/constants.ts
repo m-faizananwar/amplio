@@ -27,8 +27,8 @@ export const ROUTES: Record<"brand" | "creator", Record<string, string>> = {
   creator: {
     overview: "/creator", home: "/creator", dashboard: "/creator", card: "/creator/card", "my card": "/creator/card",
     opportunities: "/creator/opportunities", collaborations: "/creator/collaborations", analytics: "/creator/analytics",
-    community: "/creator/community", earnings: "/creator/earnings", affiliate: "/creator/affiliate", messages: "/creator/messages",
-    integrations: "/creator/integrations", settings: "/creator/settings", tour: "/creator/tour",
+    earnings: "/creator/earnings", affiliate: "/creator/card", links: "/creator/card", messages: "/creator/messages",
+    settings: "/creator/settings",
   },
 };
 

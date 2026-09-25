@@ -7,7 +7,7 @@ export const ONBOARDING_STEPS = {
   professional: { path: `${ONBOARDING_ROOT}/professional`, step: 4, title: "Complete your professional information now?" },
 } as const;
 export const STEP_COUNT = 4;
-export const WORKSPACE_AFTER_ONBOARDING = "/creator?tour=1";
+export const WORKSPACE_AFTER_ONBOARDING = "/creator";
 
 // The simulated Apify read: long enough to feel like a fetch, short enough not to annoy.
 export const PROFILE_READ_DELAY_MS = 2500;

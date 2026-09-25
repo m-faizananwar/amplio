@@ -177,27 +177,6 @@ async function loadCreatorOverview(creatorId: string): Promise<CreatorOverview> 
 }
 
 // Sum of estimated impressions of published sponsored posts, per creator.
-async function loadLeaderboard(limit: number) {
-  if (!isDbConfigured()) return [];
-  const rows = await getDb()
-    .select({
-      creatorId: creators.id,
-      firstName: users.firstName,
-      lastName: users.lastName,
-      avatarUrl: creators.avatarUrl,
-      posts: count(collaborations.id),
-      impressions: sql<number>`coalesce(sum(${creators.medianViews}), 0)::int`,
-      clicks: sql<number>`(select count(*) from ${clicks} c join ${trackingLinks} t on t.id = c.tracking_link_id where t.collaboration_id = any(array_agg(${collaborations.id})))::int`,
-    })
-    .from(collaborations)
-    .innerJoin(creators, eq(creators.id, collaborations.creatorId))
-    .innerJoin(users, eq(users.id, creators.userId))
-    .where(inArray(collaborations.status, [...PUBLISHED]))
-    .groupBy(creators.id, users.firstName, users.lastName, creators.avatarUrl)
-    .orderBy(desc(sql`coalesce(sum(${creators.medianViews}), 0)`))
-    .limit(limit);
-  return rows.map((r) => ({ ...r, name: `${r.firstName} ${r.lastName}` }));
-}
 
 export const ACTIVATED_STATUSES = ACTIVATED;
 
@@ -210,6 +189,3 @@ export function getCreatorOverview(creatorId: string) {
   return cachedRead(loadCreatorOverview, ["creator-overview"], { tags: [tag.creatorOverview(creatorId)] })(creatorId);
 }
 
-export function getLeaderboard(limit: number) {
-  return cachedRead(loadLeaderboard, ["leaderboard"], { tags: [tag.creatorDirectory()] })(limit);
-}

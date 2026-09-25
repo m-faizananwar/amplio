@@ -4,7 +4,6 @@ import { redirect } from "next/navigation";
 import { Reveal } from "@/components/motion/Reveal";
 import { PageHeader } from "@/components/page/PageHeader";
 import { getViewer } from "@/features/auth/server/session";
-import { TourOverlay } from "@/features/creator-onboarding/components/TourOverlay";
 import { CreatorCardBlock } from "@/features/workspace/components/overview/CreatorCardBlock";
 import { ActiveCollaborations, RecommendedOpportunities } from "@/features/workspace/components/overview/CreatorOverviewPanels";
 import { LaunchGuide } from "@/features/workspace/components/overview/LaunchGuide";
@@ -17,10 +16,10 @@ export const metadata: Metadata = { title: `Creator workspace · ${BRAND.wordmar
 
 // Layout follows the reference overview: tiles, card block + launch guide,
 // then recommended opportunities + active collaborations.
-export default async function CreatorOverviewPage({ searchParams }: { searchParams: Promise<{ tour?: string }> }) {
+export default async function CreatorOverviewPage() {
   const viewer = await getViewer();
   if (!viewer?.creator) redirect("/login");
-  const [overview, card, h, { tour }] = await Promise.all([getCreatorOverview(viewer.creator.id), getPublicCard(viewer.creator.handle), headers(), searchParams]);
+  const [overview, card, h] = await Promise.all([getCreatorOverview(viewer.creator.id), getPublicCard(viewer.creator.handle), headers()]);
   if (!card) redirect("/login");
   const cardLink = `${h.get("x-forwarded-proto") ?? "http"}://${h.get("host") ?? "localhost:3000"}/c/${viewer.creator.handle}`;
   const ready = card.priceCents > 0 && card.industries.length > 0;
@@ -49,7 +48,6 @@ export default async function CreatorOverviewPage({ searchParams }: { searchPara
         </div>
         </Reveal>
       </div>
-      {tour === "1" ? <TourOverlay /> : null}
     </>
   );
 }

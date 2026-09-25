@@ -17,7 +17,7 @@ export type GrammarIntent =
   | { tool: "unknown"; reason: string };
 
 const WORD_NUMBERS: Record<string, number> = { one: 1, a: 1, an: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10 };
-const ROUTE_WORDS = ["overview", "home", "dashboard", "creators", "marketplace", "matching", BRAND.copilot.toLowerCase(), "campaigns", "collaborations", "results", "messages", "billing", "wallet", "invite", "book a call", "integrations", "settings", "card", "my card", "opportunities", "analytics", "community", "earnings", "affiliate", "tour"];
+const ROUTE_WORDS = ["overview", "home", "dashboard", "creators", "marketplace", "matching", BRAND.copilot.toLowerCase(), "campaigns", "collaborations", "results", "messages", "billing", "wallet", "invite", "book a call", "integrations", "settings", "card", "my card", "opportunities", "analytics", "earnings", "affiliate", "links"];
 const THOUSAND = 1000;
 
 function clean(text: string) {

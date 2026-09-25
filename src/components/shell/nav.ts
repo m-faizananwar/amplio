@@ -1,6 +1,6 @@
 import {
-  BarChart3, Briefcase, CalendarCheck, Compass, CreditCard, Handshake, IdCard, LayoutGrid, Layers, LineChart,
-  type LucideIcon, MessageCircle, Percent, Plug, Settings, Store, UserPlus, Users, Wallet,
+  BarChart3, Briefcase, CalendarCheck, CreditCard, Handshake, IdCard, LayoutGrid, Layers, LineChart,
+  type LucideIcon, MessageCircle, Plug, Settings, Store, UserPlus, Users, Wallet,
 } from "lucide-react";
 
 export type NavItem = { href: string; label: string; icon: LucideIcon };
@@ -29,15 +29,11 @@ export const CREATOR_NAV: NavItem[] = [
   { href: "/creator/opportunities", label: "Opportunities", icon: Store },
   { href: "/creator/collaborations", label: "Collaborations", icon: Layers },
   { href: "/creator/analytics", label: "Analytics", icon: LineChart },
-  { href: "/creator/community", label: "Community", icon: Users },
   { href: "/creator/earnings", label: "Earnings", icon: Wallet },
-  { href: "/creator/affiliate", label: "Affiliate program", icon: Percent },
   { href: "/creator/messages", label: "Messages", icon: MessageCircle },
 ];
 export const CREATOR_ACCOUNT_NAV: NavItem[] = [
-  { href: "/creator/integrations", label: "Integrations", icon: Plug },
   { href: "/creator/settings", label: "Settings", icon: Settings },
-  { href: "/creator/tour", label: "Guided tour", icon: Compass },
 ];
 
 export function navFor(role: "brand" | "creator") {
