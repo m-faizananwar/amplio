@@ -1,9 +1,15 @@
 // The one door to anime.js. Every call site goes through these helpers so
 // reduced motion is a single switch: under prefers-reduced-motion each helper
 // applies the end state synchronously and returns a resolved handle.
-import { type AnimationParams, animate, createTimeline, stagger as animeStagger, svg, utils } from "animejs";
+import { type AnimationParams, animate, createTimeline, cubicBezier, stagger as animeStagger, svg, utils } from "animejs";
 
-export const MOTION_EASE = "cubicBezier(0.16, 1, 0.3, 1)";
+// The ledger curve (DIRECTION: ease-out cubic-bezier(.2,.8,.2,1)); anime v4
+// takes easing functions, the old string syntax warns and is ignored.
+const EASE_X1 = 0.2;
+const EASE_Y1 = 0.8;
+const EASE_X2 = 0.2;
+const EASE_Y2 = 1;
+export const MOTION_EASE = cubicBezier(EASE_X1, EASE_Y1, EASE_X2, EASE_Y2);
 export const MOTION_MAX_MS = 800; // nothing over 800ms
 const REVEAL_MS = 520;
 const REVEAL_Y = 12;
