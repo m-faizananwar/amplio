@@ -19,7 +19,7 @@ const FILTERS: BrandListFilter[] = ["needs_you", "waiting", "done", "all"];
 const LABEL: Record<BrandListFilter, string> = { needs_you: "needsYou", waiting: "waiting", done: "done", all: "all" };
 const ALL = "all";
 
-type Props = { rows: CollaborationDto[]; campaigns: CampaignOption[]; initialFilter: BrandListFilter };
+type Props = { rows: CollaborationDto[]; campaigns: CampaignOption[]; initialFilter: BrandListFilter | null };
 
 // Default view is Needs you. The filter lives in the URL (?filter=) so the
 // Overview and notifications can link to a group.
@@ -27,14 +27,16 @@ export function BrandCollaborationsList({ rows, campaigns, initialFilter }: Prop
   const t = useTranslations("brand.collaborations");
   const router = useRouter();
   const pathname = usePathname();
-  const [filter, setFilter] = useState<BrandListFilter>(initialFilter);
+  // No filter in the URL: Needs you when something does, otherwise everything —
+  // an empty default view with rows one click away reads as "nothing here".
+  const [filter, setFilter] = useState<BrandListFilter>(() => initialFilter ?? (rows.some((r) => filterFor(r.status, "brand") === "needs_you") ? "needs_you" : "all"));
   const [campaign, setCampaign] = useState<string>(ALL);
   const scoped = useMemo(() => (campaign === ALL ? rows : rows.filter((r) => r.campaignId === campaign)), [rows, campaign]);
   const counts = useMemo(() => countByFilter(scoped.map((r) => r.status), "brand"), [scoped]);
   const visible = useMemo(() => (filter === "all" ? scoped : scoped.filter((r) => filterFor(r.status, "brand") === filter)), [scoped, filter]);
   const choose = (next: BrandListFilter) => {
     setFilter(next);
-    router.replace(next === "needs_you" ? pathname : `${pathname}?filter=${next}`, { scroll: false });
+    router.replace(`${pathname}?filter=${next}`, { scroll: false });
   };
 
   if (rows.length === 0) {

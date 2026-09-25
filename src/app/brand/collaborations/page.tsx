@@ -16,7 +16,7 @@ export default async function BrandCollaborationsPage({ searchParams }: { search
   const viewer = await getViewer();
   if (!viewer?.brand) redirect("/login?next=/brand/collaborations");
   const [{ filter }, t] = await Promise.all([searchParams, getTranslations("brand.collaborations")]);
-  const initial = (FILTERS as readonly string[]).includes(filter ?? "") ? (filter as BrandListFilter) : "needs_you";
+  const initial = (FILTERS as readonly string[]).includes(filter ?? "") ? (filter as BrandListFilter) : null;
   const header = <PageHeader title={t("title")} description={t("description")} />;
   const data = await Promise.all([listBrandCollaborations(viewer.brand.id), listBrandCampaignOptions(viewer.brand.id)]).catch((error) => {
     console.error("[collaborations] brand list failed", { brandId: viewer.brand?.id, error });

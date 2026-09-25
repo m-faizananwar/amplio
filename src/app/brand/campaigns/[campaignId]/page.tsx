@@ -21,7 +21,7 @@ export default async function CampaignCollaborationsPage({ params, searchParams 
   const [{ campaignId }, { filter }] = await Promise.all([params, searchParams]);
   const viewer = await requireBrand(`/brand/campaigns/${campaignId}`);
   const t = await getTranslations("brand.campaigns.detail");
-  const initial = (FILTERS as readonly string[]).includes(filter ?? "") ? (filter as BrandListFilter) : "needs_you";
+  const initial = (FILTERS as readonly string[]).includes(filter ?? "") ? (filter as BrandListFilter) : null;
   const result = await safeQuery("campaign collaborations", { brandId: viewer.brand.id, campaignId }, async () => {
     const shell = await getCampaignShell(viewer.brand.id, campaignId);
     if (!shell) return null;
