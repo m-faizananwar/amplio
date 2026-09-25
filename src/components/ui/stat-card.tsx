@@ -10,7 +10,10 @@ type Delta = { label: string; direction: "up" | "down" | "flat"; /** is this dir
 
 type Props = {
   label: ReactNode
-  value: number
+  /** null when the number isn't known: shows an em dash, never a 0 that reads as measured. */
+  value: number | null
+  /** Screen-reader name for that dash. */
+  unknownLabel?: string
   format?: (value: number) => string
   hint?: ReactNode
   delta?: Delta
@@ -25,7 +28,7 @@ type Props = {
 
 // Every number is a receipt (DECISIONS.md): a StatCard with `onOpen` is a
 // button that opens the rows behind it. Mono tabular value that rolls on change.
-export function StatCard({ label, value, format, hint, delta, spark, tone = "ink", onOpen, openLabel = "Show rows", className }: Props) {
+export function StatCard({ label, value, format, hint, delta, spark, tone = "ink", onOpen, openLabel = "Show rows", unknownLabel = "Not known", className }: Props) {
   const body = (
     <>
       <div className="flex items-start justify-between gap-3">
@@ -33,7 +36,7 @@ export function StatCard({ label, value, format, hint, delta, spark, tone = "ink
         {spark ? <Sparkline points={spark} tone={tone} /> : null}
       </div>
       <p className={cn("mt-2 text-h2 font-semibold tracking-(--tracking-heading)", tone === "money" ? "text-money" : "text-ink")}>
-        <RollingNumber value={value} format={format} />
+        {value === null ? <span className="num" role="img" aria-label={unknownLabel}>—</span> : <RollingNumber value={value} format={format} />}
       </p>
       {delta || hint ? (
         <p className="mt-2 flex flex-wrap items-center gap-x-1.5 text-caption text-ink-muted">

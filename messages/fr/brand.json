@@ -133,6 +133,7 @@
       "spend": "Chaque réservation et chaque paiement s’affichent ici, dès votre première invitation.",
       "reach": "La portée estimée de chaque créateur s’affiche ici, dès que son post est en ligne."
     },
-    "views": "{views} vues médianes"
+    "views": "{views} vues médianes",
+    "viewsUnknown": "Vues médianes pas encore connues"
   }
 }

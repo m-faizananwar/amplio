@@ -74,7 +74,8 @@
     "reach": {
       "label": "Portée estimée",
       "none": "Aucun post en ligne pour l’instant",
-      "hint": "{count, plural, one {Somme des vues médianes · # post en ligne} other {Somme des vues médianes · # posts en ligne}}"
+      "hint": "{count, plural, one {Somme des vues médianes · # post en ligne} other {Somme des vues médianes · # posts en ligne}}",
+      "unknown": "vues non connues pour {count, plural, one {# créateur} other {# créateurs}}"
     },
     "clicks": {
       "label": "Clics qualifiés",

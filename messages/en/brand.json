@@ -133,6 +133,7 @@
       "spend": "Each booking and payment appears here, starting with your first invitation.",
       "reach": "Each creator's estimated reach appears here once their post is live."
     },
-    "views": "{views} median views"
+    "views": "{views} median views",
+    "viewsUnknown": "Median views not yet known"
   }
 }

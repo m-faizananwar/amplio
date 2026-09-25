@@ -46,7 +46,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     // The boot script adds `dark` before hydration, so the class the server
     // sent is expected to differ from the one React finds.
-    <html lang={DEFAULT_LOCALE} suppressHydrationWarning className={`${geist.variable} ${geistMono.variable} ${cormorant.variable} h-full antialiased`}>
+    <html lang={DEFAULT_LOCALE} data-scroll-behavior="smooth" suppressHydrationWarning className={`${geist.variable} ${geistMono.variable} ${cormorant.variable} h-full antialiased`}>
       <head>
         {/* Before first paint: light, dark, or whatever the OS says. */}
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />

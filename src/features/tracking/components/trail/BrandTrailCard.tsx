@@ -13,7 +13,7 @@ const CENTS = 100;
 type Props = {
   kind: BrandTrailKind;
   label: string;
-  value: number;
+  value: number | null;
   hint?: string;
   money?: boolean;
   exportHref?: string;
@@ -42,7 +42,7 @@ export function BrandTrailCard({ kind, label, value, hint, money, exportHref }: 
     at: r.at,
     title: r.creator ? `${r.creator} · ${r.campaign}` : r.description ?? t(`kind.${r.kind}`),
     detail: r.views !== undefined
-      ? t("views", { views: format.number(r.views) })
+      ? (r.views ? t("views", { views: format.number(r.views) }) : t("viewsUnknown"))
       : r.creator
       ? [r.referrerHost ?? t("direct"), r.device ? t(`device.${r.device}`) : null, r.country].filter(Boolean).join(" · ")
       : undefined,
@@ -52,11 +52,11 @@ export function BrandTrailCard({ kind, label, value, hint, money, exportHref }: 
 
   const total = trail
     ? t(trail.truncated ? "totalTruncated" : "total", { shown: trail.rows.length, count: trail.total })
-    : money ? euros(value) : format.number(value);
+    : value === null ? tc("notKnown") : money ? euros(value) : format.number(value);
 
   return (
     <>
-      <StatCard label={label} value={value} format={money ? euros : undefined} tone={money ? "money" : "ink"} hint={hint} onOpen={() => show(true)} openLabel={tc("actions.showRows")} />
+      <StatCard label={label} value={value} format={money ? euros : undefined} tone={money ? "money" : "ink"} hint={hint} onOpen={() => show(true)} openLabel={tc("actions.showRows")} unknownLabel={tc("notKnown")} />
       <TrailDrawer
         open={open}
         onOpenChange={show}

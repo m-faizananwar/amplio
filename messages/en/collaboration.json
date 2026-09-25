@@ -355,7 +355,8 @@
       "pay": {
         "title": "The post is live",
         "description": "Release the held fee to {creator}. The ledger records the payout.",
-        "action": "Release {amount}"
+        "action": "Release {amount}",
+        "confirm": "Release {amount} to {creator}? Click again"
       },
       "waiting": {
         "invited": "{creator} hasn’t answered your invitation yet.",

@@ -10,15 +10,17 @@ type Props = {
   onConfirm: () => void | Promise<void>
   disabled?: boolean
   size?: "default" | "sm" | "xs" | "lg"
+  /** Danger for deleting; primary for a deliberate money move (releasing a fee). */
+  variant?: "danger" | "primary"
   className?: string
 }
 
 const DISARM_MS = 4000
 
-// Destructive actions take two clicks: the first arms the button and says what
+// Destructive and money-moving actions take two clicks: the first arms the button and says what
 // will happen, the second does it. It disarms itself after 4 s, on blur and on
 // Escape, so an accidental first click never lingers as a loaded trigger.
-export function ConfirmButton({ children, confirmLabel, onConfirm, disabled, size = "default", className }: Props) {
+export function ConfirmButton({ children, confirmLabel, onConfirm, disabled, size = "default", variant = "danger", className }: Props) {
   const [armed, setArmed] = useState(false)
   const [busy, setBusy] = useState(false)
   const timer = useRef<number>(0)
@@ -46,7 +48,7 @@ export function ConfirmButton({ children, confirmLabel, onConfirm, disabled, siz
   return (
     <Button
       type="button"
-      variant="danger"
+      variant={variant}
       size={size}
       className={className}
       disabled={disabled || busy}

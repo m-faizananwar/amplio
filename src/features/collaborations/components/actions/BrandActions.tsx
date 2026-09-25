@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { ConfirmButton } from "@/components/ui/confirm-button";
 import { nextStatus } from "@/lib/collaboration-status";
 import type { CollaborationDto } from "../../schemas";
 import { decideApplication, payCollaboration, reviewDraft } from "../../server/actions";
@@ -45,7 +46,8 @@ export function BrandActions({ collaboration: c, csrfToken, action }: Props) {
   if (can("pay")) {
     return (
       <ActionPanel title={t("pay.title")} description={t("pay.description", v)}>
-        <Button type="button" disabled={isPending} onClick={() => run("paid", () => payCollaboration(base), t("toasts.paid", v))}>{t("pay.action", v)}</Button>
+        {/* Money leaves the brand on this click and can't come back: two clicks, like a delete. */}
+        <ConfirmButton variant="primary" disabled={isPending} confirmLabel={t("pay.confirm", v)} onConfirm={async () => { await run("paid", () => payCollaboration(base), t("toasts.paid", v)); }}>{t("pay.action", v)}</ConfirmButton>
       </ActionPanel>
     );
   }

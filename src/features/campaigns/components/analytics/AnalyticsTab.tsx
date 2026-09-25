@@ -13,11 +13,17 @@ const CENTS = 100;
 export async function AnalyticsTab({ analytics: a }: { analytics: AnalyticsDto }) {
   const t = await getTranslations("brand.campaigns.analytics");
   const format = await getFormatter();
+  const tc = await getTranslations("common");
+  // No live post with known views: "—", not a 0 that reads as measured.
+  const reach = a.publishedPosts > 0 && a.reachUnknown === a.publishedPosts ? null : a.estReach;
+  const reachHint = a.publishedPosts === 0
+    ? t("reach.none")
+    : [t("reach.hint", { count: a.publishedPosts }), a.reachUnknown ? t("reach.unknown", { count: a.reachUnknown }) : null].filter(Boolean).join(" · ");
   const empty = (text: string) => <p className="rounded-card border border-dashed border-rule-strong bg-surface px-5 py-8 text-center text-body text-ink-muted">{text}</p>;
   return (
     <div className="grid gap-10">
       <div className="grid gap-4 sm:grid-cols-3">
-        <StatCard label={t("reach.label")} value={a.estReach} hint={a.publishedPosts === 0 ? t("reach.none") : t("reach.hint", { count: a.publishedPosts })} />
+        <StatCard label={t("reach.label")} value={reach} unknownLabel={tc("notKnown")} hint={reachHint} />
         <StatCard label={t("clicks.label")} value={a.qualifiedClicks} hint={t("clicks.hint")} />
         <StatCard label={t("committed.label")} value={a.committedCents} tone="money" format={(c) => format.number(c / CENTS, { style: "currency", currency: "EUR" })} hint={t("committed.hint", { count: a.bookings })} />
       </div>

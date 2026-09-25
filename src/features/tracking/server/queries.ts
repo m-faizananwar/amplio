@@ -13,6 +13,8 @@ const PUBLISHED = ["live", "paid"] as const;
 export type ResultsSummary = {
   estReach: number;
   publishedPosts: number;
+  /** Live posts whose creator's median views aren't known (0): they add nothing to estReach. */
+  reachUnknown: number;
   clicksInWindow: number;
   windowDays: number;
   committedCents: number;
@@ -89,7 +91,11 @@ async function loadResultsSummary(brandId: string): Promise<ResultsSummary> {
   const db = getDb();
   const since = new Date(Date.now() - RESULTS_WINDOW_DAYS * DAY_MS);
   const [published] = await db
-    .select({ posts: count(), reach: sql<number>`coalesce(sum(${creators.medianViews}), 0)::int` })
+    .select({
+      posts: count(),
+      reach: sql<number>`coalesce(sum(${creators.medianViews}), 0)::int`,
+      unknown: sql<number>`(count(*) filter (where coalesce(${creators.medianViews}, 0) = 0))::int`,
+    })
     .from(collaborations)
     .innerJoin(campaigns, eq(campaigns.id, collaborations.campaignId))
     .innerJoin(creators, eq(creators.id, collaborations.creatorId))
@@ -112,6 +118,7 @@ async function loadResultsSummary(brandId: string): Promise<ResultsSummary> {
   return {
     estReach: published?.reach ?? 0,
     publishedPosts: published?.posts ?? 0,
+    reachUnknown: published?.unknown ?? 0,
     clicksInWindow: clicksRow?.n ?? 0,
     windowDays: RESULTS_WINDOW_DAYS,
     committedCents: budget?.committed ?? 0,

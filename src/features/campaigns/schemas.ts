@@ -156,6 +156,8 @@ export type LaunchPlanDto = { explored: boolean; briefed: boolean; invited: bool
 export type AnalyticsDto = {
   estReach: number;
   publishedPosts: number;
+  /** Live posts whose creator's median views aren't known: they add nothing to estReach. */
+  reachUnknown: number;
   qualifiedClicks: number;
   committedCents: number;
   bookings: number;

@@ -83,5 +83,6 @@
       "faultUnsupported": "La voix nécessite Chrome ou Edge. Vous pouvez écrire.",
       "faultBlocked": "Autorisez le micro dans votre navigateur. Vous pouvez écrire."
     }
-  }
+  },
+  "notKnown": "Non connu"
 }

@@ -355,7 +355,8 @@
       "pay": {
         "title": "Le post est en ligne",
         "description": "Versez la rémunération provisionnée à {creator}. Le registre enregistre le versement.",
-        "action": "Verser {amount}"
+        "action": "Verser {amount}",
+        "confirm": "Verser {amount} à {creator} ? Cliquez à nouveau"
       },
       "waiting": {
         "invited": "{creator} n’a pas encore répondu à votre invitation.",

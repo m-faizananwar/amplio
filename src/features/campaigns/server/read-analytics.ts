@@ -100,6 +100,7 @@ async function loadCampaignAnalytics(campaignId: string): Promise<AnalyticsDto> 
   return {
     estReach: published.reduce((sum, r) => sum + r.medianViews, 0),
     publishedPosts: published.length,
+    reachUnknown: published.filter((r) => !r.medianViews).length,
     qualifiedClicks: rows.reduce((sum, r) => sum + r.clicks, 0),
     ...budget,
     daily,

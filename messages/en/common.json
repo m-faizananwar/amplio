@@ -83,5 +83,6 @@
       "faultUnsupported": "Voice needs Chrome or Edge. Typing works.",
       "faultBlocked": "Allow the microphone in your browser. Typing works."
     }
-  }
+  },
+  "notKnown": "Not known"
 }

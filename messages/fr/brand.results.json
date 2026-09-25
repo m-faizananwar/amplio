@@ -5,7 +5,8 @@
   "numbers": {
     "reach": {
       "label": "Portée estimée",
-      "hint": "{count, plural, one {Estimation : somme des vues médianes · # post en ligne} other {Estimation : somme des vues médianes · # posts en ligne}}"
+      "hint": "{count, plural, one {Estimation : somme des vues médianes · # post en ligne} other {Estimation : somme des vues médianes · # posts en ligne}}",
+      "unknown": "vues non connues pour {count, plural, one {# créateur} other {# créateurs}}"
     },
     "clicks": {
       "label": "Clics qualifiés",

@@ -5,7 +5,8 @@
   "numbers": {
     "reach": {
       "label": "Estimated reach",
-      "hint": "{count, plural, one {Estimate: sum of median views · # live post} other {Estimate: sum of median views · # live posts}}"
+      "hint": "{count, plural, one {Estimate: sum of median views · # live post} other {Estimate: sum of median views · # live posts}}",
+      "unknown": "views not known for {count, plural, one {# creator} other {# creators}}"
     },
     "clicks": {
       "label": "Qualified clicks",

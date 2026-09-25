@@ -26,6 +26,11 @@ async function currentOrigin() {
 
 // The proof page: four numbers that open their rows, then how they build up —
 // over time, per creator, per post — and the raw click log underneath.
+// A sum of unknowns is not a measurement: when no live post's views are known,
+// the card says so instead of showing 0.
+const reachValue = (s: { estReach: number; publishedPosts: number; reachUnknown: number }) =>
+  s.publishedPosts > 0 && s.reachUnknown === s.publishedPosts ? null : s.estReach;
+
 export default async function BrandResultsPage({ searchParams }: { searchParams: Promise<{ range?: string }> }) {
   const viewer = await getViewer();
   if (!viewer?.brand) redirect("/login");
@@ -47,7 +52,7 @@ export default async function BrandResultsPage({ searchParams }: { searchParams:
       {header}
       <div className="grid gap-12">
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          <BrandTrailCard kind="reach" label={t("numbers.reach.label")} value={summary.estReach} hint={t("numbers.reach.hint", { count: summary.publishedPosts })} />
+          <BrandTrailCard kind="reach" label={t("numbers.reach.label")} value={reachValue(summary)} hint={[t("numbers.reach.hint", { count: summary.publishedPosts }), summary.reachUnknown ? t("numbers.reach.unknown", { count: summary.reachUnknown }) : null].filter(Boolean).join(" · ")} />
           <BrandTrailCard kind="clicks" label={t("numbers.clicks.label")} value={summary.clicksInWindow} hint={t("numbers.clicks.hint", { days: summary.windowDays })} exportHref={EXPORT} />
           <BrandTrailCard kind="signups" label={t("numbers.signups.label")} value={summary.signups} hint={t("numbers.signups.hint")} />
           <BrandTrailCard kind="spend" label={t("numbers.spend.label")} value={summary.committedCents} money hint={t("numbers.spend.hint", { count: summary.bookings })} />
