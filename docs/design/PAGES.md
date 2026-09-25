@@ -311,9 +311,9 @@ reduced motion; loops are ambient. Numbers roll through the primitives' RollingN
 
 | Where | What | Status |
 |---|---|---|
-| LinkedIn profile read (`readLinkedinProfile`) | audience figures derived from the URL | stub, labelled in Settings › LinkedIn ("simulated from the URL") — the fork is replacing it with a real import |
+| LinkedIn profile read (`readLinkedinProfile`) | headline, followers, country and photo read from the public profile (Apify) | real; median views and engagement aren't on a public profile, so they show "—" until there is post data |
 | Stripe payout method (Settings › Payouts, Earnings › Withdraw) | no Stripe Connect; the ledger records the withdrawal | allowed stub, labelled in both places |
-| Creator card figures (My card, `/c/[handle]`) | followers, views, engagement, audience mix come from the (simulated) profile read | labelled under the card; seeded creators carry a "demo creator" note on the public page |
+| Creator card figures (My card, `/c/[handle]`) | followers from the real profile read; views, engagement and audience mix are seeded for demo creators | seeded creators carry a "demo creator" note on the public page; new creators show "—" where there is no data |
 | Affiliate "invite creators" tab, community Slack button | "not part of this build" | cut with their pages |
 | Brand settings › Team (`TeamAccessPanel`) | accepted an email, sent nothing ("email isn't connected") | cut from Settings; still used by `/brand/invite` (builder's, being folded into Creators) |
 | Messages "support bot" thread | a fake conversation with a canned reply | cut; `/…/messages/support-bot` now 404s |

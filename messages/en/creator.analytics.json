@@ -1,7 +1,7 @@
 {
   "title": "Analytics",
   "description": "Your public LinkedIn figures and the clicks on your tracked links.",
-  "stubLabel": "Imported from your public LinkedIn profile. Simulated in this version.",
+  "stubLabel": "Figures come from your public LinkedIn profile. On the demo account, posts are seeded demo data.",
   "loading": "Loading analytics",
   "error": {
     "title": "We couldn't load your analytics",

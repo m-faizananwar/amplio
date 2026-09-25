@@ -1,7 +1,7 @@
 {
   "title": "Statistiques",
   "description": "Vos chiffres LinkedIn publics et les clics sur vos liens suivis.",
-  "stubLabel": "Importé depuis votre profil LinkedIn public. Simulé dans cette version.",
+  "stubLabel": "Les chiffres viennent de votre profil LinkedIn public. Sur le compte de démonstration, les posts sont des données de démonstration.",
   "loading": "Chargement des statistiques",
   "error": {
     "title": "Impossible de charger vos statistiques",

@@ -44,7 +44,7 @@ export function LinkedinSection({ defaults }: { defaults: LinkedinInput }) {
   const t = useTranslations("settings.creator.linkedin");
   const { form, onSubmit } = useSectionForm({ schema: linkedinSchema, defaults, save: readLinkedinProfile, saved: t("success") });
   return (
-    <SettingsSection id="linkedin" title={t("title")} description={`${t("description")} ${t("stub")}`}>
+    <SettingsSection id="linkedin" title={t("title")} description={t("description")}>
       <form onSubmit={onSubmit} noValidate>
         <LinkedinFields control={form.control} />
         <SaveRow form={form} label={t("reread")} requireChange={false} />

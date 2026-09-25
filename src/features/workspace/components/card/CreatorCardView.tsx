@@ -51,8 +51,8 @@ export async function CreatorCardView({ card }: { card: PublicCard }) {
       <section aria-label={t("sections.performance")} className="border-b border-rule p-5">
         <dl className="grid grid-cols-2 gap-4 sm:grid-cols-3">
           <Figure label={t("fields.followers")} value={n(card.followers)} />
-          <Figure label={t("fields.medianViews")} value={n(card.medianViews)} />
-          <Figure label={t("fields.engagementRate")} value={t("fields.engagementRateValue", { percent: format.number(card.engagementRate * PERCENT, { maximumFractionDigits: 1 }) })} />
+          <Figure label={t("fields.medianViews")} value={card.medianViews > 0 ? n(card.medianViews) : "—"} />
+          <Figure label={t("fields.engagementRate")} value={card.engagementRate > 0 ? t("fields.engagementRateValue", { percent: format.number(card.engagementRate * PERCENT, { maximumFractionDigits: 1 }) }) : "—"} />
           <Figure label={t("fields.reactionsPerPost")} value={n(card.reactionsPerPost)} />
           <Figure label={t("fields.commentsPerPost")} value={n(card.commentsPerPost)} />
           <Figure label={t("fields.publishedCollaborations")} value={n(card.publishedCollaborations)} />

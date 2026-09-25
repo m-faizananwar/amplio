@@ -87,7 +87,7 @@
       "openPublic": "Open public card",
       "flip": "Flip card"
     },
-    "stubNote": "Profile figures are imported from your public LinkedIn URL and simulated in this version.",
+    "stubNote": "Profile figures are read from your public LinkedIn profile.",
     "fields": {
       "headline": "Headline",
       "bio": "About",
@@ -164,7 +164,7 @@
     "book": "Book {name}",
     "bookHint": "Your fee is held when you send the invitation and paid to {name} after the post is live.",
     "demoLabel": "Demo creator. These figures are seeded, not real.",
-    "stubNote": "Figures are imported from the public LinkedIn profile and simulated in this version.",
+    "stubNote": "Figures are read from the creator's public LinkedIn profile.",
     "sections": {
       "about": "About",
       "audience": "Audience",

@@ -87,7 +87,7 @@
       "openPublic": "Voir la fiche publique",
       "flip": "Retourner la fiche"
     },
-    "stubNote": "Les chiffres du profil sont importés depuis votre URL LinkedIn publique et simulés dans cette version.",
+    "stubNote": "Les chiffres du profil sont lus sur votre profil LinkedIn public.",
     "fields": {
       "headline": "Accroche",
       "bio": "À propos",
@@ -164,7 +164,7 @@
     "book": "Réserver {name}",
     "bookHint": "La rémunération est provisionnée à l’envoi de l’invitation et versée à {name} une fois le post en ligne.",
     "demoLabel": "Créateur de démonstration. Ces chiffres sont fictifs.",
-    "stubNote": "Les chiffres sont importés depuis le profil LinkedIn public et simulés dans cette version.",
+    "stubNote": "Les chiffres sont lus sur le profil LinkedIn public du créateur.",
     "sections": {
       "about": "À propos",
       "audience": "Audience",
