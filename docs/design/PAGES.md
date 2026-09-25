@@ -297,6 +297,16 @@ when money moves), and empty-state scenes (a brief writing itself, two dots join
 rippling, three dots typing). Transform, opacity and dashoffset only; final frame under
 reduced motion; loops are ambient. Numbers roll through the primitives' RollingNumber.
 
+### Creator — `/onboarding/creator/{linkedin,card,price,professional}`
+The same column and the same rail sign-up started (Account → LinkedIn →
+Card → Price → Legal), one step per screen because each is a different
+decision. LinkedIn is read for real (Apify) and fills the card; when it
+can't be read the screen says so and the card is typed by hand, with
+nothing guessed. The card step shows the card brands will see building
+under the fields, labelled "from your public LinkedIn" or "entered by you".
+Price starts from the suggestion; the legal step can wait for Settings
+("Do this later"). Every field is the shared one Settings uses.
+
 ## Real vs stubbed
 
 | Where | What | Status |

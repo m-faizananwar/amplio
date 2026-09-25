@@ -1,0 +1,57 @@
+"use client";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm, useWatch } from "react-hook-form";
+import { Button } from "@/components/ui/button";
+import { FormAlert } from "@/features/auth/components/FormAlert";
+import { CardFields } from "@/features/profile-fields/components/CardFields";
+import { COUNTRIES, ONBOARDING_STEPS } from "../../constants";
+import { type CardInput, cardSchema } from "../../schemas";
+import { saveCreatorCard } from "../../server/actions";
+import type { OnboardingState } from "../../server/queries";
+import { cardDefaults } from "./step-defaults";
+
+// Headline, country, up to three industries — and the card brands will see,
+// building itself underneath as the fields fill in.
+export function CardForm({ state }: { state: OnboardingState }) {
+  const t = useTranslations("onboarding.creator.card");
+  const tc = useTranslations("onboarding.common");
+  const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
+  const form = useForm<CardInput>({ resolver: zodResolver(cardSchema), defaultValues: cardDefaults(state) });
+  const [headline, country, industries] = useWatch({ control: form.control, name: ["headline", "country", "industries"] });
+  const busy = form.formState.isSubmitting;
+
+  async function onSubmit(values: CardInput) {
+    setError(null);
+    const result = await saveCreatorCard(values);
+    if (!result.ok) return setError(result.error);
+    router.push(ONBOARDING_STEPS.price.path);
+  }
+
+  return (
+    <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-6" noValidate>
+      <CardFields control={form.control} />
+      <figure className="rounded-card border border-rule bg-surface p-5 shadow-float" aria-label={t("previewLabel")}>
+        <div className="flex items-center gap-3">
+          <span className="flex size-11 items-center justify-center rounded-full bg-ink font-semibold text-paper" aria-hidden="true">{state.name.slice(0, 1)}</span>
+          <div className="min-w-0">
+            <p className="font-semibold">{state.name}</p>
+            <p className="truncate text-small text-ink-muted">{headline || "—"}</p>
+          </div>
+          <span className="ml-auto text-caption text-ink-muted">{COUNTRIES.find((c) => c.code === country)?.name}</span>
+        </div>
+        <div className="mt-4 flex flex-wrap items-center gap-1.5 border-t border-rule pt-3">
+          {state.followers > 0 ? <span className="num text-small">{state.followers.toLocaleString("en-US")}</span> : null}
+          {(industries ?? []).map((i) => <span key={i} className="rounded-chip border border-rule px-2.5 py-0.5 text-caption">{i}</span>)}
+        </div>
+        <figcaption className="mt-3 text-caption text-ink-muted">{state.profileRead && state.followers > 0 ? t("fromLinkedin") : t("enteredByHand")}</figcaption>
+      </figure>
+      <FormAlert message={error} />
+      <Button type="submit" size="lg" className="h-11" disabled={busy}>{busy ? tc("saving") : tc("continue")}</Button>
+    </form>
+  );
+}

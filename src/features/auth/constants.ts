@@ -15,18 +15,7 @@ export const isDemoEmail = (email: string) => DEMO_DOMAINS.some((d) => email.end
 export const ROLE_HOME = { brand: "/brand", creator: "/creator" } as const;
 export const ROLE_ONBOARDING = { brand: "/onboarding/brand", creator: "/onboarding/creator" } as const;
 
-// The auth pages' media panel (docs/reference/auth-media-spec.md): the spec's
-// reef clip and poster, verbatim; our copy in its slots.
-export const AUTH_MEDIA = {
-  // Self-hosted: the spec's reef clip re-encoded to an 8s 1280px loop (~1MB) with its own poster.
-  video: "/media/auth.mp4",
-  poster: "/media/auth.jpg",
-  line: "Run creator campaigns that drive real business.",
-  waterLabel: "2,400 vetted creators",
-  reefLabel: "Every click tracked",
-} as const;
-
-// naano's role query values on /register → our role sign-up steps.
+// Older /register?role=… values (and plain role names) → the role's sign-up.
 export const REGISTER_ROLE_PARAM: Record<string, string> = { saas: "/register/brand", brand: "/register/brand", influencer: "/register/creator", creator: "/register/creator" };
 
 // Password reset email (Resend). onboarding@resend.dev is Resend's shared

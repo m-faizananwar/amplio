@@ -1,15 +1,20 @@
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
-import { ProfessionalStep } from "@/features/creator-onboarding/components/steps/ProfessionalStep";
+import { getTranslations } from "next-intl/server";
+import { CreatorStep } from "@/features/creator-onboarding/components/flow/CreatorStep";
+import { LegalForm } from "@/features/creator-onboarding/components/flow/LegalForm";
+import { legalDefaults } from "@/features/creator-onboarding/components/flow/step-defaults";
 import { ONBOARDING_STEPS } from "@/features/creator-onboarding/constants";
 import { requireOnboardingCreator } from "@/features/creator-onboarding/server/viewer";
 
-import { BRAND } from "@/config/brand";
-export const metadata: Metadata = { title: `Complete your professional information · ${BRAND.wordmark}` };
+export async function generateMetadata(): Promise<Metadata> {
+  return { title: (await getTranslations("onboarding.creator.legal"))("meta") };
+}
 
 export default async function ProfessionalStepPage() {
   const state = await requireOnboardingCreator(ONBOARDING_STEPS.professional.path);
-  if (!state.profileRead) redirect(ONBOARDING_STEPS.linkedin.path);
-  if (!state.cardCompleted) redirect(ONBOARDING_STEPS.card.path);
-  return <ProfessionalStep state={state} />;
+  return (
+    <CreatorStep step="legal" back={ONBOARDING_STEPS.price.path}>
+      <LegalForm defaults={legalDefaults(state)} />
+    </CreatorStep>
+  );
 }

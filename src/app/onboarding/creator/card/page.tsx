@@ -1,14 +1,19 @@
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
-import { CardStep } from "@/features/creator-onboarding/components/steps/CardStep";
+import { getTranslations } from "next-intl/server";
+import { CardForm } from "@/features/creator-onboarding/components/flow/CardForm";
+import { CreatorStep } from "@/features/creator-onboarding/components/flow/CreatorStep";
 import { ONBOARDING_STEPS } from "@/features/creator-onboarding/constants";
 import { requireOnboardingCreator } from "@/features/creator-onboarding/server/viewer";
 
-import { BRAND } from "@/config/brand";
-export const metadata: Metadata = { title: `Complete your creator card · ${BRAND.wordmark}` };
+export async function generateMetadata(): Promise<Metadata> {
+  return { title: (await getTranslations("onboarding.creator.card"))("meta") };
+}
 
 export default async function CardStepPage() {
   const state = await requireOnboardingCreator(ONBOARDING_STEPS.card.path);
-  if (!state.profileRead) redirect(ONBOARDING_STEPS.linkedin.path);
-  return <CardStep state={state} />;
+  return (
+    <CreatorStep step="card" back={ONBOARDING_STEPS.linkedin.path}>
+      <CardForm state={state} />
+    </CreatorStep>
+  );
 }
