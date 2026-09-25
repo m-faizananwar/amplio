@@ -8,7 +8,10 @@ import { CreatorCollaborationsList, type ListFilter } from "@/features/collabora
 import { listCreatorCollaborations } from "@/features/collaborations/server/queries";
 
 import { BRAND } from "@/config/brand";
-export const metadata: Metadata = { title: `Collaborations · ${BRAND.wordmark}` };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("creator.collaborations");
+  return { title: `${t("title")} · ${BRAND.wordmark}` };
+}
 
 const FILTERS: readonly ListFilter[] = ["needs_you", "waiting", "live", "done", "all"];
 

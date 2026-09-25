@@ -7,7 +7,10 @@ import { CollaborationDetail } from "@/features/collaborations/components/detail
 import { getCollaborationDetail } from "@/features/collaborations/server/queries";
 
 import { BRAND } from "@/config/brand";
-export const metadata: Metadata = { title: `Collaboration · ${BRAND.wordmark}` };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("creator.collaborations");
+  return { title: `${t("title")} · ${BRAND.wordmark}` };
+}
 
 type Props = { params: Promise<{ id: string }> };
 

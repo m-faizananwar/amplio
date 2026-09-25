@@ -10,7 +10,10 @@ import { CreatorOverview } from "@/features/workspace/components/overview/creato
 import { getPublicCard } from "@/features/workspace/server/card-queries";
 
 import { BRAND } from "@/config/brand";
-export const metadata: Metadata = { title: `Overview · ${BRAND.wordmark}` };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("creator.overview");
+  return { title: `${t("title")} · ${BRAND.wordmark}` };
+}
 
 function setupGap(card: { priceCents: number; industries: string[] } | null) {
   const noPrice = !card || card.priceCents <= 0;

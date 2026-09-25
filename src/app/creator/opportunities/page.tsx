@@ -8,7 +8,10 @@ import { OpportunitiesView } from "@/features/collaborations/components/opportun
 import { listOpportunities } from "@/features/collaborations/server/opportunities-queries";
 
 import { BRAND } from "@/config/brand";
-export const metadata: Metadata = { title: `Opportunities · ${BRAND.wordmark}` };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("creator.opportunities");
+  return { title: `${t("title")} · ${BRAND.wordmark}` };
+}
 
 export default async function CreatorOpportunitiesPage() {
   const viewer = await getViewer();

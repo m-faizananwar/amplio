@@ -9,7 +9,10 @@ import { getCreatorLedger, getEarningsByMonth, getEarningsSummary } from "@/feat
 import { getCreatorSettings } from "@/features/workspace/server/settings-queries";
 
 import { BRAND } from "@/config/brand";
-export const metadata: Metadata = { title: `Earnings · ${BRAND.wordmark}` };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("creator.earnings");
+  return { title: `${t("title")} · ${BRAND.wordmark}` };
+}
 
 export default async function CreatorEarningsPage({ searchParams }: { searchParams: Promise<{ withdraw?: string }> }) {
   const viewer = await getViewer();

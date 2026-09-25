@@ -9,7 +9,10 @@ import { RangeSelect } from "@/features/tracking/components/analytics/RangeSelec
 import { ANALYTICS_RANGES, type AnalyticsRange, getPublicPosts, getPublicSnapshot, getTrackedLinkPerformance, listCreatorClicks } from "@/features/tracking/server/creator-queries";
 
 import { BRAND } from "@/config/brand";
-export const metadata: Metadata = { title: `Analytics · ${BRAND.wordmark}` };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("creator.analytics");
+  return { title: `${t("title")} · ${BRAND.wordmark}` };
+}
 
 export default async function CreatorAnalyticsPage({ searchParams }: { searchParams: Promise<{ range?: string }> }) {
   const viewer = await getViewer();

@@ -9,7 +9,10 @@ import { BrandSettingsView } from "@/features/workspace/components/settings/bran
 import { getBrandSettings } from "@/features/workspace/server/settings-queries";
 
 import { BRAND } from "@/config/brand";
-export const metadata: Metadata = { title: `Settings · ${BRAND.wordmark}` };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("settings.brand");
+  return { title: `${t("title")} · ${BRAND.wordmark}` };
+}
 
 export default async function BrandSettingsPage() {
   const viewer = await getViewer();

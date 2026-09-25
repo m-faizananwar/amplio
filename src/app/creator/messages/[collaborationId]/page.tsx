@@ -9,7 +9,10 @@ import { ThreadView } from "@/features/collaborations/components/messages/Thread
 import { getThread, listThreads, threadScopeFor } from "@/features/collaborations/server/messages-queries";
 
 import { BRAND } from "@/config/brand";
-export const metadata: Metadata = { title: `Messages · ${BRAND.wordmark}` };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("collaboration.messages");
+  return { title: `${t("title")} · ${BRAND.wordmark}` };
+}
 
 type Props = { params: Promise<{ collaborationId: string }> };
 

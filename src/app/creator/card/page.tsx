@@ -14,7 +14,10 @@ import { getAffiliateSummary } from "@/features/workspace/server/affiliate-queri
 import { getPublicCard } from "@/features/workspace/server/card-queries";
 
 import { BRAND } from "@/config/brand";
-export const metadata: Metadata = { title: `My card · ${BRAND.wordmark}` };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("creator.card");
+  return { title: `${t("title")} · ${BRAND.wordmark}` };
+}
 
 export default async function CreatorCardPage() {
   const viewer = await getViewer();

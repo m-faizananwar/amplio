@@ -10,7 +10,10 @@ import { getCreatorSettings } from "@/features/workspace/server/settings-queries
 import { recommendPrice } from "@/lib/recommend-price";
 
 import { BRAND } from "@/config/brand";
-export const metadata: Metadata = { title: `Settings · ${BRAND.wordmark}` };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("settings.creator");
+  return { title: `${t("title")} · ${BRAND.wordmark}` };
+}
 
 export default async function CreatorSettingsPage() {
   const viewer = await getViewer();
