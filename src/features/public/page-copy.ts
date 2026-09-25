@@ -25,17 +25,17 @@ export const FOR_CREATORS = {
     title: "For creators who don't want the administrative burden.",
     sub: "Find deals, get paid, and track your performance from one dashboard. No invoicing, no chasing, no spreadsheets.",
     dashboard: {
-      greeting: "Welcome back, Thomas 👋",
+      greeting: "Welcome back 👋",
       status: "LinkedIn analytics active",
       tiles: [
-        { label: "Total earnings", value: "€1,413.10", sub: "Across all collaborations" },
-        { label: "Active collaborations", value: "13", sub: "13 deals in progress" },
-        { label: "Post views", value: "1,266", sub: "In the last 30 days" },
+        { label: "Total earnings", value: "€595.00", sub: "Example figures" },
+        { label: "Active collaborations", value: "3", sub: "Example figures" },
+        { label: "Post views", value: "4,200", sub: "Example figures" },
       ],
       rows: [
-        { company: "Gojiberry AI", tag: "SaaS", status: "Active", amount: "€1,296.90" },
-        { company: `${BRAND.name}`, tag: "SaaS", status: "Active", amount: "€51.70" },
-        { company: "Loop", tag: "Finance", status: "In review", amount: "€32.30" },
+        { company: "Example SaaS", tag: "SaaS", status: "Active", amount: "€320.00" },
+        { company: "Example Fintech", tag: "Finance", status: "Active", amount: "€180.00" },
+        { company: "Example HR tool", tag: "HR", status: "In review", amount: "€95.00" },
       ],
     },
     features: [

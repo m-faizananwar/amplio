@@ -3,7 +3,6 @@ import Link from "next/link";
 import { CTA } from "../../constants";
 import { GlassCard } from "../glass/GlassCard";
 import { GlassSection } from "../glass/GlassSection";
-import { CreatorAvatar } from "./CreatorAvatar";
 import { PillLink } from "./PillLink";
 
 export function CtaSection() {
@@ -15,7 +14,6 @@ export function CtaSection() {
         <p className="mt-6 text-lg text-muted-foreground">{CTA.sub}</p>
         <GlassCard title={CTA.cardTitle} index={1} className="mx-auto mt-12 max-w-lg p-8 text-left sm:p-10">
           <p className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-brand">
-            <CreatorAvatar name="Thomas Marcelle" className="size-9" />
             {CTA.cardEyebrow}
           </p>
           <p className="mt-4 text-muted-foreground">{CTA.cardBody}</p>

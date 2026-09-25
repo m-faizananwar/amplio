@@ -1,17 +1,17 @@
-// Our copy in the spec's slots. The numbers come from the seeded demo workspace.
+// Our copy in the spec's slots: our own pricing and product facts, no borrowed figures.
 export const STAGE_COPY = {
   headline: { lead: "Built for ", dots: "Measurable", line2: "Performance" },
   intro: ["Every campaign is engineered for reach, fit and", " attribution, giving your brand the numbers", " to prove what a post produced."],
   learnMore: { label: "Learn More", href: "/pricing" },
   cards: {
-    speed: { title: ["Cost per lead", "Across 312 campaigns"], dots: "18", unit: "€", caption: ["Median cost", "per qualified lead"] },
-    context: { title: ["Click-through rate", "Across 1,847 posts"], dots: "12", unit: "%", caption: ["Average CTR", "vs 0.8% for ads"] },
-    connections: { title: ["Vetted creators", "Across 100 countries"], dots: "2.4", unit: "K", caption: ["B2B voices", "ready to collaborate"] },
+    speed: { title: ["Self-serve plan", "Per month"], dots: "0", unit: "€", caption: ["Pay only per", "published post"] },
+    context: { title: ["Tracked link", "On every post"], dots: "1", unit: "", caption: ["Every click", "comes back as a row"] },
+    connections: { title: ["To join", "For creators"], dots: "0", unit: "€", caption: ["Free to join,", "no exclusivity"] },
   },
 } as const;
 
 // Self-hosted: the spec's clips re-encoded to 8s 1280px loops (~150–300KB each)
-// with their own posters; the standalone at /performance/ keeps the CDN originals.
+// with their own posters.
 const M = "/media";
 export const STAGE_MEDIA = {
   wide: { poster: `${M}/stage-wide.jpg`, src: `${M}/stage-wide.mp4` },
