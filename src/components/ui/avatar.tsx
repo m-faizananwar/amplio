@@ -45,7 +45,7 @@ function AvatarFallback({
     <AvatarPrimitive.Fallback
       data-slot="avatar-fallback"
       className={cn(
-        "flex size-full items-center justify-center rounded-full bg-muted text-sm text-muted-foreground group-data-[size=sm]/avatar:text-xs",
+        "flex size-full items-center justify-center rounded-full bg-tint text-caption font-medium text-ink-muted group-data-[size=lg]/avatar:text-small",
         className
       )}
       {...props}
@@ -106,3 +106,23 @@ export {
   AvatarGroupCount,
   AvatarBadge,
 }
+
+// A person or a company: their photo when we have one, initials only as the
+// fallback (never a generated face). Two letters, first and last word.
+function initialsOf(name: string) {
+  const words = name.trim().split(/\s+/).filter(Boolean)
+  const first = words[0]?.[0] ?? ""
+  const last = words.length > 1 ? words[words.length - 1][0] : ""
+  return (first + last).toUpperCase() || "?"
+}
+
+function PersonAvatar({ name, src, size = "default", className }: { name: string; src?: string | null; size?: "default" | "sm" | "lg"; className?: string }) {
+  return (
+    <Avatar size={size} className={className}>
+      {src ? <AvatarImage src={src} alt="" /> : null}
+      <AvatarFallback>{initialsOf(name)}</AvatarFallback>
+    </Avatar>
+  )
+}
+
+export { PersonAvatar, initialsOf }
