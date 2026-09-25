@@ -24,7 +24,7 @@ export async function CreatorSettingsView({ settings: s, isDemo, recommendedCent
   };
   return (
     <div className="grid gap-8 animate-rise lg:grid-cols-[12rem_minmax(0,1fr)]">
-      <SettingsIndex sections={sections} />
+      <SettingsIndex label={t("indexLabel")} sections={sections} />
       <div className="grid gap-5">
         <IdentitySection defaults={{ firstName: s.firstName, lastName: s.lastName, xHandle: s.xHandle }} />
         <LinkedinSection defaults={{ linkedinUrl: s.linkedinUrl }} />

@@ -21,7 +21,7 @@ export async function BrandSettingsView({ settings: s, email, isDemo }: Props) {
   const icps = [0, 1, 2].map((i) => s.icps[i] ?? { title: "", description: "" });
   return (
     <div className="grid gap-8 animate-rise lg:grid-cols-[12rem_minmax(0,1fr)]">
-      <SettingsIndex sections={sections} />
+      <SettingsIndex label={t("indexLabel")} sections={sections} />
       <div className="grid gap-5">
         <CompanySection defaults={{ company: s.company, website: s.website }} />
         <PositioningSection defaults={{ valueProp: s.valueProp, icps } as ProfileInput} />

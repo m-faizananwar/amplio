@@ -209,7 +209,8 @@
         "label": "Compte X",
         "help": "Facultatif. Affiché sur votre carte à côté de LinkedIn."
       }
-    }
+    },
+    "indexLabel": "Sections des paramètres"
   },
   "brand": {
     "title": "Paramètres",
@@ -360,6 +361,7 @@
           "notSignedIn": "Vous devez vous connecter."
         }
       }
-    }
+    },
+    "indexLabel": "Sections des paramètres"
   }
 }

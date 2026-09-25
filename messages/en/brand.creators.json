@@ -183,7 +183,12 @@
       "title": "Recent posts",
       "description": "Their latest public posts. Views are estimates.",
       "open": "Open on LinkedIn",
-      "numbers": "{views} views · {reactions, plural, one {# reaction} other {# reactions}} · {comments, plural, one {# comment} other {# comments}}"
+      "numbers": "{views} views · {reactions, plural, one {# reaction} other {# reactions}} · {comments, plural, one {# comment} other {# comments}}",
+      "chart": {
+        "label": "Estimated views for each recent public LinkedIn post, oldest to newest",
+        "tooltip": "Views",
+        "empty": "No public posts read yet."
+      }
     },
     "background": {
       "title": "Background",

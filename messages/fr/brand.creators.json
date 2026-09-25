@@ -183,7 +183,12 @@
       "title": "Posts récents",
       "description": "Ses derniers posts publics. Les vues sont des estimations.",
       "open": "Ouvrir sur LinkedIn",
-      "numbers": "{views} vues · {reactions, plural, one {# réaction} other {# réactions}} · {comments, plural, one {# commentaire} other {# commentaires}}"
+      "numbers": "{views} vues · {reactions, plural, one {# réaction} other {# réactions}} · {comments, plural, one {# commentaire} other {# commentaires}}",
+      "chart": {
+        "label": "Vues estimées de chaque publication LinkedIn publique récente, de la plus ancienne à la plus récente",
+        "tooltip": "Vues",
+        "empty": "Aucune publication publique lue pour l’instant."
+      }
     },
     "background": {
       "title": "Informations",

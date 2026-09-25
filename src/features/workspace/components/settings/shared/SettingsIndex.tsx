@@ -1,8 +1,8 @@
 // The in-page index: on wide screens a sticky list of the sections, on
 // phones nothing (the sections are short enough to scroll).
-export function SettingsIndex({ sections }: { sections: Array<{ id: string; label: string }> }) {
+export function SettingsIndex({ sections, label }: { sections: Array<{ id: string; label: string }>; label: string }) {
   return (
-    <nav aria-label="Settings sections" className="hidden lg:block">
+    <nav aria-label={label} className="hidden lg:block">
       <ol className="sticky top-24 grid gap-0.5">
         {sections.map((s) => (
           <li key={s.id}>

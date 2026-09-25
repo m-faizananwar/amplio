@@ -209,7 +209,8 @@
         "label": "X handle",
         "help": "Optional. Shown on your card next to LinkedIn."
       }
-    }
+    },
+    "indexLabel": "Settings sections"
   },
   "brand": {
     "title": "Settings",
@@ -360,6 +361,7 @@
           "notSignedIn": "You're not signed in."
         }
       }
-    }
+    },
+    "indexLabel": "Settings sections"
   }
 }

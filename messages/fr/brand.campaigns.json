@@ -87,7 +87,9 @@
     "chart": {
       "title": "Clics par jour",
       "window": "12 derniers jours",
-      "empty": "Aucun clic pour l’instant. Chaque créateur reçoit un lien suivi quand il accepte, et chaque clic sur ce lien s’affiche ici."
+      "empty": "Aucun clic pour l’instant. Chaque créateur reçoit un lien suivi quand il accepte, et chaque clic sur ce lien s’affiche ici.",
+      "aria": "Clics qualifiés par jour sur les {days} derniers jours",
+      "tooltip": "{count, plural, one {# clic} other {# clics}}"
     },
     "byCreator": {
       "title": "Par créateur",

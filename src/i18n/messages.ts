@@ -12,7 +12,7 @@ const loaded = new Map<Locale, Promise<Messages>>();
 // builder adds `messages/en/brand.json` and `useTranslations("brand")` works —
 // no registry to update. A dotted name nests: `creator.earnings.json` lands
 // under creator.earnings, so a namespace can be split to keep every file
-// under 500 lines. Read once per locale per server instance.
+// under 500 lines.
 async function readLocale(locale: Locale): Promise<Messages> {
   const dir = path.join(ROOT, locale);
   const files = (await readdir(dir).catch(() => [])).filter((f) => f.endsWith(".json")).sort();
@@ -38,8 +38,12 @@ function withFallback(base: Messages, over: Messages): Messages {
   return out;
 }
 
+// Production reads once per instance. Dev re-reads on every request so a new
+// key shows up without restarting the server.
+const CACHE = process.env.NODE_ENV === "production";
+
 export function loadMessages(locale: Locale): Promise<Messages> {
-  let pending = loaded.get(locale);
+  let pending = CACHE ? loaded.get(locale) : undefined;
   if (!pending) {
     pending = locale === DEFAULT_LOCALE
       ? readLocale(locale)

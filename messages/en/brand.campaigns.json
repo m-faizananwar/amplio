@@ -87,7 +87,9 @@
     "chart": {
       "title": "Clicks per day",
       "window": "Last 12 days",
-      "empty": "No clicks yet. Each creator gets a tracked link when they accept, and every click on it shows here."
+      "empty": "No clicks yet. Each creator gets a tracked link when they accept, and every click on it shows here.",
+      "aria": "Qualified clicks per day over the last {days} days",
+      "tooltip": "{count, plural, one {# click} other {# clicks}}"
     },
     "byCreator": {
       "title": "By creator",
