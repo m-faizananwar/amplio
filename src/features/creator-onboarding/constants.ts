@@ -7,9 +7,6 @@ export const ONBOARDING_STEPS = {
 } as const;
 export const WORKSPACE_AFTER_ONBOARDING = "/creator";
 
-// The simulated profile read: long enough to feel like a fetch (replaced by the real import next).
-export const PROFILE_READ_DELAY_MS = 2500;
-
 
 export const MAX_INDUSTRIES = 3;
 export const HEADLINE_MAX = 220;

@@ -6,8 +6,9 @@ import { creators } from "@/db/schema";
 import { updateTags } from "@/db/cache";
 import { tagsForMutation } from "@/lib/cache-tags";
 import { getViewer } from "@/features/auth/server/session";
-import { deriveLinkedinProfile, type LinkedinProfile } from "@/lib/linkedin-profile";
-import { PROFILE_READ_DELAY_MS, WORKSPACE_AFTER_ONBOARDING } from "../constants";
+import { COUNTRY_CODES, WORKSPACE_AFTER_ONBOARDING } from "../constants";
+import { normalizeLinkedinUrl } from "@/lib/linkedin-url";
+import { type ImportedLinkedinProfile, importLinkedinProfile } from "./linkedin-import";
 import {
   type ActionResult, type CardInput, type LinkedinInput, type PriceInput, type ProfessionalInput, cardSchema, linkedinSchema,
   priceSchema, professionalSchema,
@@ -41,32 +42,47 @@ function firstIssue(error: { issues: Array<{ message: string }> }) {
   return error.issues[0]?.message ?? "Invalid input";
 }
 
-function sleep(ms: number) {
-  return new Promise<void>((resolve) => setTimeout(resolve, ms));
+const READ_FAILED = "We couldn't read that profile — enter it by hand.";
+
+// The row already holds this profile's import: don't pay for a second read.
+async function cachedImport(auth: Auth, url: string): Promise<ImportedLinkedinProfile | null> {
+  const [row] = await getDb().select({ linkedinUrl: creators.linkedinUrl, followers: creators.followers, headline: creators.headline, country: creators.country, avatarUrl: creators.avatarUrl }).from(creators).where(ownRow(auth)).limit(1);
+  if (!row || normalizeLinkedinUrl(row.linkedinUrl) !== url || row.followers <= 0) return null;
+  return { name: "", headline: row.headline || null, followers: row.followers, countryCode: row.country || null, photoUrl: row.avatarUrl || null };
 }
 
-// Step 2: "read" the public profile (simulated, deterministic) and persist it.
-export async function readLinkedinProfile(input: LinkedinInput): Promise<ActionResult<LinkedinProfile>> {
+// Step 2: read the public LinkedIn profile once (Apify, pinned actor) and keep
+// what it says on the creator row. A failed read keeps the URL and says so —
+// the creator fills the card by hand; nothing is ever made up.
+export async function readLinkedinProfile(input: LinkedinInput): Promise<ActionResult<ImportedLinkedinProfile>> {
   const auth = await requireCreator();
   if (!auth.ok) return auth;
   const parsed = linkedinSchema.safeParse(input);
   if (!parsed.success) return { ok: false, error: firstIssue(parsed.error) };
-  const profile = deriveLinkedinProfile(parsed.data.linkedinUrl);
-  if (!profile) return { ok: false, error: "We could not find a public profile at that URL." };
+  const url = normalizeLinkedinUrl(parsed.data.linkedinUrl);
   try {
-    await sleep(PROFILE_READ_DELAY_MS);
+    const cached = await cachedImport(auth.data, url);
+    if (cached) return { ok: true, data: cached };
+    const read = await importLinkedinProfile(url);
+    if (!read.ok) {
+      await getDb().update(creators).set({ linkedinUrl: url }).where(ownRow(auth.data));
+      dropCaches(auth.data);
+      return { ok: false, error: READ_FAILED };
+    }
+    const p = read.profile;
+    const country = p.countryCode && COUNTRY_CODES.find((c) => c === p.countryCode);
     await getDb()
       .update(creators)
       .set({
-        linkedinUrl: parsed.data.linkedinUrl,
-        followers: profile.followers,
-        headline: profile.headline,
-        medianViews: profile.medianViews,
-        engagementRate: profile.engagementRate,
+        linkedinUrl: url,
+        ...(p.followers !== null ? { followers: p.followers } : {}),
+        ...(p.headline ? { headline: p.headline } : {}),
+        ...(country ? { country } : {}),
+        ...(p.photoUrl ? { avatarUrl: p.photoUrl } : {}),
       })
       .where(ownRow(auth.data));
     dropCaches(auth.data);
-    return { ok: true, data: profile };
+    return { ok: true, data: p };
   } catch (error) {
     console.error("[creator-onboarding] readLinkedinProfile failed", { creatorId: auth.data.creatorId, error });
     return { ok: false, error: GENERIC };
