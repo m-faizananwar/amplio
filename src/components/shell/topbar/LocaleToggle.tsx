@@ -21,7 +21,10 @@ export function LocaleToggle() {
       value={locale}
       className={pending ? "opacity-70" : undefined}
       onValueChange={(next) => startTransition(async () => {
-        if (await setLocale(next)) router.refresh();
+        if (!(await setLocale(next))) return;
+        // The server sets lang on a full load; a refresh re-renders in place.
+        document.documentElement.lang = next;
+        router.refresh();
       })}
       options={LOCALES.map((code) => ({ value: code, label: <span aria-label={t(code)}>{code.toUpperCase()}</span> }))}
     />

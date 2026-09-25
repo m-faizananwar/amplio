@@ -13,7 +13,15 @@ import { type LoginInput, loginSchema } from "../schemas";
 import { login } from "../server/actions";
 import { FormAlert } from "./FormAlert";
 
-export function LoginForm({ next }: { next?: string }) {
+// Where the proxy sent them from (?next=/brand/…). Read at submit rather than
+// passed from the page, so the sign-in page can be prerendered. Same-site
+// paths only: "//host" would leave the site.
+function nextPath() {
+  const next = new URLSearchParams(window.location.search).get("next");
+  return next && next.startsWith("/") && !next.startsWith("//") ? next : null;
+}
+
+export function LoginForm() {
   const t = useTranslations("auth");
   const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
@@ -24,7 +32,7 @@ export function LoginForm({ next }: { next?: string }) {
     setServerError(null);
     const result = await login(values);
     if (!result.ok) return setServerError(result.error);
-    router.push(next && next.startsWith("/") ? next : result.data.redirectTo);
+    router.push(nextPath() ?? result.data.redirectTo);
   }
 
   return (

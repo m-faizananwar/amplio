@@ -1,14 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
-import { getLocale } from "next-intl/server";
 import { THEME_BOOT_SCRIPT } from "@/components/shell/theme/theme";
-import { ClientMessages } from "@/i18n/ClientMessages";
+import { DEFAULT_LOCALE } from "@/i18n/config";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Cormorant_Garamond, Geist, Geist_Mono } from "next/font/google";
 import { RouteProgress } from "@/components/motion/RouteProgress";
-import { PublicChrome } from "@/components/shell/PublicChrome";
-import { PublicNav } from "@/features/public/components/nav/PublicNav";
 import { ScrollMorph } from "@/components/motion/ScrollMorph";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
@@ -42,26 +39,25 @@ export const metadata: Metadata = {
 // The canvas behind the page follows the OS until the boot script has run.
 export const viewport: Viewport = { colorScheme: "light dark" };
 
-export default async function RootLayout({ children }: { children: ReactNode }) {
-  const locale = await getLocale();
+// Reads nothing from the request, so the public pages under [locale] can be
+// static. Each area brings its own messages (ClientMessages) and corrects
+// `lang` (HtmlLang); the theme class comes from the boot script.
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     // The boot script adds `dark` before hydration, so the class the server
     // sent is expected to differ from the one React finds.
-    <html lang={locale} suppressHydrationWarning className={`${geist.variable} ${geistMono.variable} ${cormorant.variable} h-full antialiased`}>
+    <html lang={DEFAULT_LOCALE} suppressHydrationWarning className={`${geist.variable} ${geistMono.variable} ${cormorant.variable} h-full antialiased`}>
       <head>
         {/* Before first paint: light, dark, or whatever the OS says. */}
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
       </head>
       <body className="flex min-h-full flex-col">
-        <ClientMessages namespaces={[]}>
         <RouteProgress />
-        <PublicChrome nav={<PublicNav />} />
         <ScrollMorph />
         {children}
         <Toaster position="bottom-right" duration={TOAST_MS} />
         <Analytics />
         <SpeedInsights />
-        </ClientMessages>
       </body>
     </html>
   );

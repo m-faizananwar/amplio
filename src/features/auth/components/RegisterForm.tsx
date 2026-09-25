@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
@@ -18,18 +18,21 @@ import { FormAlert } from "./FormAlert";
 // the stored values stay the schema's English enums; only the labels translate
 const HEARD_KEY: Record<(typeof HEARD_ABOUT_OPTIONS)[number], string> = { LinkedIn: "linkedin", "Word of mouth": "wordOfMouth", "Google search": "google", "A creator": "creator", Other: "other" };
 
+// The creator card's "book" link carries ?ref=<handle>. Read at submit rather
+// than with useSearchParams, so the sign-up pages can be prerendered.
+const refParam = () => new URLSearchParams(window.location.search).get("ref") ?? undefined;
+
 export function RegisterForm({ role }: { role: Role }) {
   const t = useTranslations("auth");
   const router = useRouter();
-  const ref = useSearchParams().get("ref") ?? undefined;
   const [serverError, setServerError] = useState<string | null>(null);
-  const form = useForm<RegisterInput>({ resolver: zodResolver(registerSchema), defaultValues: { role, firstName: "", lastName: "", email: "", password: "", ref } });
+  const form = useForm<RegisterInput>({ resolver: zodResolver(registerSchema), defaultValues: { role, firstName: "", lastName: "", email: "", password: "" } });
   const { errors, isSubmitting } = form.formState;
   const brand = role === "brand";
 
   async function onSubmit(values: RegisterInput) {
     setServerError(null);
-    const result = await register(values);
+    const result = await register({ ...values, ref: refParam() });
     if (!result.ok) return setServerError(result.error);
     router.push(result.data.redirectTo);
   }

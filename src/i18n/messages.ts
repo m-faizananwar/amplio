@@ -33,7 +33,10 @@ function withFallback(base: Messages, over: Messages): Messages {
   const out: Messages = { ...base };
   for (const [key, value] of Object.entries(over)) {
     const under = out[key];
-    out[key] = typeof value === "object" && typeof under === "object" ? withFallback(under, value) : value;
+    // Arrays (legal sections, FAQ items) are whole values: merging one into
+    // the English array index by index would turn it into an object.
+    const nested = isNamespace(value) && isNamespace(under);
+    out[key] = nested ? withFallback(under, value) : value;
   }
   return out;
 }
@@ -41,6 +44,10 @@ function withFallback(base: Messages, over: Messages): Messages {
 // Production reads once per instance. Dev re-reads on every request so a new
 // key shows up without restarting the server.
 const CACHE = process.env.NODE_ENV === "production";
+
+function isNamespace(value: unknown): value is Messages {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
 
 export function loadMessages(locale: Locale): Promise<Messages> {
   let pending = CACHE ? loaded.get(locale) : undefined;

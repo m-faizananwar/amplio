@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import Link from "next/link";
 import type { PublicCreator } from "../../../constants";
 import { CtaLinks } from "../calm/CtaLinks";
 import { PublicHero } from "../calm/PublicHero";
@@ -87,7 +88,7 @@ export async function ForCreatorsPage({ creator }: { creator: (PublicCreator & {
             <h2 className="text-h1 tracking-[-0.03em]">{t("cta.title")}</h2>
             <p className="mt-3 max-w-xl opacity-70">{t("cta.sub")}</p>
           </div>
-          <a href="/register/creator" className="inline-flex h-11 items-center rounded-control bg-paper px-5 font-medium text-ink hover:opacity-90">{t("cta.button")}</a>
+          <Link href="/register/creator" className="inline-flex h-11 items-center rounded-control bg-paper px-5 font-medium text-ink hover:opacity-90">{t("cta.button")}</Link>
         </div>
       </section>
     </>
