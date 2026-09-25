@@ -2,7 +2,7 @@
 
 import { ChevronDown } from "lucide-react";
 import { type FormEvent, useState } from "react";
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

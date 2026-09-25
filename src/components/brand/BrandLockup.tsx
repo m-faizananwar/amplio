@@ -1,4 +1,4 @@
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 import { BRAND } from "@/config/brand";
 import { BrandMark } from "./BrandMark";
 

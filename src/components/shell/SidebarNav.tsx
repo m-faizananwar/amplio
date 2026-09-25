@@ -2,7 +2,7 @@
 
 import { Fragment } from "react";
 
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { isActive, navFor } from "./nav";

@@ -2,7 +2,7 @@
 
 import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react"
 import type { ReactNode } from "react"
-import { cn } from "cn"
+import { cn } from "@/lib/cn"
 import { TableCell, TableHead, TableRow } from "./table"
 
 export type SortDirection = "asc" | "desc"

@@ -1,5 +1,5 @@
 import { cva, type VariantProps } from "class-variance-authority"
-import { cn } from "cn"
+import { cn } from "@/lib/cn"
 import type { CollaborationStatus } from "@/lib/collaboration-status"
 
 // A status is a small pill with a dot. Colour carries meaning, never decoration:

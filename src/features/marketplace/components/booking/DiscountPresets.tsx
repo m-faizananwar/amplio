@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 import { formatEuro } from "@/lib/format-euro";
 import { DISCOUNT_PRESETS } from "../../constants";
 

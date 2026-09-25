@@ -1,4 +1,4 @@
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 import { CountUp } from "@/components/motion/CountUp";
 
 const STRONG = 80;

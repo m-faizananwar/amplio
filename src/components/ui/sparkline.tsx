@@ -1,4 +1,4 @@
-import { cn } from "cn"
+import { cn } from "@/lib/cn"
 
 type Props = { points: number[]; className?: string; tone?: "ink" | "money" }
 

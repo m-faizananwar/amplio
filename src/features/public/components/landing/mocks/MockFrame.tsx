@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 
 // The small white "UI" card inside each how-it-works step.
 export function MockFrame({ children, className }: { children: ReactNode; className?: string }) {

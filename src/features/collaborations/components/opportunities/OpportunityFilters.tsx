@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { LinkedInMark } from "../LinkedInMark";

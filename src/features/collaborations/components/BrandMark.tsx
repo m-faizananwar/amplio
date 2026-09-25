@@ -1,4 +1,4 @@
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 import { brandMarkFor } from "@/lib/avatar";
 
 type Props = { initial: string; name: string; size?: "sm" | "md" | "lg"; className?: string };

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRef } from "react";
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 import { BrandLockup } from "@/components/brand/BrandLockup";
 import { BRAND } from "@/config/brand";
 import { GLASS_NAV_CELLS } from "../../constants";

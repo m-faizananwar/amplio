@@ -1,4 +1,4 @@
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 
 type Props = { eyebrow?: string; title: string; sub?: string; align?: "center" | "left"; className?: string };
 

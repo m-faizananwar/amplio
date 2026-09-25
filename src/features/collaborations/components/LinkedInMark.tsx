@@ -1,4 +1,4 @@
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 
 // lucide dropped brand icons; the "in" square is all the cards need.
 export function LinkedInMark({ className }: { className?: string }) {

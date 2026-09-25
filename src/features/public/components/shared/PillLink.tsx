@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 import { ChamferLink } from "../glass/ChamferLink";
 
 type Props = { href: string; label: string; variant?: "primary" | "secondary" | "ghost" | "brand"; className?: string; arrow?: boolean };

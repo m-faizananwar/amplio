@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 import { SlidingIndicator } from "@/components/motion/SlidingIndicator";
 import { CREATORS_PATH, MATCHING_PATH } from "../constants";
 

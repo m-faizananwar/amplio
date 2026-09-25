@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 import type React from "react";
 import { type ReactNode, useLayoutEffect, useRef } from "react";
 import { registerMorph } from "@/lib/motion/scroll-morph";

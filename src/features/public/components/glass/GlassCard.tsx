@@ -1,7 +1,7 @@
 "use client";
 
 import { type CSSProperties, type ReactNode, useRef } from "react";
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 import styles from "./glass.module.css";
 import { useGlassBackdrop } from "./GlassSection";
 import { useStaticGlass } from "./useStaticGlass";

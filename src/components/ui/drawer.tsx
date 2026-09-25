@@ -3,7 +3,7 @@
 import { Dialog as DrawerPrimitive } from "@base-ui/react/dialog"
 import { XIcon } from "lucide-react"
 import type { ReactNode } from "react"
-import { cn } from "cn"
+import { cn } from "@/lib/cn"
 import { Button } from "./button"
 
 // A right-hand panel for detail that belongs to the page you are on: the trail

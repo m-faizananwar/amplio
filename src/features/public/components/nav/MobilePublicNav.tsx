@@ -4,7 +4,7 @@ import { Menu } from "lucide-react";
 import Link from "next/link";
 import { type ReactNode, useCallback, useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 import { BRAND } from "@/config/brand";
 import { MENU_LINKS } from "../../constants";
 import styles from "./slide-menu.module.css";

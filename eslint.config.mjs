@@ -36,7 +36,10 @@ export default defineConfig([
       // layering: only features/*/server and src/db may touch the database
       // (overridden back off for those folders below)
       "no-restricted-imports": ["error", {
-        paths: [{ name: "@/db", message: "Views and routes never touch the db. Go through features/<domain>/server." }],
+        paths: [
+          { name: "@/db", message: "Views and routes never touch the db. Go through features/<domain>/server." },
+          { name: "cn", message: "Import cn from @/lib/cn: the stock one drops colours next to our text-body/text-small sizes." },
+        ],
         patterns: [{ group: DB_MODULES, message: "Views and routes never touch the db. Go through features/<domain>/server." }],
       }],
       "import/no-restricted-paths": ["error", {

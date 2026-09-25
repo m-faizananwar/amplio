@@ -3,7 +3,7 @@
 import { Inter_Tight } from "next/font/google";
 import Link from "next/link";
 import { useRef } from "react";
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 import { ChamferLink } from "../glass/ChamferLink";
 import { GlassFilterDefs } from "../glass/GlassFilterDefs";
 import { HeroGlassCard } from "../glass/HeroGlassCard";

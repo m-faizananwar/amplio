@@ -1,4 +1,4 @@
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 
 // lucide-react no longer ships brand icons; naano's "in" badge is just this.
 export function LinkedInMark({ className, label = "LinkedIn" }: { className?: string; label?: string }) {

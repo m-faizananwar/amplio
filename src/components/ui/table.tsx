@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { cn } from "cn"
+import { cn } from "@/lib/cn"
 
 // `framed` draws the ledger card around the table; off by default so tables
 // already inside a bordered section don't get a second rule.

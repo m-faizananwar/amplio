@@ -1,4 +1,4 @@
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 
 // naano's "in" square next to every creator.
 export function LinkedInBadge({ className }: { className?: string }) {

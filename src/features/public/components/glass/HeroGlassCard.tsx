@@ -1,7 +1,7 @@
 "use client";
 
 import { type RefObject, useRef } from "react";
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 import { GLASS_CARD, WAVE_PATH } from "./glass-copy";
 import styles from "./glass.module.css";
 import { useSplashGate } from "../splash/useSplashGate";

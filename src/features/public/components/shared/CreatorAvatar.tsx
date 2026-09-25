@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 import { avatarFor } from "@/lib/avatar";
 
 type Props = { name: string; src?: string | null; className?: string };

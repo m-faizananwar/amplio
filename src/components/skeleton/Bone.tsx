@@ -1,4 +1,4 @@
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 
 // One skeleton block: muted fill with the existing 1.6s shimmer sweep. Renders
 // on the server; no motion library involved.

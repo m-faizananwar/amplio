@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronDown, SlidersHorizontal } from "lucide-react";
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";

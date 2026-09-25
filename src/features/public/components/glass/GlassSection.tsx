@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, type ReactNode, type RefObject, useContext, useRef } from "react";
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 import styles from "./glass.module.css";
 
 export const HERO_STILL = "/backdrops/hero-still.jpg";

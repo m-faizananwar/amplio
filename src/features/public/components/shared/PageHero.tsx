@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 import { HERO_POSTER } from "../hero/hero-config";
 import { interTight } from "./display-font";
 

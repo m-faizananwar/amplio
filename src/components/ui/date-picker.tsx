@@ -3,7 +3,7 @@
 import { addDays, addMonths, endOfMonth, endOfWeek, format, isBefore, isSameDay, isSameMonth, parseISO, startOfMonth, startOfWeek } from "date-fns"
 import { CalendarDays, ChevronLeft, ChevronRight } from "lucide-react"
 import { useState } from "react"
-import { cn } from "cn"
+import { cn } from "@/lib/cn"
 import { Button } from "./button"
 import { Popover, PopoverContent, PopoverTrigger } from "./popover"
 

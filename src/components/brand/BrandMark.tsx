@@ -1,4 +1,4 @@
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 
 // The mark: three dots joined by one line — post → click → lead, the trail
 // every number in the product is made of (docs/design/DIRECTION.md, "Mark").

@@ -2,7 +2,7 @@
 
 import { ArrowDownRight, ArrowUpRight, ChevronRight } from "lucide-react"
 import type { ReactNode } from "react"
-import { cn } from "cn"
+import { cn } from "@/lib/cn"
 import { RollingNumber } from "./rolling-number"
 import { Sparkline } from "./sparkline"
 

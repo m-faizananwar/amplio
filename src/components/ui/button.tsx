@@ -1,6 +1,6 @@
 import { Button as ButtonPrimitive } from "@base-ui/react/button"
 import { cva, type VariantProps } from "class-variance-authority"
-import { cn } from "cn"
+import { cn } from "@/lib/cn"
 
 // Ledger buttons (docs/design/DIRECTION.md): primary is ink on paper, secondary
 // is an outline, ghost is text until hovered, danger is failure-red and — for

@@ -2,7 +2,7 @@
 
 import { Tabs as TabsPrimitive } from "@base-ui/react/tabs"
 import { cva, type VariantProps } from "class-variance-authority"
-import { cn } from "cn"
+import { cn } from "@/lib/cn"
 
 // Tabs with a sliding indicator (Base UI measures the active tab into
 // --active-tab-* vars; we only animate transform/width on the indicator).

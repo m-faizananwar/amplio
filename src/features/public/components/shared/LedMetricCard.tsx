@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Beam } from "@/components/motion/Beam";
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 import { renderDots } from "../performance/led-dots";
 import "./led-metric-card.css";
 

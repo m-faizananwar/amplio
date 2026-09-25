@@ -1,5 +1,5 @@
 import { Reveal } from "@/components/motion/Reveal";
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 import { ShieldCheck } from "lucide-react";
 import { FOR_CREATORS } from "../../../page-copy";
 import { HERO_POSTER } from "../../hero/hero-config";

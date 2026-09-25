@@ -2,7 +2,7 @@
 
 import { Combobox as ComboboxPrimitive } from "@base-ui/react/combobox"
 import { Check, ChevronsUpDown } from "lucide-react"
-import { cn } from "cn"
+import { cn } from "@/lib/cn"
 
 export type ComboboxOption = { value: string; label: string; hint?: string }
 

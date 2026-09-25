@@ -1,6 +1,6 @@
 import { Reveal } from "@/components/motion/Reveal";
 import type { LegalDoc } from "../../legal-copy";
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 import { interTight } from "../shared/display-font";
 import { PageHero } from "../shared/PageHero";
 

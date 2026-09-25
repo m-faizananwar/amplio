@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 
 import { SlidingIndicator } from "@/components/motion/SlidingIndicator";
 

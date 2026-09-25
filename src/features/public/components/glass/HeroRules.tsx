@@ -1,4 +1,4 @@
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 import styles from "./glass.module.css";
 
 // Two decorative vertical rules (≥768px): end segment, +, mid segment, +, end segment.

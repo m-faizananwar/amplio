@@ -1,7 +1,7 @@
 "use client";
 
 import { ShieldCheck } from "lucide-react";
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 import { formatCompact, formatEuro, formatEuroWhole } from "@/lib/format-euro";
 import type { CreatorDto } from "../../schemas";
 import { BookButton } from "../cards/BookButton";

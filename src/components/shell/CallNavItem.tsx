@@ -3,7 +3,7 @@
 import { PhoneCall } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 import { useAgentMode } from "@/features/assistant/components/agentMode";
 
 // "Call Amplio" under Messages, only while Agent mode is on.

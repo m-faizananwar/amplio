@@ -1,7 +1,7 @@
 "use client";
 
 import { Bookmark, SearchX } from "lucide-react";
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 import { SlidingIndicator } from "@/components/motion/SlidingIndicator";
 import { EmptyState } from "@/components/page/EmptyState";
 import { Button } from "@/components/ui/button";

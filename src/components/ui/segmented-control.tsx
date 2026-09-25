@@ -3,7 +3,7 @@
 import { Radio } from "@base-ui/react/radio"
 import { RadioGroup } from "@base-ui/react/radio-group"
 import { useLayoutEffect, useRef, useState } from "react"
-import { cn } from "cn"
+import { cn } from "@/lib/cn"
 
 type Option<T extends string> = { value: T; label: React.ReactNode }
 

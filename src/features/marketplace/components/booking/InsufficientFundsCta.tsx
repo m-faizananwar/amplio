@@ -1,6 +1,6 @@
 import { Wallet } from "lucide-react";
 import Link from "next/link";
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 import { buttonVariants } from "@/components/ui/button";
 import { formatCents } from "@/lib/money";
 import { BILLING_PATH } from "../../constants";

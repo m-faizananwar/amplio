@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 import { Badge } from "@/components/ui/badge";
 import { STATUS_LABELS, STATUS_TONES, type StatusTone } from "@/lib/collaboration-labels";
 import type { CollaborationStatus } from "@/lib/collaboration-status";

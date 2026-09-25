@@ -1,4 +1,4 @@
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 
 // Soft cloud-like shapes from blurred radial gradients. Decorative only.
 export function Clouds({ className }: { className?: string }) {

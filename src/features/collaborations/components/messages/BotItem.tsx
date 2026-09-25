@@ -1,4 +1,4 @@
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 import Link from "next/link";
 import type { ViewerRole } from "../../schemas";
 import { SUPPORT_BOT, BOT_THREAD_ID } from "../../ui-constants";

@@ -4,7 +4,7 @@ import { Mic, MicOff, PhoneOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { type FormEvent, useEffect, useRef, useState } from "react";
 import { ThinkingOrb } from "thinking-orbs";
-import { cn } from "cn";
+import { cn } from "@/lib/cn";
 import { CallWaveform } from "./CallWaveform";
 import { callSession } from "./callSession";
 import { useCallLoop } from "./useCallLoop";
