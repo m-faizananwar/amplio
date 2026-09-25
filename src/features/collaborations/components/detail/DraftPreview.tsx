@@ -8,7 +8,7 @@ export function DraftPreview({ collaboration: c, role }: { collaboration: Collab
   const t = useTranslations("collaboration.detail.draftPreview");
   const editing = role === "creator" && c.allowedEvents.includes("submit_draft");
   if (!c.draftText || editing) return null;
-  const title = c.status === "draft_submitted" ? t("pending") : role === "creator" ? t("yours") : t("approved");
+  const title = c.status === "draft_submitted" ? t("pending") : c.status === "changes_requested" ? t("changesRequested") : role === "creator" ? t("yours") : t("approved");
   return (
     <section className="rounded-card border border-rule bg-surface p-5">
       <h2 className="text-small font-medium text-ink-muted">{title}</h2>

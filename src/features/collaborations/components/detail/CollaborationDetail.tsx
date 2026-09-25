@@ -29,12 +29,12 @@ export function CollaborationDetail({ detail, role, csrfToken }: Props) {
         <div className="grid gap-4" aria-busy={action.isPending || undefined}>
           <Actions collaboration={c} csrfToken={csrfToken} action={action} />
           <DraftPreview collaboration={c} role={role} />
-          <TrackedLinkCard collaboration={c} trackedUrl={trackedUrl} />
+          <TrackedLinkCard collaboration={c} trackedUrl={trackedUrl} role={role} />
           <EventTimeline events={events} role={role} collaboration={c} />
         </div>
         <aside className="grid gap-4">
           {role === "creator" ? <MoneyNote collaboration={{ ...c, status }} /> : null}
-          <OfferTerms collaboration={c} />
+          <OfferTerms collaboration={c} role={role} />
         </aside>
       </div>
     </div>

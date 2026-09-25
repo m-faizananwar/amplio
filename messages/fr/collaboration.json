@@ -178,7 +178,12 @@
       "scheduledFor": "Programmé le",
       "published": "Publié le",
       "paid": "Payé le",
-      "offerNote": "Message de {brand}"
+      "offerNote": "Message de {brand}",
+      "reviewRequiredBrand": "Vous validez avant que {creator} publie",
+      "reviewNotRequiredBrand": "{creator} publie sans validation",
+      "originInvitationBrand": "Votre invitation",
+      "originApplicationBrand": "Candidature de {creator}",
+      "offerNoteBrand": "Votre note à {creator}"
     },
     "trackedLink": {
       "title": "Lien suivi",
@@ -186,13 +191,15 @@
       "copy": "Copier le lien",
       "copied": "Lien suivi copié",
       "clicks": "{count, plural, =0 {Aucun clic pour l’instant} one {# clic} other {# clics}}",
-      "pending": "Les clics s’affichent une fois le post en ligne."
+      "pending": "Les clics s’affichent une fois le post en ligne.",
+      "bodyBrand": "Le lien dans le post de {creator}. Chaque clic est une ligne dans Résultats."
     },
     "draftPreview": {
       "pending": "Brouillon en relecture",
       "approved": "Brouillon validé",
       "yours": "Votre brouillon",
-      "viewPost": "Voir le post sur LinkedIn"
+      "viewPost": "Voir le post sur LinkedIn",
+      "changesRequested": "Dernier brouillon, modifications demandées"
     },
     "validation": {
       "draftMin": "Écrivez au moins {min} caractères. La marque relit le post en entier.",
