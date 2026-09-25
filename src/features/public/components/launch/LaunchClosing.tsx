@@ -1,6 +1,7 @@
 import { ArrowRight, Check } from "lucide-react";
 import Link from "next/link";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
+import { formatWholeEuros } from "@/lib/money";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
 import type { PublicTrail } from "../../constants";
@@ -14,7 +15,8 @@ const heading = "text-[clamp(40px,6vw,80px)] font-semibold leading-[0.95] tracki
 // After the story: how to start, what it costs, questions, sign up. Calmer
 // than the scenes, same type scale, one idea per block.
 export async function LaunchClosing({ trail }: { trail: PublicTrail | null }) {
-  const coinPrice = trail?.example ? `€${Math.round(trail.example.feeCents / 100).toLocaleString("en-US")}` : "€";
+  const locale = await getLocale();
+  const coinPrice = trail?.example ? formatWholeEuros(trail.example.feeCents, locale) : "€";
   const t = await getTranslations("landing");
   const side = (key: "brands" | "creators", href: string) => (
     <div className="rounded-card border border-rule bg-surface p-6 sm:p-8">

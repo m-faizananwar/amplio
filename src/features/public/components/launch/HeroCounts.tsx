@@ -1,6 +1,7 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { formatCount } from "@/lib/money";
 import { useEffect, useState } from "react";
 import { RollingNumber } from "@/components/ui/rolling-number";
 import { cn } from "@/lib/cn";
@@ -12,6 +13,7 @@ const KEYS = ["posts", "links", "clicks", "signups"] as const;
 // up hard from zero, a hairline between each step, sign-ups in green.
 export function HeroCounts({ trail }: { trail: PublicTrail | null }) {
   const t = useTranslations("landing.hero");
+  const locale = useLocale();
   const [shown, setShown] = useState(false);
   useEffect(() => {
     const id = window.setTimeout(() => setShown(true), 350);
@@ -24,7 +26,7 @@ export function HeroCounts({ trail }: { trail: PublicTrail | null }) {
         {KEYS.map((key, i) => (
           <li key={key} className={cn("py-4 pr-4", i > 0 && "sm:border-l sm:border-rule sm:pl-4", i % 2 === 1 && "border-l border-rule pl-4", i > 1 && "border-t border-rule sm:border-t-0")}>
             <span className={cn("block text-h2 font-semibold leading-none tracking-[-0.03em]", key === "signups" && "text-money")}>
-              <RollingNumber value={shown ? trail[key] : 0} />
+              <RollingNumber value={shown ? trail[key] : 0} format={(n) => formatCount(n, locale)} />
             </span>
             <span className="mt-1.5 block text-small text-ink-muted">{t(`counts.${key}`, { count: trail[key] }).replace(/^[\d,  ]+/, "")}</span>
           </li>

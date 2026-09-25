@@ -1,4 +1,5 @@
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
+import { formatCount, formatWholeEuros } from "@/lib/money";
 import Link from "next/link";
 import type { PublicCreator } from "../../../constants";
 import { CtaLinks } from "../calm/CtaLinks";
@@ -6,7 +7,6 @@ import { PublicHero } from "../calm/PublicHero";
 import { CardAssembly } from "../../stage/CardAssembly";
 import { Stage } from "../../stage/Stage";
 
-const euros = (cents: number) => `€${Math.round(cents / 100)}`;
 
 // A creator's path, in the order they live it: four ruled steps with the
 // trail running down their numbers, then the card brands see (a real demo
@@ -14,6 +14,8 @@ const euros = (cents: number) => `€${Math.round(cents / 100)}`;
 export async function ForCreatorsPage({ creator }: { creator: (PublicCreator & { priceCents?: number }) | null }) {
   const t = await getTranslations("public.forCreators");
   const tc = await getTranslations("common");
+  const locale = await getLocale();
+  const euros = (cents: number) => formatWholeEuros(cents, locale);
   const steps = t.raw("steps.items") as { title: string; body: string }[];
   return (
     <>
@@ -66,7 +68,7 @@ export async function ForCreatorsPage({ creator }: { creator: (PublicCreator & {
                 </div>
               </div>
               <dl className="mt-6 grid grid-cols-2 gap-4 border-t border-rule pt-4">
-                <div><dt className="text-caption text-ink-muted">{t("card.followers")}</dt><dd className="num text-h4">{creator.followers.toLocaleString("en-US")}</dd></div>
+                <div><dt className="text-caption text-ink-muted">{t("card.followers")}</dt><dd className="num text-h4">{formatCount(creator.followers, locale)}</dd></div>
                 {creator.priceCents ? <div><dt className="text-caption text-ink-muted">{t("card.perPost")}</dt><dd className="num text-h4">{euros(creator.priceCents)}</dd></div> : null}
               </dl>
               <p className="mt-4 flex flex-wrap gap-1.5">{creator.industries.slice(0, 3).map((i) => <span key={i} className="rounded-chip border border-rule px-2.5 py-0.5 text-caption">{i}</span>)}</p>

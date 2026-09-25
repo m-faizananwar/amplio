@@ -1,7 +1,8 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { formatCount } from "@/lib/money";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
@@ -20,6 +21,7 @@ import { useFlyToCard } from "./useFlyToCard";
 export function CardForm({ state }: { state: OnboardingState }) {
   const t = useTranslations("onboarding.creator.card");
   const tc = useTranslations("onboarding.common");
+  const locale = useLocale();
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const form = useForm<CardInput>({ resolver: zodResolver(cardSchema), defaultValues: cardDefaults(state) });
@@ -53,7 +55,7 @@ export function CardForm({ state }: { state: OnboardingState }) {
           <span ref={countrySlot} className="ml-auto text-caption text-ink-muted">{countryName}</span>
         </div>
         <div ref={industrySlot} className="mt-4 flex flex-wrap items-center gap-1.5 border-t border-rule pt-3">
-          {state.followers > 0 ? <span className="num text-small">{state.followers.toLocaleString("en-US")}</span> : null}
+          {state.followers > 0 ? <span className="num text-small">{formatCount(state.followers, locale)}</span> : null}
           {(industries ?? []).map((i) => <span key={i} className="rounded-chip border border-rule px-2.5 py-0.5 text-caption">{i}</span>)}
         </div>
         <figcaption className="mt-3 text-caption text-ink-muted">{state.profileRead && state.followers > 0 ? t("fromLinkedin") : t("enteredByHand")}</figcaption>

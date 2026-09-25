@@ -1,4 +1,5 @@
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
+import { formatWholeEuros } from "@/lib/money";
 import type { PublicTrail } from "../../constants";
 import { Scene } from "./Scene";
 import { SceneRail } from "./SceneRail";
@@ -30,7 +31,7 @@ export async function LaunchScenes({ trail, creators }: Props) {
     return { index, kicker: String(index + 1).padStart(2, "0"), title: t(`scenes.${key}.title`), body: t(`scenes.${key}.body`) };
   };
   // one real paid post's fee, not an average: the row says "for one published post"
-  const perPost = `€${Math.round((tr.example?.feeCents ?? 0) / 100).toLocaleString("en-US")}`;
+  const perPost = formatWholeEuros(tr.example?.feeCents ?? 0, await getLocale());
   return (
     <div className="relative">
       <SceneRail count={SCENES.length} />

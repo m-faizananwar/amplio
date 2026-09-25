@@ -1,16 +1,18 @@
 "use client";
 
+import { useLocale } from "next-intl";
 import { useRef } from "react";
+import { formatCount, formatWholeEuros } from "@/lib/money";
 import { RollingNumber } from "@/components/ui/rolling-number";
 import { useInView } from "../useInView";
 
 type Props = { billTitle: string; proofTitle: string; billLine: string; paidCents: number; clicksLine: string; signupsLine: string; clicks: number; signups: number; liveLabel: string };
 
-const euros = (cents: number) => `€${Math.round(cents / 100).toLocaleString("en-US")}`;
 
 // Scene 6: the bill and the proof, side by side — what the demo brand paid,
 // and the clicks and sign-ups those posts brought. All three are real counts.
 export function ProofVisual(p: Props) {
+  const locale = useLocale();
   const ref = useRef<HTMLDivElement>(null);
   const on = useInView(ref, { amount: 0.4, repeat: true });
   return (
@@ -22,14 +24,14 @@ export function ProofVisual(p: Props) {
       <div className="st-in-l border-r border-paper/20 p-6 sm:p-8" style={{ ["--d" as string]: "80ms" }}>
         <p className="text-small opacity-70">{p.billTitle}</p>
         <p className="mt-4 text-[clamp(40px,5.5vw,64px)] font-semibold leading-none tracking-[-0.03em]">
-          <RollingNumber value={on ? Math.round(p.paidCents / 100) : 0} format={(n) => euros(n * 100)} />
+          <RollingNumber value={on ? Math.round(p.paidCents / 100) : 0} format={(n) => formatWholeEuros(n * 100, locale)} />
         </p>
         <p className="mt-3 text-small opacity-70">{p.billLine}</p>
       </div>
       <div className="st-in-r p-6 sm:p-8" style={{ ["--d" as string]: "80ms" }}>
         <p className="text-small opacity-70">{p.proofTitle}</p>
         <p className="mt-4 text-[clamp(40px,5.5vw,64px)] font-semibold leading-none tracking-[-0.03em]">
-          <RollingNumber value={on ? p.clicks : 0} />
+          <RollingNumber value={on ? p.clicks : 0} format={(n) => formatCount(n, locale)} />
         </p>
         <p className="mt-1 text-small opacity-70">{p.clicksLine}</p>
         <p className="mt-4 text-[clamp(28px,4vw,40px)] font-semibold leading-none tracking-[-0.03em] text-[color:var(--scene-money)]">

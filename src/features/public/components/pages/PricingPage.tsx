@@ -1,17 +1,19 @@
 import { Check, X } from "lucide-react";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
+import { formatCount, formatWholeEuros } from "@/lib/money";
 import type { PublicTrail } from "../../constants";
 import { CtaLinks } from "./calm/CtaLinks";
 import { PublicHero } from "./calm/PublicHero";
 import { CoinSplit } from "../stage/CoinSplit";
 import { Stage } from "../stage/Stage";
 
-const euros = (cents: number) => `€${Math.round(cents / 100).toLocaleString("en-US")}`;
 
 // Two plans side by side (that's all there is), then a worked example from
 // the demo workspace's real numbers, then what you never pay for.
 export async function PricingPage({ trail }: { trail: PublicTrail | null }) {
   const t = await getTranslations("public.pricing");
+  const locale = await getLocale();
+  const euros = (cents: number) => formatWholeEuros(cents, locale);
   const plan = (key: "brands" | "creators", href: string) => (
     <div className="flex flex-col rounded-card border border-rule bg-surface p-6 sm:p-8">
       <p className="text-small text-ink-muted">{t(`${key}.title`)}</p>
@@ -49,7 +51,7 @@ export async function PricingPage({ trail }: { trail: PublicTrail | null }) {
             <div>
               <dl className="divide-y divide-rule rounded-card border border-rule bg-surface">
                 <div className="flex items-center justify-between gap-4 px-5 py-4"><dt>{t("example.rowPost", { price: euros(trail.example.feeCents) })}</dt><dd className="num text-h4">{euros(trail.example.feeCents)}</dd></div>
-                <div className="flex items-center justify-between gap-4 px-5 py-4"><dt>{t("example.rowClicks", { clicks: trail.example.clicks })}</dt><dd className="num text-h4">{trail.example.clicks.toLocaleString("en-US")}</dd></div>
+                <div className="flex items-center justify-between gap-4 px-5 py-4"><dt>{t("example.rowClicks", { clicks: trail.example.clicks })}</dt><dd className="num text-h4">{formatCount(trail.example.clicks, locale)}</dd></div>
                 <div className="flex items-center justify-between gap-4 px-5 py-4"><dt>{t("example.rowSignups", { signups: trail.example.signups })}</dt><dd className="num text-h4 text-money">{trail.example.signups}</dd></div>
               </dl>
               <p className="mt-3 text-small text-ink-muted">{t("example.note")}</p>

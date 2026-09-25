@@ -1,6 +1,8 @@
 "use client";
 
+import { useLocale } from "next-intl";
 import { useRef } from "react";
+import { formatCount } from "@/lib/money";
 import { RollingNumber } from "@/components/ui/rolling-number";
 import { useInView } from "../useInView";
 
@@ -10,6 +12,7 @@ type Props = { signups: number; label: string; liveLabel: string; compact?: bool
 // sign-up form and turns green; the count is the demo workspace's real one.
 export function SignupsVisual({ signups, label, liveLabel, compact = false }: Props) {
   const ref = useRef<HTMLDivElement>(null);
+  const locale = useLocale();
   const on = useInView(ref, { amount: 0.4, repeat: true });
   return (
     <div ref={ref} className="mx-auto w-full max-w-lg">
@@ -29,7 +32,7 @@ export function SignupsVisual({ signups, label, liveLabel, compact = false }: Pr
         </span>
       </div>}
       <p className="mt-8 text-[clamp(72px,12vw,120px)] font-semibold leading-none tracking-[-0.04em] text-money">
-        <RollingNumber value={on ? signups : 0} />
+        <RollingNumber value={on ? signups : 0} format={(n) => formatCount(n, locale)} />
       </p>
       <p className="mt-2 text-lead text-ink-muted">
         {label} <span className="text-caption">· {liveLabel}</span>
