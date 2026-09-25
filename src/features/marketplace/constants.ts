@@ -4,7 +4,7 @@ export const PAGE_SIZE = 24;
 export const MAX_PAGES = 50;
 export const SEARCH_MAX_LENGTH = 80;
 
-// naano's 24 industries, verbatim from the creator onboarding (product map).
+// The 24 industries creators pick from in onboarding; matching filters on the same list.
 export const INDUSTRIES = [
   "B2B", "B2C", "AI", "SaaS", "Sales", "Marketing", "SEO", "Outreach", "CRM", "Creative", "Productivity",
   "Fintech", "HealthTech", "EdTech", "Cybersecurity", "Growth / GTM", "HR", "E-commerce", "Developer Tools",
@@ -38,7 +38,8 @@ export const MIN_TOPUP_CENTS = 50_000;
 export const TOPUP_STEP_CENTS = 50_000;
 
 // "Audience snapshot — Estimated from N recent public engagers": the sample
-// size is a share of the creator's typical reach, bounded like naano's.
+// size is a share of the creator's typical reach, bounded so tiny and huge
+// accounts still read as a plausible sample.
 export const ENGAGER_SAMPLE_RATE = 0.0026;
 export const ENGAGER_SAMPLE_MIN = 25;
 export const ENGAGER_SAMPLE_MAX = 120;

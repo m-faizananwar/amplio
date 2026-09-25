@@ -1,4 +1,4 @@
-// naano's "starting price" recommendation for a creator. Anchored on the one
+// The "starting price" we recommend to a creator in onboarding. Anchored on the one
 // observation we have (2,070 followers, AI / SaaS / Productivity, ordinary
 // engagement → €315) and shaped like the seed's formula: price follows reach
 // sub-linearly, premium B2B verticals nudge it up, engagement far outside the
@@ -53,7 +53,8 @@ function clampPrice(cents: number) {
   return Math.min(PRICE_CAP_CENTS, Math.max(PRICE_FLOOR_CENTS, cents));
 }
 
-// Cents, rounded to €5, floored at €20 and capped at naano's €1,500 limit.
+// Cents, rounded to €5, floored at €20 and capped at €1,500: the suggestion
+// stops there, though a creator can list a higher price themselves.
 export function recommendPrice(followers: number, industries: readonly string[], engagementRate = 0): number {
   if (!Number.isFinite(followers) || followers <= 0) return PRICE_FLOOR_CENTS;
   const reach = Math.pow(followers / ANCHOR.followers, FOLLOWER_EXPONENT);

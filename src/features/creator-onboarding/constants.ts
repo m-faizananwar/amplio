@@ -14,7 +14,8 @@ export const LINKEDIN_URL_MAX = 300;
 export const LEGAL_TEXT_MAX = 200;
 export const LEGAL_ADDRESS_MAX = 400;
 
-// Bundles: naano's default is 5 posts at ~15% off the unit price.
+// Bundles default to 5 posts at ~15% off the unit price: enough of a discount
+// to be worth offering, small enough not to undercut single posts.
 export const BUNDLE_DEFAULT_POSTS = 5;
 export const BUNDLE_MIN_POSTS = 2;
 export const BUNDLE_MAX_POSTS = 24;

@@ -39,7 +39,7 @@ export const DEFAULT_TARGET_REGIONS = ["Europe"] as const;
 export const INFERRED_INDUSTRIES_MAX = 3;
 export const INFERRED_INDUSTRIES_MIN = 2;
 
-// Keyword → industry (labels from naano's 24 industries, campaigns/constants).
+// Keyword → industry (labels from the 24 industries in campaigns/constants).
 // Hits are counted over the fetched title, description and headings.
 export const INDUSTRY_KEYWORDS: ReadonlyArray<{ industry: string; keywords: readonly string[] }> = [
   { industry: "AI", keywords: ["ai", "artificial intelligence", "llm", "machine learning", "agent", "rag", "gpt"] },

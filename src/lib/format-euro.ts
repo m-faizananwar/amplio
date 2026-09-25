@@ -1,4 +1,4 @@
-// naano prints prices as "188 €", "169.2 €", "5 625 €": space-grouped
+// Prices print as "188 €", "169.2 €", "5 625 €": space-grouped
 // thousands, dot decimals, trailing euro sign.
 const CENTS_PER_EURO = 100;
 const MAX_DECIMALS = 2;
@@ -22,7 +22,7 @@ export function formatEuro(cents: number): string {
   return `${formatEuroAmount(cents)} €`;
 }
 
-// 17.3K, 1.2M, 950 — the compact style naano uses on cards.
+// 17.3K, 1.2M, 950 — the compact style for follower and view counts on cards.
 const THOUSAND = 1000;
 const MILLION = 1_000_000;
 const COMPACT_DECIMALS = 1;

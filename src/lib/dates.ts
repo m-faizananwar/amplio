@@ -9,7 +9,8 @@ const DAY_MS = 86_400_000;
 const DATE_FORMAT = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
 const DATE_TIME_FORMAT = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "UTC" });
 
-// "12 Sept 2026" like naano's campaign cards (UTC).
+// "12 Sept 2026": day first, short month, no weekday — the date on campaign
+// cards and ledgers (UTC).
 export function formatDay(iso: string | null | undefined): string {
   if (!iso) return "—";
   return DAY_FORMAT.format(new Date(iso));

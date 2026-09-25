@@ -9,7 +9,7 @@ export function bundleSummary(bundle: Bundle, priceCents: number) {
   return { perPostCents, savedCents };
 }
 
-// A fresh bundle: naano's default size at the default discount, rounded to the euro.
+// A fresh bundle: the default size at the default discount, rounded to the euro.
 export function defaultBundle(priceCents: number, posts = BUNDLE_DEFAULT_POSTS): Bundle {
   const raw = priceCents * posts * (1 - BUNDLE_DEFAULT_DISCOUNT);
   return { posts, totalCents: Math.round(raw / CENTS_PER_EURO) * CENTS_PER_EURO };

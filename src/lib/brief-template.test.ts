@@ -15,7 +15,7 @@ const zune = {
 };
 
 describe("buildTemplateDraft", () => {
-  it("writes whatToTell in naano's starter-brief phrasing", () => {
+  it("writes whatToTell in the starter-brief phrasing", () => {
     const draft = buildTemplateDraft(zune);
     expect(draft.brief.whatToTell).toContain("Zune is described by the company as zune is an AI product studio");
     expect(draft.brief.whatToTell).toContain("The intended audience is professionals connected to B2B, SaaS, AI in Europe.");

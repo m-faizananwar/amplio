@@ -1,5 +1,5 @@
 // Template brief generator: the fallback when no AI key is configured. Builds
-// a brief in naano's own phrasing (product map, "Starter brief") from the
+// a starter brief (what to tell, who it's for, the angles) from the
 // brand's confirmed profile. Pure: no io.
 
 export type TemplateIcp = { title: string; description: string };

@@ -32,7 +32,8 @@ function TextField({ id, label, error, children }: { id: string; label: string; 
   );
 }
 
-// The brief editor: exactly naano's fields, in their order. Used by the launch
+// The brief editor: every field a creator needs to write the post, in the
+// order they read it. Used by the launch
 // stepper and by Brief › "Edit the brief".
 export function BriefEditor({ campaignId, initial, cancelHref, afterSaveHref, saveLabel }: Props) {
   const t = useTranslations("brand.campaigns.brief");

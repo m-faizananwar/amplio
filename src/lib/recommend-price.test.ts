@@ -4,7 +4,7 @@ import { PRICE_CAP_CENTS, PRICE_FLOOR_CENTS, engagementFactor, industryFactor, r
 const ANCHOR_INDUSTRIES = ["AI", "SaaS", "Productivity"];
 
 describe("recommendPrice", () => {
-  it("reproduces naano's observed recommendation at the anchor", () => {
+  it("reproduces the observed recommendation at the anchor", () => {
     expect(recommendPrice(2070, ANCHOR_INDUSTRIES, 0.05)).toBe(31_500);
     // the demo creator (2,070 followers, 4.29% engagement) sits inside the normal band
     expect(recommendPrice(2070, ANCHOR_INDUSTRIES, 0.0429)).toBe(31_500);

@@ -1,7 +1,7 @@
 import type { CollaborationStatus } from "@/lib/collaboration-status";
 
 import { BRAND } from "@/config/brand";
-// naano's 24 industries, verbatim from the creator onboarding (product map).
+// The 24 industries creators pick from in onboarding; campaigns target the same list.
 // Copied from scripts/seed/taxonomy.ts on purpose: features never import seeds.
 export const INDUSTRIES = [
   "B2B", "B2C", "AI", "SaaS", "Sales", "Marketing", "SEO", "Outreach", "CRM", "Creative", "Productivity",

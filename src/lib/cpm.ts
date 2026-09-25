@@ -1,4 +1,5 @@
-// naano's CPM: what one thousand views cost at the creator's post price.
+// CPM: what one thousand views cost at the creator's post price, so brands can
+// compare creators of different sizes on one number.
 const VIEWS_PER_CPM = 1000;
 
 // Returns cents per 1,000 views, or null when there is no reach to divide by.
