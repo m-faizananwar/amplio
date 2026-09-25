@@ -5,7 +5,8 @@ import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YA
 import type { SeriesRange } from "../../constants";
 import type { SeriesPoint } from "../../server/queries";
 
-// naano draws every line chart on mount: 2.5s ease-out after a 0.5s delay.
+// DrawnChart draws the line in once (the motion kit's duration, instant
+// under reduced motion); recharts' own animation stays off.
 // Split from ClicksChart so recharts (98 kB) loads with the chart, not with
 // the page around it.
 export function ClicksChartCanvas({ series, range }: { series: SeriesPoint[]; range: SeriesRange }) {
