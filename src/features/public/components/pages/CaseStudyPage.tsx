@@ -1,3 +1,4 @@
+import { Reveal } from "@/components/motion/Reveal";
 import { Check, Play } from "lucide-react";
 import { CASE_STUDY_PAGE } from "../../page-copy";
 import { cn } from "cn";
@@ -50,41 +51,45 @@ export function CaseStudyPage() {
         </div>
       </section>
       {/* the numbers are what this page is for: the one ink section (paper either side) */}
-      <section className="section-ink px-4 sm:px-6" data-morph-group>
-        <div className="mx-auto max-w-6xl">
-          <h2 className="text-3xl font-bold tracking-[-0.03em] sm:text-4xl" data-morph="text">{c.resultsTitle}</h2>
-          <div className="mt-10" data-morph><Stats items={c.headline} /></div>
-          <div className="mt-4" data-morph><Stats items={c.detail} /></div>
-        </div>
-      </section>
-      <CaseStudyNarrative />
-      <section className="px-4 pb-24 sm:px-6">
-        <div className="mx-auto max-w-6xl lg:grid lg:grid-cols-[1fr_2fr] lg:gap-12">
-          <div>
-            <p className="text-xs text-muted-foreground">{c.why.n}</p>
-            <h2 className="mt-1 text-3xl font-bold tracking-tight">{c.why.title}</h2>
-            <p className="mt-3 text-muted-foreground">{c.why.sub}</p>
+      <Reveal>
+        <section className="section-ink px-4 sm:px-6">
+          <div className="mx-auto max-w-6xl">
+            <h2 className="text-3xl font-bold tracking-[-0.03em] sm:text-4xl">{c.resultsTitle}</h2>
+            <div className="mt-10"><Stats items={c.headline} /></div>
+            <div className="mt-4"><Stats items={c.detail} /></div>
           </div>
-          <ul className="mt-8 divide-y border-y lg:mt-0">
-            {c.why.bullets.map((bullet) => (
-              <li key={bullet} className="flex items-start gap-3 py-4 text-lg">
-                <span className="mt-1 flex size-6 shrink-0 items-center justify-center rounded-full bg-brand-soft text-brand">
-                  <Check className="size-3.5" aria-hidden="true" />
-                </span>
-                {bullet}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <figure className="mx-auto mt-20 max-w-3xl text-center">
-          <blockquote className="text-2xl font-semibold tracking-tight sm:text-3xl">“{c.quote.text}”</blockquote>
-          <figcaption className="mt-6 flex flex-col items-center">
-            <CreatorAvatar name={c.quote.author} className="size-12" />
-            <p className="mt-2 font-semibold">{c.quote.author}</p>
-            <p className="text-sm text-muted-foreground">{c.quote.role}</p>
-          </figcaption>
-        </figure>
-      </section>
+        </section>
+      </Reveal>
+      <CaseStudyNarrative />
+      <Reveal>
+        <section className="px-4 pb-24 sm:px-6">
+          <div className="mx-auto max-w-6xl lg:grid lg:grid-cols-[1fr_2fr] lg:gap-12">
+            <div>
+              <p className="text-xs text-muted-foreground">{c.why.n}</p>
+              <h2 className="mt-1 text-3xl font-bold tracking-tight">{c.why.title}</h2>
+              <p className="mt-3 text-muted-foreground">{c.why.sub}</p>
+            </div>
+            <ul className="mt-8 divide-y border-y lg:mt-0">
+              {c.why.bullets.map((bullet) => (
+                <li key={bullet} className="flex items-start gap-3 py-4 text-lg">
+                  <span className="mt-1 flex size-6 shrink-0 items-center justify-center rounded-full bg-brand-soft text-brand">
+                    <Check className="size-3.5" aria-hidden="true" />
+                  </span>
+                  {bullet}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <figure className="mx-auto mt-20 max-w-3xl text-center">
+            <blockquote className="text-2xl font-semibold tracking-tight sm:text-3xl">“{c.quote.text}”</blockquote>
+            <figcaption className="mt-6 flex flex-col items-center">
+              <CreatorAvatar name={c.quote.author} className="size-12" />
+              <p className="mt-2 font-semibold">{c.quote.author}</p>
+              <p className="text-sm text-muted-foreground">{c.quote.role}</p>
+            </figcaption>
+          </figure>
+        </section>
+      </Reveal>
       <CtaSection />
     </>
   );

@@ -1,3 +1,4 @@
+import { Reveal } from "@/components/motion/Reveal";
 import { cn } from "cn";
 import { ShieldCheck, Star } from "lucide-react";
 import { HERO_LOGOS } from "../../../constants";
@@ -56,43 +57,49 @@ export function ForCreatorsPage() {
       <Hero />
       <CreatorMonetizeSection />
       <CreatorPlatformSection />
-      <section className="px-4 py-24 sm:px-6">
-        <figure className="mx-auto max-w-3xl text-center">
-          <p className="flex justify-center gap-1" aria-label={`${STARS} out of ${STARS} stars`}>
-            {Array.from({ length: STARS }, (_, index) => (
-              <Star key={index} className="size-4 fill-current text-amber-500" aria-hidden="true" />
-            ))}
-          </p>
-          <blockquote className="mt-6 text-3xl font-medium leading-tight tracking-tight text-foreground/35 sm:text-5xl">
-            “{testimonial.quote} <span className="text-brand">.</span>”
-          </blockquote>
-          <figcaption className="mt-10 flex flex-col items-center">
-            <CreatorAvatar name={testimonial.author} className="size-20" />
-            <p className="mt-4 font-semibold">{testimonial.author}</p>
-            <p className="text-sm text-muted-foreground">{testimonial.role}</p>
-          </figcaption>
-        </figure>
-      </section>
+      <Reveal>
+        <section className="px-4 py-24 sm:px-6">
+          <figure className="mx-auto max-w-3xl text-center">
+            <p className="flex justify-center gap-1" aria-label={`${STARS} out of ${STARS} stars`}>
+              {Array.from({ length: STARS }, (_, index) => (
+                <Star key={index} className="size-4 fill-current text-amber-500" aria-hidden="true" />
+              ))}
+            </p>
+            <blockquote className="mt-6 text-3xl font-medium leading-tight tracking-tight text-foreground/35 sm:text-5xl">
+              “{testimonial.quote} <span className="text-brand">.</span>”
+            </blockquote>
+            <figcaption className="mt-10 flex flex-col items-center">
+              <CreatorAvatar name={testimonial.author} className="size-20" />
+              <p className="mt-4 font-semibold">{testimonial.author}</p>
+              <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+            </figcaption>
+          </figure>
+        </section>
+      </Reveal>
       {/* what creators earn is what this page is for: the one ink section */}
-      <section className="section-ink px-4 sm:px-6">
-        <p className="mb-8 flex items-center justify-center gap-2 text-xs font-semibold uppercase tracking-[0.18em]">
-          <span aria-hidden="true" className="size-1.5 rounded-full bg-current" />
-          {results.eyebrow}
-        </p>
-        <div className="mx-auto max-w-6xl">
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {results.stats.map((stat) => (
-              <LedMetricCard key={stat.label} value={stat.value} label={stat.label} />
-            ))}
+      <Reveal>
+        <section className="section-ink px-4 sm:px-6">
+          <p className="mb-8 flex items-center justify-center gap-2 text-xs font-semibold uppercase tracking-[0.18em]">
+            <span aria-hidden="true" className="size-1.5 rounded-full bg-current" />
+            {results.eyebrow}
+          </p>
+          <div className="mx-auto max-w-6xl">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {results.stats.map((stat) => (
+                <LedMetricCard key={stat.label} value={stat.value} label={stat.label} />
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
-      <section className="px-4 pb-24 sm:px-6">
-        <SectionHeading title={faq.title} sub={faq.sub} />
-        <div className="mx-auto mt-10 max-w-3xl">
-          <FaqList items={faq.items} />
-        </div>
-      </section>
+        </section>
+      </Reveal>
+      <Reveal>
+        <section className="px-4 pb-24 sm:px-6">
+          <SectionHeading title={faq.title} sub={faq.sub} />
+          <div className="mx-auto mt-10 max-w-3xl">
+            <FaqList items={faq.items} />
+          </div>
+        </section>
+      </Reveal>
       <section className="page-hero px-4 py-24 text-center sm:px-6">
         <p className="page-hero-eyebrow text-[12.5px] uppercase tracking-[0.18em]">{cta.eyebrow}</p>
         <h2 className="mx-auto mt-4 max-w-3xl text-4xl font-bold tracking-[-0.03em] sm:text-6xl">{cta.title}</h2>
