@@ -33,9 +33,11 @@ profile import now reads the public profile through Apify).
 
 Shipped under the name Amplio; naano.com was the reference product. The mark is three dots joined by one line (`src/components/brand`), the wordmark is Geist 600; `node scripts/icons.mjs` re-renders the favicon PNGs.
 
-A working rebuild of [naano](https://naano.com), the B2B LinkedIn creator marketplace: brands book vetted creators at a
-fixed price per post, creators write in their own voice, and every post's clicks, sign-ups and purchases are attributed
-back to the creator through a tracked link and a pixel. Next.js 16 (App Router), TypeScript, Tailwind v4, shadcn, Vercel Web Analytics + Speed Insights are mounted in the root layout (no custom events).
+Amplio is a B2B marketplace for LinkedIn creators. A brand sees creators ranked against its campaign brief, with the
+reasons shown, and books one at a fixed price per post: the fee is held from its wallet until the creator answers. The
+creator writes the post in their own voice and the brand approves the draft before it goes out. Every click on the
+post's tracked link, and every sign-up or purchase the brand's pixel ties to that click, traces back to the creator who
+brought it. Next.js 16 (App Router), TypeScript, Tailwind v4, shadcn, Vercel Web Analytics + Speed Insights are mounted in the root layout (no custom events).
 Drizzle + Postgres, deployed on Vercel.
 
 **Live: https://amplio-mvp.vercel.app** (auto-deployed from `main`; Postgres on Neon). Demo logins on `/login`:
@@ -110,7 +112,7 @@ change goes through `transition()` (`src/features/collaborations/server/transiti
 releases it, acceptance creates the tracked link, going live creates a pending payout, paying settles both.
 
 **Attribution is real.** `/r/{code}` is one insert + one 302; the click id rides on a cookie and a `?nn=` param.
-`/n.js` is a pixel with naano's API (`naano('track', 'signup', { email })`); `/api/pixel` stores the event against the
+`/n.js` is the pixel (`amplio('track', 'signup', { email })`, the call shape the reference used); `/api/pixel` stores the event against the
 click. `/demo/landing` is a stand-in customer site with the pixel installed — every seeded tracked link lands there (with the
 brand's own site key), so on the live site you can click a creator's link, sign up, and watch Results move. Every number on every dashboard is a
 query over rows; the click log exports to CSV per creator.
@@ -126,12 +128,12 @@ query over rows; the click log exports to CSV per creator.
 | Describe who you want | Real ranking from a sentence; the write-up and trade-off come from the resolved LLM (in the reader's language) when a key is set, otherwise a template built from the fit signals — the UI labels which. The answer lands as the same ledger rows. Thumbs/copy write a `nao_feedback` row and say "noted" — feedback doesn't steer ranking. |
 | Campaigns | Real: ledger list, a detail page per campaign (header with the projection from Amplio's own data beside actual clicks; tabs Collaborations — next step and owner per row — Brief, Shortlist, Analytics), brief editor, delete (two clicks; held fees come back). New campaign = three questions → an editable brief drafted by the LLM or the template. Start-from-link is cut: the link was never read. 4-step launch ending on the estimator: `src/lib/estimator.ts` derives clicks-per-view and sign-ups-per-click from Amplio's own live posts (`campaigns/server/read-rates.ts`) and shows the sample; below 3 live posts / 30 clicks it says "not enough data yet". |
 | Collaborations | Real on both sides: apply, accept/decline, draft, review modal (approve / request changes, capped rounds), schedule, publish with post URL, pay; optimistic UI with rollback; timeline from `collaboration_events`. |
-| Messages | Real threads per accepted booking, both sides; NaanoBot is a static placeholder; reactions are visual. |
+| Messages | Real threads per accepted booking, both sides, optimistic send; quick reactions drop an emoji into the message. The canned support-bot thread is cut: it answered nothing. |
 | Tracking | Real: redirect, pixel, collector. Results: four numbers that each open the rows they're made of (estimated reach → live posts, clicks → click rows, attributed sign-ups → pixel events tied to a click, committed → ledger), pixel status, clicks over time, per-creator attribution with per-row CSV, live posts, the raw click log + CSV. Campaign analytics and creator analytics from the same rows. Post reactions/comments are the creator's recent public-post averages (labelled); LinkedIn's own sponsored-post metrics are not imported. |
 | Billing / earnings | Real ledger. Brand Billing shows where the money is — available, held for invitations nobody has answered, committed to accepted work, paid — then the ledger (paid bookings print a stamp). Top-ups are a demo with no card (the dialog says so). Creator side: payouts, withdrawals (bank = pending "in transit", Stripe settles instantly). No Stripe Connect, no real bank rail, no invoice PDFs. |
-| Settings, community, affiliate | Real screens with real updates (profile incl. X handle, audience, payout details, delete account). Team invites and the Slack community need email/Slack and say so; Affiliate: brands that sign up through a creator's `?ref=` link are attributed; rewards assume a 20% platform commission (naano doesn't publish it) × 25% share for 3 months. Community leaderboard toggles impressions/posts. |
-| Assistant | naano's floating glass pill on every page (liquid-gooey for the pill/chevron/bubble morph, framer-motion springs for every open/close/pop, border-beam on the panel while thinking, thinking-orbs where the reply lands, metal-fx ring on the mic), typed messages go to `/api/assistant/chat`: signed in they run the same tools and confirm gate as voice, otherwise a short answer from the provider resolver (claude → gemini → keyless template) over a read-only context (your campaigns/wallet/pending actions, or opportunities/collaborations/earnings; when logged out, a checked list of product facts in `src/features/assistant/facts.ts` — no prices, customers or figures we can't back). Conversation kept per tab. cobe globes (creator countries from the seed) on the landing, community and marketplace. |
-| Motion (app) | anime.js 4 through one module (`src/lib/motion/anime.ts`: reveal, stagger, countUp, drawPath, enter/exit, timeline — every helper a no-op under `prefers-reduced-motion`): dashboard stat tiles count up, list rows stagger 30ms on load and filter change (marketplace, collaborations, campaigns, opportunities, ledger, click log), the collaboration timeline draws its connector and pops events, the live card flips stats on field changes, the onboarding analyze step runs a timeline, review-draft / add-budget / brief drawer enter and exit with anime, results charts and audience bars draw and fill with anime. Nothing over 800ms. |
+| Settings, affiliate | Real screens with real updates (profile incl. X handle, audience, payout details, delete account). Affiliate: brands that sign up through a creator's `?ref=` link are recorded, with the paid collaborations they've run since; no reward is computed, because the platform takes no fee in this build. Community leaderboard, team invites and the guided tour are cut. |
+| Assistant | A floating pill on the app and public pages (a static shell at first paint; the interactive widget loads when the page is idle); typed messages go to `/api/assistant/chat`: signed in they run the same tools and confirm gate as voice, otherwise a short answer from the provider resolver (claude → gemini → keyless template) over a read-only context (your campaigns/wallet/pending actions, or opportunities/collaborations/earnings; when logged out, a checked list of product facts in `src/features/assistant/facts.ts` — no prices, customers or figures we can't back). Conversation kept per tab. |
+| Motion (app) | One kit, all on `/dev/ui`: `src/components/graphics` (a glyph per collaboration state that redraws when the state moves, the fit ring, the audience orbit, the PAID stamp, a burst on success, the trail loader, four empty-state scenes) and `src/components/motion` (charts and sparklines that draw in, numbers that roll per digit, sections that rise in on scroll, the page kept on screen while the next loads). Transitions 150–220 ms; drawings (charts, glyphs, the ring) take up to about 0.9 s; opacity / transform / stroke only; under `prefers-reduced-motion` everything shows its last frame. |
 | Voice | Real command layer on the floating pill (`src/features/voice`, `docs/voice.md`): Web Speech API by default, Vapi when both keys are set; intents parsed by Claude with structured output or a regex grammar; every tool runs the same server actions as the UI (session + CSRF); money and status changes ask "Confirm?" and wait for a yes. Navigation from a Vapi reply is spoken, not performed (the webhook has no page). |
 | Book a call | Removed from the public site (it was naano's booking page). |
 | EN / FR | Real: next-intl, one set of URLs. The app reads the `NEXT_LOCALE` cookie; the public and auth pages live under `app/[locale]` and are prerendered in both languages, with `src/proxy.ts` rewriting `/pricing` to `/en/pricing` or `/fr/pricing` from the cookie, then Accept-Language. Messages: every namespace in `messages/{en,fr}/*.json` (a dotted file name nests, so a namespace can be split), copy drafted by writing subagents. Server-worded strings (notifications, fit reasons, skip reasons) are returned as facts and worded in the view. Agency mode toggle: cut. |
@@ -141,10 +143,10 @@ query over rows; the click log exports to CSV per creator.
 Not built: email delivery, Stripe Connect, LinkedIn's own metrics for sponsored posts,
 X/YouTube channels, `/api/mcp` (the integrations page that documented it is cut), `llms.txt`, blog, free tools and selection-tool pages, cookie banner.
 
-Motion follows naano's own keyframes and easings (`src/app/globals.css`); every animation shows its end state under
-`prefers-reduced-motion`.
+Motion tokens (150 / 180 / 220 ms, one ease-out curve) live in `src/app/globals.css`; every animation shows its end
+state under `prefers-reduced-motion`.
 
 ## Environment
 
 See `.env.example`. `DATABASE_URL` is required for the product to have rows; `ANTHROPIC_API_KEY` / `GEMINI_API_KEY` are optional (AI briefs,
-Nao rationale and brand-onboarding profile fall back to templates without it). Vercel sets `VERCEL_GIT_COMMIT_SHA`.
+the matching write-up and brand-onboarding profile fall back to templates without it). Vercel sets `VERCEL_GIT_COMMIT_SHA`.
