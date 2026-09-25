@@ -73,12 +73,13 @@ export function ForCreatorsPage() {
           </figcaption>
         </figure>
       </section>
-      <section className="px-4 pb-24 sm:px-6">
-        <p className="mb-8 flex items-center justify-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-success">
-          <span aria-hidden="true" className="size-1.5 rounded-full bg-success" />
+      {/* what creators earn is what this page is for: the one ink section */}
+      <section className="section-ink px-4 sm:px-6">
+        <p className="mb-8 flex items-center justify-center gap-2 text-xs font-semibold uppercase tracking-[0.18em]">
+          <span aria-hidden="true" className="size-1.5 rounded-full bg-current" />
           {results.eyebrow}
         </p>
-        <div className="mx-auto max-w-6xl rounded-[2rem] bg-muted/40 p-4 sm:p-8">
+        <div className="mx-auto max-w-6xl">
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {results.stats.map((stat) => (
               <LedMetricCard key={stat.label} value={stat.value} label={stat.label} />

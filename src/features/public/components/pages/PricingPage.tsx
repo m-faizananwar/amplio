@@ -17,7 +17,8 @@ export function PricingPage() {
           <PricingPlans />
         </div>
       </section>
-      <section className="bg-muted/40 px-4 py-24 sm:px-6">
+      {/* how per-post pricing works: the one ink section, plans above, faq below */}
+      <section className="section-ink px-4 sm:px-6">
         <div className="mx-auto max-w-6xl">
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{PRICING_PAGE.perPost.title}</h2>
           <ol className="mt-10 grid gap-6 md:grid-cols-3">

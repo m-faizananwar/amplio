@@ -18,7 +18,8 @@ export function AboutPage() {
           ))}
         </ul>
       </PageHero>
-      <section className="bg-muted/40 px-4 py-24 sm:px-6">
+      {/* the founding story and the facts: the one ink section, paper either side */}
+      <section className="section-ink px-4 sm:px-6">
         <div className="mx-auto max-w-4xl">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">{ABOUT_PAGE.started.eyebrow}</p>
           <h2 className="mt-4 text-4xl font-semibold tracking-tight">{ABOUT_PAGE.started.title}</h2>

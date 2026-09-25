@@ -44,10 +44,19 @@ export function BenchmarksPage() {
           </div>
         </section>
         <BenchmarksMethodology />
-        <Block title={b.vsAds.title} body={b.vsAds.body}>
-          <DataTable columns={b.vsAds.columns} rows={b.vsAds.rows} caption={`${BRAND.name} versus LinkedIn Ads benchmarks`} />
-          <p className="mt-4 text-sm text-muted-foreground">{b.vsAds.footnote}</p>
-        </Block>
+      </article>
+      {/* the comparison table is what the page is cited for: the one ink section */}
+      <section className="section-ink px-4 sm:px-6">
+        <div className="mx-auto max-w-4xl">
+          <h2 className="text-3xl font-semibold tracking-tight">{b.vsAds.title}</h2>
+          <p className="mt-4 text-lg text-foreground/75">{b.vsAds.body}</p>
+          <div className="mt-8">
+            <DataTable columns={b.vsAds.columns} rows={b.vsAds.rows} caption={`${BRAND.name} versus LinkedIn Ads benchmarks`} />
+            <p className="mt-4 text-sm text-muted-foreground">{b.vsAds.footnote}</p>
+          </div>
+        </div>
+      </section>
+      <article className="mx-auto max-w-4xl px-4 pb-16 sm:px-6">
         <Block title={b.ctrByTier.title} body={b.ctrByTier.body}>
           <DataTable columns={b.ctrByTier.columns} rows={b.ctrByTier.rows} caption="Median CTR by creator follower tier" />
         </Block>

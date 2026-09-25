@@ -13,7 +13,8 @@ export function ForAgenciesPage() {
           <PillLink href={hero.cta.href} label={hero.cta.label} />
         </div>
       </PageHero>
-      <section id="workspaces" className="scroll-mt-20 px-4 pb-24 sm:px-6">
+      {/* the two ways to run client work: the one ink section */}
+      <section id="workspaces" className="section-ink scroll-mt-20 px-4 sm:px-6">
         <div className="mx-auto max-w-6xl">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand">{workspaces.eyebrow}</p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">{workspaces.title}</h2>

@@ -8,7 +8,8 @@ export function FaqPage() {
   return (
     <>
       <PageHero eyebrow={FAQ_PAGE.hero.eyebrow} title={FAQ_PAGE.hero.title} sub={FAQ_PAGE.hero.sub} />
-      <section className="px-4 pb-24 sm:px-6">
+      {/* the questions are the page: ink, as the landing's faq section is */}
+      <section className="section-ink px-4 sm:px-6">
         <div className="mx-auto grid max-w-6xl gap-16 lg:grid-cols-2">
           <div>
             <h2 className="text-2xl font-bold tracking-tight">{FAQ_PAGE.companies}</h2>
