@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { getTranslations } from "next-intl/server";
 import { BrandLockup } from "@/components/brand/BrandLockup";
 import { LocaleToggle } from "@/components/shell/topbar/LocaleToggle";
+import { AmbientTrail } from "@/features/public/components/stage/AmbientTrail";
 
 // Auth and onboarding are one centred column (DIRECTION.md); `wide` gives
 // onboarding's longer forms room: the lockup home, the rail when
@@ -17,7 +18,8 @@ export async function AuthColumn({ rail, children, wide = false }: { rail?: Reac
         </Link>
         <LocaleToggle />
       </header>
-      <main className="flex flex-1 justify-center px-4 pb-16 pt-6 sm:pt-12">
+      <main className="relative flex flex-1 justify-center px-4 pb-16 pt-6 sm:pt-12">
+        <AmbientTrail className="pointer-events-none absolute left-[max(2rem,calc(50%-40rem))] top-24 hidden w-56 opacity-70 lg:block" />
         <div className={wide ? "w-full max-w-[36rem] animate-rise" : "w-full max-w-[26rem] animate-rise"}>
           {rail ? <div className="mb-10">{rail}</div> : null}
           {children}
