@@ -4,16 +4,16 @@ import { useRef } from "react";
 import { RollingNumber } from "@/components/ui/rolling-number";
 import { useInView } from "../useInView";
 
-type Props = { clicks: number; label: string; liveLabel: string; rowLabel: string };
+type Props = { clicks: number; label: string; liveLabel: string; rowLabel: string; link: string };
 
 // Scene 3: clicks light up. The count is the demo workspace's real total; the
 // rows below it are what each click becomes (a row with its source).
-export function ClicksVisual({ clicks, label, liveLabel, rowLabel }: Props) {
+export function ClicksVisual({ clicks, label, liveLabel, rowLabel, link }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const on = useInView(ref, { amount: 0.4, repeat: true });
   return (
-    <div ref={ref} className="mx-auto w-full max-w-md">
-      <p className="text-[clamp(64px,11vw,120px)] font-semibold leading-none tracking-[-0.04em]">
+    <div ref={ref} className="mx-auto w-full max-w-lg">
+      <p className="text-[clamp(72px,12vw,120px)] font-semibold leading-none tracking-[-0.04em]">
         <RollingNumber value={on ? clicks : 0} />
       </p>
       <p className="mt-2 text-lead text-ink-muted">
@@ -26,7 +26,9 @@ export function ClicksVisual({ clicks, label, liveLabel, rowLabel }: Props) {
               <span className="ping absolute inset-0 rounded-full bg-ink" style={{ ["--d" as string]: `${i * 200}ms` }} />
               <span className="relative size-2 rounded-full bg-ink" />
             </span>
+            <span className="num w-14 text-ink-muted">#{Math.max(clicks - i, 1)}</span>
             <span>{rowLabel}</span>
+            <span className="num hidden truncate text-ink-muted sm:inline">{link}</span>
             <span className="num ml-auto text-ink-muted">linkedin.com</span>
           </li>
         ))}

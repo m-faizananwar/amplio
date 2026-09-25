@@ -8,14 +8,14 @@ const RINGS = [
 
 export function AudienceVisual() {
   return (
-    <svg viewBox="-220 -220 440 440" className="mx-auto w-full max-w-md" aria-hidden="true">
+    <svg viewBox="-220 -220 440 440" className="size-full" aria-hidden="true">
       {RINGS.map((ring, ri) =>
         Array.from({ length: ring.n }, (_, i) => {
           const a = (i / ring.n) * Math.PI * 2 + ri * 0.4;
           const x = Math.cos(a) * ring.r;
           const y = Math.sin(a) * ring.r;
           const fit = (i + ri) % 3 === 0;
-          const d = `${ri * 110 + i * 12}ms`;
+          const d = `${260 + ri * 90 + i * 8}ms`;
           return (
             <g key={`${ri}-${i}`}>
               <line x1="0" y1="0" x2={x} y2={y} stroke="var(--color-ink)" strokeOpacity={fit ? 0.25 : 0.08} className="draw" style={{ ["--len" as string]: ring.r, ["--d" as string]: d }} />
@@ -24,8 +24,6 @@ export function AudienceVisual() {
           );
         }),
       )}
-      <circle r="16" fill="var(--color-ink)" />
-      <circle r="16" fill="none" stroke="var(--color-ink)" className="ping" />
     </svg>
   );
 }

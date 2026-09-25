@@ -17,7 +17,13 @@
       "signups": "{count, plural, one {# sign-up} other {# sign-ups}}"
     },
     "lastClick": "last click {time}",
-    "offline": "Live counts are unavailable right now."
+    "offline": "Live counts are unavailable right now.",
+    "trail": {
+      "posts": "posts",
+      "site": "your site",
+      "ledger": "sign-ups → rows"
+    },
+    "tapHint": "Tap the drawing to send clicks."
   },
   "scenes": {
     "post": {

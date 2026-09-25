@@ -41,15 +41,15 @@ export function layoutTrail(width: number, height: number, counts: { audience: n
   // desktop: the trail fills the right half, the headline owns the left;
   // phones: the trail sits in the lower half, under the text
   const markBox = narrow ? Math.min(width * 0.3, 120) : Math.min(width * 0.13, height * 0.3, 190);
-  const markX = narrow ? width * 0.06 : width * 0.47;
-  const markY = narrow ? height * 0.64 : height * 0.2;
+  const markX = narrow ? width * 0.06 : width * 0.56;
+  const markY = narrow ? height * 0.1 : height * 0.2;
   const sources = MARK.map(([x, y]) => ({ x: markX + (x / 24) * markBox, y: markY + (y / 24) * markBox }));
 
-  const site = { x: width * (narrow ? 0.74 : 0.8), y: height * (narrow ? 0.78 : 0.56) };
-  const ledgerX = width * (narrow ? 0.8 : 0.86);
-  const rowHeight = narrow ? 9 : 14;
+  const site = { x: width * (narrow ? 0.7 : 0.82), y: height * (narrow ? 0.62 : 0.56) };
+  const ledgerX = width * (narrow ? 0.8 : 0.88);
+  const rowHeight = narrow ? 10 : 16;
   const rows = Math.min(ledgerRows, LEDGER_ROWS_MAX);
-  const ledger = { x: ledgerX, top: site.y - (rows * rowHeight) / 2, rowHeight, rowWidth: width * (narrow ? 0.14 : 0.1), rows };
+  const ledger = { x: ledgerX, top: site.y - (rows * rowHeight) / 2, rowHeight, rowWidth: width * (narrow ? 0.12 : 0.07), rows };
 
   // the audience: a loose cloud between the mark and the site, denser near the middle
   const audience: Point[] = [];
@@ -60,8 +60,8 @@ export function layoutTrail(width: number, height: number, counts: { audience: n
     const u = rand();
     const v = rand();
     const spread = Math.sin(Math.PI * u);
-    const midY = narrow ? height * 0.78 : height * 0.52;
-    const band = narrow ? 0.28 : 0.62;
+    const midY = narrow ? height * 0.55 : height * 0.52;
+    const band = narrow ? 0.7 : 0.62;
     audience.push({ x: left + (right - left) * u, y: midY + (v - 0.5) * height * band * (0.45 + 0.55 * spread) });
     parentOf.push(Math.floor(rand() * sources.length));
   }

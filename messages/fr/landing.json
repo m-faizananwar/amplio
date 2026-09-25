@@ -17,7 +17,13 @@
       "signups": "{count, plural, one {# inscription} other {# inscriptions}}"
     },
     "lastClick": "dernier clic {time}",
-    "offline": "Les chiffres en direct sont indisponibles pour le moment."
+    "offline": "Les chiffres en direct sont indisponibles pour le moment.",
+    "trail": {
+      "posts": "posts",
+      "site": "votre site",
+      "ledger": "inscriptions → lignes"
+    },
+    "tapHint": "Touchez le dessin pour envoyer des clics."
   },
   "scenes": {
     "post": {

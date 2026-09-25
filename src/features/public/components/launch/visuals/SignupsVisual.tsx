@@ -12,7 +12,7 @@ export function SignupsVisual({ signups, label, liveLabel }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const on = useInView(ref, { amount: 0.4, repeat: true });
   return (
-    <div ref={ref} className="mx-auto w-full max-w-md">
+    <div ref={ref} className="mx-auto w-full max-w-lg">
       <div className="relative rounded-card border border-rule bg-surface shadow-float">
         <div className="flex gap-1.5 border-b border-rule px-4 py-3" aria-hidden="true">
           {[0, 1, 2].map((i) => <span key={i} className="size-2 rounded-full bg-ink/15" />)}
@@ -28,7 +28,7 @@ export function SignupsVisual({ signups, label, liveLabel }: Props) {
           ✓
         </span>
       </div>
-      <p className="mt-8 text-[clamp(56px,9vw,96px)] font-semibold leading-none tracking-[-0.04em] text-money">
+      <p className="mt-8 text-[clamp(72px,12vw,120px)] font-semibold leading-none tracking-[-0.04em] text-money">
         <RollingNumber value={on ? signups : 0} />
       </p>
       <p className="mt-2 text-lead text-ink-muted">

@@ -31,7 +31,7 @@ export async function LaunchClosing() {
     <div className="rounded-card border border-rule bg-surface p-6 sm:p-8">
       <p className="text-small text-ink-muted">{t(`pricing.${key}.title`)}</p>
       <p className="mt-3 flex items-baseline gap-2">
-        <span className="num text-h1">{t(`pricing.${key}.price`)}</span>
+        <span className={cn("text-h1 tracking-[-0.03em]", /\d/.test(t(`pricing.${key}.price`)) && "num")}>{t(`pricing.${key}.price`)}</span>
         <span className="text-ink-muted">{t(`pricing.${key}.unit`)}</span>
       </p>
       <ul className="mt-6 space-y-3">

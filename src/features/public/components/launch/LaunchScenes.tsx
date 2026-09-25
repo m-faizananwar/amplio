@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import type { PublicTrail } from "../../constants";
 import { Scene } from "./Scene";
-import { AudienceVisual } from "./visuals/AudienceVisual";
+import { SceneRail } from "./SceneRail";
 import { ClicksVisual } from "./visuals/ClicksVisual";
 import { LedgerVisual } from "./visuals/LedgerVisual";
 import { PostVisual } from "./visuals/PostVisual";
@@ -10,34 +10,42 @@ import { SignupsVisual } from "./visuals/SignupsVisual";
 
 type Props = { trail: PublicTrail | null; creators: string[] };
 
-// The story, one idea per screen: post → audience → clicks → sign-ups →
-// named rows → the bill next to the proof (the one ink beat).
+const LINK = "amplio.link/r/k3x9";
+const SCENES = ["post", "clicks", "signups", "ledger", "proof"] as const;
+
+// The story in five beats, one idea per screen: a post goes out and its
+// audience lights up → clicks → sign-ups → every row has a name → the bill
+// joined to the proof (the one ink beat). A rail on the left keeps your place.
 export async function LaunchScenes({ trail, creators }: Props) {
   const t = await getTranslations("landing");
   const tr = trail ?? { posts: 0, links: 0, clicks: 0, signups: 0, paidPosts: 0, paidCents: 0, lastClickAt: null, asOf: "" };
   const names = creators.length ? creators : ["Aya", "Eric", "Nada"];
   const live = t("hero.liveLabel");
-  const scene = (key: string) => ({ kicker: t(`scenes.${key}.kicker`), title: t(`scenes.${key}.title`), body: t(`scenes.${key}.body`) });
-  const bare = (key: string, count: number) => t(key, { count }).replace(/^[\d,]+\s/, "");
+  const bare = (key: string, count: number) => t(key, { count }).replace(/^[\d,  ]+/, "");
+  const scene = (key: (typeof SCENES)[number]) => {
+    const index = SCENES.indexOf(key);
+    return { index, kicker: String(index + 1).padStart(2, "0"), title: t(`scenes.${key}.title`), body: t(`scenes.${key}.body`) };
+  };
+  const perPost = `€${Math.round(tr.paidCents / Math.max(tr.paidPosts, 1) / 100).toLocaleString("en-US")}`;
   return (
-    <>
-      <Scene {...scene("post")} visual={<PostVisual creator={names[0]} linkLabel="amplio.link/r/k3x9" />} />
-      <Scene {...scene("audience")} flip visual={<AudienceVisual />} />
-      <Scene {...scene("clicks")} visual={<ClicksVisual clicks={tr.clicks} label={bare("hero.counts.clicks", tr.clicks)} liveLabel={live} rowLabel={bare("hero.counts.clicks", 1)} />} />
-      <Scene {...scene("signups")} flip visual={<SignupsVisual signups={tr.signups} label={bare("hero.counts.signups", tr.signups)} liveLabel={live} />} />
+    <div className="relative">
+      <SceneRail count={SCENES.length} />
+      <Scene {...scene("post")} visual={<PostVisual creator={names[0]} linkLabel={LINK} />} />
+      <Scene {...scene("clicks")} flip visual={<ClicksVisual clicks={tr.clicks} label={bare("hero.counts.clicks", tr.clicks)} liveLabel={live} rowLabel={bare("hero.counts.clicks", 1)} link={LINK} />} />
+      <Scene {...scene("signups")} visual={<SignupsVisual signups={tr.signups} label={bare("hero.counts.signups", tr.signups)} liveLabel={live} />} />
       <Scene
         {...scene("ledger")}
-        visual={<LedgerVisual rows={names.slice(0, 3).map((creator) => t("scenes.ledger.rowLabel", { creator }))} paidRow={t("scenes.proof.billLine", { amount: `€${Math.round(tr.paidCents / Math.max(tr.paidPosts, 1) / 100)}` })} stamp={t("scenes.ledger.stampPaid")} />}
+        flip
+        visual={<LedgerVisual rows={names.slice(0, 3).map((creator) => t("scenes.ledger.rowLabel", { creator }))} initials={names.map((n) => n.slice(0, 1))} paidRow={t("scenes.proof.billLine", { amount: perPost })} stamp={t("scenes.ledger.stampPaid")} />}
       />
       <Scene
         {...scene("proof")}
         ink
-        flip
         visual={
           <ProofVisual
             billTitle={t("scenes.proof.billTitle")}
             proofTitle={t("scenes.proof.proofTitle")}
-            billLine={t("scenes.proof.billLine", { amount: "" }).trim()}
+            billLine={t("hero.counts.posts", { count: tr.paidPosts })}
             paidCents={tr.paidCents}
             clicks={tr.clicks}
             signups={tr.signups}
@@ -47,6 +55,6 @@ export async function LaunchScenes({ trail, creators }: Props) {
           />
         }
       />
-    </>
+    </div>
   );
 }

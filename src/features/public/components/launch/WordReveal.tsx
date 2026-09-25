@@ -10,7 +10,7 @@ type Props = { text: string; as?: ElementType; className?: string; delayMs?: num
 // `stepMs` apart. Screen readers get the sentence once.
 export function WordReveal({ text, as: Tag = "p", className, delayMs = 0, stepMs = 45 }: Props) {
   const ref = useRef<HTMLElement>(null);
-  const on = useInView(ref, { amount: 0.5 });
+  const on = useInView(ref, { amount: 0.15 });
   const words = text.split(" ");
   return (
     <Tag ref={ref} className={cn("launch-words", on && "is-on", className)} aria-label={text}>

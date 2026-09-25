@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "@/components/motion/useReducedMotion";
 import type { TrailCounts, TrailScene } from "./trail-scene";
 import { TrailFallback } from "./TrailFallback";
+import { TrailLabels } from "./TrailLabels";
 
 function hasWebgl() {
   try {
@@ -16,7 +17,9 @@ function hasWebgl() {
 // Mounts the static drawing at once, then — after first paint, when the
 // browser is idle — loads three.js and swaps in the live layer. The live layer
 // runs only while the hero is on screen and the tab is visible.
-export function TrailCanvas({ counts }: { counts: TrailCounts }) {
+type Labels = { posts: string; site: string; ledger: string };
+
+export function TrailCanvas({ counts, labels, className }: { counts: TrailCounts; labels: Labels; className?: string }) {
   const host = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
   const [live, setLive] = useState(false);
@@ -33,6 +36,7 @@ export function TrailCanvas({ counts }: { counts: TrailCounts }) {
 
     const sync = () => (visible && !document.hidden ? scene?.start() : scene?.stop());
     const resize = () => scene?.resize(el.clientWidth, el.clientHeight);
+    const onTap = () => scene?.burst();
     const onPointer = (e: PointerEvent) => {
       const r = el.getBoundingClientRect();
       scene?.setPointer(e.clientX - r.left, e.clientY - r.top);
@@ -61,6 +65,7 @@ export function TrailCanvas({ counts }: { counts: TrailCounts }) {
     const canIdle = typeof window.requestIdleCallback === "function";
     const idle = canIdle ? window.requestIdleCallback(() => void load(), { timeout: 1500 }) : globalThis.setTimeout(() => void load(), 300);
     window.addEventListener("pointermove", onPointer, { passive: true });
+    el.addEventListener("pointerdown", onTap);
     window.addEventListener("scroll", onScroll, { passive: true });
     document.addEventListener("visibilitychange", sync);
     return () => {
@@ -70,6 +75,7 @@ export function TrailCanvas({ counts }: { counts: TrailCounts }) {
       io.disconnect();
       ro.disconnect();
       window.removeEventListener("pointermove", onPointer);
+      el.removeEventListener("pointerdown", onTap);
       window.removeEventListener("scroll", onScroll);
       document.removeEventListener("visibilitychange", sync);
       scene?.dispose();
@@ -77,7 +83,8 @@ export function TrailCanvas({ counts }: { counts: TrailCounts }) {
   }, [counts, reduced]);
 
   return (
-    <div ref={host} className="absolute inset-0" aria-hidden="true">
+    <div ref={host} className={className ?? "absolute inset-0"} aria-hidden="true">
+      <TrailLabels host={host} labels={labels} rows={counts.signups} />
       <div className={live ? "absolute inset-0 opacity-0 transition-opacity duration-300" : "absolute inset-0"}>
         <TrailFallback signups={counts.signups} />
       </div>
