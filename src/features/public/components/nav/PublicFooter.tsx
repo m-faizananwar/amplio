@@ -30,7 +30,7 @@ export async function PublicFooter() {
           </div>
         ))}
       </div>
-      <p className="mx-auto max-w-content border-t border-rule px-4 py-6 text-caption text-ink-muted sm:px-8">© 2026 Amplio · {t("demoNote")}</p>
+      <p className="mx-auto max-w-content border-t border-rule px-4 pb-20 pt-6 text-caption text-ink-muted sm:px-8 sm:pb-6 sm:pr-20">© 2026 Amplio · {t("demoNote")}</p>
     </footer>
   );
 }
