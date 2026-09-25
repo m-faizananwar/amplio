@@ -237,3 +237,8 @@ export const CTA = {
   alt: { text: "Prefer to start yourself?", href: "/register/brand", label: "Start for free" },
   footnote: "Trusted by B2B teams building creator-led acquisition.",
 } as const;
+
+// The landing hero's live trail (/api/public/trail): the demo workspace's
+// counts, re-read at most once a minute.
+export const TRAIL_TTL_S = 60;
+export type PublicTrail = { posts: number; links: number; clicks: number; signups: number; lastClickAt: string | null; asOf: string };
