@@ -1,7 +1,7 @@
 "use client";
 
 import { useFormatter, useTranslations } from "next-intl";
-import { PersonAvatar } from "@/components/ui/avatar";
+import { PartyAvatar } from "@/components/PartyAvatar";
 import type { MessageDto } from "../../schemas";
 
 export function MessageBubble({ message: m, pending = false }: { message: MessageDto; pending?: boolean }) {
@@ -9,7 +9,7 @@ export function MessageBubble({ message: m, pending = false }: { message: Messag
   const format = useFormatter();
   return (
     <li className={`flex items-end gap-2 ${m.mine ? "flex-row-reverse" : ""}`}>
-      <PersonAvatar name={m.senderName} src={m.senderAvatarUrl} size="sm" />
+      <PartyAvatar name={m.senderName} kind={m.senderKind} src={m.senderAvatarUrl} size="sm" />
       <div className={`max-w-[75%] ${m.mine ? "text-right" : ""}`}>
         <p className="text-caption text-ink-muted">
           {m.mine ? t("thread.you") : m.senderName} · <time className="num" dateTime={m.createdAt}>{format.dateTime(new Date(m.createdAt), { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}</time>

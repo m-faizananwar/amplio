@@ -121,4 +121,6 @@ html { scroll-behavior: smooth; }
 .g-ring { animation: gRing 520ms var(--ease-ledger) var(--g-delay, 0ms) both; }
 @keyframes gOrbit { to { transform: rotate(360deg); } }
 .g-orbit { animation: gOrbit 60s linear infinite; }
-@media (prefers-reduced-motion: reduce) { .g-ring, .g-orbit { animation: none; } }
+@keyframes gDot { from { opacity: 0; transform: scale(0); } to { opacity: 1; transform: none; } }
+.g-dot { transform-box: fill-box; transform-origin: center; animation: gDot var(--duration-base) var(--ease-ledger) var(--g-delay, 0ms) both; }
+@media (prefers-reduced-motion: reduce) { .g-ring, .g-orbit, .g-dot { animation: none; } }

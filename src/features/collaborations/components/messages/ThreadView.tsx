@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { startTransition, useEffect, useOptimistic, useRef } from "react";
 import { toast } from "sonner";
-import { PersonAvatar } from "@/components/ui/avatar";
+import { PartyAvatar } from "@/components/PartyAvatar";
 import { StatusChip, statusTone } from "@/components/ui/status-chip";
 import type { MessageDto, ThreadDetailDto, ViewerRole } from "../../schemas";
 import { sendMessage } from "../../server/messages-actions";
@@ -26,7 +26,7 @@ export function ThreadView({ detail, role, csrfToken, senderName, senderAvatarUr
 
   function send({ body }: { body: string }) {
     startTransition(async () => {
-      addOptimistic({ id: `pending-${Date.now()}`, body, senderName, senderAvatarUrl, mine: true, createdAt: new Date().toISOString(), pending: true });
+      addOptimistic({ id: `pending-${Date.now()}`, body, senderName, senderKind: role === "brand" ? "brand" : "person", senderAvatarUrl, mine: true, createdAt: new Date().toISOString(), pending: true });
       const result = await sendMessage({ collaborationId: thread.collaborationId, body, csrfToken });
       if (!result.ok) toast.error(t("messages.errors.sendFailed"));
     });
@@ -36,7 +36,7 @@ export function ThreadView({ detail, role, csrfToken, senderName, senderAvatarUr
     <>
       <header className="flex items-center gap-3 border-b border-rule px-4 py-3">
         <Link href={`/${role}/messages`} className="lg:hidden" aria-label={t("messages.thread.back")}><ArrowLeft className="size-5" aria-hidden="true" /></Link>
-        <PersonAvatar name={thread.counterpartName} src={thread.counterpartAvatarUrl} />
+        <PartyAvatar name={thread.counterpartName} kind={thread.counterpartKind} src={thread.counterpartAvatarUrl} />
         <div className="min-w-0 flex-1">
           <h2 className="truncate font-medium">{thread.counterpartName}</h2>
           <p className="truncate text-caption text-ink-muted">{thread.campaignName}</p>

@@ -35,6 +35,7 @@ export async function sendMessage(input: SendMessageInput): Promise<ActionResult
         id: row.id,
         body: row.body,
         senderName,
+        senderKind: auth.viewer.brand ? "brand" : "person",
         senderAvatarUrl: auth.viewer.creator?.avatarUrl ?? null,
         mine: true,
         createdAt: row.createdAt.toISOString(),

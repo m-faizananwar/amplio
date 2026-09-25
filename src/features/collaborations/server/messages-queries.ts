@@ -1,5 +1,5 @@
 import "server-only";
-import { avatarFor, brandMarkFor } from "@/lib/avatar";
+import { avatarFor } from "@/lib/avatar";
 import { and, asc, desc, eq, inArray, sql } from "drizzle-orm";
 import { getDb } from "@/db";
 import { campaigns, collaborations, creators, messages, users } from "@/db/schema";
@@ -31,7 +31,8 @@ function toThreadDto(row: CollaborationRow, role: ViewerRole, last: { body: stri
     campaignName: row.campaignName,
     status: row.collab.status,
     counterpartName,
-    counterpartAvatarUrl: role === "brand" ? row.creatorAvatarUrl : brandMarkFor(row.brandCompany),
+    counterpartKind: role === "brand" ? "person" : "brand",
+    counterpartAvatarUrl: role === "brand" ? row.creatorAvatarUrl : null,
     counterpartInitial: initialOf(counterpartName),
     lastMessagePreview: preview(last.body),
     lastMessageAt: last.at ? last.at.toISOString() : null,
@@ -91,7 +92,8 @@ async function loadThread(scope: ThreadScope, collaborationId: string): Promise<
     id: m.id,
     body: m.body,
     senderName: m.role === "brand" ? row.brandCompany : `${m.firstName} ${m.lastName}`.trim(),
-    senderAvatarUrl: m.avatarUrl ?? (m.role === "brand" ? brandMarkFor(row.brandCompany) : avatarFor(`${m.firstName} ${m.lastName}`)),
+    senderKind: m.role === "brand" ? "brand" : "person",
+    senderAvatarUrl: m.role === "brand" ? null : (m.avatarUrl ?? avatarFor(`${m.firstName} ${m.lastName}`)),
     mine: m.senderUserId === scope.userId,
     createdAt: m.createdAt.toISOString(),
   }));

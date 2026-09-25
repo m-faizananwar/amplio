@@ -1,6 +1,7 @@
 import { z } from "zod";
 import type { CollaborationEvent, CollaborationStatus } from "@/lib/collaboration-status";
 import type { BriefDoc } from "@/lib/brief-markdown";
+import type { PartyKind } from "@/components/PartyAvatar";
 import {
   DRAFT_MAX_CHARS,
   DRAFT_MIN_CHARS,
@@ -188,6 +189,7 @@ export type ThreadDto = {
   campaignName: string;
   status: CollaborationStatus;
   counterpartName: string;
+  counterpartKind: PartyKind;
   counterpartAvatarUrl: string | null;
   counterpartInitial: string;
   lastMessagePreview: string | null;
@@ -198,6 +200,7 @@ export type MessageDto = {
   id: string;
   body: string;
   senderName: string;
+  senderKind: PartyKind;
   senderAvatarUrl: string | null;
   mine: boolean;
   createdAt: string;

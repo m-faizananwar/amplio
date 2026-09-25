@@ -3,7 +3,7 @@
 import { ArrowLeft, MessageCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { PersonAvatar } from "@/components/ui/avatar";
+import { PartyAvatar } from "@/components/PartyAvatar";
 import { buttonVariants } from "@/components/ui/button";
 import { StatusChip, statusTone } from "@/components/ui/status-chip";
 import { THREAD_STATUSES } from "@/lib/collaboration-labels";
@@ -30,7 +30,7 @@ export function CollaborationHeader({ collaboration: c, status, role, brief }: P
       </Link>
       <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <div className="flex min-w-0 items-start gap-4">
-          <PersonAvatar name={other} src={role === "brand" ? c.creatorAvatarUrl : null} size="lg" />
+          <PartyAvatar name={other} kind={role === "creator" ? "brand" : "person"} src={role === "brand" ? c.creatorAvatarUrl : null} size="lg" />
           <div className="min-w-0">
             <h1 className="text-h3">{other}</h1>
             <p className="text-ink-muted">{c.campaignName}</p>
