@@ -29,7 +29,8 @@ export function CreatorCollaborationsView({ rows }: { rows: CollaborationDto[] }
   return (
     <>
       <CollaborationTabs tabs={CREATOR_TABS} labels={CREATOR_TAB_LABELS} counts={counts} value={tab} onChange={setTab} />
-      <div className="overflow-hidden rounded-2xl border bg-background">
+      {/* keyed on the tab so the rows crossfade in when the filter changes */}
+      <div key={tab} className="tab-swap overflow-hidden rounded-2xl border bg-background">
         <CollaborationsTable rows={paged.pageRows} role="creator" emptyMessage={COPY.creatorEmpty} />
         <TablePagination
           total={filtered.length}

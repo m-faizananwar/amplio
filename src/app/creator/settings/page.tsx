@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { PageHeader } from "@/components/page/PageHeader";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsTrigger } from "@/components/ui/tabs";
+import { SlideTabsList } from "@/components/motion/SlideTabsList";
 import { getViewer } from "@/features/auth/server/session";
 import { CreatorProfileForm } from "@/features/workspace/components/settings/CreatorProfileForm";
 import { DeleteAccountButton } from "@/features/workspace/components/settings/DeleteAccountButton";
@@ -31,11 +32,11 @@ export default async function CreatorSettingsPage() {
     <>
       <PageHeader title="Settings" description="Profile · Payments · Account" />
       <Tabs defaultValue="profile">
-        <TabsList className="h-auto max-w-full flex-wrap">
+        <SlideTabsList className="h-auto max-w-full flex-wrap">
           <TabsTrigger value="profile">Profile</TabsTrigger>
           <TabsTrigger value="payments">Payments</TabsTrigger>
           <TabsTrigger value="account">Account</TabsTrigger>
-        </TabsList>
+        </SlideTabsList>
         <TabsContent value="profile" className="rounded-2xl border bg-background p-5">
           <CreatorProfileForm defaults={defaults} />
         </TabsContent>

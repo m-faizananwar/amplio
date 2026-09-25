@@ -2,6 +2,8 @@
 
 import { cn } from "cn";
 
+import { SlidingIndicator } from "@/components/motion/SlidingIndicator";
+
 type Props<T extends string> = {
   tabs: readonly T[];
   labels: Record<T, string>;
@@ -13,7 +15,10 @@ type Props<T extends string> = {
 // Underlined tab strip with a count pill per tab, like naano's tables.
 export function CollaborationTabs<T extends string>({ tabs, labels, counts, value, onChange }: Props<T>) {
   return (
-    <div role="tablist" aria-label="Filter collaborations" className="mb-4 flex gap-1 overflow-x-auto border-b">
+    // The underline is one element that slides between tabs; the buttons keep
+    // their own colour change and count pill.
+    <SlidingIndicator variant="underline" className="mb-4 overflow-x-auto border-b">
+    <div role="tablist" aria-label="Filter collaborations" className="flex gap-1">
       {tabs.map((tab) => {
         const active = tab === value;
         return (
@@ -24,8 +29,8 @@ export function CollaborationTabs<T extends string>({ tabs, labels, counts, valu
             aria-selected={active}
             onClick={() => onChange(tab)}
             className={cn(
-              "-mb-px inline-flex shrink-0 items-center gap-2 border-b-2 px-3 py-2.5 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-ring",
-              active ? "border-brand text-brand" : "border-transparent text-muted-foreground hover:text-foreground",
+              "inline-flex shrink-0 items-center gap-2 px-3 py-2.5 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-ring",
+              active ? "text-brand" : "text-muted-foreground hover:text-foreground",
             )}
           >
             {labels[tab]}
@@ -41,5 +46,6 @@ export function CollaborationTabs<T extends string>({ tabs, labels, counts, valu
         );
       })}
     </div>
+    </SlidingIndicator>
   );
 }

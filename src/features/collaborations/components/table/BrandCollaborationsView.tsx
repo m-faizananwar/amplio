@@ -53,7 +53,8 @@ export function BrandCollaborationsView({ rows, campaigns }: Props) {
         </label>
       </div>
       <CollaborationTabs tabs={BRAND_TABS} labels={BRAND_TAB_LABELS} counts={counts} value={tab} onChange={setTab} />
-      <div className="overflow-hidden rounded-2xl border bg-background">
+      {/* keyed on the tab so the rows crossfade in when the filter changes */}
+      <div key={tab} className="tab-swap overflow-hidden rounded-2xl border bg-background">
         <CollaborationsTable rows={paged.pageRows} role="brand" emptyMessage={COPY.brandEmpty} />
         <TablePagination
           total={filtered.length}

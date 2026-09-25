@@ -4,7 +4,8 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { PageHeader } from "@/components/page/PageHeader";
 import { buttonVariants } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsTrigger } from "@/components/ui/tabs";
+import { SlideTabsList } from "@/components/motion/SlideTabsList";
 import { getViewer } from "@/features/auth/server/session";
 import { CopyLinkButton } from "@/features/workspace/components/CopyLinkButton";
 import { AFFILIATE_MONTHS, AFFILIATE_SHARE_PERCENT, PLATFORM_COMMISSION_PERCENT } from "@/features/workspace/constants";
@@ -30,10 +31,10 @@ export default async function CreatorAffiliatePage() {
         description={`Share your personal link with a company. If it joins ${BRAND.name} and launches paid campaigns, you receive ${AFFILIATE_SHARE_PERCENT}% of ${BRAND.name}'s commission for three months.`}
       />
       <Tabs defaultValue="brands" className="mb-4">
-        <TabsList>
+        <SlideTabsList>
           <TabsTrigger value="brands">Invite brands</TabsTrigger>
           <TabsTrigger value="creators">Invite creators</TabsTrigger>
-        </TabsList>
+        </SlideTabsList>
         <TabsContent value="creators" className="rounded-2xl border bg-background p-5 text-sm text-muted-foreground">
           Creator-to-creator referrals are not part of this build. Share your Deal Link instead:{" "}
           <Link href="/creator/card" className="font-medium text-brand hover:underline">Open my card</Link>

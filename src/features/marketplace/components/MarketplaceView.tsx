@@ -2,6 +2,7 @@
 
 import { Bookmark, SearchX } from "lucide-react";
 import { cn } from "cn";
+import { SlidingIndicator } from "@/components/motion/SlidingIndicator";
 import { EmptyState } from "@/components/page/EmptyState";
 import { Button } from "@/components/ui/button";
 import { PAGE_SIZE } from "../constants";
@@ -24,7 +25,8 @@ function ListTabs({ query, list }: { query: MarketplaceQuery; list: CreatorListD
     { key: "shortlist", label: "Shortlist", count: list.shortlistCount },
   ] as const;
   return (
-    <div role="tablist" aria-label="Creator lists" className="flex gap-1 border-b">
+    <SlidingIndicator variant="underline" className="border-b">
+    <div role="tablist" aria-label="Creator lists" className="flex gap-1">
       {tabs.map((tab) => {
         const active = query.tab === tab.key;
         return (
@@ -35,16 +37,17 @@ function ListTabs({ query, list }: { query: MarketplaceQuery; list: CreatorListD
             aria-selected={active}
             onClick={() => update({ tab: tab.key === "all" ? undefined : tab.key })}
             className={cn(
-              "-mb-px inline-flex items-center gap-1.5 border-b-2 px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-ring",
-              active ? "border-foreground text-foreground" : "border-transparent text-muted-foreground hover:text-foreground",
+              "inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-ring",
+              active ? "text-brand" : "text-muted-foreground hover:text-foreground",
             )}
           >
             {tab.label}
-            <span className={cn("rounded-full px-1.5 text-xs tabular-nums", active ? "bg-foreground text-background" : "bg-muted")}>{tab.count}</span>
+            <span className={cn("rounded-full px-1.5 text-xs tabular-nums", active ? "bg-brand text-brand-foreground" : "bg-muted")}>{tab.count}</span>
           </button>
         );
       })}
     </div>
+    </SlidingIndicator>
   );
 }
 

@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { SlidingIndicator } from "@/components/motion/SlidingIndicator";
+
 export type CampaignTabKey = "collaborations" | "brief" | "shortlist" | "analytics";
 
 const TABS: Array<{ key: CampaignTabKey; label: string; path: string }> = [
@@ -15,20 +17,22 @@ export function tabPath(tab: CampaignTabKey) {
 
 export function CampaignTabs({ campaignId, active }: { campaignId: string; active: CampaignTabKey }) {
   return (
-    <nav aria-label="Campaign sections" className="-mx-4 overflow-x-auto px-4 lg:mx-0 lg:px-0">
-      <ul className="flex gap-1 border-b">
+    <nav aria-label="Campaign sections" className="-mx-4 px-4 lg:mx-0 lg:px-0">
+      <SlidingIndicator variant="underline" className="overflow-x-auto border-b">
+      <ul className="flex gap-1">
         {TABS.map((tab) => (
           <li key={tab.key}>
             <Link
               href={`/brand/campaigns/${campaignId}${tab.path}`}
               aria-current={tab.key === active ? "page" : undefined}
-              className="inline-block border-b-2 border-transparent px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground aria-[current=page]:border-foreground aria-[current=page]:text-foreground"
+              className="inline-block px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground aria-[current=page]:text-brand"
             >
               {tab.label}
             </Link>
           </li>
         ))}
       </ul>
+      </SlidingIndicator>
     </nav>
   );
 }

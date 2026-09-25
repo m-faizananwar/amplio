@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { cn } from "cn";
+import { SlidingIndicator } from "@/components/motion/SlidingIndicator";
 import { CREATORS_PATH, MATCHING_PATH } from "../constants";
 
 type Props = { active: "matching" | "marketplace"; campaignId?: string | null };
@@ -12,7 +13,9 @@ export function CreatorsTabs({ active, campaignId }: Props) {
     { key: "marketplace", label: "Creator Marketplace", href: `${CREATORS_PATH}${suffix}` },
   ] as const;
   return (
-    <nav aria-label="Creators" className="mb-6 inline-flex rounded-lg bg-muted p-1 text-sm font-medium">
+    // The white chip is the indicator now, so it slides between the two.
+    <SlidingIndicator variant="pill" className="mb-6 inline-flex rounded-lg bg-muted p-1 text-sm font-medium">
+    <nav aria-label="Creators" className="inline-flex">
       {tabs.map((tab) => (
         <Link
           key={tab.key}
@@ -20,12 +23,13 @@ export function CreatorsTabs({ active, campaignId }: Props) {
           aria-current={active === tab.key ? "page" : undefined}
           className={cn(
             "rounded-md px-4 py-1.5 text-muted-foreground transition-colors focus-visible:outline-2 focus-visible:outline-ring",
-            active === tab.key && "bg-background text-foreground shadow-sm",
+            active === tab.key && "text-foreground",
           )}
         >
           {tab.label}
         </Link>
       ))}
     </nav>
+    </SlidingIndicator>
   );
 }

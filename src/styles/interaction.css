@@ -348,3 +348,21 @@ main [aria-busy="true"][aria-label^="Loading"] { animation: skeletonAppear 0s 0.
 @media (prefers-reduced-motion: reduce) {
   .slide-track[data-anim="true"] > .slide-ind { transition: opacity .2s linear; }
 }
+
+/* ---- tab strips: the indicator is the only marker ----
+   The primitives paint the active tab themselves (a white chip, or an ::after
+   underline). Inside a .slide-track that job belongs to the indicator, so the
+   per-tab paint is switched off and only the text colour still changes.
+   Panels crossfade on swap: the same 180ms rise the route enter uses. */
+.slide-track [data-slot="tabs-trigger"][data-active] { background-color: transparent; box-shadow: none; }
+.slide-track [data-slot="tabs-trigger"][data-active]::after { opacity: 0; }
+.slide-track [data-slot="tabs-list"] { background-color: transparent; padding: 0; }
+@keyframes tabPanelIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+/* base-ui mounts only the selected panel, so the panel animates on swap. */
+[data-slot="tabs-content"], .tab-swap { animation: tabPanelIn .22s var(--ix-ease) both; }
+/* a swapped panel that is also a scroll-pop target takes the shorter swap: a
+   700ms overshoot belongs to arriving content, not to a filter change. */
+.pop-ready [data-morph].tab-swap, .pop-ready [data-morph].tab-swap.is-pop { opacity: 1; animation: tabPanelIn .22s var(--ix-ease) both; }
+@media (prefers-reduced-motion: reduce) {
+  [data-slot="tabs-content"], .tab-swap { animation: none; }
+}

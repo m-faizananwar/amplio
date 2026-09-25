@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import type { ReactNode } from "react";
 
 import { cn } from "cn";
-import { measureInto, ACTIVE_ITEM_SELECTOR, NAV_ITEM_SELECTOR } from "@/lib/motion/indicator";
+import { trackIndicator } from "@/lib/motion/indicator";
 
 type Props = {
   children: ReactNode;
@@ -23,38 +23,7 @@ type Props = {
 export function SlidingIndicator({ children, axis = "x", variant = "capsule", preview = true, className }: Props) {
   const root = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const el = root.current;
-    if (!el) return;
-    const place = (target: Element | null, isPreview: boolean) => measureInto(el, target, isPreview);
-    const settle = () => place(el.querySelector(ACTIVE_ITEM_SELECTOR), false);
-
-    settle();
-    // The first placement must not slide in from the corner.
-    const frame = window.requestAnimationFrame(() => { el.dataset.anim = "true"; });
-
-    const mo = new MutationObserver(settle);
-    mo.observe(el, { subtree: true, childList: true, attributes: true, attributeFilter: ["aria-current", "aria-selected", "data-active", "data-selected", "class"] });
-    const ro = new ResizeObserver(settle);
-    ro.observe(el);
-
-    const onOver = (event: PointerEvent) => {
-      if (!preview || event.pointerType === "touch") return;
-      const item = (event.target as Element | null)?.closest(NAV_ITEM_SELECTOR);
-      if (item && el.contains(item)) place(item, !item.matches(ACTIVE_ITEM_SELECTOR));
-    };
-    const onLeave = () => settle();
-    el.addEventListener("pointerover", onOver);
-    el.addEventListener("pointerleave", onLeave);
-
-    return () => {
-      window.cancelAnimationFrame(frame);
-      mo.disconnect();
-      ro.disconnect();
-      el.removeEventListener("pointerover", onOver);
-      el.removeEventListener("pointerleave", onLeave);
-    };
-  }, [preview]);
+  useEffect(() => (root.current ? trackIndicator(root.current, preview) : undefined), [preview]);
 
   return (
     <div ref={root} className={cn("slide-track", className)} data-axis={axis} data-anim="false">
