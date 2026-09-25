@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { PublicHero } from "./calm/PublicHero";
+import { AmbientTrail } from "../stage/AmbientTrail";
 
 type Section = { id: string; title: string; paragraphs: string[] };
 const UPDATED = "2026-09-26";
@@ -11,7 +12,7 @@ export async function LegalPage({ doc }: { doc: "privacy" | "terms" }) {
   const sections = t.raw(`${doc}.sections`) as Section[];
   return (
     <>
-      <PublicHero eyebrow={t("updated", { date: UPDATED })} title={t(`${doc}.title`)} sub={t(`${doc}.sub`)} />
+      <PublicHero eyebrow={t("updated", { date: UPDATED })} title={t(`${doc}.title`)} sub={t(`${doc}.sub`)} art={<AmbientTrail className="mx-auto hidden max-w-[16rem] opacity-80 lg:block" />} />
       <div className="mx-auto grid max-w-content gap-12 px-4 py-16 sm:px-8 lg:grid-cols-[14rem_1fr]">
         <nav aria-label={t("onThisPage")} className="hidden lg:block">
           <div className="sticky top-24">

@@ -2,6 +2,8 @@ import { getTranslations } from "next-intl/server";
 import type { PublicCreator } from "../../../constants";
 import { CtaLinks } from "../calm/CtaLinks";
 import { PublicHero } from "../calm/PublicHero";
+import { CardAssembly } from "../../stage/CardAssembly";
+import { Stage } from "../../stage/Stage";
 
 const euros = (cents: number) => `€${Math.round(cents / 100)}`;
 
@@ -14,22 +16,35 @@ export async function ForCreatorsPage({ creator }: { creator: (PublicCreator & {
   const steps = t.raw("steps.items") as { title: string; body: string }[];
   return (
     <>
-      <PublicHero eyebrow={t("hero.eyebrow")} title={t("hero.title")} sub={t("hero.sub")}>
+      <PublicHero
+        eyebrow={t("hero.eyebrow")}
+        title={t("hero.title")}
+        sub={t("hero.sub")}
+        art={creator ? (
+          <Stage>
+            <CardAssembly name={creator.name} headline={creator.headline} price={creator.priceCents ? euros(creator.priceCents) : "€"} bars={[38, 64, 52, 90, 72, 110, 84, 58]} offerLabel={t("hero.offer")} demoLabel={tc("demoData")} />
+          </Stage>
+        ) : null}
+      >
         <CtaLinks primary={{ href: "/register/creator", label: t("hero.primary") }} secondary={{ href: "#how", label: t("hero.secondary") }} />
       </PublicHero>
       <section id="how" className="mx-auto max-w-content scroll-mt-20 px-4 py-16 sm:px-8">
         <h2 className="text-h2">{t("steps.title")}</h2>
-        <ol className="relative mt-10 grid gap-8 md:grid-cols-4 md:gap-6">
+        <Stage className="mt-10">
+        <ol className="relative grid gap-8 md:grid-cols-4 md:gap-6">
           <span aria-hidden="true" className="absolute left-[7px] top-2 h-[calc(100%-1rem)] w-px bg-rule md:left-0 md:top-[7px] md:h-px md:w-full" />
+          <span aria-hidden="true" className="st-grow-y absolute left-[7px] top-2 h-[calc(100%-1rem)] w-px origin-top bg-ink md:hidden" style={{ ["--d" as string]: "100ms" }} />
+          <span aria-hidden="true" className="st-grow absolute left-0 top-[7px] hidden h-px w-full bg-ink md:block" style={{ ["--d" as string]: "100ms" }} />
           {steps.map((s, i) => (
             <li key={s.title} className="relative pl-8 md:pl-0 md:pt-8">
-              <span aria-hidden="true" className={`absolute left-0 top-1.5 size-3.5 rounded-full border-2 md:top-0 ${i === steps.length - 1 ? "border-money bg-money" : "border-ink bg-paper"}`} />
+              <span aria-hidden="true" className={`st-pop absolute left-0 top-1.5 size-3.5 rounded-full border-2 md:top-0 ${i === steps.length - 1 ? "border-money bg-money" : "border-ink bg-paper"}`} style={{ ["--d" as string]: `${200 + i * 160}ms` }} />
               <p className="num text-small text-ink-muted">{String(i + 1).padStart(2, "0")}</p>
               <h3 className="mt-1 text-h4">{s.title}</h3>
               <p className="mt-2 text-ink-muted">{s.body}</p>
             </li>
           ))}
         </ol>
+        </Stage>
       </section>
       <section className="border-t border-rule">
         <div className="mx-auto grid max-w-content items-center gap-10 px-4 py-16 sm:px-8 lg:grid-cols-2">

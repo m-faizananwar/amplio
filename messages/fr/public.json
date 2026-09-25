@@ -9,7 +9,8 @@
       "title": "Vos posts, votre prix.",
       "sub": "Inscription gratuite, un prix fixe par post, et vous choisissez les offres des marques. Chaque clic sur votre post revient en ligne : les marques voient ce que vous leur apportez.",
       "primary": "Devenir créateur",
-      "secondary": "Voir les tarifs"
+      "secondary": "Voir les tarifs",
+      "offer": "Offre d’une marque"
     },
     "steps": {
       "title": "Comment ça marche",
@@ -105,7 +106,12 @@
         "Un forfait récurrent"
       ]
     },
-    "stubNote": "Dans cette version, les recharges par carte et les virements bancaires sont simulés avec Stripe : vous voyez tout le parcours, mais aucun argent réel ne circule."
+    "stubNote": "Dans cette version, les recharges par carte et les virements bancaires sont simulés avec Stripe : vous voyez tout le parcours, mais aucun argent réel ne circule.",
+    "coin": {
+      "brand": "La marque paie",
+      "creator": "Le créateur reçoit",
+      "fee": "Frais Amplio"
+    }
   },
   "faq": {
     "meta": {

@@ -9,7 +9,8 @@
       "title": "Your posts, your price.",
       "sub": "Join free, set a fixed price per post, and take the brand offers you like. Every click on your post comes back as a row, so brands can see what you brought them.",
       "primary": "Join as a creator",
-      "secondary": "See pricing"
+      "secondary": "See pricing",
+      "offer": "Offer from a brand"
     },
     "steps": {
       "title": "How it works",
@@ -105,7 +106,12 @@
         "A retainer"
       ]
     },
-    "stubNote": "In this build, card top-ups and bank payouts are Stripe stubs: you see the full flow, but no real money moves."
+    "stubNote": "In this build, card top-ups and bank payouts are Stripe stubs: you see the full flow, but no real money moves.",
+    "coin": {
+      "brand": "Brand pays",
+      "creator": "Creator is paid",
+      "fee": "Amplio fee"
+    }
   },
   "faq": {
     "meta": {
