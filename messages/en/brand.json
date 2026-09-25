@@ -130,7 +130,8 @@
     "empty": {
       "clicks": "Each click on a creator's tracked link appears here once their post is live.",
       "signups": "Sign-ups appear here when your site pixel ties one to a click on a creator's link.",
-      "spend": "Each booking and payment appears here, starting with your first invitation."
+      "spend": "Each booking and payment appears here, starting with your first invitation.",
+      "reach": "Each creator's estimated reach appears here once their post is live."
     },
     "views": "{views} median views"
   }

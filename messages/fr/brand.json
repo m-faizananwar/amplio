@@ -130,7 +130,8 @@
     "empty": {
       "clicks": "Chaque clic sur le lien suivi d’un créateur s’affiche ici, dès que son post est en ligne.",
       "signups": "Les inscriptions s’affichent ici quand le pixel de votre site en relie une au clic sur le lien d’un créateur.",
-      "spend": "Chaque réservation et chaque paiement s’affichent ici, dès votre première invitation."
+      "spend": "Chaque réservation et chaque paiement s’affichent ici, dès votre première invitation.",
+      "reach": "La portée estimée de chaque créateur s’affiche ici, dès que son post est en ligne."
     },
     "views": "{views} vues médianes"
   }
