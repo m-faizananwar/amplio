@@ -15,6 +15,7 @@ import { updateCreatorIdentity } from "../../../server/actions";
 import { SaveRow } from "../shared/SaveRow";
 import { SettingsSection } from "../shared/SettingsSection";
 import { useSectionForm } from "../shared/useSectionForm";
+import type { ProfileSource } from "@/lib/profile-source";
 
 export function IdentitySection({ defaults }: { defaults: CreatorIdentityInput }) {
   const t = useTranslations("settings.creator");
@@ -40,13 +41,14 @@ export function IdentitySection({ defaults }: { defaults: CreatorIdentityInput }
   );
 }
 
-export function LinkedinSection({ defaults }: { defaults: LinkedinInput }) {
+export function LinkedinSection({ defaults, source }: { defaults: LinkedinInput; source: ProfileSource }) {
   const t = useTranslations("settings.creator.linkedin");
   const { form, onSubmit } = useSectionForm({ schema: linkedinSchema, defaults, save: readLinkedinProfile, saved: t("success") });
   return (
     <SettingsSection id="linkedin" title={t("title")} description={t("description")}>
       <form onSubmit={onSubmit} noValidate>
         <LinkedinFields control={form.control} />
+        <p className="mt-3 text-caption text-ink-muted">{t(`source.${source}`)}</p>
         <SaveRow form={form} label={t("reread")} requireChange={false} />
       </form>
     </SettingsSection>

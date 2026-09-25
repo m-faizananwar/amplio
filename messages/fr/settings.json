@@ -34,6 +34,11 @@
         "format": "Utilisez une URL de profil public, par exemple https://www.linkedin.com/in/votre-nom.",
         "tooLong": "Cette URL est trop longue.",
         "notFound": "Aucun profil public trouvé à cette URL."
+      },
+      "source": {
+        "demo": "Données de démo : les chiffres de ce compte ont été générés pour la démo.",
+        "imported": "Vos chiffres ont été importés depuis ce profil.",
+        "manual": "Saisi à la main : nous n’avons pas encore lu ce profil. Relisez-le pour importer vos chiffres."
       }
     },
     "card": {

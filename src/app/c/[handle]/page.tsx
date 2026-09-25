@@ -36,7 +36,7 @@ export default async function PublicCardPage({ params }: { params: Promise<{ han
         <Link href={book} className={buttonVariants({ size: "lg", className: "justify-self-start" })}>{t("book", { name: first })}</Link>
         <p className="text-small text-ink-muted">{t("bookHint", { name: first })}</p>
       </div>
-      <p className="text-caption text-ink-muted">{t("stubNote")}</p>
+      {card.seeded ? null : <p className="text-caption text-ink-muted">{t(`source.${card.source}`)}</p>}
     </main>
   );
 }

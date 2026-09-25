@@ -87,7 +87,6 @@
       "openPublic": "Voir la fiche publique",
       "flip": "Retourner la fiche"
     },
-    "stubNote": "Les chiffres du profil sont lus sur votre profil LinkedIn public.",
     "fields": {
       "headline": "Accroche",
       "bio": "À propos",
@@ -151,6 +150,11 @@
         "body": "Partagez votre lien de parrainage avec une marque. Dès qu’elle s’inscrit, elle apparaît ici.",
         "action": "Copier le lien de parrainage"
       }
+    },
+    "source": {
+      "demo": "Données de démo : les chiffres de ce compte ont été générés pour la démo.",
+      "imported": "Importé depuis votre profil LinkedIn public.",
+      "manual": "Saisi à la main. Relisez votre profil LinkedIn dans les paramètres pour importer vos chiffres."
     }
   },
   "publicCard": {
@@ -159,7 +163,6 @@
     "book": "Réserver {name}",
     "bookHint": "La rémunération est provisionnée à l’envoi de l’invitation et versée à {name} une fois le post en ligne.",
     "demoLabel": "Créateur de démonstration. Ces chiffres sont fictifs.",
-    "stubNote": "Les chiffres sont lus sur le profil LinkedIn public du créateur.",
     "sections": {
       "about": "À propos",
       "audience": "Audience",
@@ -187,6 +190,10 @@
       "title": "Cette fiche n’existe pas",
       "body": "Le lien est peut-être erroné, ou le créateur a supprimé sa fiche.",
       "action": "Retour à l’accueil"
+    },
+    "source": {
+      "imported": "Importé depuis le profil LinkedIn public du créateur.",
+      "manual": "Saisi par le créateur."
     }
   },
   "collaborations": {

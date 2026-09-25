@@ -4,6 +4,9 @@ import { getDb } from "@/db";
 import { brands, creators, users } from "@/db/schema";
 import { cachedRead } from "@/db/cache";
 import { tag } from "@/lib/cache-tags";
+import { DEMO_DOMAINS } from "@/features/auth/constants";
+import { isSeededEmail } from "@/lib/seeded";
+import { profileSource, type ProfileSource } from "@/lib/profile-source";
 
 export type BrandSettings = {
   company: string;
@@ -49,6 +52,8 @@ export type CreatorSettings = {
   bundles: Array<{ posts: number; totalCents: number }>;
   followers: number;
   engagementRate: number;
+  /** Where the profile figures came from (Settings › LinkedIn says so). */
+  profileSource: ProfileSource;
   professional: {
     legalCountry: string | null;
     registeredBusiness: boolean;
@@ -85,6 +90,7 @@ async function loadCreatorSettings(creatorId: string): Promise<CreatorSettings |
     bundles: row.creator.bundles,
     followers: row.creator.followers,
     engagementRate: row.creator.engagementRate,
+    profileSource: profileSource({ seeded: isSeededEmail(row.email, DEMO_DOMAINS), followers: row.creator.followers }),
     professional: {
       legalCountry: row.creator.legalCountry,
       registeredBusiness: row.creator.registeredBusiness ?? false,

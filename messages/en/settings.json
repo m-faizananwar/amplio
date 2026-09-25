@@ -34,6 +34,11 @@
         "format": "Use a public profile URL like https://www.linkedin.com/in/your-name.",
         "tooLong": "That URL is too long.",
         "notFound": "We couldn't find a public profile at that URL."
+      },
+      "source": {
+        "demo": "Demo data: this account's figures were seeded for the demo.",
+        "imported": "Your figures were imported from this profile.",
+        "manual": "Entered by hand: we haven't read this profile yet. Re-read it to import your figures."
       }
     },
     "card": {

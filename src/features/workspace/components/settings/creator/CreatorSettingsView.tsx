@@ -27,7 +27,7 @@ export async function CreatorSettingsView({ settings: s, isDemo, recommendedCent
       <SettingsIndex label={t("indexLabel")} sections={sections} />
       <div className="grid gap-5">
         <IdentitySection defaults={{ firstName: s.firstName, lastName: s.lastName, xHandle: s.xHandle }} />
-        <LinkedinSection defaults={{ linkedinUrl: s.linkedinUrl }} />
+        <LinkedinSection defaults={{ linkedinUrl: s.linkedinUrl }} source={s.profileSource} />
         <CardSection defaults={{ headline: s.headline, country: s.country as CardInput["country"], industries: s.industries as CardInput["industries"] }} />
         <PricingSection defaults={{ priceCents: s.priceCents, bundles: s.bundles as PriceInput["bundles"] }} recommendedCents={recommendedCents} />
         <BusinessSection defaults={professional} />

@@ -87,7 +87,6 @@
       "openPublic": "Open public card",
       "flip": "Flip card"
     },
-    "stubNote": "Profile figures are read from your public LinkedIn profile.",
     "fields": {
       "headline": "Headline",
       "bio": "About",
@@ -151,6 +150,11 @@
         "body": "Share your referral link with a brand. When it signs up, it appears here.",
         "action": "Copy referral link"
       }
+    },
+    "source": {
+      "demo": "Demo data: this account's figures were seeded for the demo.",
+      "imported": "Imported from your public LinkedIn profile.",
+      "manual": "Entered by hand. Re-read your LinkedIn profile in Settings to import your figures."
     }
   },
   "publicCard": {
@@ -159,7 +163,6 @@
     "book": "Book {name}",
     "bookHint": "Your fee is held when you send the invitation and paid to {name} after the post is live.",
     "demoLabel": "Demo creator. These figures are seeded, not real.",
-    "stubNote": "Figures are read from the creator's public LinkedIn profile.",
     "sections": {
       "about": "About",
       "audience": "Audience",
@@ -187,6 +190,10 @@
       "title": "This card doesn't exist",
       "body": "The link may be mistyped, or the creator removed their card.",
       "action": "Go to home page"
+    },
+    "source": {
+      "imported": "Imported from the creator's public LinkedIn profile.",
+      "manual": "Entered by the creator."
     }
   },
   "collaborations": {

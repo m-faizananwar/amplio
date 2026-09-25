@@ -44,7 +44,7 @@ export default async function CreatorCardPage() {
       <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,26rem)_minmax(0,1fr)]">
         <div className="grid gap-2">
           <CreatorCardView card={card} />
-          <p className="text-caption text-ink-muted">{t("stubNote")}</p>
+          <p className="text-caption text-ink-muted">{t(`source.${card.source}`)}</p>
         </div>
         <LinksSection dealUrl={`${origin}/c/${card.handle}`} referralUrl={`${origin}/register/brand?ref=${card.handle}`} affiliate={affiliate} />
       </div>

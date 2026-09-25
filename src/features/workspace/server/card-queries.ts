@@ -1,6 +1,7 @@
 import "server-only";
 import { DEMO_DOMAINS } from "@/features/auth/constants";
 import { isSeededEmail } from "@/lib/seeded";
+import { profileSource, type ProfileSource } from "@/lib/profile-source";
 import { count, eq, inArray, sql } from "drizzle-orm";
 import { getDb, isDbConfigured } from "@/db";
 import { collaborations, creatorPosts, creators, users } from "@/db/schema";
@@ -28,6 +29,8 @@ export type PublicCard = {
   publishedCollaborations: number;
   /** Seeded demo creator: labelled wherever the card is public. */
   seeded: boolean;
+  /** Where the figures came from: demo data, the LinkedIn read, or by hand. */
+  source: ProfileSource;
 };
 
 async function loadPublicCard(handle: string): Promise<PublicCard | null> {
@@ -71,6 +74,7 @@ async function loadPublicCard(handle: string): Promise<PublicCard | null> {
     commentsPerPost: posts?.comments ?? 0,
     publishedCollaborations: published?.n ?? 0,
     seeded: isSeededEmail(row.email, DEMO_DOMAINS),
+    source: profileSource({ seeded: isSeededEmail(row.email, DEMO_DOMAINS), followers: row.creator.followers }),
   };
 }
 
