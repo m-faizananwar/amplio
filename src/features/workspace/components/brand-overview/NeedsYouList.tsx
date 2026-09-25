@@ -43,7 +43,7 @@ export async function NeedsYouList({ items, lowWalletCents }: Props) {
                 <PersonAvatar name={c.creatorName} src={c.creatorAvatarUrl} size="sm" />
                 <span className="min-w-0 flex-1">
                   <span className="block truncate font-medium text-ink">{tc(`nextAction.brand.${c.status}.action`, vars)}</span>
-                  <span className="block truncate text-small text-ink-muted">{c.campaignName}</span>
+                  <span className="block truncate text-small text-ink-muted">{c.creatorName} · {c.campaignName}</span>
                 </span>
                 <span className="inline-flex items-center gap-1 text-small font-medium text-ink">
                   {t(`cta.${c.status}`)}

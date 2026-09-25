@@ -22,6 +22,8 @@ export type LedgerRowDto = {
   amountCents: number;
   reference: string;
   description: string;
+  /** For a booking or payout: the creator (or brand) and the campaign it pays for. */
+  detail?: string;
 };
 
 // The billing page accepts `?topup=<cents>` (e.g. from an under-funded booking).

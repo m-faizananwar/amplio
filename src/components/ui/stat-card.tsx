@@ -35,13 +35,13 @@ export function StatCard({ label, value, format, hint, delta, spark, tone = "ink
       <p className={cn("mt-2 text-h2 font-semibold tracking-(--tracking-heading)", tone === "money" ? "text-money" : "text-ink")}>
         <RollingNumber value={value} format={format} />
       </p>
-      <div className="mt-2 flex min-h-5 items-center justify-between gap-2 text-caption">
-        <span className="flex items-center gap-1.5 text-ink-muted">
+      <div className="mt-2 flex min-h-5 items-end justify-between gap-3 text-caption">
+        <span className="flex min-w-0 flex-wrap items-center gap-x-1.5 text-ink-muted">
           {delta ? <DeltaBadge delta={delta} /> : null}
           {hint}
         </span>
         {onOpen ? (
-          <span className="inline-flex items-center gap-0.5 font-medium text-ink-muted transition-colors duration-(--duration-fast) group-hover/stat:text-ink">
+          <span className="inline-flex shrink-0 items-center gap-0.5 whitespace-nowrap font-medium text-ink-muted transition-colors duration-(--duration-fast) group-hover/stat:text-ink">
             {openLabel}
             <ChevronRight className="size-3.5 transition-transform duration-(--duration-fast) ease-ledger group-hover/stat:translate-x-0.5" aria-hidden="true" />
           </span>

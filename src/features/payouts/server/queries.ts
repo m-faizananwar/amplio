@@ -1,7 +1,7 @@
 import "server-only";
 import { and, count, desc, eq, gte, sql } from "drizzle-orm";
 import { getDb } from "@/db";
-import { collaborations, ledgerEntries } from "@/db/schema";
+import { campaigns, collaborations, creators, ledgerEntries, users } from "@/db/schema";
 import { EARNINGS_MONTHS } from "../constants";
 import type { LedgerRowDto } from "../schemas";
 import { cachedRead } from "@/db/cache";
@@ -102,9 +102,22 @@ async function loadBillingSummary(brandId: string): Promise<BillingSummary> {
   return { balanceCents: row?.balance ?? 0, topupsCents: row?.topups ?? 0, committedCents: row?.committed ?? 0, entries: row?.n ?? 0 };
 }
 
+// A booking row names the creator and campaign it pays for, so the ledger reads
+// on its own ("Tom Bechtelar · Spring launch"), not "Booking · Zune" nine times.
 async function loadBrandLedger(brandId: string): Promise<LedgerRowDto[]> {
-  const rows = await getDb().select().from(ledgerEntries).where(eq(ledgerEntries.brandId, brandId)).orderBy(desc(ledgerEntries.createdAt));
-  return rows.map(toLedgerDto);
+  const rows = await getDb()
+    .select({ entry: ledgerEntries, firstName: users.firstName, lastName: users.lastName, campaign: campaigns.name })
+    .from(ledgerEntries)
+    .leftJoin(collaborations, eq(collaborations.id, ledgerEntries.collaborationId))
+    .leftJoin(campaigns, eq(campaigns.id, collaborations.campaignId))
+    .leftJoin(creators, eq(creators.id, collaborations.creatorId))
+    .leftJoin(users, eq(users.id, creators.userId))
+    .where(eq(ledgerEntries.brandId, brandId))
+    .orderBy(desc(ledgerEntries.createdAt));
+  return rows.map((r) => ({
+    ...toLedgerDto(r.entry),
+    detail: r.firstName && r.campaign ? `${r.firstName} ${r.lastName ?? ""}`.trim() + ` · ${r.campaign}` : undefined,
+  }));
 }
 
 // Cached per owner: the ledger only moves through a payout or a top-up, and

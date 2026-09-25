@@ -68,7 +68,7 @@ function ChoiceSection() {
   return (
     <Section id="choices" title="Select · Combobox · DatePicker · SegmentedControl · Tabs">
       <Row label="select">
-        <Select defaultValue="best">
+        <Select defaultValue="best" items={[{ value: "best", label: "Best fit" }, { value: "price", label: "Lowest price" }, { value: "followers", label: "Most followers" }]}>
           <SelectTrigger className="w-56" aria-label="Sort creators"><SelectValue /></SelectTrigger>
           <SelectContent>
             <SelectItem value="best">Best fit</SelectItem>

@@ -53,7 +53,7 @@ export function BrandCollaborationsList({ rows, campaigns, initialFilter }: Prop
           </TabsList>
         </Tabs>
         {campaigns.length > 1 ? (
-          <Select value={campaign} onValueChange={(v) => setCampaign(String(v))}>
+          <Select value={campaign} onValueChange={(v) => setCampaign(String(v))} items={[{ value: ALL, label: t("filters.allCampaigns") }, ...campaigns.map((c) => ({ value: c.id, label: c.name }))]}>
             <SelectTrigger size="sm" className="w-56" aria-label={t("filters.campaign")}><SelectValue /></SelectTrigger>
             <SelectContent>
               <SelectItem value={ALL}>{t("filters.allCampaigns")}</SelectItem>

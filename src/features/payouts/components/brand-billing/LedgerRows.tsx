@@ -54,7 +54,7 @@ export function LedgerRows({ rows }: { rows: LedgerRowDto[] }) {
             {visible.map((r) => (
               <TableRow key={r.id}>
                 <TableCell className="num text-caption text-ink-muted">{format.dateTime(new Date(r.date), { day: "numeric", month: "short", year: "numeric" })}</TableCell>
-                <TableCell>{r.description}</TableCell>
+                <TableCell>{r.detail ?? r.description}</TableCell>
                 <TableCell className="num text-caption text-ink-muted">{r.reference}</TableCell>
                 <TableCell>{chip(r)}</TableCell>
                 <TableCell className={`num text-right ${r.amountCents > 0 ? "text-money" : "text-ink"}`}>{money(r.amountCents)}</TableCell>
