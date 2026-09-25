@@ -39,3 +39,27 @@ describe("fitScore", () => {
     expect(result.score).toBe(0);
   });
 });
+
+describe("engagement against our own creators", () => {
+  const creator = { industries: ["SaaS"], audienceJobTitles: { Founders: 50, Other: 50 }, followers: 2_500, engagementRate: 0.06, postsPerMonth: 8 };
+  const campaign = { targetIndustries: ["SaaS"], icpTitles: ["Founder"] };
+  const engagement = (r: ReturnType<typeof fitScore>) => r.signals.find((s) => s.key === "engagement");
+
+  it("compares with the median of the creator's own tier on Amplio", () => {
+    const signal = engagement(fitScore(creator, campaign, { byTier: [0.04, 0.03, null, null, null], overall: 0.03 }));
+    expect(signal?.score).toBe(100); // 1.5× the tier median
+    expect(signal?.detail).toBe("6.0% engagement vs a 4.0% median for creators their size on Amplio");
+  });
+
+  it("falls back to the marketplace median when the tier is too thin", () => {
+    const signal = engagement(fitScore(creator, campaign, { byTier: [null, null, null, null, null], overall: 0.06 }));
+    expect(signal?.score).toBe(70);
+    expect(signal?.detail).toContain("median on Amplio");
+  });
+
+  it("stays neutral, and says why, with nothing to compare against", () => {
+    const signal = engagement(fitScore(creator, campaign));
+    expect(signal?.score).toBe(70);
+    expect(signal?.detail).toContain("nothing on Amplio to compare");
+  });
+});

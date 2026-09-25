@@ -3,6 +3,7 @@ import { and, asc, eq } from "drizzle-orm";
 import { getDb } from "@/db";
 import { brands, campaigns, collaborations, creators } from "@/db/schema";
 import { fitScore } from "@/lib/fit-score";
+import { getEngagementBaseline } from "@/features/marketplace/server/engagement-baseline";
 import type { OpportunityDto } from "../schemas";
 import { toBriefDto } from "./dto";
 import { cachedRead } from "@/db/cache";
@@ -31,11 +32,12 @@ async function loadOpportunities(creatorId: string): Promise<OpportunityDto[]> {
     .where(and(eq(campaigns.status, "active"), eq(campaigns.openToApplications, true)))
     .orderBy(asc(campaigns.createdAt));
 
+  const baseline = await getEngagementBaseline();
   const now = Date.now();
   return rows
     .map(({ campaign, brand, existingId, existingStatus }) => {
       const brief = toBriefDto(campaign, brand, null);
-      const fit = fitScore(creator, { targetIndustries: brief.targetIndustries, icpTitles: brief.icpTitles });
+      const fit = fitScore(creator, { targetIndustries: brief.targetIndustries, icpTitles: brief.icpTitles }, baseline);
       return {
         campaignId: campaign.id,
         campaignName: campaign.name,

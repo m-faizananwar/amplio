@@ -4,16 +4,17 @@ import { getDb } from "@/db";
 import { collaborations, creators, shortlist, users } from "@/db/schema";
 import { estimate } from "@/lib/estimator";
 import { getObservedSample } from "./read-rates";
-import { fitScore } from "@/lib/fit-score";
+import { type EngagementBaseline, fitScore } from "@/lib/fit-score";
+import { getEngagementBaseline } from "@/features/marketplace/server/engagement-baseline";
 import { BEST_FIT_LIMIT } from "../constants";
 import type { BrandProfile, CampaignDto, CreatorPickDto, EstimateDto } from "../schemas";
 
 type CreatorJoin = { creator: typeof creators.$inferSelect; firstName: string; lastName: string };
 
-type PickContext = { campaign: CampaignDto; brand: BrandProfile; invitedIds: Set<string> };
+type PickContext = { campaign: CampaignDto; brand: BrandProfile; invitedIds: Set<string>; baseline: EngagementBaseline };
 
-function toPick(join: CreatorJoin, { campaign, brand, invitedIds }: PickContext): CreatorPickDto {
-  const fit = fitScore(join.creator, { targetIndustries: campaign.brief.targetIndustries, icpTitles: brand.icps.map((i) => i.title) });
+function toPick(join: CreatorJoin, { campaign, brand, invitedIds, baseline }: PickContext): CreatorPickDto {
+  const fit = fitScore(join.creator, { targetIndustries: campaign.brief.targetIndustries, icpTitles: brand.icps.map((i) => i.title) }, baseline);
   return {
     id: join.creator.id,
     name: `${join.firstName} ${join.lastName}`.trim(),
@@ -41,9 +42,10 @@ const creatorSelect = { creator: creators, firstName: users.firstName, lastName:
 export async function listBestFitCreators(campaign: CampaignDto, brand: BrandProfile, limit = BEST_FIT_LIMIT): Promise<CreatorPickDto[]> {
   const rows = await getDb().select(creatorSelect).from(creators).innerJoin(users, eq(users.id, creators.userId));
   const invited = await invitedCreatorIds(campaign.id);
+  const baseline = await getEngagementBaseline();
   return rows
     .filter((r) => r.creator.headline.length > 0 && !invited.has(r.creator.id))
-    .map((r) => toPick(r, { campaign, brand, invitedIds: invited }))
+    .map((r) => toPick(r, { campaign, brand, invitedIds: invited, baseline }))
     .sort((a, b) => b.fit - a.fit || a.priceCents - b.priceCents)
     .slice(0, limit);
 }
@@ -56,7 +58,8 @@ export async function listShortlistCreators(campaign: CampaignDto, brand: BrandP
     .innerJoin(users, eq(users.id, creators.userId))
     .where(eq(shortlist.brandId, brand.id));
   const invited = await invitedCreatorIds(campaign.id);
-  return rows.map((r) => toPick(r, { campaign, brand, invitedIds: invited })).sort((a, b) => b.fit - a.fit);
+  const baseline = await getEngagementBaseline();
+  return rows.map((r) => toPick(r, { campaign, brand, invitedIds: invited, baseline })).sort((a, b) => b.fit - a.fit);
 }
 
 export async function getCreatorPicks(ids: string[], campaign: CampaignDto, brand: BrandProfile): Promise<CreatorPickDto[]> {
@@ -67,7 +70,8 @@ export async function getCreatorPicks(ids: string[], campaign: CampaignDto, bran
     .innerJoin(users, eq(users.id, creators.userId))
     .where(and(inArray(creators.id, ids)));
   const invited = await invitedCreatorIds(campaign.id);
-  return rows.map((r) => toPick(r, { campaign, brand, invitedIds: invited }));
+  const baseline = await getEngagementBaseline();
+  return rows.map((r) => toPick(r, { campaign, brand, invitedIds: invited, baseline }));
 }
 
 // The selection × what Amplio has observed so far (src/lib/estimator.ts).
@@ -85,5 +89,6 @@ export async function listCampaignCreators(campaign: CampaignDto, brand: BrandPr
     .innerJoin(users, eq(users.id, creators.userId))
     .where(and(eq(collaborations.campaignId, campaign.id), ne(collaborations.status, "declined")));
   const invited = new Set(rows.map((r) => r.creator.id));
-  return rows.map((r) => toPick(r, { campaign, brand, invitedIds: invited }));
+  const baseline = await getEngagementBaseline();
+  return rows.map((r) => toPick(r, { campaign, brand, invitedIds: invited, baseline }));
 }

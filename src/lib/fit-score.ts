@@ -1,4 +1,4 @@
-// naano's matching engine, as a pure function: audience fit before follower
+// The matching engine, as a pure function: audience fit before follower
 // count. Every score comes with its signals and a one-line "why they belong".
 
 export type AudienceMix = Record<string, number>;
@@ -34,15 +34,20 @@ const BUCKET_KEYWORDS: Array<[bucket: string, keywords: string[]]> = [
   ["Operations", ["operations", "ops", "support", "customer success", "coo", "office"]],
 ];
 
-// naano's benchmark: engagement is naturally higher for smaller accounts, so
-// "quality" is judged against the tier, not in absolute terms.
-const ENGAGEMENT_BENCHMARK = [
-  { maxFollowers: 3_000, rate: 0.055 },
-  { maxFollowers: 7_000, rate: 0.042 },
-  { maxFollowers: 10_000, rate: 0.034 },
-  { maxFollowers: 100_000, rate: 0.024 },
-  { maxFollowers: Infinity, rate: 0.018 },
-];
+// Engagement is naturally higher for smaller accounts, so "quality" is judged
+// against creators of the same size — on Amplio. The tiers are fixed; the
+// rate for each is the median engagement of our own creators in that tier
+// (marketplace/server/engagement-baseline.ts), not a published benchmark.
+export const ENGAGEMENT_TIERS = [3_000, 7_000, 10_000, 100_000, Infinity] as const;
+
+/** Median engagement rate per tier, in ENGAGEMENT_TIERS order; null where we have too few creators. */
+export type EngagementBaseline = { byTier: Array<number | null>; overall: number | null };
+
+export function tierIndex(followers: number) {
+  const index = ENGAGEMENT_TIERS.findIndex((max) => followers <= max);
+  return index < 0 ? ENGAGEMENT_TIERS.length - 1 : index;
+}
+
 const LIMITS = { consistentPostsPerMonth: 8, strongAudienceOverlap: 50, atBenchmarkScore: 70 };
 const PERCENT = 100;
 
@@ -87,12 +92,18 @@ function categorySignal(creator: FitCreator, campaign: FitCampaign): FitSignal {
   return { key: "category", label: "Category match", score, weight: FIT_WEIGHTS.category, detail };
 }
 
-function engagementSignal(creator: FitCreator): FitSignal {
-  const benchmark = (ENGAGEMENT_BENCHMARK.find((t) => creator.followers <= t.maxFollowers) ?? ENGAGEMENT_BENCHMARK[ENGAGEMENT_BENCHMARK.length - 1]).rate;
-  // At benchmark = 70, 1.5× benchmark = 100.
-  const score = clampPercent((creator.engagementRate / benchmark) * LIMITS.atBenchmarkScore);
-  const detail = `${(creator.engagementRate * PERCENT).toFixed(1)}% engagement vs ${(benchmark * PERCENT).toFixed(1)}% for their size`;
-  return { key: "engagement", label: "Engagement quality", score, weight: FIT_WEIGHTS.engagement, detail };
+function engagementSignal(creator: FitCreator, baseline: EngagementBaseline | undefined): FitSignal {
+  const tierRate = baseline?.byTier[tierIndex(creator.followers)] ?? null;
+  const reference = tierRate ?? baseline?.overall ?? null;
+  const rate = `${(creator.engagementRate * PERCENT).toFixed(1)}%`;
+  const base = { key: "engagement" as const, label: "Engagement quality", weight: FIT_WEIGHTS.engagement };
+  if (creator.engagementRate <= 0) return { ...base, score: 0, detail: "No engagement measured yet" };
+  // No reference yet (an empty marketplace): a neutral score, and the detail says why.
+  if (!reference) return { ...base, score: LIMITS.atBenchmarkScore, detail: `${rate} engagement, nothing on Amplio to compare it with yet` };
+  // At the median = 70, 1.5× the median = 100.
+  const score = clampPercent((creator.engagementRate / reference) * LIMITS.atBenchmarkScore);
+  const scope = tierRate === null ? "on Amplio" : "for creators their size on Amplio";
+  return { ...base, score, detail: `${rate} engagement vs a ${(reference * PERCENT).toFixed(1)}% median ${scope}` };
 }
 
 function consistencySignal(creator: FitCreator): FitSignal {
@@ -112,8 +123,8 @@ function reasonFor(signals: FitSignal[]) {
   return second ? `${first}, and ${second.detail.charAt(0).toLowerCase()}${second.detail.slice(1)}.` : `${first}.`;
 }
 
-export function fitScore(creator: FitCreator, campaign: FitCampaign): FitResult {
-  const signals = [audienceSignal(creator, campaign), categorySignal(creator, campaign), engagementSignal(creator), consistencySignal(creator)];
+export function fitScore(creator: FitCreator, campaign: FitCampaign, baseline?: EngagementBaseline): FitResult {
+  const signals = [audienceSignal(creator, campaign), categorySignal(creator, campaign), engagementSignal(creator, baseline), consistencySignal(creator)];
   const score = clampPercent(signals.reduce((sum, s) => sum + s.score * s.weight, 0));
   return { score, signals, reason: reasonFor(signals) };
 }

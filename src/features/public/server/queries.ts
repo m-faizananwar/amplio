@@ -4,6 +4,7 @@ import { desc, eq } from "drizzle-orm";
 import { creatorPosts, creators, users } from "@/db/schema";
 import { getDb, isDbConfigured } from "@/db";
 import { fitScore } from "@/lib/fit-score";
+import { getEngagementBaseline } from "@/features/marketplace/server/engagement-baseline";
 import {
   POST_EXAMPLES_CANDIDATES,
   POST_EXAMPLES_COUNT,
@@ -104,6 +105,7 @@ export async function getShowcaseCreators(): Promise<PublicCreator[]> {
       .orderBy(desc(creators.medianViews))
       .limit(SHOWCASE_CANDIDATES);
     const brief = { targetIndustries: [...SHOWCASE_BRIEF.targetIndustries], icpTitles: [...SHOWCASE_BRIEF.icpTitles] };
+    const baseline = await getEngagementBaseline();
     return rows
       .map((row) => ({
         id: row.id,
@@ -111,7 +113,7 @@ export async function getShowcaseCreators(): Promise<PublicCreator[]> {
         industries: row.industries,
         country: row.country,
         headline: row.headline,
-        fit: fitScore(row, brief).score,
+        fit: fitScore(row, brief, baseline).score,
         followers: row.followers,
         medianViews: row.medianViews,
         priceCents: row.priceCents,

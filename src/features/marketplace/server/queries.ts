@@ -11,6 +11,7 @@ import type {
   CampaignOptionDto, CountryOptionDto, CreatorDto, CreatorListDto, MarketplaceContextDto, MarketplaceQuery,
 } from "../schemas";
 import { type CreatorDtoContext, type CreatorRowWithName, toCreatorDto } from "./creator-dto";
+import { getEngagementBaseline } from "./engagement-baseline";
 
 // ---- context: brand, campaigns, selected campaign ---------------------------------
 
@@ -105,7 +106,7 @@ function sortItems(items: CreatorDto[], sort: MarketplaceQuery["sort"]) {
   return items.sort(by[sort]);
 }
 
-async function loadDtoContext(ctx: Pick<ListContext, "selectedCampaign">, creatorIds: string[]): Promise<Omit<CreatorDtoContext, "campaign" | "shortlistedIds">> {
+async function loadDtoContext(ctx: Pick<ListContext, "selectedCampaign">, creatorIds: string[]): Promise<Omit<CreatorDtoContext, "campaign" | "shortlistedIds" | "baseline">> {
   const db = getDb();
   const postsByCreator = new Map<string, (typeof creatorPosts.$inferSelect)[]>();
   const collaborationStatusByCreator = new Map<string, string>();
@@ -149,6 +150,7 @@ async function loadCreatorList(ctx: ListContext, query: MarketplaceQuery): Promi
 
   const base: CreatorDtoContext = {
     campaign: fitCampaignOf(ctx),
+    baseline: await getEngagementBaseline(),
     shortlistedIds,
     postsByCreator: new Map(),
     collaborationStatusByCreator: new Map(),

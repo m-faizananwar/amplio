@@ -1,7 +1,7 @@
 import "server-only";
 import type { creatorPosts, creators } from "@/db/schema";
 import { cpmCents } from "@/lib/cpm";
-import { type FitCampaign, fitScore } from "@/lib/fit-score";
+import { type EngagementBaseline, type FitCampaign, fitScore } from "@/lib/fit-score";
 import { ENGAGER_SAMPLE_MAX, ENGAGER_SAMPLE_MIN, ENGAGER_SAMPLE_RATE } from "../constants";
 import type { CreatorDto, CreatorPostDto } from "../schemas";
 
@@ -12,6 +12,8 @@ export type CreatorRowWithName = { creator: CreatorRow; firstName: string; lastN
 
 export type CreatorDtoContext = {
   campaign: FitCampaign;
+  /** Our own creators' engagement medians (engagement-baseline.ts). */
+  baseline: EngagementBaseline;
   shortlistedIds: Set<string>;
   collaborationStatusByCreator: Map<string, string>;
   postsByCreator: Map<string, PostRow[]>;
@@ -75,6 +77,7 @@ export function toCreatorDto(row: CreatorRowWithName, ctx: CreatorDtoContext): C
         postsPerMonth: c.postsPerMonth,
       },
       ctx.campaign,
+      ctx.baseline,
     ),
     shortlisted: ctx.shortlistedIds.has(c.id),
     collaborationStatus: ctx.collaborationStatusByCreator.get(c.id) ?? null,

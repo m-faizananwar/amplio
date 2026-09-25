@@ -5,6 +5,7 @@ import {
   brands, campaigns, collaborations, creators, messages, pixelEvents, shortlist, users,
 } from "@/db/schema";
 import { fitScore } from "@/lib/fit-score";
+import { getEngagementBaseline } from "@/features/marketplace/server/engagement-baseline";
 import { NEW_CREATORS_LIMIT, NEW_CREATORS_POOL } from "../constants";
 import { cachedRead } from "@/db/cache";
 import { tag } from "@/lib/cache-tags";
@@ -77,6 +78,7 @@ async function loadBrandOverview(brandId: string): Promise<BrandOverview> {
     targetIndustries: activeCampaign?.brief.targetIndustries ?? brand?.targetIndustries ?? [],
     icpTitles: (brand?.icps ?? []).map((i) => i.title),
   };
+  const baseline = await getEngagementBaseline();
   const newCreators = candidates
     .map((c) => ({
       id: c.creator.id,
@@ -84,7 +86,7 @@ async function loadBrandOverview(brandId: string): Promise<BrandOverview> {
       avatarUrl: c.creator.avatarUrl,
       industries: c.creator.industries,
       priceCents: c.creator.priceCents,
-      fit: fitScore(c.creator, campaignSide).score,
+      fit: fitScore(c.creator, campaignSide, baseline).score,
     }))
     .sort((a, b) => b.fit - a.fit)
     .slice(0, NEW_CREATORS_LIMIT);
