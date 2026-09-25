@@ -366,3 +366,51 @@ main [aria-busy="true"][aria-label^="Loading"] { animation: skeletonAppear 0s 0.
 @media (prefers-reduced-motion: reduce) {
   [data-slot="tabs-content"], .tab-swap { animation: none; }
 }
+
+/* ---- overlays on the assistant's spring ----
+   The widget opens with chatPop: rise 14px, scale .9, cubic-bezier(.34,1.56,
+   .64,1). Every other surface that appears over the page now speaks that
+   language — dialogs, the brief drawer and booking sheets, the notifications
+   and account popovers, and toasts — while the primitives keep their own
+   focus trapping and aria (this file only touches paint and timing).
+   Exits stay short and unsprung: an overshoot on the way out reads as a
+   bounce off the screen edge. */
+:root { --ix-pop: cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+@keyframes overlayPop { from { opacity: 0; transform: translate(-50%, -50%) translateY(14px) scale(0.9); } to { opacity: 1; transform: translate(-50%, -50%); } }
+@keyframes overlayDrop { from { opacity: 1; transform: translate(-50%, -50%); } to { opacity: 0; transform: translate(-50%, -50%) translateY(6px) scale(0.98); } }
+[data-slot="dialog-content"][data-open], [data-slot="alert-dialog-content"][data-open] {
+  animation: overlayPop 0.42s var(--ix-pop) both;
+}
+[data-slot="dialog-content"][data-closed], [data-slot="alert-dialog-content"][data-closed],
+[data-slot="dialog-content"][data-ending-style], [data-slot="alert-dialog-content"][data-ending-style] {
+  animation: overlayDrop 0.16s ease-in both;
+}
+[data-slot="dialog-overlay"], [data-slot="alert-dialog-overlay"], [data-slot="sheet-overlay"] { transition-duration: 0.28s; transition-timing-function: var(--ix-ease); }
+
+/* drawers and sheets: the spring on the way in, a plain ease on the way out */
+[data-slot="sheet-content"] { transition-duration: 0.42s; transition-timing-function: var(--ix-pop); }
+[data-slot="sheet-content"][data-ending-style] { transition-duration: 0.2s; transition-timing-function: ease-in; }
+
+/* popovers and menus: the same pop, from whichever corner they hang off */
+@keyframes anchorPop { from { opacity: 0; transform: translateY(6px) scale(0.94); } to { opacity: 1; transform: none; } }
+[data-slot="popover-content"][data-open], [data-slot="dropdown-menu-content"][data-open] {
+  animation: anchorPop 0.3s var(--ix-pop) both;
+  transform-origin: var(--transform-origin, center);
+}
+[data-slot="popover-content"][data-ending-style], [data-slot="dropdown-menu-content"][data-ending-style] {
+  animation: none; transition: opacity 0.14s ease-in, transform 0.14s ease-in; opacity: 0; transform: translateY(4px) scale(0.98);
+}
+
+/* toasts: sonner drives --y itself, so only the curve and the mount pop are ours */
+[data-sonner-toast] { transition-timing-function: var(--ix-pop) !important; }
+@keyframes toastPop { from { opacity: 0; transform: translateY(14px) scale(0.9); } to { opacity: 1; transform: none; } }
+[data-sonner-toast][data-mounted="true"][data-removed="false"] > * { animation: toastPop 0.4s var(--ix-pop) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-slot="dialog-content"], [data-slot="alert-dialog-content"], [data-slot="sheet-content"],
+  [data-slot="popover-content"], [data-slot="dropdown-menu-content"], [data-sonner-toast],
+  [data-sonner-toast][data-mounted="true"][data-removed="false"] > * {
+    animation: none !important; transition-duration: 0.01ms !important; transform: none !important; opacity: 1;
+  }
+}
