@@ -9,6 +9,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { LedgerRowDto } from "../../schemas";
 import { ledgerDetail, ledgerFilter, type LedgerView } from "./ledger-rows";
 import { Stamp } from "@/components/graphics/Stamp";
+import { PenLedgerScene } from "@/components/graphics/scenes";
 
 const CENTS = 100;
 const VIEWS: LedgerView[] = ["all", "awaiting", "payments"];
@@ -39,7 +40,7 @@ export function CreatorLedger({ rows }: { rows: LedgerRowDto[] }) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {visible.length === 0 ? <TableEmpty colSpan={4}>{t(`empty.${view}`)}</TableEmpty> : visible.map((r) => (
+          {visible.length === 0 ? <TableEmpty colSpan={4}><span className="grid justify-items-center gap-2"><PenLedgerScene />{t(`empty.${view}`)}</span></TableEmpty> : visible.map((r) => (
             <TableRow key={r.id}>
               <TableCell className="num text-small text-ink-muted">{format.dateTime(new Date(r.date), { dateStyle: "medium" })}</TableCell>
               <TableCell><span className="block text-ink">{ledgerDetail(r)}</span><span className="num block text-caption text-ink-muted">{t(`types.${r.type}`)} · {r.reference}</span></TableCell>
