@@ -71,5 +71,16 @@ wallet/ledger. They are the product; the interface around them is what we rebuil
 
 ## Honest stubs
 
-Stripe (the ledger stands in), LinkedIn profile import (simulated from the URL). The UI
-says so where they appear.
+Stripe (the ledger stands in). The UI says so where it appears. The LinkedIn profile
+import is real now (Apify, pinned actor); a profile it can't read is entered by hand.
+
+## Stopped pretending
+
+- Pricing shows the creator paid in full and the fee at €0, because that's what the ledger
+  does: the brand pays the creator's price and the creator receives all of it. The coin on
+  the landing and /pricing rolls whole to the creator; it doesn't split into a cut we don't
+  take.
+- Public numbers are the seeded demo workspace's, labelled as such; naano's figures,
+  customer logos, testimonials and team are gone, with the pages that carried them.
+- No invented profile numbers: reach and engagement aren't on a public LinkedIn profile, so
+  the import never fills them in.
