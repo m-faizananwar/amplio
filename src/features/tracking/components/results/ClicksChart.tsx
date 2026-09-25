@@ -1,12 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { DrawnChart } from "@/components/motion/DrawnChart";
-import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import dynamic from "next/dynamic";
+import { ChartSkeleton } from "@/components/skeleton/Skeletons";
 import type { SeriesRange } from "../../constants";
 import type { SeriesPoint } from "../../server/queries";
 
-// naano draws every line chart on mount: 2.5s ease-out after a 0.5s delay.
+// The chart itself is a separate chunk: recharts is 98 kB, and the numbers
+// above it are what the page is for.
+const ClicksChartCanvas = dynamic(() => import("./ClicksChartCanvas").then((m) => m.ClicksChartCanvas), {
+  ssr: false,
+  loading: () => <div className="mt-4 h-64"><ChartSkeleton /></div>,
+});
+
 
 const RANGES: Array<{ key: SeriesRange; label: string }> = [
   { key: "week", label: "Week" },
@@ -36,17 +42,7 @@ export function ClicksChart({ series, range, basePath }: { series: SeriesPoint[]
           ))}
         </div>
       </div>
-      <DrawnChart replayKey={range} className="mt-4 h-64">
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={series} margin={{ top: 8, right: 8, left: -16, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
-            <XAxis dataKey="day" tick={{ fontSize: 11 }} tickFormatter={(d: string) => d.slice(5)} minTickGap={24} />
-            <YAxis tick={{ fontSize: 11 }} allowDecimals={false} />
-            <Tooltip contentStyle={{ borderRadius: 12, borderColor: "var(--color-border)", fontSize: 12 }} />
-            <Line type="monotone" dataKey="clicks" stroke="var(--color-brand)" strokeWidth={2} dot={false} isAnimationActive={false} />
-          </LineChart>
-        </ResponsiveContainer>
-      </DrawnChart>
+      <ClicksChartCanvas series={series} range={range} />
     </section>
   );
 }

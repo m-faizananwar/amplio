@@ -1,9 +1,14 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useSyncExternalStore } from "react";
-import { CallView } from "./CallView";
 import { callSession } from "./callSession";
+
+// The overlay renders nothing until a call starts, but its imports (metal-fx,
+// thinking-orbs, the voice client) were loading with every app page anyway.
+// They now arrive with the call.
+const CallView = dynamic(() => import("./CallView").then((m) => m.CallView), { ssr: false });
 
 type Props = { role: "brand" | "creator"; csrfToken?: string; account: React.ReactNode };
 
