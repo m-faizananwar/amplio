@@ -244,6 +244,19 @@ Documents, not pages: sections at reading width, a sticky "on this page"
 index on wide screens, the date at the top. The copy states what this build
 actually stores and that money doesn't move.
 
+### Motion on the public pages
+Every scene on the landing acts out its sentence in hand-made SVG on the
+trail motif — the share arrow seeding the audience, clicks flying into
+the link, sign-ups dropping into named ledger rows, the bill and the proof
+locking together — so someone who doesn't read the copy still watches the
+story to the end. The same kit carries the other pages: the creator card
+assembling itself on /for-creators, the coin on /pricing (whole to the
+creator, fee €0 — the true state of this build, not a split we don't
+take), the drawn cross-outs, a line drawing per FAQ answer, a quiet trail
+on legal pages and beside the auth form. Everything waits until it's on
+screen (`src/features/public/components/stage/Stage.tsx`), loops pause
+off-screen, and reduced motion shows the final frame.
+
 ## Auth
 
 ### Sign in, sign up, forgot, reset — `/login`, `/register[/brand|/creator]`, `/forgot-password`, `/reset-password/[token]`
