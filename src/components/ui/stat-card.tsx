@@ -35,21 +35,23 @@ export function StatCard({ label, value, format, hint, delta, spark, tone = "ink
       <p className={cn("mt-2 text-h2 font-semibold tracking-(--tracking-heading)", tone === "money" ? "text-money" : "text-ink")}>
         <RollingNumber value={value} format={format} />
       </p>
-      <div className="mt-2 flex min-h-5 items-end justify-between gap-3 text-caption">
-        <span className="flex min-w-0 flex-wrap items-center gap-x-1.5 text-ink-muted">
+      {delta || hint ? (
+        <p className="mt-2 flex flex-wrap items-center gap-x-1.5 text-caption text-ink-muted">
           {delta ? <DeltaBadge delta={delta} /> : null}
           {hint}
+        </p>
+      ) : null}
+      {onOpen ? (
+        <span className="mt-auto inline-flex items-center gap-0.5 self-end whitespace-nowrap pt-3 text-caption font-medium text-ink-muted transition-colors duration-(--duration-fast) group-hover/stat:text-ink">
+          {openLabel}
+          <ChevronRight className="size-3.5 transition-transform duration-(--duration-fast) ease-ledger group-hover/stat:translate-x-0.5" aria-hidden="true" />
         </span>
-        {onOpen ? (
-          <span className="inline-flex shrink-0 items-center gap-0.5 whitespace-nowrap font-medium text-ink-muted transition-colors duration-(--duration-fast) group-hover/stat:text-ink">
-            {openLabel}
-            <ChevronRight className="size-3.5 transition-transform duration-(--duration-fast) ease-ledger group-hover/stat:translate-x-0.5" aria-hidden="true" />
-          </span>
-        ) : null}
-      </div>
+      ) : null}
     </>
   )
-  const frame = "group/stat block w-full rounded-card border border-rule bg-surface p-5 text-left"
+  // A column that fills its grid cell: cards in a row share one height and
+  // "Show rows" sits bottom-right however long the caption runs.
+  const frame = "group/stat flex h-full w-full flex-col rounded-card border border-rule bg-surface p-5 text-left"
   if (!onOpen) return <div data-slot="stat-card" className={cn(frame, className)}>{body}</div>
   return (
     <button
