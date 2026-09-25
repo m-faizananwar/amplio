@@ -1,0 +1,88 @@
+{
+  "nav": {
+    "sectionLabel": "Main",
+    "accountLabel": "Account",
+    "brand": {
+      "overview": "Overview",
+      "creators": "Creators",
+      "campaigns": "Campaigns",
+      "collaborations": "Collaborations",
+      "results": "Results",
+      "messages": "Messages",
+      "billing": "Billing",
+      "settings": "Settings"
+    },
+    "creator": {
+      "overview": "Overview",
+      "card": "My card",
+      "opportunities": "Opportunities",
+      "collaborations": "Collaborations",
+      "analytics": "Analytics",
+      "earnings": "Earnings",
+      "messages": "Messages",
+      "settings": "Settings"
+    }
+  },
+  "topBar": {
+    "roleSwitch": {
+      "label": "Workspace",
+      "brand": "Brand",
+      "creator": "Creator",
+      "hint": "Switches between your brand and creator workspaces."
+    },
+    "wallet": {
+      "label": "Wallet",
+      "heldHint": "{amount} held for pending invitations",
+      "availableHint": "{amount} available to withdraw"
+    },
+    "search": "Search or jump to…",
+    "searchShortcut": "Press {keys} from any page",
+    "notifications": {
+      "label": "Notifications",
+      "empty": "Nothing needs you right now.",
+      "markAllRead": "Mark all as read",
+      "unreadCount": "{count, plural, =0 {No unread notifications} one {# unread notification} other {# unread notifications}}"
+    },
+    "account": {
+      "label": "Account menu",
+      "settings": "Settings",
+      "signOut": "Sign out",
+      "signedInAs": "Signed in as {name}"
+    }
+  },
+  "commandMenu": {
+    "title": "Search and actions",
+    "placeholder": "Jump to a page, a creator, a campaign…",
+    "empty": "Nothing matches.",
+    "groups": {
+      "goTo": "Go to",
+      "creators": "Creators",
+      "campaigns": "Campaigns",
+      "collaborations": "Collaborations",
+      "actions": "Actions"
+    },
+    "actions": {
+      "newCampaign": "New campaign",
+      "inviteCreator": "Invite a creator",
+      "topUp": "Top up wallet",
+      "openResults": "Open results",
+      "toggleTheme": "Change theme",
+      "switchLanguage": "Change language"
+    }
+  },
+  "pageStates": {
+    "loadingPage": "Loading page",
+    "pageErrorTitle": "We couldn't load this page",
+    "pageErrorBody": "Your data is safe. Try again, or go back to your overview.",
+    "notFoundTitle": "This page doesn't exist",
+    "notFoundBody": "The link may be mistyped, or the page has moved.",
+    "backToOverview": "Back to overview"
+  },
+  "setup": {
+    "title": "Finish setting up",
+    "body": "A few steps are left. This card goes away once they're done.",
+    "stepsLeft": "{count, plural, one {# step left} other {# steps left}}",
+    "dismiss": "Hide for now"
+  },
+  "skipToContent": "Skip to content"
+}

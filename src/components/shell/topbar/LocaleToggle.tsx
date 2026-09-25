@@ -1,26 +1,29 @@
 "use client";
 
-import { useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
+import { SegmentedControl } from "@/components/ui/segmented-control";
+import { setLocale } from "@/i18n/actions";
+import { LOCALES, type Locale } from "@/i18n/config";
 
-const LOCALES = ["EN", "FR"] as const;
-
-// Visual only: FR is a real locale on naano; this build ships English strings
-// and the toggle re-renders the same copy (the README says so).
+// EN / FR. Sets the locale cookie, then re-renders the current page on the
+// server in the new language — same URL, no reload.
 export function LocaleToggle() {
-  const [locale, setLocale] = useState<(typeof LOCALES)[number]>("EN");
+  const locale = useLocale() as Locale;
+  const t = useTranslations("common.language");
+  const router = useRouter();
+  const [pending, startTransition] = useTransition();
   return (
-    <div role="group" aria-label="Language (English only in this build)" className="inline-flex h-9 items-center rounded-lg border p-0.5 text-xs font-semibold">
-      {LOCALES.map((code) => (
-        <button
-          key={code}
-          type="button"
-          aria-pressed={locale === code}
-          onClick={() => setLocale(code)}
-          className="rounded-md px-2.5 py-1.5 text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 aria-pressed:bg-foreground aria-pressed:text-background"
-        >
-          {code}
-        </button>
-      ))}
-    </div>
+    <SegmentedControl
+      size="sm"
+      label={t("label")}
+      value={locale}
+      className={pending ? "opacity-70" : undefined}
+      onValueChange={(next) => startTransition(async () => {
+        if (await setLocale(next)) router.refresh();
+      })}
+      options={LOCALES.map((code) => ({ value: code, label: <span aria-label={t(code)}>{code.toUpperCase()}</span> }))}
+    />
   );
 }

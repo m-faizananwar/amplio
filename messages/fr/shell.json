@@ -1,0 +1,88 @@
+{
+  "nav": {
+    "sectionLabel": "Principal",
+    "accountLabel": "Compte",
+    "brand": {
+      "overview": "Vue d’ensemble",
+      "creators": "Créateurs",
+      "campaigns": "Campagnes",
+      "collaborations": "Collaborations",
+      "results": "Résultats",
+      "messages": "Messages",
+      "billing": "Facturation",
+      "settings": "Paramètres"
+    },
+    "creator": {
+      "overview": "Vue d’ensemble",
+      "card": "Ma fiche",
+      "opportunities": "Opportunités",
+      "collaborations": "Collaborations",
+      "analytics": "Statistiques",
+      "earnings": "Revenus",
+      "messages": "Messages",
+      "settings": "Paramètres"
+    }
+  },
+  "topBar": {
+    "roleSwitch": {
+      "label": "Espace",
+      "brand": "Marque",
+      "creator": "Créateur",
+      "hint": "Bascule entre votre espace marque et votre espace créateur."
+    },
+    "wallet": {
+      "label": "Portefeuille",
+      "heldHint": "Provisionné pour les invitations en attente : {amount}",
+      "availableHint": "{amount} à retirer"
+    },
+    "search": "Rechercher ou aller à…",
+    "searchShortcut": "Appuyez sur {keys} depuis n’importe quelle page",
+    "notifications": {
+      "label": "Notifications",
+      "empty": "Rien ne vous attend pour l’instant.",
+      "markAllRead": "Tout marquer comme lu",
+      "unreadCount": "{count, plural, =0 {Aucune notification non lue} one {# notification non lue} other {# notifications non lues}}"
+    },
+    "account": {
+      "label": "Menu du compte",
+      "settings": "Paramètres",
+      "signOut": "Se déconnecter",
+      "signedInAs": "Connecté en tant que {name}"
+    }
+  },
+  "commandMenu": {
+    "title": "Recherche et actions",
+    "placeholder": "Aller à une page, un créateur, une campagne…",
+    "empty": "Aucun résultat.",
+    "groups": {
+      "goTo": "Aller à",
+      "creators": "Créateurs",
+      "campaigns": "Campagnes",
+      "collaborations": "Collaborations",
+      "actions": "Actions"
+    },
+    "actions": {
+      "newCampaign": "Nouvelle campagne",
+      "inviteCreator": "Inviter un créateur",
+      "topUp": "Recharger le portefeuille",
+      "openResults": "Ouvrir les résultats",
+      "toggleTheme": "Changer de thème",
+      "switchLanguage": "Changer de langue"
+    }
+  },
+  "pageStates": {
+    "loadingPage": "Chargement de la page",
+    "pageErrorTitle": "Impossible de charger cette page",
+    "pageErrorBody": "Vos données ne sont pas perdues. Réessayez, ou revenez à votre vue d’ensemble.",
+    "notFoundTitle": "Cette page n’existe pas",
+    "notFoundBody": "Le lien est peut-être erroné, ou la page a été déplacée.",
+    "backToOverview": "Retour à la vue d’ensemble"
+  },
+  "setup": {
+    "title": "Terminez votre configuration",
+    "body": "Il reste quelques étapes. Cette carte disparaît une fois qu’elles sont terminées.",
+    "stepsLeft": "{count, plural, one {# étape restante} other {# étapes restantes}}",
+    "dismiss": "Masquer pour l’instant"
+  },
+  "skipToContent": "Aller au contenu"
+}

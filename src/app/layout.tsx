@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { getLocale } from "next-intl/server";
+import { ClientMessages } from "@/i18n/ClientMessages";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Cormorant_Garamond, Geist, Geist_Mono } from "next/font/google";
@@ -36,10 +38,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default async function RootLayout({ children }: { children: ReactNode }) {
+  const locale = await getLocale();
   return (
-    <html lang="en" className={`${geist.variable} ${geistMono.variable} ${cormorant.variable} h-full antialiased`}>
+    <html lang={locale} className={`${geist.variable} ${geistMono.variable} ${cormorant.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
+        <ClientMessages namespaces={[]}>
         <RouteProgress />
         <PublicChrome />
         <ScrollMorph />
@@ -48,6 +52,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Toaster position="bottom-right" duration={TOAST_MS} />
         <Analytics />
         <SpeedInsights />
+        </ClientMessages>
       </body>
     </html>
   );

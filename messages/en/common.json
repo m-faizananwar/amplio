@@ -1,0 +1,51 @@
+{
+  "actions": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "close": "Close",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "next": "Next",
+    "retry": "Try again",
+    "seeAll": "See all",
+    "showRows": "Show rows",
+    "exportCsv": "Export CSV",
+    "copy": "Copy",
+    "copied": "Copied",
+    "loadMore": "Load more"
+  },
+  "states": {
+    "loading": "Loading…",
+    "saving": "Saving…",
+    "errorTitle": "Something went wrong",
+    "errorBody": "Your data is safe. Try again in a moment.",
+    "empty": "Nothing here yet.",
+    "offline": "You're offline. Reconnect to load and save changes."
+  },
+  "time": {
+    "justNow": "Just now",
+    "minutesAgo": "{count, plural, one {# minute ago} other {# minutes ago}}",
+    "hoursAgo": "{count, plural, one {# hour ago} other {# hours ago}}",
+    "daysAgo": "{count, plural, one {# day ago} other {# days ago}}",
+    "today": "Today",
+    "yesterday": "Yesterday"
+  },
+  "language": {
+    "label": "Language",
+    "en": "English",
+    "fr": "Français"
+  },
+  "theme": {
+    "label": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "demoData": "Demo workspace data",
+  "stub": {
+    "stripe": "Demo top-up — no card is charged",
+    "linkedin": "LinkedIn import is simulated from the profile URL"
+  }
+}

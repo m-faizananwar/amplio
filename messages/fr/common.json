@@ -1,0 +1,51 @@
+{
+  "actions": {
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "close": "Fermer",
+    "confirm": "Confirmer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "back": "Retour",
+    "next": "Suivant",
+    "retry": "Réessayer",
+    "seeAll": "Tout voir",
+    "showRows": "Voir les lignes",
+    "exportCsv": "Exporter en CSV",
+    "copy": "Copier",
+    "copied": "Copié",
+    "loadMore": "Afficher plus"
+  },
+  "states": {
+    "loading": "Chargement…",
+    "saving": "Enregistrement…",
+    "errorTitle": "Une erreur s’est produite",
+    "errorBody": "Vos données ne sont pas perdues. Réessayez dans un instant.",
+    "empty": "Rien pour l’instant.",
+    "offline": "Vous êtes hors ligne. Reconnectez-vous pour charger et enregistrer vos modifications."
+  },
+  "time": {
+    "justNow": "À l’instant",
+    "minutesAgo": "{count, plural, one {Il y a # minute} other {Il y a # minutes}}",
+    "hoursAgo": "{count, plural, one {Il y a # heure} other {Il y a # heures}}",
+    "daysAgo": "{count, plural, one {Il y a # jour} other {Il y a # jours}}",
+    "today": "Aujourd’hui",
+    "yesterday": "Hier"
+  },
+  "language": {
+    "label": "Langue",
+    "en": "English",
+    "fr": "Français"
+  },
+  "theme": {
+    "label": "Thème",
+    "light": "Clair",
+    "dark": "Sombre",
+    "system": "Système"
+  },
+  "demoData": "Données de l’espace de démonstration",
+  "stub": {
+    "stripe": "Rechargement de démonstration — aucune carte n’est débitée",
+    "linkedin": "L’import LinkedIn est simulé à partir de l’URL du profil"
+  }
+}

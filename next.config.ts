@@ -1,6 +1,13 @@
 import type { NextConfig } from "next";
+import createNextIntlPlugin from "next-intl/plugin";
+
+// next-intl reads the locale from a cookie (src/i18n/request.ts); no /fr routes.
+const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const nextConfig: NextConfig = {
+  // messages/<locale>/*.json are read from disk at request time (src/i18n/messages.ts),
+  // so they have to ship with every server function.
+  outputFileTracingIncludes: { "/**": ["./messages/**/*.json"] },
   // Barrel imports are convenient to write and expensive to ship: one
   // `import { X } from "pkg"` can pull the package's whole index into the
   // route's chunk. Next rewrites these to the deep import that actually
@@ -23,4 +30,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withNextIntl(nextConfig);
