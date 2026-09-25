@@ -237,6 +237,14 @@ Forgot-password always shows the reset link on screen, labelled by whether
 it was also emailed. Validation messages are translated; server messages
 (wrong password, email taken) are the server's own English for now.
 
+## Brand
+
+### Settings — `/brand/settings`
+Same shape as the creator's: an index and one form per schema — Company (name, website),
+Ideal customers (the onboarding value proposition and three customers, saved through
+onboarding's own action), Audience (industries and regions onboarding doesn't ask), Account.
+The Team section is cut: it validated an email and then said no invitation was sent.
+
 ## Real vs stubbed
 
 | Where | What | Status |
@@ -245,6 +253,7 @@ it was also emailed. Validation messages are translated; server messages
 | Stripe payout method (Settings › Payouts, Earnings › Withdraw) | no Stripe Connect; the ledger records the withdrawal | allowed stub, labelled in both places |
 | Creator card figures (My card, `/c/[handle]`) | followers, views, engagement, audience mix come from the (simulated) profile read | labelled under the card; seeded creators carry a "demo creator" note on the public page |
 | Affiliate "invite creators" tab, community Slack button | "not part of this build" | cut with their pages |
+| Brand settings › Team (`TeamAccessPanel`) | accepted an email, sent nothing ("email isn't connected") | cut from Settings; still used by `/brand/invite` (builder's, being folded into Creators) |
 | Messages "support bot" thread | a fake conversation with a canned reply | cut; `/…/messages/support-bot` now 404s |
 | Brand wallet top-up (Billing) | no Stripe; the credit is a ledger row | stub, the dialog says "no card is charged" |
 | Launch estimator (Campaigns) | rates from Amplio's own live posts, clicks and attributed sign-ups | real; below 3 live posts / 30 clicks it says "not enough data yet" |

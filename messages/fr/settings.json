@@ -54,7 +54,8 @@
       },
       "country": {
         "label": "Pays",
-        "placeholder": "Choisissez un pays"
+        "placeholder": "Choisissez un pays",
+        "empty": "Aucun pays ne correspond"
       },
       "industries": {
         "label": "Secteurs",
@@ -200,6 +201,14 @@
           "notSignedIn": "Vous devez vous connecter."
         }
       }
+    },
+    "you": {
+      "title": "Vous",
+      "description": "Votre nom sur les invitations, conversations et factures.",
+      "xHandle": {
+        "label": "Compte X",
+        "help": "Facultatif. Affiché sur votre carte à côté de LinkedIn."
+      }
     }
   },
   "brand": {
@@ -263,7 +272,8 @@
         "valuePropRequired": "Rédigez la proposition de valeur.",
         "valuePropTooLong": "Restez sous {max} caractères.",
         "saveFailed": "Impossible d’enregistrer votre profil."
-      }
+      },
+      "countryEmpty": "Aucun pays ne correspond"
     },
     "idealCustomers": {
       "title": "Clients idéaux",

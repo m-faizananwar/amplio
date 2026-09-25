@@ -11,26 +11,24 @@ import { destroySession, getViewer } from "@/features/auth/server/session";
 import { type CommandIndex, getCommandIndex } from "./command-queries";
 import { isDemoEmail } from "@/features/auth/constants";
 import {
-  type ActionResult, type BrandAudienceInput, type BrandProfileInput, type CreatorIdentityInput, type PayoutDetailsInput,
-  brandAudienceSchema, brandProfileSchema, creatorIdentitySchema, payoutDetailsSchema,
+  type ActionResult, type BrandAudienceInput, type BrandCompanyInput, type CreatorIdentityInput, type PayoutDetailsInput,
+  brandAudienceSchema, brandCompanySchema, creatorIdentitySchema, payoutDetailsSchema,
 } from "../schemas";
 
 function firstIssue(error: { issues: Array<{ message: string }> }) {
   return error.issues[0]?.message ?? "Invalid input";
 }
 
-export async function updateBrandProfile(input: BrandProfileInput): Promise<ActionResult> {
+
+export async function updateBrandCompany(input: BrandCompanyInput): Promise<ActionResult> {
   const viewer = await getViewer();
   if (!viewer?.brand) return { ok: false, error: "Sign in as a brand." };
-  const parsed = brandProfileSchema.safeParse(input);
+  const parsed = brandCompanySchema.safeParse(input);
   if (!parsed.success) return { ok: false, error: firstIssue(parsed.error) };
   try {
-    await getDb()
-      .update(brands)
-      .set({ company: parsed.data.company, website: parsed.data.website || null, valueProp: parsed.data.valueProp || null })
-      .where(eq(brands.id, viewer.brand.id));
+    await getDb().update(brands).set({ company: parsed.data.company, website: parsed.data.website || null }).where(eq(brands.id, viewer.brand.id));
   } catch (error) {
-    console.error("[workspace] brand profile update failed", { brandId: viewer.brand.id, error });
+    console.error("[workspace] brand company update failed", { brandId: viewer.brand.id, error });
     return { ok: false, error: "We couldn't save your profile." };
   }
   updateTags(tagsForMutation("brand-profile", { brandId: viewer.brand.id, userIds: [viewer.userId] }));

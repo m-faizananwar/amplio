@@ -8,6 +8,11 @@ export const brandProfileSchema = z.object({
 });
 export type BrandProfileInput = z.infer<typeof brandProfileSchema>;
 
+// Settings › Company: name and website only, so this form never overwrites the
+// value proposition (that is the onboarding profile's own save).
+export const brandCompanySchema = brandProfileSchema.pick({ company: true, website: true });
+export type BrandCompanyInput = z.infer<typeof brandCompanySchema>;
+
 export const brandAudienceSchema = z.object({
   targetIndustries: z.array(z.enum(INDUSTRIES)).max(INDUSTRIES.length),
   targetRegions: z.array(z.enum(REGIONS)).max(REGIONS.length),

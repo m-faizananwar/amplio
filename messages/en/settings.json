@@ -54,7 +54,8 @@
       },
       "country": {
         "label": "Country",
-        "placeholder": "Choose a country"
+        "placeholder": "Choose a country",
+        "empty": "No country matches"
       },
       "industries": {
         "label": "Industries",
@@ -200,6 +201,14 @@
           "notSignedIn": "You're not signed in."
         }
       }
+    },
+    "you": {
+      "title": "You",
+      "description": "Your name on invitations, threads and invoices.",
+      "xHandle": {
+        "label": "X handle",
+        "help": "Optional. Shown on your card next to LinkedIn."
+      }
     }
   },
   "brand": {
@@ -263,7 +272,8 @@
         "valuePropRequired": "Write the value proposition.",
         "valuePropTooLong": "Keep it under {max} characters.",
         "saveFailed": "We couldn't save your profile."
-      }
+      },
+      "countryEmpty": "No country matches"
     },
     "idealCustomers": {
       "title": "Ideal customers",

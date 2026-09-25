@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Controller } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { readLinkedinProfile, saveCreatorCard, savePricing, saveProfessionalInfo } from "@/features/creator-onboarding/server/actions";
@@ -11,26 +12,27 @@ import { PriceFields } from "@/features/profile-fields/components/PriceFields";
 import { ProfessionalFields } from "@/features/profile-fields/components/ProfessionalFields";
 import { type CreatorIdentityInput, creatorIdentitySchema } from "../../../schemas";
 import { updateCreatorIdentity } from "../../../server/actions";
-import { SaveRow } from "./SaveRow";
-import { SettingsSection } from "./SettingsSection";
-import { useSectionForm } from "./useSectionForm";
+import { SaveRow } from "../shared/SaveRow";
+import { SettingsSection } from "../shared/SettingsSection";
+import { useSectionForm } from "../shared/useSectionForm";
 
 export function IdentitySection({ defaults }: { defaults: CreatorIdentityInput }) {
-  const { form, onSubmit } = useSectionForm({ schema: creatorIdentitySchema, defaults, save: updateCreatorIdentity, saved: "Name saved" });
+  const t = useTranslations("settings.creator");
+  const { form, onSubmit } = useSectionForm({ schema: creatorIdentitySchema, defaults, save: updateCreatorIdentity, saved: t("states.saved") });
   const text = (name: keyof CreatorIdentityInput, label: string, hint?: string) => (
     <Controller control={form.control} name={name} render={({ field, fieldState }) => (
-      <FormField id={name} label={label} hint={hint} error={fieldState.error?.message}>
+      <FormField id={name} label={label} hint={hint} error={fieldState.error ? (name === "xHandle" ? fieldState.error.message : t("card.errors.firstNameRequired")) : undefined}>
         <Input id={name} aria-invalid={fieldState.invalid || undefined} {...field} />
       </FormField>
     )} />
   );
   return (
-    <SettingsSection id="you" title="You" description="How brands see your name on invitations, threads and invoices.">
+    <SettingsSection id="you" title={t("you.title")} description={t("you.description")}>
       <form onSubmit={onSubmit} noValidate>
         <div className="grid gap-5 sm:grid-cols-2">
-          {text("firstName", "First name")}
-          {text("lastName", "Last name")}
-          {text("xHandle", "X handle", "Optional. Shown on your card next to LinkedIn.")}
+          {text("firstName", t("card.firstName.label"))}
+          {text("lastName", t("card.lastName.label"))}
+          {text("xHandle", t("you.xHandle.label"), t("you.xHandle.help"))}
         </div>
         <SaveRow form={form} />
       </form>
@@ -39,49 +41,44 @@ export function IdentitySection({ defaults }: { defaults: CreatorIdentityInput }
 }
 
 export function LinkedinSection({ defaults }: { defaults: LinkedinInput }) {
-  const { form, onSubmit } = useSectionForm({ schema: linkedinSchema, defaults, save: readLinkedinProfile, saved: "Profile read again" });
+  const t = useTranslations("settings.creator.linkedin");
+  const { form, onSubmit } = useSectionForm({ schema: linkedinSchema, defaults, save: readLinkedinProfile, saved: t("success") });
   return (
-    <SettingsSection id="linkedin" title="LinkedIn" description="Your audience figures come from this profile. In this version they are simulated from the URL, not fetched from LinkedIn.">
+    <SettingsSection id="linkedin" title={t("title")} description={`${t("description")} ${t("stub")}`}>
       <form onSubmit={onSubmit} noValidate>
         <LinkedinFields control={form.control} />
-        <SaveRow form={form} label="Read my profile again" requireChange={false} />
+        <SaveRow form={form} label={t("reread")} requireChange={false} />
       </form>
     </SettingsSection>
   );
 }
 
 export function CardSection({ defaults }: { defaults: CardInput }) {
-  const { form, onSubmit } = useSectionForm({ schema: cardSchema, defaults, save: saveCreatorCard, saved: "Card saved" });
+  const t = useTranslations("settings.creator");
+  const { form, onSubmit } = useSectionForm({ schema: cardSchema, defaults, save: saveCreatorCard, saved: t("states.saved") });
   return (
-    <SettingsSection id="card" title="Card" description="The headline, country and industries brands filter and read.">
-      <form onSubmit={onSubmit} noValidate>
-        <CardFields control={form.control} />
-        <SaveRow form={form} />
-      </form>
+    <SettingsSection id="card" title={t("card.title")} description={t("card.description")}>
+      <form onSubmit={onSubmit} noValidate><CardFields control={form.control} /><SaveRow form={form} /></form>
     </SettingsSection>
   );
 }
 
 export function PricingSection({ defaults, recommendedCents }: { defaults: PriceInput; recommendedCents: number }) {
-  const { form, onSubmit } = useSectionForm({ schema: priceSchema, defaults, save: savePricing, saved: "Prices saved" });
+  const t = useTranslations("settings.creator");
+  const { form, onSubmit } = useSectionForm({ schema: priceSchema, defaults, save: savePricing, saved: t("states.saved") });
   return (
-    <SettingsSection id="pricing" title="Pricing" description="New invitations use these prices. Bookings already made keep theirs.">
-      <form onSubmit={onSubmit} noValidate>
-        <PriceFields control={form.control} recommendedCents={recommendedCents} />
-        <SaveRow form={form} />
-      </form>
+    <SettingsSection id="pricing" title={t("pricing.title")} description={t("pricing.description")}>
+      <form onSubmit={onSubmit} noValidate><PriceFields control={form.control} recommendedCents={recommendedCents} /><SaveRow form={form} /></form>
     </SettingsSection>
   );
 }
 
 export function BusinessSection({ defaults }: { defaults: ProfessionalInput }) {
-  const { form, onSubmit } = useSectionForm({ schema: professionalSchema, defaults, save: saveProfessionalInfo, saved: "Business details saved" });
+  const t = useTranslations("settings.creator");
+  const { form, onSubmit } = useSectionForm({ schema: professionalSchema, defaults, save: saveProfessionalInfo, saved: t("states.saved") });
   return (
-    <SettingsSection id="business" title="Business" description="Who invoices the brand. Needed before you withdraw.">
-      <form onSubmit={onSubmit} noValidate>
-        <ProfessionalFields control={form.control} />
-        <SaveRow form={form} />
-      </form>
+    <SettingsSection id="business" title={t("business.title")} description={t("business.description")}>
+      <form onSubmit={onSubmit} noValidate><ProfessionalFields control={form.control} /><SaveRow form={form} /></form>
     </SettingsSection>
   );
 }

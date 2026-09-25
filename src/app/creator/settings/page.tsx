@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { ErrorState } from "@/components/page/ErrorState";
 import { isDemoEmail } from "@/features/auth/constants";
+import { getTranslations } from "next-intl/server";
+import { PageHeader } from "@/components/page/PageHeader";
 import { getViewer } from "@/features/auth/server/session";
 import { CreatorSettingsView } from "@/features/workspace/components/settings/creator/CreatorSettingsView";
 import { getCreatorSettings } from "@/features/workspace/server/settings-queries";
@@ -21,12 +23,10 @@ export default async function CreatorSettingsPage() {
     return <ErrorState body="We could not load your settings. Try again in a moment." retryHref="/creator/settings" />;
   }
   if (!settings) redirect("/login");
+  const t = await getTranslations("settings.creator");
   return (
     <>
-      <header className="mb-8">
-        <h1 className="text-h2">Settings</h1>
-        <p className="mt-1 text-ink-muted">The same fields you filled in when you joined. Each section saves on its own.</p>
-      </header>
+      <PageHeader title={t("title")} description={t("description")} />
       <CreatorSettingsView
         settings={settings}
         isDemo={isDemoEmail(settings.email)}
