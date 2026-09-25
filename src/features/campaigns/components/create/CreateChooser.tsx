@@ -1,18 +1,9 @@
-import { CalendarClock, Link2, Sparkles } from "lucide-react";
+import { Link2, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 
 import { BRAND } from "@/config/brand";
 const OPTIONS = [
-  {
-    icon: CalendarClock,
-    title: `Launch free with the ${BRAND.name} team`,
-    body: "A campaign manager turns your selection into a ready-to-launch campaign. You validate, they handle the rest.",
-    meta: "Today · 14:30 · 15 min",
-    cta: "Book my onboarding →",
-    href: "/brand/book-a-call",
-    variant: "outline" as const,
-  },
   {
     icon: Sparkles,
     title: "Create with AI",
@@ -37,7 +28,7 @@ const OPTIONS = [
 
 export function CreateChooser() {
   return (
-    <div className="grid gap-4 md:grid-cols-3">
+    <div className="grid gap-4 md:grid-cols-2">
       {OPTIONS.map((option) => (
         <article key={option.title} className="flex flex-col rounded-2xl border bg-background p-5">
           <span className="flex size-10 items-center justify-center rounded-full bg-brand/10 text-brand">

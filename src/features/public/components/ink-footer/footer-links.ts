@@ -32,7 +32,6 @@ export const INK_COLUMNS = [
     links: [
       { label: "FAQs", href: "/faq" },
       { label: "Help Center", href: "/faq" },
-      { label: "Integrations", href: "/brand/integrations" },
       { label: "Where’s My Booking", href: "/brand/collaborations" },
     ],
   },

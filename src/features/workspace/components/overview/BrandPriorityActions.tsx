@@ -5,7 +5,6 @@ import { formatCents } from "@/lib/money";
 import { LOW_WALLET_CENTS } from "../../constants";
 import type { BrandOverview } from "../../server/overview-queries";
 
-import { BRAND } from "@/config/brand";
 type Action = { title: string; body: string; href: string; tone: "Blocked" | "To do" | "Suggested" };
 
 export function BrandPriorityActions({ overview, walletCents }: { overview: BrandOverview; walletCents: number }) {
@@ -19,7 +18,6 @@ export function BrandPriorityActions({ overview, walletCents }: { overview: Bran
   if (overview.applicationsReceived > 0) {
     actions.push({ title: `${overview.applicationsReceived} application${overview.applicationsReceived > 1 ? "s" : ""} received`, body: "Creators applied to your open campaign. Accept to create the booking.", href: "/brand/collaborations", tone: "To do" });
   }
-  actions.push({ title: "Book a call for your next campaign", body: `15 minutes with a ${BRAND.name} expert. No commitment.`, href: "/brand/book-a-call", tone: "Suggested" });
   actions.push({ title: "Find new creators for your next campaign", body: "Ranked by sector fit first, verified performance second.", href: "/brand/creators", tone: "Suggested" });
 
   return (

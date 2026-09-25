@@ -25,12 +25,11 @@ export default async function BrandSettingsPage({ searchParams }: { searchParams
   return (
     <>
       <PageHeader eyebrow={`${BRAND.name} workspace`} title="Settings" description="Manage your company profile and the audience you want to reach." />
-      <Tabs defaultValue={tab === "audience" || tab === "team" || tab === "integrations" ? tab : "profile"}>
+      <Tabs defaultValue={tab === "audience" || tab === "team" ? tab : "profile"}>
         <TabsList className="h-auto max-w-full flex-wrap">
           <TabsTrigger value="profile">Profile</TabsTrigger>
           <TabsTrigger value="audience">Audience</TabsTrigger>
           <TabsTrigger value="team">Team &amp; access</TabsTrigger>
-          <TabsTrigger value="integrations">Integrations</TabsTrigger>
         </TabsList>
         <TabsContent value="profile" className="rounded-2xl border bg-background p-5">
           <BrandProfileForm defaults={{ company: settings.company, website: settings.website, valueProp: settings.valueProp }} />
@@ -43,14 +42,6 @@ export default async function BrandSettingsPage({ searchParams }: { searchParams
         </TabsContent>
         <TabsContent value="team" className="rounded-2xl border bg-background p-5">
           <TeamAccessPanel owner={settings.owner} />
-        </TabsContent>
-        <TabsContent value="integrations" className="grid gap-3 rounded-2xl border bg-background p-5">
-          <h2 className="font-semibold">Integrations</h2>
-          <p className="text-sm text-muted-foreground">The remote MCP endpoint, the pixel and your site key live on their own pages.</p>
-          <div className="flex flex-wrap gap-2">
-            <Link href="/brand/integrations" className={buttonVariants({ variant: "outline" })}>Open Integrations</Link>
-            <Link href="/brand/results" className={buttonVariants({ variant: "outline" })}>Pixel &amp; site key (Results)</Link>
-          </div>
         </TabsContent>
       </Tabs>
       <section className="mt-6 rounded-2xl border border-destructive/30 bg-background p-5">

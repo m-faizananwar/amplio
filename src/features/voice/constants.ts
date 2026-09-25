@@ -21,7 +21,7 @@ export const ROUTES: Record<"brand" | "creator", Record<string, string>> = {
     overview: "/brand", home: "/brand", dashboard: "/brand", creators: "/brand/creators", marketplace: "/brand/creators",
     matching: "/brand/creators/matching", [BRAND.copilot.toLowerCase()]: "/brand/creators/matching", campaigns: "/brand/campaigns",
     collaborations: "/brand/collaborations", results: "/brand/results", messages: "/brand/messages", billing: "/brand/billing",
-    wallet: "/brand/billing", invite: "/brand/invite", "book a call": "/brand/book-a-call", integrations: "/brand/integrations",
+    wallet: "/brand/billing", invite: "/brand/invite",
     settings: "/brand/settings",
   },
   creator: {

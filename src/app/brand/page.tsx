@@ -55,19 +55,12 @@ export default async function BrandOverviewPage() {
         </section>
         </Reveal>
         <Reveal>
-        <section className="grid gap-4 rounded-2xl border bg-background p-5 sm:grid-cols-2">
+        <section className="grid gap-4 rounded-2xl border bg-background p-5">
           <div>
             <h2 className="font-semibold">Messages</h2>
             <p className="text-sm text-muted-foreground">
               {overview.messagesThisWeek > 0 ? `${overview.messagesThisWeek} messages this week.` : "Waiting on your reply — nothing this week."}{" "}
               <Link href="/brand/messages" className="font-medium text-brand hover:underline">Open messages</Link>
-            </p>
-          </div>
-          <div>
-            <h2 className="font-semibold">{BRAND.name} experts available</h2>
-            <p className="text-sm text-muted-foreground">
-              Need an expert eye? 15 minutes with a {BRAND.name} expert, no commitment.{" "}
-              <Link href="/brand/book-a-call" className="font-medium text-brand hover:underline">Book a free call</Link>
             </p>
           </div>
         </section>
