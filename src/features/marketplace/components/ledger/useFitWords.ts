@@ -1,6 +1,7 @@
 "use client";
 
 import { useFormatter, useTranslations } from "next-intl";
+import { useOptionLabel } from "@/i18n/useOptionLabel";
 import { type FitSignal, topSignals } from "@/lib/fit-score";
 
 // Words for a fit signal and for the one-line reason, from the signal's facts,
@@ -8,10 +9,13 @@ import { type FitSignal, topSignals } from "@/lib/fit-score";
 export function useFitWords() {
   const t = useTranslations("brand.creators.fit");
   const format = useFormatter();
+  const industryLabel = useOptionLabel("industries");
   const decimal = (v: string | number) => format.number(Number(v), { minimumFractionDigits: 1, maximumFractionDigits: 1 });
   const detail = (s: FitSignal) => {
     const facts = { ...s.facts };
     if (s.key === "audience" && typeof facts.bucket === "string") facts.bucket = t(`buckets.${facts.bucket}`);
+    // fit-score joins the matched industries with ", "; each is labelled on its own
+    if (s.key === "category" && typeof facts.industries === "string") facts.industries = facts.industries.split(", ").map(industryLabel).join(", ");
     if (s.key === "engagement") {
       if (facts.rate !== undefined) facts.rate = decimal(facts.rate);
       if (facts.median !== undefined) facts.median = decimal(facts.median);

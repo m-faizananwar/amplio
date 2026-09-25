@@ -15,6 +15,7 @@ import { runMatching } from "../../server/actions";
 import { CampaignSelector } from "../filters/CampaignSelector";
 import { MarketplaceProvider } from "../MarketplaceProvider";
 import { MatchingAnswer } from "./MatchingAnswer";
+import { useOptionLabel } from "@/i18n/useOptionLabel";
 
 const ROWS_SKELETON = 4;
 
@@ -23,6 +24,7 @@ const ROWS_SKELETON = 4;
 // same rows as the ranked list, so everything you can do there works here.
 export function MatchingView({ ctx }: { ctx: MarketplaceContextDto }) {
   const t = useTranslations("brand.creators.match");
+  const industryLabel = useOptionLabel("industries");
   const campaign = ctx.selectedCampaign?.name ?? ctx.company;
   const [prompt, setPrompt] = useState(() => t("defaultPrompt", { campaign }));
   const [asked, setAsked] = useState<string | null>(null);
@@ -51,7 +53,7 @@ export function MatchingView({ ctx }: { ctx: MarketplaceContextDto }) {
   }
   const suggestions = [
     ctx.icpTitles[0] ? t("suggestions.icp", { icp: ctx.icpTitles[0] }) : null,
-    ctx.targetIndustries[0] ? t("suggestions.industry", { industry: ctx.targetIndustries[0] }) : null,
+    ctx.targetIndustries[0] ? t("suggestions.industry", { industry: industryLabel(ctx.targetIndustries[0]) }) : null,
     t("suggestions.balanced", { company: ctx.company }),
   ].filter((s): s is string => Boolean(s));
 

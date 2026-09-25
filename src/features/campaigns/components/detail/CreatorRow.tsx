@@ -2,6 +2,7 @@
 
 import { useFormatter, useTranslations } from "next-intl";
 import { PersonAvatar } from "@/components/ui/avatar";
+import { useOptionLabel } from "@/i18n/useOptionLabel";
 import { useFitWords } from "@/features/marketplace/components/ledger/useFitWords";
 import type { CreatorPickDto } from "../../schemas";
 
@@ -15,13 +16,14 @@ export function CreatorRow({ creator, action, leading }: Props) {
   const t = useTranslations("brand.campaigns.creatorRow");
   const format = useFormatter();
   const { reason } = useFitWords();
+  const industryLabel = useOptionLabel("industries");
   return (
     <div className="flex items-center gap-3 py-3">
       {leading}
       <PersonAvatar name={creator.name} src={creator.avatarUrl} />
       <div className="min-w-0 flex-1">
         <p className="truncate font-medium text-ink">{creator.name}</p>
-        <p className="truncate text-caption text-ink-muted">{creator.industries.join(" · ") || t("noIndustries")} · {creator.country}</p>
+        <p className="truncate text-caption text-ink-muted">{creator.industries.map(industryLabel).join(" · ") || t("noIndustries")} · {creator.country}</p>
         <p className="mt-0.5 hidden truncate text-caption text-ink-muted sm:block">{reason(creator.signals)}</p>
       </div>
       <div className="shrink-0 text-right">

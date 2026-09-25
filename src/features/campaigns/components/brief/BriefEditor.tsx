@@ -72,8 +72,8 @@ export function BriefEditor({ campaignId, initial, cancelHref, afterSaveHref, sa
           <TextField id="whatToTell" label={t("fields.whatToTell")} error={errors.whatToTell ? t("errors.whatToTell") : undefined}>
             <Textarea id="whatToTell" rows={6} {...form.register("whatToTell")} />
           </TextField>
-          <ChipSelectField control={form.control} name="targetIndustries" label={t("fields.industries")} options={INDUSTRIES} />
-          <ChipSelectField control={form.control} name="targetGeos" label={t("fields.geos")} options={GEOGRAPHIES} />
+          <ChipSelectField control={form.control} name="targetIndustries" label={t("fields.industries")} options={INDUSTRIES} group="industries" />
+          <ChipSelectField control={form.control} name="targetGeos" label={t("fields.geos")} options={GEOGRAPHIES} group="regions" />
           <TextField id="tone" label={t("fields.tone")} error={errors.tone ? t("errors.tone") : undefined}>
             <Input id="tone" {...form.register("tone")} />
           </TextField>

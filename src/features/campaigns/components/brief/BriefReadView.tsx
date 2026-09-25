@@ -1,4 +1,9 @@
+"use client";
+
+// Client: it labels industries and regions in the reader's language, and it
+// is also rendered inside the brief editor.
 import { useTranslations } from "next-intl";
+import { useOptionLabel } from "@/i18n/useOptionLabel";
 import type { Brief } from "../../schemas";
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
@@ -24,6 +29,8 @@ function Lines({ items, empty }: { items: string[]; empty: string }) {
 // rules, then the angles with a hook and an example each.
 export function BriefReadView({ brief }: { brief: Brief }) {
   const t = useTranslations("brand.campaigns.brief");
+  const industryLabel = useOptionLabel("industries");
+  const regionLabel = useOptionLabel("regions");
   return (
     <div className="grid gap-5 rounded-card border border-rule bg-surface p-5">
       <Section title={t("sections.context")}>
@@ -36,8 +43,8 @@ export function BriefReadView({ brief }: { brief: Brief }) {
         ) : null}
       </Section>
       <Section title={t("sections.audience")}>
-        <div><p className="font-medium">{t("fields.industries")}</p><div className="mt-1.5"><Chips items={brief.targetIndustries} empty={t("empty.industries")} /></div></div>
-        <div><p className="font-medium">{t("fields.geos")}</p><div className="mt-1.5"><Chips items={brief.targetGeos} empty={t("empty.geos")} /></div></div>
+        <div><p className="font-medium">{t("fields.industries")}</p><div className="mt-1.5"><Chips items={brief.targetIndustries.map(industryLabel)} empty={t("empty.industries")} /></div></div>
+        <div><p className="font-medium">{t("fields.geos")}</p><div className="mt-1.5"><Chips items={brief.targetGeos.map(regionLabel)} empty={t("empty.geos")} /></div></div>
         <p><span className="font-medium">{t("fields.tone")} · </span>{brief.tone || t("empty.tone")}</p>
       </Section>
       <Section title={t("sections.rules")}>

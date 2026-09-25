@@ -1,8 +1,9 @@
 "use client";
 
 import { RotateCcw } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
+import { useOptionLabel } from "@/i18n/useOptionLabel";
 import { countryFlag, countryName } from "@/lib/country-flag";
 import { INDUSTRIES } from "../../constants";
 import type { CountryOptionDto, MarketplaceQuery } from "../../schemas";
@@ -17,6 +18,10 @@ type Props = { query: MarketplaceQuery; countries: CountryOptionDto[]; count: nu
 
 export function MarketplaceToolbar({ query, countries, count }: Props) {
   const t = useTranslations("brand.creators.filters");
+  const locale = useLocale();
+  const industryLabel = useOptionLabel("industries");
+  // Sorted by what the reader sees, so French "IA" sits among the I's.
+  const industries = INDUSTRIES.map((i) => ({ value: i, label: industryLabel(i) })).sort((a, b) => a.label.localeCompare(b.label, locale));
   const { update, reset } = useMarketplaceUrl();
   const filtered =
     query.industry.length > 0 || query.country.length > 0 || query.min !== undefined || query.max !== undefined || Boolean(query.q) || query.activity !== "any";
@@ -30,7 +35,7 @@ export function MarketplaceToolbar({ query, countries, count }: Props) {
         <MultiSelectPill
           label={t("industry")}
           searchPlaceholder={t("industrySearch")}
-          options={INDUSTRIES.map((i) => ({ value: i, label: i }))}
+          options={industries}
           selected={query.industry}
           onChange={(values) => update({ industry: values })}
         />

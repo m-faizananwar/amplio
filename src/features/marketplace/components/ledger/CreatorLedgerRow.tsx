@@ -2,6 +2,7 @@
 
 import { Bookmark, ChevronDown } from "lucide-react";
 import { useFormatter, useTranslations } from "next-intl";
+import { useOptionLabel } from "@/i18n/useOptionLabel";
 import { useState } from "react";
 import { PersonAvatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -19,6 +20,7 @@ const STRONG = 80;
 export function CreatorLedgerRow({ creator: c }: { creator: CreatorDto }) {
   const t = useTranslations("brand.creators.row");
   const ts = useTranslations("collaboration.status");
+  const industryLabel = useOptionLabel("industries");
   const format = useFormatter();
   const { ctx, openProfile, openBooking, collaborationStatus, isShortlisted, toggleShortlist } = useMarketplace();
   const [open, setOpen] = useState(false);
@@ -33,7 +35,7 @@ export function CreatorLedgerRow({ creator: c }: { creator: CreatorDto }) {
           <span className="min-w-0">
             <span className="block truncate font-medium text-ink hover:underline">{c.name}</span>
             <span className="block truncate text-small text-ink-muted">{c.headline}</span>
-            <span className="block truncate text-caption text-ink-muted">{c.industries.slice(0, 3).join(" · ")}</span>
+            <span className="block truncate text-caption text-ink-muted">{c.industries.slice(0, 3).map(industryLabel).join(" · ")}</span>
           </span>
         </button>
         <button type="button" onClick={() => setOpen((v) => !v)} aria-expanded={open} className={cn("inline-flex w-fit items-center gap-1 rounded-chip border px-2.5 py-1 text-caption outline-none transition-colors duration-(--duration-fast) hover:bg-tint focus-visible:ring-3 focus-visible:ring-ink/15", c.fit.score >= STRONG ? "border-ink text-ink" : "border-rule text-ink-muted")}>
