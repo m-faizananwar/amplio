@@ -1,0 +1,54 @@
+{
+  "briefDrawer": {
+    "title": "Brief : {campaign}",
+    "byBrand": "Par {brand}",
+    "close": "Fermer",
+    "sections": {
+      "objectives": "Ce que le post doit accomplir",
+      "audience": "À qui vous écrivez",
+      "message": "Message clé",
+      "guidelines": "Consignes",
+      "angles": "{count, plural, =0 {Angles de contenu} one {# angle de contenu} other {# angles de contenu}}",
+      "links": "Liens et preuves",
+      "deadline": "Date limite de publication"
+    },
+    "fields": {
+      "brand": "Marque",
+      "valueProp": "Ce qu’elle fait",
+      "icp": "Ses clients",
+      "industries": "Secteurs",
+      "regions": "Régions",
+      "primaryCta": "Appel à l’action principal",
+      "secondaryWin": "Objectif secondaire",
+      "tone": "Ton",
+      "do": "À faire",
+      "avoid": "À éviter",
+      "trackedLink": "Votre lien suivi"
+    },
+    "empty": {
+      "icp": "La marque n’a pas encore décrit ses clients.",
+      "links": "Aucun lien pour l’instant. Tenez-vous aux faits du profil de la marque.",
+      "angles": "Aucun angle pour l’instant. Choisissez le vôtre.",
+      "trackedLink": "Votre lien suivi apparaît une fois la réservation acceptée.",
+      "deadline": "Sans échéance"
+    },
+    "copyMarkdown": "Copier en Markdown",
+    "copyForAi": "Copier pour l’IA",
+    "copiedMarkdown": "Brief copié en Markdown",
+    "copiedForAi": "Prompt copié. Collez-le dans votre outil d’IA.",
+    "copyFailed": "Impossible de copier le brief. Réessayez.",
+    "angle": {
+      "hook": "Accroche",
+      "direction": "Direction éditoriale",
+      "example": "Exemple de post"
+    },
+    "copyBlocked": "Votre navigateur a bloqué le presse-papiers. Sélectionnez le brief et copiez-le à la main.",
+    "aiCard": {
+      "title": "Rédigez le post avec votre IA",
+      "body": "Copiez un prompt propre avec le brief, les angles et les exemples. Ajoutez deux ou trois de vos posts si votre IA ne connaît pas encore votre style."
+    },
+    "viewBrief": "Lire le brief",
+    "secondaryWinValue": "Des commentaires et des messages des bonnes personnes.",
+    "any": "Toutes"
+  }
+}

@@ -174,6 +174,8 @@ export type OpportunityDto = {
   daysToDeadline: number | null;
   matchScore: number;
   matchReason: string;
+  /** The four weighted signals behind matchScore, so the fit can be opened in place. */
+  fitSignals: Array<{ key: "audience" | "category" | "engagement" | "consistency"; score: number; weight: number }>;
   listPriceCents: number;
   existingCollaborationId: string | null;
   existingStatus: CollaborationStatus | null;

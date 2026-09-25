@@ -49,6 +49,7 @@ async function loadOpportunities(creatorId: string): Promise<OpportunityDto[]> {
         daysToDeadline: daysUntil(campaign.postDeadline, now),
         matchScore: fit.score,
         matchReason: fit.reason,
+        fitSignals: fit.signals.map(({ key, score, weight }) => ({ key, score, weight })),
         listPriceCents: creator.priceCents,
         existingCollaborationId: existingId,
         existingStatus,

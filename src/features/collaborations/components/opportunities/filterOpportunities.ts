@@ -1,14 +1,13 @@
 import type { OpportunityDto } from "../../schemas";
-import type { OpportunityFilterState } from "./OpportunityFilters";
+import { ALL, type OpportunityFilterState } from "./OpportunityFilters";
 
-// Client-side filtering and sorting of the opportunity cards (the whole list
-// is small: one card per open campaign).
+// Client-side filtering and sorting (the list is small: one row per open campaign).
 export function filterOpportunities(list: OpportunityDto[], f: OpportunityFilterState): OpportunityDto[] {
   const q = f.query.trim().toLowerCase();
   const filtered = list.filter((o) => {
     if (q && !`${o.brandCompany} ${o.campaignName}`.toLowerCase().includes(q)) return false;
-    if (f.industry && !o.industries.includes(f.industry)) return false;
-    if (f.region && !o.regions.includes(f.region)) return false;
+    if (f.industry !== ALL && !o.industries.includes(f.industry)) return false;
+    if (f.region !== ALL && !o.regions.includes(f.region)) return false;
     return true;
   });
   const by: Record<OpportunityFilterState["sort"], (a: OpportunityDto, b: OpportunityDto) => number> = {

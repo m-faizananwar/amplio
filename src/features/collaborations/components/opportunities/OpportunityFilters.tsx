@@ -1,88 +1,49 @@
 "use client";
 
-import { cn } from "@/lib/cn";
 import { Search } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { LinkedInMark } from "../LinkedInMark";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-export type OpportunitySort = "relevance" | "deadline" | "brand";
-export type OpportunityFilterState = { channel: "all" | "linkedin"; query: string; industry: string; region: string; sort: OpportunitySort };
+export type OpportunityFilterState = { query: string; industry: string; region: string; sort: "relevance" | "deadline" | "brand" };
+export const ALL = "all";
+export const INITIAL_FILTERS: OpportunityFilterState = { query: "", industry: ALL, region: ALL, sort: "relevance" };
 
-type Props = {
-  value: OpportunityFilterState;
-  onChange: (next: OpportunityFilterState) => void;
-  counts: { all: number; linkedin: number };
-  industries: string[];
-  regions: string[];
-};
+type Props = { value: OpportunityFilterState; onChange: (next: OpportunityFilterState) => void; industries: string[]; regions: string[]; count: number };
 
-const SELECT_CLASS =
-  "h-9 rounded-lg border border-input bg-background px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50";
-
-function ChannelTab({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
+function Pick({ label, value, onChange, options, all }: { label: string; value: string; onChange: (v: string) => void; options: Array<{ value: string; label: string }>; all?: string }) {
+  // Base UI renders the chosen label from `items`; without it the trigger shows the raw value.
+  const items = [...(all ? [{ value: ALL, label: all }] : []), ...options];
   return (
-    <button
-      type="button"
-      aria-pressed={active}
-      onClick={onClick}
-      className={cn(
-        "inline-flex h-8 items-center gap-2 rounded-full border px-3.5 text-sm font-medium transition-colors",
-        active ? "border-brand bg-brand text-brand-foreground" : "border-border bg-background text-foreground hover:bg-muted",
-      )}
-    >
-      {children}
-    </button>
+    <Select items={items} value={value} onValueChange={(v) => onChange(String(v))}>
+      <SelectTrigger className="w-full sm:w-44" aria-label={label}><SelectValue /></SelectTrigger>
+      <SelectContent>
+        {items.map((o) => <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>)}
+      </SelectContent>
+    </Select>
   );
 }
 
-export function OpportunityFilters({ value, onChange, counts, industries, regions }: Props) {
+// Search, two filters and the sort, then how many campaigns are left.
+export function OpportunityFilters({ value, onChange, industries, regions, count }: Props) {
+  const t = useTranslations("creator.opportunities");
   const set = (patch: Partial<OpportunityFilterState>) => onChange({ ...value, ...patch });
+  const dirty = value.query !== "" || value.industry !== ALL || value.region !== ALL || value.sort !== "relevance";
   return (
-    <div className="mb-6 space-y-4">
-      <div className="flex flex-wrap gap-2">
-        <ChannelTab active={value.channel === "all"} onClick={() => set({ channel: "all" })}>
-          All channels
-          <span className="rounded-full bg-background/20 px-1.5 text-xs">{counts.all}</span>
-        </ChannelTab>
-        <ChannelTab active={value.channel === "linkedin"} onClick={() => set({ channel: "linkedin" })}>
-          <LinkedInMark className="size-3.5" />
-          LinkedIn
-          <span className="rounded-full bg-muted px-1.5 text-xs text-muted-foreground">{counts.linkedin}</span>
-        </ChannelTab>
-      </div>
-      <div className="flex flex-col gap-2 lg:flex-row">
-        <div className="relative flex-1">
-          <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
-          <Input
-            type="search"
-            aria-label="Search for a campaign or a brand"
-            placeholder="Search for a campaign or a brand…"
-            value={value.query}
-            onChange={(e) => set({ query: e.target.value })}
-            className="h-9 pl-9"
-          />
+    <div className="grid gap-3">
+      <div className="grid gap-2 sm:flex sm:flex-wrap sm:items-center">
+        <div className="relative sm:w-72">
+          <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-ink-muted" aria-hidden="true" />
+          <Input type="search" value={value.query} onChange={(e) => set({ query: e.target.value })} placeholder={t("filters.searchPlaceholder")} aria-label={t("filters.search")} className="pl-9" />
         </div>
-        <select aria-label="Industry" className={SELECT_CLASS} value={value.industry} onChange={(e) => set({ industry: e.target.value })}>
-          <option value="">All industries</option>
-          {industries.map((i) => (
-            <option key={i} value={i}>
-              {i}
-            </option>
-          ))}
-        </select>
-        <select aria-label="Country" className={SELECT_CLASS} value={value.region} onChange={(e) => set({ region: e.target.value })}>
-          <option value="">All countries</option>
-          {regions.map((r) => (
-            <option key={r} value={r}>
-              {r}
-            </option>
-          ))}
-        </select>
-        <select aria-label="Sort" className={SELECT_CLASS} value={value.sort} onChange={(e) => set({ sort: e.target.value as OpportunitySort })}>
-          <option value="relevance">Relevance (default)</option>
-          <option value="deadline">Post deadline</option>
-          <option value="brand">Brand A–Z</option>
-        </select>
+        <Pick label={t("filters.industry")} value={value.industry} onChange={(industry) => set({ industry })} options={industries.map((i) => ({ value: i, label: i }))} all={t("filters.industryAll")} />
+        <Pick label={t("filters.region")} value={value.region} onChange={(region) => set({ region })} options={regions.map((r) => ({ value: r, label: r }))} all={t("filters.regionAll")} />
+        <Pick label={t("filters.sort")} value={value.sort} onChange={(sort) => set({ sort: sort as OpportunityFilterState["sort"] })} options={[{ value: "relevance", label: t("filters.sortFit") }, { value: "deadline", label: t("filters.sortDeadline") }, { value: "brand", label: t("filters.sortBrand") }]} />
+      </div>
+      <div className="flex items-center justify-between">
+        <p className="num text-small text-ink-muted" aria-live="polite">{t("resultCount", { count })}</p>
+        {dirty ? <Button type="button" variant="ghost" size="sm" onClick={() => onChange(INITIAL_FILTERS)}>{t("filters.reset")}</Button> : null}
       </div>
     </div>
   );

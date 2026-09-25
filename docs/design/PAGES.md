@@ -17,6 +17,12 @@ program was a separate page saying the same thing twice; one place for your link
 The public page is the same card in one column with the single action a brand came for,
 and seeded creators are labelled as demo data.
 
+### Opportunities —  (+ brief drawer, apply)
+A ranked ledger, not a card grid: open campaigns are compared on the same few facts (fit,
+deadline, what they pay), so one row each, best fit first. The fit percentage opens its
+four weighted signals in place (DECISIONS: a number you can question); the brief is a
+drawer so the list stays put; applying is one confirm showing the price and deadline.
+
 ### Settings — `/creator/settings`
 Stacked sections with a sticky index on wide screens, one form per schema. Each section
 saves on its own, so a validation error in pricing never blocks the card, and the fields

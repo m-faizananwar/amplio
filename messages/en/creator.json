@@ -240,7 +240,7 @@
     },
     "fit": {
       "title": "How this fit is scored",
-      "description": "Four signals, weighted. Open one to see the detail.",
+      "description": "Four signals, weighted. The score is their weighted sum.",
       "reason": "{first}, and {second}.",
       "score": "{percent}/100",
       "weight": "Weight {percent}%",
@@ -269,45 +269,6 @@
         "finance": "finance people",
         "operations": "operations people"
       }
-    },
-    "briefDrawer": {
-      "title": "{campaign} brief",
-      "byBrand": "By {brand}",
-      "close": "Close",
-      "sections": {
-        "objectives": "What the post should do",
-        "audience": "Who you're writing for",
-        "message": "Key message",
-        "guidelines": "Guidelines",
-        "angles": "{count, plural, =0 {Content angles} one {# content angle} other {# content angles}}",
-        "links": "Links and proof points",
-        "deadline": "Post deadline"
-      },
-      "fields": {
-        "brand": "Brand",
-        "valueProp": "What they do",
-        "icp": "Their buyers",
-        "industries": "Industries",
-        "regions": "Regions",
-        "primaryCta": "Main call to action",
-        "secondaryWin": "Secondary goal",
-        "tone": "Tone",
-        "do": "Do",
-        "avoid": "Avoid",
-        "trackedLink": "Your tracked link"
-      },
-      "empty": {
-        "icp": "The brand hasn't described its buyers yet.",
-        "links": "No links yet. Stick to the facts on the brand's profile.",
-        "angles": "No angles yet. Choose your own.",
-        "trackedLink": "Your tracked link appears once the booking is accepted.",
-        "deadline": "No deadline"
-      },
-      "copyMarkdown": "Copy as Markdown",
-      "copyForAi": "Copy for AI",
-      "copiedMarkdown": "Brief copied as Markdown",
-      "copiedForAi": "Prompt copied. Paste it into your AI tool.",
-      "copyFailed": "Couldn't copy the brief. Try again."
     },
     "applyDialog": {
       "title": "Apply to {campaign}",
