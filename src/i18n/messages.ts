@@ -10,14 +10,21 @@ const loaded = new Map<Locale, Promise<Messages>>();
 
 // Every file in messages/<locale>/ is a namespace named after the file, so a
 // builder adds `messages/en/brand.json` and `useTranslations("brand")` works —
-// no registry to update. Read once per locale per server instance.
+// no registry to update. A dotted name nests: `creator.earnings.json` lands
+// under creator.earnings, so a namespace can be split to keep every file
+// under 500 lines. Read once per locale per server instance.
 async function readLocale(locale: Locale): Promise<Messages> {
   const dir = path.join(ROOT, locale);
-  const files = (await readdir(dir).catch(() => [])).filter((f) => f.endsWith(".json"));
+  const files = (await readdir(dir).catch(() => [])).filter((f) => f.endsWith(".json")).sort();
   const entries = await Promise.all(
-    files.map(async (file) => [file.replace(/\.json$/, ""), JSON.parse(await readFile(path.join(dir, file), "utf8")) as Messages] as const),
+    files.map(async (file) => [file.replace(/\.json$/, "").split("."), JSON.parse(await readFile(path.join(dir, file), "utf8")) as Messages] as const),
   );
-  return Object.fromEntries(entries);
+  let out: Messages = {};
+  for (const [keys, content] of entries) {
+    const nested = keys.reduceRight<Messages>((inner, key) => ({ [key]: inner }), content);
+    out = withFallback(out, nested);
+  }
+  return out;
 }
 
 // A key missing in French falls back to the English one instead of throwing:

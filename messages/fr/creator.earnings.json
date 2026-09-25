@@ -1,0 +1,119 @@
+{
+  "title": "Revenus",
+  "description": "Ce que vous avez gagné, ce qui est en attente et ce que vous avez retiré.",
+  "loading": "Chargement des revenus",
+  "error": {
+    "title": "Impossible de charger vos revenus",
+    "body": "Réessayez dans un instant."
+  },
+  "stats": {
+    "available": {
+      "label": "Disponible",
+      "hint": "Prêt à être retiré"
+    },
+    "awaitingRelease": {
+      "label": "En attente de versement",
+      "hint": "{count, plural, =0 {Rien en ligne pour l’instant} one {# post en ligne, paiement attendu} other {# posts en ligne, paiements attendus}}"
+    },
+    "withdrawn": {
+      "label": "Retiré",
+      "hint": "Total retiré à ce jour"
+    },
+    "inTransit": {
+      "label": "En cours de virement",
+      "hint": "Retraits bancaires en route"
+    },
+    "earned": {
+      "label": "Gagné à ce jour",
+      "hint": "Collaborations payées"
+    },
+    "openTrail": "Voir le détail"
+  },
+  "chart": {
+    "title": "Revenus par mois",
+    "description": "{count, plural, one {Revenus nets des collaborations, dernier mois} other {Revenus nets des collaborations, # derniers mois}}",
+    "empty": "Aucun revenu sur cette période."
+  },
+  "ledger": {
+    "title": "Registre",
+    "description": "Chaque mouvement, une ligne.",
+    "tabs": {
+      "all": "Tous les mouvements",
+      "awaiting": "En attente de versement",
+      "payments": "Paiements"
+    },
+    "headers": {
+      "date": "Date",
+      "type": "Type",
+      "reference": "Référence",
+      "detail": "Détail",
+      "amount": "Montant",
+      "status": "Statut"
+    },
+    "types": {
+      "booking": "Réservation",
+      "payout": "Paiement de collaboration",
+      "withdrawal": "Retrait",
+      "topup": "Rechargement"
+    },
+    "statuses": {
+      "pending": "En attente",
+      "inTransit": "En cours de virement",
+      "completed": "Effectué"
+    },
+    "descriptions": {
+      "payout": "{brand} · {campaign}",
+      "withdrawalStripe": "Retrait · Stripe (immédiat)",
+      "withdrawalBank": "Retrait · virement bancaire"
+    },
+    "empty": {
+      "all": "Aucun mouvement pour l’instant. Votre premier paiement apparaîtra ici.",
+      "awaiting": "Rien en attente de versement.",
+      "payments": "Aucun paiement pour l’instant. Chaque collaboration payée ajoute une ligne."
+    }
+  },
+  "withdraw": {
+    "button": "Retirer",
+    "disabledReason": "Rien à retirer pour l’instant. L’argent devient disponible quand une marque verse votre rémunération.",
+    "title": "Retirer vos revenus",
+    "description": "Choisissez comment recevoir votre solde disponible.",
+    "stubNote": "Les versements Stripe ne sont pas connectés dans cette version. Le registre enregistre votre retrait ; aucun argent n’est envoyé.",
+    "method": {
+      "label": "Mode de versement",
+      "stripe": "Stripe",
+      "stripeBody": "Virement immédiat vers un compte Stripe connecté.",
+      "stripeStatus": "Non connecté",
+      "bank": "Virement bancaire",
+      "bankBody": "Virement SEPA. Affiché « en cours de virement » jusqu’à réception.",
+      "bankOnFile": "{name} · IBAN se terminant par {last4}",
+      "bankMissing": "Aucune coordonnée bancaire enregistrée",
+      "editDetails": "Modifier dans les paramètres"
+    },
+    "amount": {
+      "label": "Montant",
+      "help": "Disponible : {amount}",
+      "placeholder": "0,00",
+      "withdrawAll": "Tout retirer"
+    },
+    "awaitingNote": "{amount} en attente de versement. Ce montant devient disponible quand la marque paie.",
+    "awaitingNone": "Rien en attente de versement.",
+    "confirm": "Confirmer le retrait",
+    "pending": "Confirmation…",
+    "cancel": "Annuler",
+    "success": "Retrait de {amount} enregistré. Solde disponible : {remaining}.",
+    "validation": {
+      "required": "Saisissez un montant.",
+      "min": "Le retrait minimum est de {amount}.",
+      "overBalance": "Ce montant dépasse votre solde disponible."
+    },
+    "errors": {
+      "failed": "Impossible d’enregistrer le retrait. Aucun montant n’a été déplacé.",
+      "notCreator": "Connectez-vous avec un compte créateur pour retirer vos revenus."
+    }
+  },
+  "empty": {
+    "title": "Aucun revenu pour l’instant",
+    "body": "Le paiement intervient une fois le post en ligne et la rémunération versée par la marque. Commencez par une campagne ouverte.",
+    "action": "Voir les opportunités"
+  }
+}

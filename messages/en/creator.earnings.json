@@ -1,0 +1,119 @@
+{
+  "title": "Earnings",
+  "description": "What you've earned, what's held and what you've withdrawn.",
+  "loading": "Loading earnings",
+  "error": {
+    "title": "We couldn't load your earnings",
+    "body": "Try again in a moment."
+  },
+  "stats": {
+    "available": {
+      "label": "Available",
+      "hint": "Ready to withdraw"
+    },
+    "awaitingRelease": {
+      "label": "Awaiting release",
+      "hint": "{count, plural, =0 {Nothing live yet} one {# live post, brand to pay} other {# live posts, brands to pay}}"
+    },
+    "withdrawn": {
+      "label": "Withdrawn",
+      "hint": "Sent out so far"
+    },
+    "inTransit": {
+      "label": "In transit",
+      "hint": "Bank withdrawals on their way"
+    },
+    "earned": {
+      "label": "Earned to date",
+      "hint": "Paid collaborations"
+    },
+    "openTrail": "See the rows"
+  },
+  "chart": {
+    "title": "Earnings by month",
+    "description": "{count, plural, one {Net collaboration earnings, last month} other {Net collaboration earnings, last # months}}",
+    "empty": "No earnings in this period."
+  },
+  "ledger": {
+    "title": "Ledger",
+    "description": "Every movement, one row each.",
+    "tabs": {
+      "all": "All movements",
+      "awaiting": "Awaiting release",
+      "payments": "Payments"
+    },
+    "headers": {
+      "date": "Date",
+      "type": "Type",
+      "reference": "Reference",
+      "detail": "Detail",
+      "amount": "Amount",
+      "status": "Status"
+    },
+    "types": {
+      "booking": "Booking",
+      "payout": "Collaboration payment",
+      "withdrawal": "Withdrawal",
+      "topup": "Top-up"
+    },
+    "statuses": {
+      "pending": "Pending",
+      "inTransit": "In transit",
+      "completed": "Completed"
+    },
+    "descriptions": {
+      "payout": "{brand} · {campaign}",
+      "withdrawalStripe": "Withdrawal · Stripe (instant)",
+      "withdrawalBank": "Withdrawal · bank transfer"
+    },
+    "empty": {
+      "all": "No movements yet. Your first payment will appear here.",
+      "awaiting": "Nothing is awaiting release.",
+      "payments": "No payments yet. Each paid collaboration adds a row."
+    }
+  },
+  "withdraw": {
+    "button": "Withdraw",
+    "disabledReason": "Nothing to withdraw yet. Money becomes available when a brand releases your fee.",
+    "title": "Withdraw earnings",
+    "description": "Choose how to receive your available balance.",
+    "stubNote": "Stripe payouts aren't connected in this version. The ledger records your withdrawal; no money is sent.",
+    "method": {
+      "label": "Payout method",
+      "stripe": "Stripe",
+      "stripeBody": "Instant transfer to a connected Stripe account.",
+      "stripeStatus": "Not connected",
+      "bank": "Bank transfer",
+      "bankBody": "SEPA transfer. Shows as in transit until it arrives.",
+      "bankOnFile": "{name} · IBAN ending {last4}",
+      "bankMissing": "No bank details on file",
+      "editDetails": "Edit in Settings"
+    },
+    "amount": {
+      "label": "Amount",
+      "help": "{amount} available",
+      "placeholder": "0.00",
+      "withdrawAll": "Withdraw all"
+    },
+    "awaitingNote": "{amount} is awaiting release. It becomes available when the brand pays.",
+    "awaitingNone": "Nothing is awaiting release.",
+    "confirm": "Confirm withdrawal",
+    "pending": "Confirming…",
+    "cancel": "Cancel",
+    "success": "{amount} withdrawal recorded. {remaining} still available.",
+    "validation": {
+      "required": "Enter an amount.",
+      "min": "The minimum withdrawal is {amount}.",
+      "overBalance": "That's more than your available balance."
+    },
+    "errors": {
+      "failed": "We couldn't record the withdrawal. Nothing was moved.",
+      "notCreator": "Sign in as a creator to withdraw."
+    }
+  },
+  "empty": {
+    "title": "No earnings yet",
+    "body": "You're paid after a post is live and the brand releases the fee. Start with an open campaign.",
+    "action": "Browse opportunities"
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "title": "Opportunities",
+  "description": "Open campaigns, sorted by how well they fit your audience.",
+  "loading": "Loading campaigns",
+  "error": {
+    "title": "We couldn't load campaigns",
+    "body": "Try again in a moment."
+  },
+  "resultCount": "{count, plural, =0 {No campaigns} one {# campaign} other {# campaigns}}",
+  "filters": {
+    "search": "Search",
+    "searchPlaceholder": "Search a campaign or brand",
+    "industry": "Industry",
+    "industryAll": "All industries",
+    "region": "Region",
+    "regionAll": "All regions",
+    "deadline": "Deadline",
+    "deadlineAny": "Any deadline",
+    "deadlineWithin": "{count, plural, one {Within # day} other {Within # days}}",
+    "fit": "Fit",
+    "fitAny": "Any fit",
+    "fitAtLeast": "{percent}% or more",
+    "sort": "Sort by",
+    "sortFit": "Best fit",
+    "sortDeadline": "Nearest deadline",
+    "sortBrand": "Brand A–Z",
+    "reset": "Reset filters"
+  },
+  "item": {
+    "fitScore": "{percent}% fit",
+    "whyFit": "Why this fits",
+    "postBy": "Post by {date}",
+    "noDeadline": "No deadline",
+    "daysLeft": "{count, plural, =0 {Due today} one {# day left} other {# days left}}",
+    "yourPrice": "Your price: {amount}",
+    "channel": "LinkedIn · 1 post",
+    "industries": "Industries",
+    "regions": "Regions",
+    "readBrief": "Read brief",
+    "apply": "Apply",
+    "applying": "Applying…",
+    "existing": "{status} · open collaboration",
+    "openCollaboration": "Open collaboration"
+  },
+  "fit": {
+    "title": "How this fit is scored",
+    "description": "Four signals, weighted. The score is their weighted sum.",
+    "reason": "{first}, and {second}.",
+    "score": "{percent}/100",
+    "weight": "Weight {percent}%",
+    "signals": {
+      "audience": "Audience overlap",
+      "category": "Category match",
+      "engagement": "Engagement quality",
+      "consistency": "Posting consistency"
+    },
+    "details": {
+      "audienceNoIcp": "The brand hasn't named its buyers yet",
+      "audienceMatch": "{percent}% of your audience are {segment}, the brand's buyers",
+      "audienceMiss": "Your audience rarely includes {segments}",
+      "categoryMatch": "You already write about {industries}",
+      "categoryMiss": "You write about other categories",
+      "engagement": "{rate}% engagement vs {benchmark}% for accounts your size",
+      "consistency": "{count, plural, one {# post a month} other {# posts a month}}"
+    },
+    "segments": {
+      "founders": "founders",
+      "marketing": "marketers",
+      "sales": "sales people",
+      "engineering": "engineers",
+      "product": "product people",
+      "hr": "HR people",
+      "finance": "finance people",
+      "operations": "operations people"
+    }
+  },
+  "applyDialog": {
+    "title": "Apply to {campaign}",
+    "description": "{brand} sees your application and your card. If they accept, the booking is created at your price.",
+    "yourPrice": "Your net price per post",
+    "deadline": "Post deadline",
+    "noDeadline": "No deadline",
+    "channel": "Channel",
+    "channelValue": "LinkedIn · 1 post",
+    "confirm": "Send application",
+    "pending": "Sending…",
+    "cancel": "Cancel",
+    "success": "Application sent. {brand} answers next.",
+    "errors": {
+      "profileIncomplete": "Finish your creator profile before applying.",
+      "closed": "This campaign is no longer open to applications.",
+      "duplicate": "You already have a collaboration on this campaign.",
+      "unknownCampaign": "We couldn't find this campaign. Reload the page."
+    }
+  },
+  "empty": {
+    "none": {
+      "title": "No open campaigns right now",
+      "body": "Campaigns appear here when brands open them. A complete card ranks better.",
+      "action": "Review my card"
+    },
+    "filtered": {
+      "title": "No campaigns match these filters",
+      "body": "Remove a filter or two to see more.",
+      "action": "Reset filters"
+    }
+  }
+}

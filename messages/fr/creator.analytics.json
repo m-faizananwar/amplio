@@ -1,0 +1,72 @@
+{
+  "title": "Statistiques",
+  "description": "Vos chiffres LinkedIn publics et les clics sur vos liens suivis.",
+  "stubLabel": "Importé depuis votre profil LinkedIn public. Simulé dans cette version.",
+  "loading": "Chargement des statistiques",
+  "error": {
+    "title": "Impossible de charger vos statistiques",
+    "body": "Réessayez dans un instant."
+  },
+  "range": {
+    "label": "Période",
+    "all": "Depuis le début",
+    "last30": "30 derniers jours",
+    "last90": "90 derniers jours"
+  },
+  "metrics": {
+    "followers": "Abonnés",
+    "posts": "Posts",
+    "reach": "Portée",
+    "engagements": "Interactions",
+    "clicks": "Clics",
+    "postsWithReach": "{count, plural, one {Portée sur # post} other {Portée sur # posts}}",
+    "openTrail": "Voir le détail"
+  },
+  "trackedLinks": {
+    "title": "Liens suivis",
+    "description": "Un lien par collaboration. Chaque clic est une ligne.",
+    "headers": {
+      "brand": "Marque",
+      "campaign": "Campagne",
+      "status": "Statut",
+      "link": "Lien",
+      "clicks": "Clics",
+      "published": "Publié le"
+    },
+    "notPublished": "Pas encore publié"
+  },
+  "posts": {
+    "title": "Posts récents",
+    "description": "Vos posts publics sur cette période.",
+    "headers": {
+      "post": "Post",
+      "date": "Date",
+      "impressions": "Impressions",
+      "reactions": "Réactions",
+      "comments": "Commentaires",
+      "reposts": "Republications"
+    },
+    "open": "Voir sur LinkedIn"
+  },
+  "trail": {
+    "followers": "Abonnés",
+    "followersSource": "Importé depuis {url} le {date}",
+    "posts": "Posts de la période",
+    "reach": "Portée, post par post",
+    "engagements": "Interactions, post par post",
+    "clicksAll": "Clics sur tous vos liens",
+    "clicksCampaign": "Clics sur votre lien {campaign}"
+  },
+  "empty": {
+    "noPosts": {
+      "title": "Aucun post public importé pour l’instant",
+      "body": "Les posts s’affichent une fois votre profil LinkedIn lu. Vérifiez l’URL de votre profil dans les paramètres.",
+      "action": "Ouvrir les paramètres"
+    },
+    "noLinks": {
+      "title": "Aucun lien suivi pour l’instant",
+      "body": "Votre lien s’active quand vous publiez une collaboration. Commencez par une campagne ouverte.",
+      "action": "Voir les opportunités"
+    }
+  }
+}

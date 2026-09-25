@@ -1,0 +1,108 @@
+{
+  "title": "Opportunités",
+  "description": "Les campagnes ouvertes, classées selon leur adéquation avec votre audience.",
+  "loading": "Chargement des campagnes",
+  "error": {
+    "title": "Impossible de charger les campagnes",
+    "body": "Réessayez dans un instant."
+  },
+  "resultCount": "{count, plural, =0 {Aucune campagne} one {# campagne} other {# campagnes}}",
+  "filters": {
+    "search": "Rechercher",
+    "searchPlaceholder": "Une campagne ou une marque",
+    "industry": "Secteur",
+    "industryAll": "Tous les secteurs",
+    "region": "Région",
+    "regionAll": "Toutes les régions",
+    "deadline": "Échéance",
+    "deadlineAny": "Toutes les échéances",
+    "deadlineWithin": "{count, plural, one {Sous # jour} other {Sous # jours}}",
+    "fit": "Adéquation",
+    "fitAny": "Toutes",
+    "fitAtLeast": "{percent} % ou plus",
+    "sort": "Trier par",
+    "sortFit": "Meilleure adéquation",
+    "sortDeadline": "Échéance la plus proche",
+    "sortBrand": "Marque A–Z",
+    "reset": "Réinitialiser"
+  },
+  "item": {
+    "fitScore": "Adéquation {percent} %",
+    "whyFit": "Pourquoi ça correspond",
+    "postBy": "Publication avant le {date}",
+    "noDeadline": "Sans échéance",
+    "daysLeft": "{count, plural, =0 {Aujourd’hui} one {# jour restant} other {# jours restants}}",
+    "yourPrice": "Votre tarif : {amount}",
+    "channel": "LinkedIn · 1 post",
+    "industries": "Secteurs",
+    "regions": "Régions",
+    "readBrief": "Lire le brief",
+    "apply": "Postuler",
+    "applying": "Envoi…",
+    "existing": "{status} · voir la collaboration",
+    "openCollaboration": "Voir la collaboration"
+  },
+  "fit": {
+    "title": "Comment l’adéquation est calculée",
+    "description": "Quatre signaux pondérés. Le score est leur somme pondérée.",
+    "reason": "{first}, et {second}.",
+    "score": "{percent}/100",
+    "weight": "Poids {percent} %",
+    "signals": {
+      "audience": "Recoupement d’audience",
+      "category": "Correspondance de secteur",
+      "engagement": "Qualité d’engagement",
+      "consistency": "Régularité de publication"
+    },
+    "details": {
+      "audienceNoIcp": "La marque n’a pas encore décrit ses clients",
+      "audienceMatch": "{percent} % de votre audience sont des {segment}, les clients de la marque",
+      "audienceMiss": "Votre audience compte peu de {segments}",
+      "categoryMatch": "Vous écrivez déjà sur {industries}",
+      "categoryMiss": "Vous écrivez sur d’autres secteurs",
+      "engagement": "{rate} % d’engagement contre {benchmark} % pour les comptes de votre taille",
+      "consistency": "{count, plural, one {# post par mois} other {# posts par mois}}"
+    },
+    "segments": {
+      "founders": "fondateurs",
+      "marketing": "marketeurs",
+      "sales": "commerciaux",
+      "engineering": "ingénieurs",
+      "product": "profils produit",
+      "hr": "profils RH",
+      "finance": "profils finance",
+      "operations": "profils opérations"
+    }
+  },
+  "applyDialog": {
+    "title": "Postuler à {campaign}",
+    "description": "{brand} reçoit votre candidature et votre fiche. Si elle accepte, la réservation est créée à votre tarif.",
+    "yourPrice": "Votre tarif net par post",
+    "deadline": "Date limite de publication",
+    "noDeadline": "Sans échéance",
+    "channel": "Canal",
+    "channelValue": "LinkedIn · 1 post",
+    "confirm": "Envoyer",
+    "pending": "Envoi…",
+    "cancel": "Annuler",
+    "success": "Candidature envoyée. C’est à {brand} de répondre.",
+    "errors": {
+      "profileIncomplete": "Complétez votre profil créateur avant de postuler.",
+      "closed": "Cette campagne n’accepte plus de candidatures.",
+      "duplicate": "Vous avez déjà une collaboration sur cette campagne.",
+      "unknownCampaign": "Campagne introuvable. Rechargez la page."
+    }
+  },
+  "empty": {
+    "none": {
+      "title": "Aucune campagne ouverte pour l’instant",
+      "body": "Les campagnes s’affichent ici dès que les marques les ouvrent. Une fiche complète est mieux classée.",
+      "action": "Revoir ma fiche"
+    },
+    "filtered": {
+      "title": "Aucune campagne ne correspond à ces filtres",
+      "body": "Retirez un ou deux filtres pour en voir davantage.",
+      "action": "Réinitialiser"
+    }
+  }
+}

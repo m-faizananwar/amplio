@@ -1,0 +1,72 @@
+{
+  "title": "Analytics",
+  "description": "Your public LinkedIn figures and the clicks on your tracked links.",
+  "stubLabel": "Imported from your public LinkedIn profile. Simulated in this version.",
+  "loading": "Loading analytics",
+  "error": {
+    "title": "We couldn't load your analytics",
+    "body": "Try again in a moment."
+  },
+  "range": {
+    "label": "Range",
+    "all": "All time",
+    "last30": "Last 30 days",
+    "last90": "Last 90 days"
+  },
+  "metrics": {
+    "followers": "Followers",
+    "posts": "Posts",
+    "reach": "Reach",
+    "engagements": "Engagements",
+    "clicks": "Clicks",
+    "postsWithReach": "{count, plural, one {Reach from # post} other {Reach from # posts}}",
+    "openTrail": "See the rows"
+  },
+  "trackedLinks": {
+    "title": "Tracked links",
+    "description": "One link per collaboration. Every click is a row.",
+    "headers": {
+      "brand": "Brand",
+      "campaign": "Campaign",
+      "status": "Status",
+      "link": "Link",
+      "clicks": "Clicks",
+      "published": "Published"
+    },
+    "notPublished": "Not published yet"
+  },
+  "posts": {
+    "title": "Recent posts",
+    "description": "Your public posts in this range.",
+    "headers": {
+      "post": "Post",
+      "date": "Date",
+      "impressions": "Impressions",
+      "reactions": "Reactions",
+      "comments": "Comments",
+      "reposts": "Reposts"
+    },
+    "open": "Open on LinkedIn"
+  },
+  "trail": {
+    "followers": "Followers",
+    "followersSource": "Imported from {url} on {date}",
+    "posts": "Posts in this range",
+    "reach": "Reach, post by post",
+    "engagements": "Engagements, post by post",
+    "clicksAll": "Clicks on all your links",
+    "clicksCampaign": "Clicks on your {campaign} link"
+  },
+  "empty": {
+    "noPosts": {
+      "title": "No public posts imported yet",
+      "body": "Posts appear once your LinkedIn profile is read. Check your profile URL in Settings.",
+      "action": "Open settings"
+    },
+    "noLinks": {
+      "title": "No tracked links yet",
+      "body": "Your link goes live when you publish a collaboration. Start with an open campaign.",
+      "action": "Browse opportunities"
+    }
+  }
+}
