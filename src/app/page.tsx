@@ -32,7 +32,7 @@ export default async function HomePage() {
         <LaunchClosing trail={trail} />
       </main>
       <PublicFooter />
-      <PublicAssistantPill startHidden />
+      <PublicAssistantPill />
     </ClientMessages>
   );
 }
