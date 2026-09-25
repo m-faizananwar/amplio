@@ -1,52 +1,66 @@
-import { Reveal } from "@/components/motion/Reveal";
-import { FAQ } from "../../constants";
-import { PRICING_PAGE } from "../../page-copy";
-import { GlassCard } from "../glass/GlassCard";
-import { CtaSection } from "../shared/CtaSection";
-import { FaqList } from "../shared/FaqList";
-import { PageHero } from "../shared/PageHero";
-import { PricingPlans } from "../shared/PricingPlans";
+import { Check, X } from "lucide-react";
+import { getTranslations } from "next-intl/server";
+import type { PublicTrail } from "../../constants";
+import { CtaLinks } from "./calm/CtaLinks";
+import { PublicHero } from "./calm/PublicHero";
 
-const QUESTIONS = new Set<string>(PRICING_PAGE.faqQuestions);
+const euros = (cents: number) => `€${Math.round(cents / 100).toLocaleString("en-US")}`;
 
-export function PricingPage() {
-  const items = FAQ.items.filter((item) => QUESTIONS.has(item.q));
+// Two plans side by side (that's all there is), then a worked example from
+// the demo workspace's real numbers, then what you never pay for.
+export async function PricingPage({ trail }: { trail: PublicTrail | null }) {
+  const t = await getTranslations("public.pricing");
+  const plan = (key: "brands" | "creators", href: string) => (
+    <div className="flex flex-col rounded-card border border-rule bg-surface p-6 sm:p-8">
+      <p className="text-small text-ink-muted">{t(`${key}.title`)}</p>
+      <p className="mt-3 flex items-baseline gap-2">
+        <span className="text-h1 tracking-[-0.03em]">{t(`${key}.price`)}</span>
+        <span className="text-ink-muted">{t(`${key}.unit`)}</span>
+      </p>
+      <ul className="mt-6 flex-1 space-y-3">
+        {(t.raw(`${key}.points`) as string[]).map((p) => (
+          <li key={p} className="flex gap-3"><Check className="mt-0.5 size-4 shrink-0 text-money" aria-hidden="true" />{p}</li>
+        ))}
+      </ul>
+      <div className="mt-8 flex"><CtaLinks primary={{ href, label: t(`${key}.cta`) }} /></div>
+    </div>
+  );
   return (
     <>
-      <PageHero eyebrow={PRICING_PAGE.hero.eyebrow} title={PRICING_PAGE.hero.title} sub={PRICING_PAGE.hero.sub} />
-      <Reveal>
-        <section className="px-4 pb-24 sm:px-6">
-          <div className="mx-auto max-w-6xl">
-            <PricingPlans />
-          </div>
-        </section>
-      </Reveal>
-      {/* how per-post pricing works: the one ink section, plans above, faq below */}
-      <Reveal>
-        <section className="section-ink px-4 sm:px-6">
-          <div className="mx-auto max-w-6xl">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{PRICING_PAGE.perPost.title}</h2>
-            <ol className="mt-10 grid gap-6 md:grid-cols-3">
-              {PRICING_PAGE.perPost.items.map((item, index) => (
-                <GlassCard key={item.title} as="li" title={item.title} index={index + 1} order={index} className="p-6">
-                  <p className="text-sm text-muted-foreground">{item.body}</p>
-                </GlassCard>
-              ))}
-            </ol>
-          </div>
-        </section>
-      </Reveal>
-      <Reveal>
-        <section className="px-4 py-24 sm:px-6">
-          <div className="mx-auto max-w-3xl">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{PRICING_PAGE.faqTitle}</h2>
-            <div className="mt-8">
-              <FaqList items={items} />
+      <PublicHero eyebrow={t("hero.eyebrow")} title={t("hero.title")} sub={t("hero.sub")} />
+      <section className="mx-auto grid max-w-content gap-4 px-4 py-16 sm:px-8 lg:grid-cols-2">
+        {plan("brands", "/register/brand")}
+        {plan("creators", "/register/creator")}
+      </section>
+      {trail?.example ? (
+        <section className="border-t border-rule">
+          <div className="mx-auto grid max-w-content gap-10 px-4 py-16 sm:px-8 lg:grid-cols-[1fr_1.2fr]">
+            <div>
+              <h2 className="text-h2">{t("example.title")}</h2>
+              <p className="mt-3 max-w-md text-ink-muted">{t("example.body")}</p>
+            </div>
+            <div>
+              <dl className="divide-y divide-rule rounded-card border border-rule bg-surface">
+                <div className="flex items-center justify-between gap-4 px-5 py-4"><dt>{t("example.rowPost", { price: euros(trail.example.feeCents) })}</dt><dd className="num text-h4">{euros(trail.example.feeCents)}</dd></div>
+                <div className="flex items-center justify-between gap-4 px-5 py-4"><dt>{t("example.rowClicks", { clicks: trail.example.clicks })}</dt><dd className="num text-h4">{trail.example.clicks.toLocaleString("en-US")}</dd></div>
+                <div className="flex items-center justify-between gap-4 px-5 py-4"><dt>{t("example.rowSignups", { signups: trail.example.signups })}</dt><dd className="num text-h4 text-money">{trail.example.signups}</dd></div>
+              </dl>
+              <p className="mt-3 text-small text-ink-muted">{t("example.note")}</p>
             </div>
           </div>
         </section>
-      </Reveal>
-      <CtaSection />
+      ) : null}
+      <section className="border-t border-rule">
+        <div className="mx-auto max-w-content px-4 py-16 sm:px-8">
+          <h2 className="text-h2">{t("never.title")}</h2>
+          <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {(t.raw("never.items") as string[]).map((item) => (
+              <li key={item} className="flex items-center gap-3 rounded-card border border-rule px-4 py-3"><X className="size-4 shrink-0 text-ink-muted" aria-hidden="true" />{item}</li>
+            ))}
+          </ul>
+          <p className="mt-8 text-small text-ink-muted">{t("stubNote")}</p>
+        </div>
+      </section>
     </>
   );
 }

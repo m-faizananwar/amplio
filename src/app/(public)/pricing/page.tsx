@@ -1,9 +1,15 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { PricingPage } from "@/features/public/components/pages/PricingPage";
+import { getPublicTrail } from "@/features/public/server/trail-queries";
 
-import { BRAND } from "@/config/brand";
-export const metadata: Metadata = { title: `Pricing · ${BRAND.wordmark}`, description: "Self-serve at €0 per month, pay per published post from €20. Managed campaigns at €700 per month plus post spend." };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("public.pricing.meta");
+  return { title: t("title"), description: t("description") };
+}
 
-export default function Page() {
-  return <PricingPage />;
+export const dynamic = "force-dynamic";
+
+export default async function Page() {
+  return <PricingPage trail={await getPublicTrail()} />;
 }

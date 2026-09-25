@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
-import { BRAND } from "@/config/brand";
+import { getTranslations } from "next-intl/server";
 import { LegalPage } from "@/features/public/components/pages/LegalPage";
-import { PRIVACY_DOC } from "@/features/public/legal-copy";
 
-export const metadata: Metadata = { title: `Privacy Notice · ${BRAND.wordmark}`, description: PRIVACY_DOC.sub };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("public.legal.privacy.meta");
+  return { title: t("title"), description: t("description") };
+}
 
 export default function Page() {
-  return <LegalPage doc={PRIVACY_DOC} />;
+  return <LegalPage doc="privacy" />;
 }

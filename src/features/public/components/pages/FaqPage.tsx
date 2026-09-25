@@ -1,34 +1,32 @@
-import { Reveal } from "@/components/motion/Reveal";
-import { FAQ } from "../../constants";
-import { FAQ_PAGE, FOR_CREATORS } from "../../page-copy";
-import { CtaSection } from "../shared/CtaSection";
-import { FaqList } from "../shared/FaqList";
-import { PageHero } from "../shared/PageHero";
+import { getTranslations } from "next-intl/server";
+import { CtaLinks } from "./calm/CtaLinks";
+import { FaqTabs } from "./calm/FaqTabs";
+import { PublicHero } from "./calm/PublicHero";
 
-export function FaqPage() {
+type Item = { q: string; a: string };
+
+// Two audiences, one question at a time: brands and creators ask different
+// things, so the list is split by a tab rather than interleaved.
+export async function FaqPage() {
+  const t = await getTranslations("public.faq");
   return (
     <>
-      <PageHero eyebrow={FAQ_PAGE.hero.eyebrow} title={FAQ_PAGE.hero.title} sub={FAQ_PAGE.hero.sub} />
-      {/* the questions are the page: ink, as the landing's faq section is */}
-      <Reveal>
-        <section className="section-ink px-4 sm:px-6">
-          <div className="mx-auto grid max-w-6xl gap-16 lg:grid-cols-2">
-            <div>
-              <h2 className="text-2xl font-bold tracking-tight">{FAQ_PAGE.companies}</h2>
-              <div className="mt-6">
-                <FaqList items={FAQ.items} />
-              </div>
-            </div>
-            <div>
-              <h2 className="text-2xl font-bold tracking-tight">{FAQ_PAGE.creators}</h2>
-              <div className="mt-6">
-                <FaqList items={FOR_CREATORS.faq.items} />
-              </div>
-            </div>
+      <PublicHero eyebrow={t("hero.eyebrow")} title={t("hero.title")} sub={t("hero.sub")} />
+      <section className="mx-auto max-w-content px-4 py-16 sm:px-8">
+        <FaqTabs
+          brands={{ label: t("brands.title"), items: t.raw("brands.items") as Item[] }}
+          creators={{ label: t("creators.title"), items: t.raw("creators.items") as Item[] }}
+        />
+      </section>
+      <section className="border-t border-rule">
+        <div className="mx-auto flex max-w-content flex-col gap-6 px-4 py-16 sm:px-8 md:flex-row md:items-end md:justify-between">
+          <div>
+            <h2 className="text-h2">{t("more.title")}</h2>
+            <p className="mt-3 max-w-xl text-ink-muted">{t("more.body")}</p>
           </div>
-        </section>
-      </Reveal>
-      <CtaSection />
+          <div className="flex gap-3"><CtaLinks primary={{ href: "/register", label: t("more.button") }} /></div>
+        </div>
+      </section>
     </>
   );
 }

@@ -1,27 +1,39 @@
-import { Reveal } from "@/components/motion/Reveal";
-import type { LegalDoc } from "../../legal-copy";
-import { cn } from "@/lib/cn";
-import { interTight } from "../shared/display-font";
-import { PageHero } from "../shared/PageHero";
+import { getTranslations } from "next-intl/server";
+import { PublicHero } from "./calm/PublicHero";
 
-export function LegalPage({ doc }: { doc: LegalDoc }) {
+type Section = { id: string; title: string; paragraphs: string[] };
+const UPDATED = "2026-09-26";
+
+// A document, not a page: the sections in reading width, and on wide screens
+// a sticky index of them on the left so a long notice is easy to move around.
+export async function LegalPage({ doc }: { doc: "privacy" | "terms" }) {
+  const t = await getTranslations("public.legal");
+  const sections = t.raw(`${doc}.sections`) as Section[];
   return (
     <>
-      <PageHero eyebrow="Legal" title={doc.title} sub={doc.sub} tone="plain" />
-      <Reveal>
-        <section className="px-4 py-16 sm:px-6">
-          <div className="mx-auto max-w-3xl space-y-12">
-            {doc.sections.map((section) => (
-              <article key={section.id} id={section.id} className="scroll-mt-24">
-                <h2 className="text-2xl font-semibold tracking-tight">{section.title}</h2>
-                <div className="mt-4 space-y-4 text-foreground/80">
-                  {section.paragraphs.map((p) => <p key={p}>{p}</p>)}
-                </div>
-              </article>
-            ))}
+      <PublicHero eyebrow={t("updated", { date: UPDATED })} title={t(`${doc}.title`)} sub={t(`${doc}.sub`)} />
+      <div className="mx-auto grid max-w-content gap-12 px-4 py-16 sm:px-8 lg:grid-cols-[14rem_1fr]">
+        <nav aria-label={t("onThisPage")} className="hidden lg:block">
+          <div className="sticky top-24">
+            <p className="text-small text-ink-muted">{t("onThisPage")}</p>
+            <ul className="mt-3 space-y-2 border-l border-rule">
+              {sections.map((s) => (
+                <li key={s.id}><a href={`#${s.id}`} className="-ml-px block border-l border-transparent pl-3 text-small text-ink-muted hover:border-ink hover:text-ink">{s.title}</a></li>
+              ))}
+            </ul>
           </div>
-        </section>
-      </Reveal>
+        </nav>
+        <div className="max-w-2xl space-y-12">
+          {sections.map((s) => (
+            <article key={s.id} id={s.id} className="scroll-mt-24">
+              <h2 className="text-h3">{s.title}</h2>
+              <div className="mt-4 space-y-4 text-lead leading-relaxed text-ink-muted">
+                {s.paragraphs.map((p) => <p key={p}>{p}</p>)}
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
     </>
   );
 }

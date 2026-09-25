@@ -1,0 +1,275 @@
+{
+  "forCreators": {
+    "meta": {
+      "title": "Pour les créateurs · Amplio",
+      "description": "Rejoignez Amplio gratuitement, fixez votre prix par post LinkedIn et n’acceptez que les offres de marques qui vous plaisent. Sans exclusivité."
+    },
+    "hero": {
+      "eyebrow": "Pour les créateurs LinkedIn",
+      "title": "Vos posts, votre prix.",
+      "sub": "Inscription gratuite, un prix fixe par post, et vous choisissez les offres des marques. Chaque clic sur votre post revient en ligne : les marques voient ce que vous leur apportez.",
+      "primary": "Devenir créateur",
+      "secondary": "Voir les tarifs"
+    },
+    "steps": {
+      "title": "Comment ça marche",
+      "items": [
+        {
+          "title": "Créez votre fiche",
+          "body": "Importez votre profil LinkedIn public pour la remplir. Si nous ne pouvons pas le lire, saisissez-la à la main."
+        },
+        {
+          "title": "Fixez votre prix",
+          "body": "Un prix fixe par post, à partir de 20 €. Ajoutez jusqu’à 3 offres groupées : plusieurs posts pour un prix global."
+        },
+        {
+          "title": "Choisissez vos offres",
+          "body": "Les marques vous envoient des offres. Acceptez celles qui vous plaisent et lisez le brief. Aucune exclusivité."
+        },
+        {
+          "title": "Rédigez, publiez, soyez payé",
+          "body": "Rédigez le brouillon. Une fois qu’il est validé par la marque, publiez. Le paiement apparaît dans vos revenus."
+        }
+      ]
+    },
+    "card": {
+      "title": "Votre fiche parle pour vous.",
+      "body": "Les marques parcourent les créateurs selon leur score d’affinité avec leur client idéal. Votre fiche publique est la première chose qu’elles voient.",
+      "points": [
+        "Votre titre et les secteurs que vous couvrez.",
+        "Votre prix par post, et vos offres groupées si vous en proposez.",
+        "Les chiffres de votre audience."
+      ],
+      "followers": "Abonnés",
+      "perPost": "Par post"
+    },
+    "money": {
+      "title": "Payé au post, pas au clic.",
+      "body": "Vous touchez votre prix fixe pour chaque post publié. Quand une marque paie un post en ligne, une ligne est inscrite au registre et apparaît dans vos revenus.",
+      "stubNote": "Dans cette version, les virements bancaires sont simulés avec Stripe : vous voyez tout le parcours, mais aucun argent réel ne circule."
+    },
+    "cta": {
+      "title": "Fixez votre prix.",
+      "sub": "Inscription gratuite. Aucune exclusivité. Seulement les offres qui vous plaisent.",
+      "button": "Devenir créateur"
+    }
+  },
+  "pricing": {
+    "meta": {
+      "title": "Tarifs · Amplio",
+      "description": "Les marques paient 0 € par mois et un prix fixe par post publié. Les créateurs s’inscrivent gratuitement et fixent leur prix, à partir de 20 €."
+    },
+    "hero": {
+      "eyebrow": "Tarifs",
+      "title": "Un prix par post. Rien d’autre.",
+      "sub": "Pas d’abonnement, pas de forfait récurrent, ni paiement au clic ni à la vue. Les marques paient le prix fixe de chaque créateur, pour chaque post publié."
+    },
+    "brands": {
+      "title": "Marques",
+      "price": "0 €",
+      "unit": "par mois",
+      "points": [
+        "Pas d’abonnement, pas de forfait récurrent.",
+        "Le prix fixe de chaque créateur, par post publié.",
+        "Un lien suivi pour chaque collaboration.",
+        "Chaque clic et chaque inscription rattachés au post et au créateur."
+      ],
+      "cta": "Inscrire ma marque"
+    },
+    "creators": {
+      "title": "Créateurs",
+      "price": "Gratuit",
+      "unit": "pour s’inscrire",
+      "points": [
+        "Votre prix fixe par post, à partir de 20 €.",
+        "Jusqu’à 3 offres groupées, à prix global.",
+        "Aucune exclusivité. Travaillez avec toutes les marques.",
+        "Chaque paiement visible dans vos revenus."
+      ],
+      "cta": "Devenir créateur"
+    },
+    "example": {
+      "title": "Un post, du début à la fin.",
+      "body": "Une marque réserve un créateur pour un post. Voici ce qu’elle a payé et ce qui lui est revenu, d’après les lignes de ce post.",
+      "rowPost": "{price} pour un post publié",
+      "rowClicks": "{clicks, plural, one {# clic} other {# clics}} sur son lien suivi",
+      "rowSignups": "{signups, plural, one {# inscription rattachée} other {# inscriptions rattachées}} au post",
+      "note": "Chiffres issus de l’espace de démo alimenté par des données d’exemple, pas d’un vrai client."
+    },
+    "never": {
+      "title": "Ce que vous ne payez jamais",
+      "items": [
+        "Au clic",
+        "À la vue",
+        "Un abonnement mensuel",
+        "Un forfait récurrent"
+      ]
+    },
+    "stubNote": "Dans cette version, les recharges par carte et les virements bancaires sont simulés avec Stripe : vous voyez tout le parcours, mais aucun argent réel ne circule."
+  },
+  "faq": {
+    "meta": {
+      "title": "FAQ · Amplio",
+      "description": "Des réponses claires pour les marques et les créateurs sur Amplio : tarifs, suivi, paiements et données de démo."
+    },
+    "hero": {
+      "eyebrow": "FAQ",
+      "title": "Vos questions, nos réponses.",
+      "sub": "Les réponses courtes, côté marques et côté créateurs."
+    },
+    "brands": {
+      "title": "Côté marques",
+      "items": [
+        {
+          "q": "Comment une inscription est-elle rattachée à un post ?",
+          "a": "Chaque collaboration a son propre lien suivi, et chaque clic dessus est enregistré avec l’heure et la provenance. Un petit pixel sur votre site relie ensuite chaque inscription à ce clic : vous voyez le post et le créateur à l’origine."
+        },
+        {
+          "q": "Combien ça coûte ?",
+          "a": "0 € par mois. Pas d’abonnement, pas de forfait récurrent. Vous payez le prix fixe de chaque créateur pour chaque post publié, jamais au clic ni à la vue."
+        },
+        {
+          "q": "Comment choisir un créateur ?",
+          "a": "Les créateurs sont classés selon leur score d’affinité avec votre client idéal. Chaque fiche affiche le titre du créateur, ses secteurs, son prix et les chiffres de son audience."
+        },
+        {
+          "q": "Vois-je le post avant sa publication ?",
+          "a": "Oui. Vous envoyez une offre et rédigez le brief, le créateur rédige un brouillon, et le post n’est publié qu’une fois ce brouillon validé par vous."
+        },
+        {
+          "q": "Quand et comment dois-je payer ?",
+          "a": "Vous disposez d’un portefeuille. Une fois le post en ligne, vous le payez depuis ce portefeuille et une ligne est inscrite au registre. Dans cette version, les recharges par carte sont simulées avec Stripe : le parcours est visible, mais aucun argent réel ne circule."
+        },
+        {
+          "q": "Les chiffres de ce site sont-ils réels ?",
+          "a": "Les chiffres publics proviennent d’un espace de démo alimenté par des données d’exemple. Ils montrent à quoi ressemble le suivi, pas les résultats de vrais clients."
+        }
+      ]
+    },
+    "creators": {
+      "title": "Côté créateurs",
+      "items": [
+        {
+          "q": "L’inscription est-elle payante ?",
+          "a": "Non. L’inscription est gratuite, sans exclusivité : vous pouvez travailler avec toutes les marques, sur Amplio comme ailleurs."
+        },
+        {
+          "q": "Comment fixer mon prix ?",
+          "a": "Vous fixez un prix par post, à partir de 20 €. Les marques paient ce prix pour chaque post publié, jamais au clic ni à la vue."
+        },
+        {
+          "q": "Qu’est-ce qu’une offre groupée ?",
+          "a": "Plusieurs posts vendus ensemble, pour un prix global. Vous pouvez proposer jusqu’à 3 offres groupées en plus de votre prix par post."
+        },
+        {
+          "q": "Dois-je accepter toutes les offres ?",
+          "a": "Non. Vous acceptez les offres qui vous plaisent et laissez les autres."
+        },
+        {
+          "q": "Comment suis-je payé ?",
+          "a": "Quand une marque paie votre post en ligne, une ligne est inscrite au registre et le paiement apparaît dans vos revenus. Dans cette version, les virements bancaires sont simulés avec Stripe : le parcours est visible, mais aucun argent réel ne circule."
+        },
+        {
+          "q": "À quoi sert l’import LinkedIn ?",
+          "a": "Il lit votre profil LinkedIn public pour remplir votre fiche. S’il ne parvient pas à le lire, vous saisissez les informations à la main."
+        }
+      ]
+    },
+    "more": {
+      "title": "Encore une hésitation ?",
+      "body": "La page Tarifs détaille chaque coût, pour les marques comme pour les créateurs.",
+      "button": "Voir les tarifs"
+    }
+  },
+  "legal": {
+    "updated": "Dernière mise à jour : {date}",
+    "onThisPage": "Sur cette page",
+    "privacy": {
+      "meta": {
+        "title": "Confidentialité · Amplio",
+        "description": "Ce qu’Amplio conserve, pourquoi, et comment le supprimer."
+      },
+      "title": "Politique de confidentialité",
+      "sub": "Ce qu’Amplio conserve, pourquoi, et comment le supprimer. Il s’agit d’une version de démonstration, donc la réponse courte est : pas grand-chose, et rien ne sort de la base de données.",
+      "sections": [
+        {
+          "id": "what-we-store",
+          "title": "Ce que nous conservons",
+          "paragraphs": [
+            "Votre compte : votre e-mail, votre nom, une empreinte (hash) de votre mot de passe et un cookie de session.",
+            "Votre espace : les campagnes, briefs, collaborations, messages et lignes de registre que vous créez.",
+            "Inscriptions à la newsletter : les e-mails saisis dans le formulaire de la version précédente sont conservés, et rien d’autre. Le formulaire n’est plus sur le site, et aucun e-mail n’est envoyé dans cette version."
+          ]
+        },
+        {
+          "id": "tracking",
+          "title": "Ce que le suivi conserve",
+          "paragraphs": [
+            "Quand quelqu’un clique sur un lien suivi, nous conservons une adresse IP hachée, l’agent utilisateur du navigateur, la page d’origine et un identifiant de clic.",
+            "Le pixel installé sur le site d’une marque envoie des événements, comme une inscription ou un achat. Nous conservons chacun d’eux avec l’identifiant de clic auquel il se rattache."
+          ]
+        },
+        {
+          "id": "cookies",
+          "title": "Cookies",
+          "paragraphs": [
+            "Nous déposons un seul cookie de session propriétaire quand vous vous connectez. Il est httpOnly : les scripts de la page ne peuvent pas le lire.",
+            "Quand un lien suivi redirige, nous déposons un cookie de clic propriétaire, pour qu’une inscription ultérieure puisse être rattachée à ce clic.",
+            "Aucun cookie publicitaire, de mesure d’audience ou tiers.",
+            "Le pixel de suivi conserve l’identifiant de clic et un identifiant de visiteur aléatoire dans le stockage local du navigateur, sur tout site qui l’installe (dans cette version, notre page d’accueil de démo), afin de relier une inscription ultérieure au clic."
+          ]
+        },
+        {
+          "id": "deleting",
+          "title": "Supprimer vos données",
+          "paragraphs": [
+            "Allez dans Paramètres → Supprimer le compte. Votre utilisateur, votre espace et tout ce qui s’y rattache sont supprimés en une seule fois.",
+            "Les comptes de démo ne peuvent pas être supprimés, car tout le monde les partage."
+          ]
+        }
+      ]
+    },
+    "terms": {
+      "meta": {
+        "title": "Conditions · Amplio",
+        "description": "Les conditions d’utilisation d’Amplio, une version de démonstration où aucun argent réel ne circule."
+      },
+      "title": "Conditions d’utilisation",
+      "sub": "Amplio est une reconstruction fonctionnelle réalisée à des fins de démonstration. L’utiliser, c’est accepter quelques règles simples.",
+      "sections": [
+        {
+          "id": "demo",
+          "title": "Il s’agit d’une démonstration",
+          "paragraphs": [
+            "Les créateurs, posts et résultats des comptes de démo sont des données d’exemple.",
+            "La base de données peut être réinitialisée à tout moment, ce qui efface les données. Ne conservez rien dont vous avez besoin."
+          ]
+        },
+        {
+          "id": "payments",
+          "title": "Aucun argent réel ne circule",
+          "paragraphs": [
+            "Le solde du portefeuille, les versements et les retraits sont des lignes de registre, pas des paiements. Les recharges par carte et les virements bancaires sont simulés avec Stripe : le parcours est visible, mais rien n’est débité et rien n’est versé.",
+            "Aucune facture n’est émise."
+          ]
+        },
+        {
+          "id": "conduct",
+          "title": "Votre contenu",
+          "paragraphs": [
+            "Vous êtes responsable de ce que vous publiez : briefs, brouillons, messages et liens.",
+            "N’utilisez les liens suivis et le pixel que sur des sites que vous contrôlez."
+          ]
+        },
+        {
+          "id": "reference",
+          "title": "Produit de référence",
+          "paragraphs": [
+            "Amplio est conçu comme une reconstruction de naano.com et n’y est pas affilié.",
+            "Les chiffres des pages publiques proviennent d’un espace de démo alimenté par des données d’exemple, pas de vrais clients."
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -18,7 +18,7 @@ const SCENES = ["post", "clicks", "signups", "ledger", "proof"] as const;
 // joined to the proof (the one ink beat). A rail on the left keeps your place.
 export async function LaunchScenes({ trail, creators }: Props) {
   const t = await getTranslations("landing");
-  const tr = trail ?? { posts: 0, links: 0, clicks: 0, signups: 0, paidPosts: 0, paidCents: 0, lastClickAt: null, asOf: "" };
+  const tr = trail ?? { example: null, posts: 0, links: 0, clicks: 0, signups: 0, paidPosts: 0, paidCents: 0, lastClickAt: null, asOf: "" };
   const names = creators.length ? creators : ["Aya", "Eric", "Nada"];
   const live = t("hero.liveLabel");
   const bare = (key: string, count: number) => t(key, { count }).replace(/^[\d,  ]+/, "");
@@ -26,7 +26,8 @@ export async function LaunchScenes({ trail, creators }: Props) {
     const index = SCENES.indexOf(key);
     return { index, kicker: String(index + 1).padStart(2, "0"), title: t(`scenes.${key}.title`), body: t(`scenes.${key}.body`) };
   };
-  const perPost = `€${Math.round(tr.paidCents / Math.max(tr.paidPosts, 1) / 100).toLocaleString("en-US")}`;
+  // one real paid post's fee, not an average: the row says "for one published post"
+  const perPost = `€${Math.round((tr.example?.feeCents ?? 0) / 100).toLocaleString("en-US")}`;
   return (
     <div className="relative">
       <SceneRail count={SCENES.length} />

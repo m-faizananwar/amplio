@@ -1,0 +1,275 @@
+{
+  "forCreators": {
+    "meta": {
+      "title": "For creators · Amplio",
+      "description": "Join Amplio free, set your own price per LinkedIn post, and take only the brand offers you want. No exclusivity."
+    },
+    "hero": {
+      "eyebrow": "For LinkedIn creators",
+      "title": "Your posts, your price.",
+      "sub": "Join free, set a fixed price per post, and take the brand offers you like. Every click on your post comes back as a row, so brands can see what you brought them.",
+      "primary": "Join as a creator",
+      "secondary": "See pricing"
+    },
+    "steps": {
+      "title": "How it works",
+      "items": [
+        {
+          "title": "Build your card",
+          "body": "Import your public LinkedIn profile to fill it in. If we can't read it, type it in by hand."
+        },
+        {
+          "title": "Set your price",
+          "body": "One fixed price per post, from €20. Add up to 3 bundles: several posts at a package price."
+        },
+        {
+          "title": "Pick your offers",
+          "body": "Brands send you offers. Accept the ones you like and read the brief. No exclusivity."
+        },
+        {
+          "title": "Write, publish, get paid",
+          "body": "Write the draft. Once the brand approves it, publish. The payment shows up in your earnings."
+        }
+      ]
+    },
+    "card": {
+      "title": "Your card does the pitching.",
+      "body": "Brands browse creators by fit score against their ideal customer. Your public card is the first thing they see.",
+      "points": [
+        "Your headline and the industries you cover.",
+        "Your price per post, and your bundles if you offer any.",
+        "Your audience figures."
+      ],
+      "followers": "Followers",
+      "perPost": "Per post"
+    },
+    "money": {
+      "title": "Paid per post, not per click.",
+      "body": "You get your fixed price for each published post. When a brand pays for a live post, a ledger row is written and it shows up in your earnings.",
+      "stubNote": "In this build, bank payouts are Stripe stubs: you see the full flow, but no real money moves."
+    },
+    "cta": {
+      "title": "Name your price.",
+      "sub": "Free to join. No exclusivity. Only the offers you want.",
+      "button": "Join as a creator"
+    }
+  },
+  "pricing": {
+    "meta": {
+      "title": "Pricing · Amplio",
+      "description": "Brands pay €0 per month and a fixed price per published post. Creators join free and set their own price, from €20."
+    },
+    "hero": {
+      "eyebrow": "Pricing",
+      "title": "Pay per post. Nothing else.",
+      "sub": "No subscription, no retainer, no per-click or per-view fees. Brands pay each creator's fixed price for each published post."
+    },
+    "brands": {
+      "title": "Brands",
+      "price": "€0",
+      "unit": "per month",
+      "points": [
+        "No subscription and no retainer.",
+        "Pay each creator's fixed price per published post.",
+        "Every collaboration gets its own tracked link.",
+        "Every click and sign-up traced to the post and the creator."
+      ],
+      "cta": "Start as a brand"
+    },
+    "creators": {
+      "title": "Creators",
+      "price": "Free",
+      "unit": "to join",
+      "points": [
+        "Set your own fixed price per post, from €20.",
+        "Offer up to 3 bundles at a package price.",
+        "No exclusivity. Work with any brand.",
+        "See every payment in your earnings."
+      ],
+      "cta": "Join as a creator"
+    },
+    "example": {
+      "title": "One post, start to finish.",
+      "body": "A brand books one creator for one post. Here is what it paid and what came back, read from that post's own rows.",
+      "rowPost": "{price} for one published post",
+      "rowClicks": "{clicks, plural, one {# click} other {# clicks}} on its tracked link",
+      "rowSignups": "{signups, plural, one {# sign-up} other {# sign-ups}} tied back to the post",
+      "note": "Figures from the seeded demo workspace, not from a real customer."
+    },
+    "never": {
+      "title": "What you never pay for",
+      "items": [
+        "Per click",
+        "Per view",
+        "A monthly subscription",
+        "A retainer"
+      ]
+    },
+    "stubNote": "In this build, card top-ups and bank payouts are Stripe stubs: you see the full flow, but no real money moves."
+  },
+  "faq": {
+    "meta": {
+      "title": "FAQ · Amplio",
+      "description": "Plain answers for brands and creators on Amplio: pricing, tracking, payments and the demo data."
+    },
+    "hero": {
+      "eyebrow": "FAQ",
+      "title": "Questions, answered.",
+      "sub": "The short answers, for brands and for creators."
+    },
+    "brands": {
+      "title": "For brands",
+      "items": [
+        {
+          "q": "How do you tie a sign-up to a post?",
+          "a": "Each collaboration gets its own tracked link, and every click on it is stored with the time and the source. A small pixel on your site then ties each sign-up back to that click, so you see the post and the creator behind it."
+        },
+        {
+          "q": "What does it cost?",
+          "a": "€0 per month. No subscription, no retainer. You pay each creator's fixed price for each post that gets published, and never per click or per view."
+        },
+        {
+          "q": "How do I pick a creator?",
+          "a": "Creators are ranked by a fit score against your ideal customer. Each card shows the creator's headline, industries, price and audience figures."
+        },
+        {
+          "q": "Do I see the post before it goes live?",
+          "a": "Yes. You send an offer and write the brief, the creator writes a draft, and it only goes live after you approve it."
+        },
+        {
+          "q": "When do I pay, and how?",
+          "a": "You keep a wallet. Once a post is live, you pay for it from there and a ledger row is written. In this build, card top-ups are Stripe stubs: the flow is shown, but no real money moves."
+        },
+        {
+          "q": "Are the numbers on this site real?",
+          "a": "The public numbers come from a seeded demo workspace. They show what tracking looks like, not results from real customers."
+        }
+      ]
+    },
+    "creators": {
+      "title": "For creators",
+      "items": [
+        {
+          "q": "Does it cost anything to join?",
+          "a": "No. Joining is free, and there's no exclusivity: you can work with any brand, on Amplio or anywhere else."
+        },
+        {
+          "q": "How do I set my price?",
+          "a": "You set one fixed price per post, from €20. Brands pay that price for each published post, never per click or per view."
+        },
+        {
+          "q": "What is a bundle?",
+          "a": "Several posts sold together at a package price. You can offer up to 3 bundles next to your price per post."
+        },
+        {
+          "q": "Do I have to accept every offer?",
+          "a": "No. You accept the offers you like and leave the rest."
+        },
+        {
+          "q": "How do I get paid?",
+          "a": "When a brand pays for your live post, a ledger row is written and the payment shows up in your earnings. In this build, bank payouts are Stripe stubs: the flow is shown, but no real money moves."
+        },
+        {
+          "q": "What does the LinkedIn import do?",
+          "a": "It reads your public LinkedIn profile to fill in your card. If it can't read the profile, you enter the details by hand."
+        }
+      ]
+    },
+    "more": {
+      "title": "Still weighing it up?",
+      "body": "The pricing page lays out every cost, for brands and for creators.",
+      "button": "See pricing"
+    }
+  },
+  "legal": {
+    "updated": "Last updated {date}",
+    "onThisPage": "On this page",
+    "privacy": {
+      "meta": {
+        "title": "Privacy · Amplio",
+        "description": "What Amplio stores, why, and how to delete it."
+      },
+      "title": "Privacy Notice",
+      "sub": "What Amplio stores, why, and how to delete it. This is a demonstration build, so the short answer is: not much, and none of it leaves the database.",
+      "sections": [
+        {
+          "id": "what-we-store",
+          "title": "What we store",
+          "paragraphs": [
+            "Your account: your email, your name, a hash of your password and a session cookie.",
+            "Your workspace: the campaigns, briefs, collaborations, messages and ledger rows you create.",
+            "Newsletter sign-ups: emails entered in the earlier version's newsletter form are stored and nothing else. The form is no longer on the site, and no email is sent in this build."
+          ]
+        },
+        {
+          "id": "tracking",
+          "title": "What tracking stores",
+          "paragraphs": [
+            "When someone clicks a tracked link, we store a hashed IP address, the browser's user agent, the referring page and a click id.",
+            "The pixel on a brand's site sends events such as a sign-up or a purchase. We store each one with the click id it belongs to."
+          ]
+        },
+        {
+          "id": "cookies",
+          "title": "Cookies",
+          "paragraphs": [
+            "We set one first-party session cookie when you sign in. It is httpOnly, so scripts on the page can't read it.",
+            "When a tracked link redirects, we set a first-party click cookie so a later sign-up can be tied back to that click.",
+            "There are no advertising, analytics or third-party cookies.",
+            "The tracking pixel keeps the click id and a random visitor id in the browser's local storage on any site that installs it (in this build, our demo landing page), so a later sign-up can be tied back to the click."
+          ]
+        },
+        {
+          "id": "deleting",
+          "title": "Deleting your data",
+          "paragraphs": [
+            "Go to Settings → Delete account. Your user, your workspace and everything attached to them are removed in one go.",
+            "Demo accounts can't be deleted, because everyone shares them."
+          ]
+        }
+      ]
+    },
+    "terms": {
+      "meta": {
+        "title": "Terms · Amplio",
+        "description": "The plain terms for using Amplio, a demonstration build where no real money moves."
+      },
+      "title": "Terms & Policies",
+      "sub": "Amplio is a working rebuild made for demonstration. Using it means agreeing to a few plain things.",
+      "sections": [
+        {
+          "id": "demo",
+          "title": "This is a demonstration",
+          "paragraphs": [
+            "The creators, posts and results in the demo accounts are seeded sample data.",
+            "The database can be reseeded at any time, which resets the data. Don't store anything you need to keep."
+          ]
+        },
+        {
+          "id": "payments",
+          "title": "No real money moves",
+          "paragraphs": [
+            "Wallet balances, payouts and withdrawals are ledger rows, not payments. Card top-ups and bank payouts are Stripe stubs: the flow is shown, but nothing is charged and nothing is paid out.",
+            "No invoice is issued."
+          ]
+        },
+        {
+          "id": "conduct",
+          "title": "Your content",
+          "paragraphs": [
+            "You are responsible for what you post: briefs, drafts, messages and links.",
+            "Only use tracked links and the pixel on sites you control."
+          ]
+        },
+        {
+          "id": "reference",
+          "title": "Reference product",
+          "paragraphs": [
+            "Amplio is built as a rebuild of naano.com and is not affiliated with it.",
+            "The numbers on the public pages come from a seeded demo workspace, not from real customers."
+          ]
+        }
+      ]
+    }
+  }
+}

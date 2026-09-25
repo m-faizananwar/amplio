@@ -1,9 +1,16 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { ForCreatorsPage } from "@/features/public/components/pages/creators/ForCreatorsPage";
+import { getShowcaseCreators } from "@/features/public/server/queries";
 
-import { BRAND } from "@/config/brand";
-export const metadata: Metadata = { title: `Get paid to post on LinkedIn · ${BRAND.wordmark}`, description: "Choose deals from B2B brands you know, post in your own voice, and set your own price per post." };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("public.forCreators.meta");
+  return { title: t("title"), description: t("description") };
+}
 
-export default function Page() {
-  return <ForCreatorsPage />;
+export const dynamic = "force-dynamic";
+
+export default async function Page() {
+  const [creator] = await getShowcaseCreators();
+  return <ForCreatorsPage creator={creator ?? null} />;
 }

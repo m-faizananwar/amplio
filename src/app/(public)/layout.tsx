@@ -5,7 +5,7 @@ import { ClientMessages } from "@/i18n/ClientMessages";
 
 export default function PublicLayout({ children }: { children: ReactNode }) {
   return (
-    <ClientMessages namespaces={["landing"]}>
+    <ClientMessages namespaces={["landing", "public"]}>
       <main className="flex-1">{children}</main>
       <PublicFooter />
       <PublicAssistantPill />

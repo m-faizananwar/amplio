@@ -186,6 +186,31 @@ decorative rather than data; the scenes' visuals don't yet react to the
 cursor the way the hero does; FR copy runs ~15% longer and should be
 checked for widows at 375.
 
+### For creators — `/for-creators`
+A creator's path in the order they live it: four ruled steps with the trail
+running through their numbers (the last dot green — paid), then the card
+brands will see, drawn from a real demo creator and labelled as demo data,
+then how the money moves with the Stripe stub said plainly, then one way in.
+No logo strip and no earnings claims: we can't back them.
+
+### Pricing — `/pricing`
+There are two prices, so the page is two plans side by side and nothing
+else competing. Under them, one worked example from the demo workspace — a
+single paid post, its fee, the clicks on its link, the sign-ups they became
+— because "pay per post" only means something next to what one post
+returns. Then the four things you never pay for, and the stub note.
+
+### FAQ — `/faq`
+Brands and creators ask different things, so a tab splits the two lists
+instead of interleaving twelve questions. Each question is a ruled row that
+opens in place (native details), one answer at a time, then a short
+"still weighing it up?" block with the one next step.
+
+### Privacy and Terms — `/privacy`, `/terms`
+Documents, not pages: sections at reading width, a sticky "on this page"
+index on wide screens, the date at the top. The copy states what this build
+actually stores and that money doesn't move.
+
 ## Real vs stubbed
 
 | Where | What | Status |

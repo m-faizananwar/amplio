@@ -1,6 +1,6 @@
 import "server-only";
 
-import { and, count, eq, inArray, isNotNull, max, sum } from "drizzle-orm";
+import { and, count, desc, eq, inArray, isNotNull, max, sql, sum } from "drizzle-orm";
 import { cachedRead } from "@/db/cache";
 import { brands, campaigns, clicks, collaborations, pixelEvents, trackingLinks, users } from "@/db/schema";
 import { getDb, isDbConfigured } from "@/db";
@@ -40,7 +40,24 @@ async function loadTrail(): Promise<PublicTrail | null> {
       // the bill: what the demo brand paid for the posts it paid for
       db.select({ n: count(), cents: sum(collaborations.feeCents) }).from(collaborations).innerJoin(campaigns, eq(campaigns.id, collaborations.campaignId)).where(and(ofBrand, isNotNull(collaborations.paidAt))),
     ]);
+    // one real paid post, end to end: its fee, the clicks on its link, the sign-ups those clicks became
+    const [example] = await db
+      .select({
+        feeCents: collaborations.feeCents,
+        clicks: sql<number>`count(distinct ${clicks.id})`.mapWith(Number),
+        signups: sql<number>`count(distinct ${pixelEvents.id})`.mapWith(Number),
+      })
+      .from(collaborations)
+      .innerJoin(campaigns, eq(campaigns.id, collaborations.campaignId))
+      .innerJoin(trackingLinks, eq(trackingLinks.collaborationId, collaborations.id))
+      .leftJoin(clicks, eq(clicks.trackingLinkId, trackingLinks.id))
+      .leftJoin(pixelEvents, and(eq(pixelEvents.clickId, clicks.id), eq(pixelEvents.type, "signup")))
+      .where(and(ofBrand, isNotNull(collaborations.paidAt)))
+      .groupBy(collaborations.id)
+      .orderBy(desc(sql`count(distinct ${clicks.id})`))
+      .limit(1);
     return {
+      example: example ?? null,
       posts: posts.n,
       links: links.n,
       clicks: clickRows.n,

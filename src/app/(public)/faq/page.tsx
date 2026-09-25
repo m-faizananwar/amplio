@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { FaqPage } from "@/features/public/components/pages/FaqPage";
 
-import { BRAND } from "@/config/brand";
-export const metadata: Metadata = { title: `FAQ · ${BRAND.wordmark}`, description: `Everything companies and creators ask before getting started on ${BRAND.name}.` };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("public.faq.meta");
+  return { title: t("title"), description: t("description") };
+}
 
 export default function Page() {
   return <FaqPage />;
