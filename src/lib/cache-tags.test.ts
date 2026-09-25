@@ -20,7 +20,7 @@ const EXPECTED: Record<MutationKind, string[]> = {
   "collaboration-status": [
     tag.brandCollaborations(B), tag.brandOverview(B), tag.brandBilling(B), tag.brandResults(B), tag.brandCampaigns(B),
     tag.creatorCollaborations(C), tag.creatorOpportunities(C), tag.creatorOverview(C), tag.creatorEarnings(C), tag.creatorAnalytics(C),
-    tag.campaign(K), tag.viewer(BRAND_USER), tag.viewer(CREATOR_USER),
+    tag.campaign(K), tag.viewer(BRAND_USER), tag.viewer(CREATOR_USER), tag.marketplaceRates(),
   ],
   message: [
     tag.brandMessages(B), tag.brandOverview(B), tag.creatorMessages(C), tag.creatorOverview(C),
@@ -40,7 +40,7 @@ const EXPECTED: Record<MutationKind, string[]> = {
     tag.creatorOverview(C), tag.creatorCard(C), tag.creatorEarnings(C), tag.creatorDirectory(),
     tag.viewer(BRAND_USER), tag.viewer(CREATOR_USER),
   ],
-  tracking: [tag.brandResults(B), tag.brandOverview(B), tag.creatorAnalytics(C), tag.campaign(K)],
+  tracking: [tag.brandResults(B), tag.brandOverview(B), tag.creatorAnalytics(C), tag.campaign(K), tag.marketplaceRates()],
 };
 
 describe("tagsForMutation", () => {

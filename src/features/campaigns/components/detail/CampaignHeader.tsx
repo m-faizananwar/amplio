@@ -43,11 +43,13 @@ export function CampaignHeader({ shell, tab, children }: Props) {
         </div>
       </div>
       {projection ? (
-        <p className="mb-4 text-sm text-muted-foreground">
-          <span className="font-medium text-foreground">Projected</span> {projection.estimate.estClicks.toLocaleString("en-GB")} clicks from{" "}
-          {projection.estimate.creators} {projection.estimate.creators === 1 ? "creator" : "creators"} ·{" "}
-          <span className="font-medium text-foreground">Actual</span> {projection.actualClicks.toLocaleString("en-GB")} so far ·{" "}
-          <span title={projection.estimate.sourceNote}>Confidence {projection.estimate.confidence}</span>
+        <p className="mb-4 text-small text-ink-muted">
+          {projection.estimate.estClicks === null ? (
+            <>Projection: not enough live posts on Amplio yet ({projection.estimate.sample.livePosts})</>
+          ) : (
+            <><span className="font-medium text-ink">Projected</span> <span className="num">{projection.estimate.estClicks.toLocaleString("en-GB")}</span> clicks from {projection.estimate.creators} {projection.estimate.creators === 1 ? "creator" : "creators"} · based on <span className="num">{projection.estimate.sample.livePosts}</span> live posts</>
+          )}
+          {" · "}<span className="font-medium text-ink">Actual</span> <span className="num">{projection.actualClicks.toLocaleString("en-GB")}</span> so far
         </p>
       ) : null}
       <CampaignTabs campaignId={campaign.id} active={tab} />

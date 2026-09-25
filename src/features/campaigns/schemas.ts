@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { Confidence, Estimate } from "@/lib/estimator";
+import type { Estimate } from "@/lib/estimator";
 import {
   BRIEF_ANGLES_MAX, BRIEF_LIST_MAX_ITEMS, BRIEF_PROMPT_MAX_CHARS, BRIEF_TEXT_MAX_CHARS, CAMPAIGN_DESCRIPTION_MAX_CHARS,
   CAMPAIGN_NAME_MAX_CHARS, LINK_URL_MAX_CHARS, MAX_FEE_CENTS,
@@ -126,7 +126,7 @@ export type CreatorPickDto = {
   alreadyInvited: boolean;
 };
 
-export type EstimateDto = Estimate & { confidence: Confidence };
+export type EstimateDto = Estimate;
 
 export type BrandProfile = {
   id: string;

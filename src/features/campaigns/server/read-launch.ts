@@ -10,7 +10,7 @@ export async function getLaunchStepData({ step, campaign, brand, creatorIds }: I
   if (step === "creators") return { step, creators: await listBestFitCreators(campaign, brand) };
   if (step === "review") {
     const creators = await getCreatorPicks(creatorIds, campaign, brand);
-    return { step, creators, estimate: estimateFor(campaign, creators) };
+    return { step, creators, estimate: await estimateFor(creators) };
   }
   return { step };
 }

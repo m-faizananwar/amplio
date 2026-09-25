@@ -39,6 +39,8 @@ export const tag = {
   campaign: (campaignId: string) => `campaign:${campaignId}`,
   /** The marketplace list everyone browses: one creator's card changes it. */
   creatorDirectory: () => "creators:directory",
+  /** The estimator's sample: every live post, click and attributed sign-up. */
+  marketplaceRates: () => "marketplace:rates",
 } as const;
 
 export type MutationKind =
@@ -78,6 +80,7 @@ const MUTATIONS: Record<MutationKind, Builder> = {
     ...withId(s.creatorId, [tag.creatorCollaborations, tag.creatorOpportunities, tag.creatorOverview, tag.creatorEarnings, tag.creatorAnalytics]),
     ...withId(s.campaignId, [tag.campaign]),
     ...viewers(s),
+    tag.marketplaceRates(),
   ],
   message: (s) => [
     ...withId(s.brandId, [tag.brandMessages, tag.brandOverview]),
@@ -99,6 +102,7 @@ const MUTATIONS: Record<MutationKind, Builder> = {
     ...withId(s.brandId, [tag.brandResults, tag.brandOverview]),
     ...withId(s.creatorId, [tag.creatorAnalytics]),
     ...withId(s.campaignId, [tag.campaign]),
+    tag.marketplaceRates(),
   ],
 };
 

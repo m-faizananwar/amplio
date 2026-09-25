@@ -1,62 +1,52 @@
 import { describe, expect, it } from "vitest";
-import { CPL_BY_VERTICAL, ctrForFollowers, estimate, verticalFor } from "./estimator";
+import { MIN_CLICKS_FOR_LEADS, MIN_LIVE_POSTS, estimate, ratesFrom, type ObservedSample } from "./estimator";
 
-describe("ctrForFollowers", () => {
-  it("uses naano's tiers: smaller creators click through more", () => {
-    expect(ctrForFollowers(1_500)).toBe(0.138);
-    expect(ctrForFollowers(3_000)).toBe(0.138);
-    expect(ctrForFollowers(5_000)).toBe(0.121);
-    expect(ctrForFollowers(9_000)).toBe(0.104);
-    expect(ctrForFollowers(50_000)).toBe(0.087);
-  });
-});
+const CREATORS = [
+  { followers: 4_000, medianViews: 2_000, priceCents: 40_000 },
+  { followers: 12_000, medianViews: 6_000, priceCents: 60_000 },
+  { followers: 800, medianViews: 0, priceCents: 20_000 },
+];
 
-describe("verticalFor", () => {
-  it("maps naano industries to a benchmark vertical, generic ones to the default", () => {
-    expect(verticalFor(["B2B", "SaaS", "AI"])).toBe("default");
-    expect(verticalFor(["B2B", "Sales"])).toBe("sales-tech");
-    expect(verticalFor(["Fintech"])).toBe("fintech");
-    expect(verticalFor([])).toBe("default");
-  });
-});
+const SAMPLE: ObservedSample = { livePosts: 10, views: 50_000, clicks: 1_000, signups: 50 };
 
-describe("estimate", () => {
-  const creators = [
-    { followers: 2_000, medianViews: 1_000, priceCents: 20_000 },
-    { followers: 5_000, medianViews: 2_000, priceCents: 30_000 },
-    { followers: 20_000, medianViews: 10_000, priceCents: 90_000 },
-  ];
-
-  it("applies tier CTR to median views", () => {
-    const result = estimate(creators, "default");
-    // 1000 × 13.8% + 2000 × 12.1% + 10000 × 8.7% = 138 + 242 + 870
-    expect(result.estClicks).toBe(1_250);
-    expect(result.totalSpendCents).toBe(140_000);
+describe("estimator (our own data)", () => {
+  it("derives both rates from what went live", () => {
+    expect(ratesFrom(SAMPLE)).toEqual({ clickRate: 0.02, leadRate: 0.05 });
   });
 
-  it("caps leads at the funnel rate and derives CPL / CPC from spend", () => {
-    const result = estimate(creators, "default");
-    // spend ÷ CPL = 140000 ÷ 1800 ≈ 77.8; funnel = 1250 × 8.3% ≈ 103.75 → min = 78
-    expect(result.estLeads).toBe(78);
-    expect(result.estCplCents).toBe(Math.round(140_000 / 78));
-    expect(result.estCpcCents).toBe(112);
-    expect(result.benchmarkCplCents).toBe(CPL_BY_VERTICAL.default);
+  it("projects the selection with those rates; creators without reach add spend, not clicks", () => {
+    const e = estimate(CREATORS, SAMPLE);
+    expect(e.creatorsWithReach).toBe(2);
+    expect(e.totalSpendCents).toBe(120_000);
+    expect(e.estClicks).toBe(160); // 8,000 views × 2%
+    expect(e.estLeads).toBe(8); // 160 × 5%
+    expect(e.estCpcCents).toBe(750);
+    expect(e.estCplCents).toBe(15_000);
+    expect(e.confidence).toBe("medium");
+    expect(e.sample).toEqual(SAMPLE);
   });
 
-  it("labels confidence by creators with reach data", () => {
-    expect(estimate(creators, "default").confidence).toBe("Medium");
-    expect(estimate([creators[0]], "default").confidence).toBe("Low");
-    const five = Array.from({ length: 5 }, () => creators[0]);
-    expect(estimate(five, "default").confidence).toBe("High");
-    const noReach = creators.map((c) => ({ ...c, medianViews: 0 }));
-    expect(estimate(noReach, "default").confidence).toBe("Low");
+  it("says nothing about clicks below the minimum sample", () => {
+    const e = estimate(CREATORS, { livePosts: MIN_LIVE_POSTS - 1, views: 9_000, clicks: 400, signups: 20 });
+    expect(e.clickRate).toBeNull();
+    expect(e.estClicks).toBeNull();
+    expect(e.estLeads).toBeNull();
+    expect(e.estCpcCents).toBeNull();
+    expect(e.confidence).toBeNull();
+    expect(e.totalSpendCents).toBe(120_000);
   });
 
-  it("has no CPL or CPC when nothing is selected", () => {
-    const result = estimate([], "devtools");
-    expect(result.estClicks).toBe(0);
-    expect(result.estCplCents).toBeNull();
-    expect(result.estCpcCents).toBeNull();
-    expect(result.sourceNote).toContain("Q2 2026");
+  it("gives clicks but not leads when too few clicks have been seen", () => {
+    const e = estimate(CREATORS, { livePosts: 4, views: 10_000, clicks: MIN_CLICKS_FOR_LEADS - 1, signups: 3 });
+    expect(e.estClicks).not.toBeNull();
+    expect(e.leadRate).toBeNull();
+    expect(e.estLeads).toBeNull();
+    expect(e.estCplCents).toBeNull();
+    expect(e.confidence).toBe("low");
+  });
+
+  it("an empty marketplace estimates nothing and does not divide by zero", () => {
+    const e = estimate(CREATORS, { livePosts: 0, views: 0, clicks: 0, signups: 0 });
+    expect([e.estClicks, e.estLeads, e.estCpcCents, e.estCplCents, e.confidence]).toEqual([null, null, null, null, null]);
   });
 });

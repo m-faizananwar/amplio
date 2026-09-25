@@ -2,7 +2,8 @@ import "server-only";
 import { and, eq, inArray, ne } from "drizzle-orm";
 import { getDb } from "@/db";
 import { collaborations, creators, shortlist, users } from "@/db/schema";
-import { estimate, verticalFor } from "@/lib/estimator";
+import { estimate } from "@/lib/estimator";
+import { getObservedSample } from "./read-rates";
 import { fitScore } from "@/lib/fit-score";
 import { BEST_FIT_LIMIT } from "../constants";
 import type { BrandProfile, CampaignDto, CreatorPickDto, EstimateDto } from "../schemas";
@@ -69,8 +70,9 @@ export async function getCreatorPicks(ids: string[], campaign: CampaignDto, bran
   return rows.map((r) => toPick(r, { campaign, brand, invitedIds: invited }));
 }
 
-export function estimateFor(campaign: CampaignDto, picks: CreatorPickDto[]): EstimateDto {
-  return estimate(picks, verticalFor(campaign.brief.targetIndustries));
+// The selection × what Amplio has observed so far (src/lib/estimator.ts).
+export async function estimateFor(picks: CreatorPickDto[]): Promise<EstimateDto> {
+  return estimate(picks, await getObservedSample());
 }
 
 // Creators on an active campaign (declined ones never post), for the

@@ -12,7 +12,7 @@ async function loadCampaignShell(brandId: string, campaignId: string): Promise<C
   if (!campaign || !brand) return null;
   if (campaign.status === "draft") return { campaign, brand, summaries, projection: null };
   const [creators, actualClicks] = await Promise.all([listCampaignCreators(campaign, brand), getCampaignClickCount(campaignId)]);
-  return { campaign, brand, summaries, projection: { estimate: estimateFor(campaign, creators), actualClicks } };
+  return { campaign, brand, summaries, projection: { estimate: await estimateFor(creators), actualClicks } };
 }
 
 // The campaign header every campaign sub-route renders.
