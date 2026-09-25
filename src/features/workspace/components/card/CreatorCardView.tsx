@@ -1,4 +1,6 @@
+import type { CSSProperties } from "react";
 import { getFormatter, getTranslations } from "next-intl/server";
+import { AssembleOnce } from "@/components/graphics/AssembleOnce";
 import { getOptionLabel } from "@/i18n/option-label";
 import { AudienceOrbit } from "@/components/graphics/AudienceOrbit";
 import { PersonAvatar } from "@/components/ui/avatar";
@@ -20,7 +22,7 @@ function Figure({ label, value }: { label: string; value: string }) {
 
 function CardHeader({ card, industriesLabel, industry }: { card: PublicCard; industriesLabel: string; industry: (value: string) => string }) {
   return (
-      <header className="flex items-start gap-4 border-b border-rule p-5">
+      <header data-assemble style={{ "--i": 0 } as CSSProperties} className="flex items-start gap-4 border-b border-rule p-5">
         <AudienceOrbit followers={card.followers} topTitles={Object.entries(card.audienceJobTitles).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([title]) => title)}>
           <PersonAvatar name={card.name} src={card.avatarUrl} size="lg" />
         </AudienceOrbit>
@@ -29,7 +31,7 @@ function CardHeader({ card, industriesLabel, industry }: { card: PublicCard; ind
           <p className="num text-caption text-ink-muted">@{card.handle} · {countryName(card.country)}</p>
           <p className="mt-2 text-body text-ink">{card.headline}</p>
           {card.industries.length > 0 ? (
-            <ul aria-label={industriesLabel} className="mt-3 flex flex-wrap gap-1.5">
+            <ul aria-label={industriesLabel} className="list-stagger mt-3 flex flex-wrap gap-1.5">
               {card.industries.map((i) => <li key={i} className="rounded-chip border border-rule px-2.5 py-0.5 text-caption text-ink-muted">{industry(i)}</li>)}
             </ul>
           ) : null}
@@ -39,7 +41,8 @@ function CardHeader({ card, industriesLabel, industry }: { card: PublicCard; ind
 }
 
 // The card as brands see it: who, the proof, the audience, the price. The
-// same view on My card and on the public /c/[handle] page.
+// same view on My card and on the public /c/[handle] page; the first time it
+// is seen in a tab it assembles itself, block by block.
 export async function CreatorCardView({ card }: { card: PublicCard }) {
   const [t, format, industry] = await Promise.all([getTranslations("creator.publicCard"), getFormatter(), getOptionLabel("industries")]);
   const n = (v: number) => format.number(v);
@@ -47,9 +50,10 @@ export async function CreatorCardView({ card }: { card: PublicCard }) {
   // audience mixes are stored as whole percentages (0–100)
   const pct = (share: number) => format.number(share / PERCENT, { style: "percent", maximumFractionDigits: 0 });
   return (
+    <AssembleOnce id={`card-${card.handle}`}>
     <article className="rounded-card border border-rule bg-surface">
       <CardHeader card={card} industriesLabel={t("fields.industries")} industry={industry} />
-      <section aria-label={t("sections.performance")} className="border-b border-rule p-5">
+      <section data-assemble style={{ "--i": 1 } as CSSProperties} aria-label={t("sections.performance")} className="border-b border-rule p-5">
         <dl className="grid grid-cols-2 gap-4 sm:grid-cols-3">
           <Figure label={t("fields.followers")} value={n(card.followers)} />
           <Figure label={t("fields.medianViews")} value={card.medianViews > 0 ? n(card.medianViews) : "—"} />
@@ -60,11 +64,11 @@ export async function CreatorCardView({ card }: { card: PublicCard }) {
         </dl>
         <p className="mt-3 text-caption text-ink-muted">{t("fields.postsAnalyzed", { count: card.postsAnalyzed })}</p>
       </section>
-      <section aria-label={t("sections.audience")} className="grid gap-5 border-b border-rule p-5 sm:grid-cols-2">
+      <section data-assemble style={{ "--i": 2 } as CSSProperties} aria-label={t("sections.audience")} className="grid gap-5 border-b border-rule p-5 sm:grid-cols-2">
         <AudienceBars title={t("fields.audienceJobTitles")} mix={card.audienceJobTitles} percent={pct} />
         <AudienceBars title={t("fields.audienceSeniority")} mix={card.audienceSeniority} percent={pct} />
       </section>
-      <section aria-label={t("sections.pricing")} className="flex flex-wrap items-baseline justify-between gap-3 p-5">
+      <section data-assemble style={{ "--i": 3 } as CSSProperties} aria-label={t("sections.pricing")} className="flex flex-wrap items-baseline justify-between gap-3 p-5">
         <div>
           <p className="text-caption text-ink-muted">{t("fields.pricePerPost")}</p>
           <p className="num text-h3 text-money">{card.priceCents > 0 ? money(card.priceCents) : t("fields.noPrice")}</p>
@@ -72,5 +76,6 @@ export async function CreatorCardView({ card }: { card: PublicCard }) {
         {card.bundle ? <p className="num text-small text-ink-muted">{t("fields.bundle", { count: card.bundle.posts, amount: money(card.bundle.totalCents) })}</p> : null}
       </section>
     </article>
+    </AssembleOnce>
   );
 }

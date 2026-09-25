@@ -123,4 +123,22 @@ html { scroll-behavior: smooth; }
 .g-orbit { animation: gOrbit 60s linear infinite; }
 @keyframes gDot { from { opacity: 0; transform: scale(0); } to { opacity: 1; transform: none; } }
 .g-dot { transform-box: fill-box; transform-origin: center; animation: gDot var(--duration-base) var(--ease-ledger) var(--g-delay, 0ms) both; }
-@media (prefers-reduced-motion: reduce) { .g-ring, .g-orbit, .g-dot { animation: none; } }
+@keyframes gSweep { to { transform: rotate(360deg); } }
+.g-sweep { transform-box: view-box; transform-origin: 56px 32px; animation: gSweep 2400ms linear infinite; }
+@keyframes gBlip { 0%, 100% { opacity: 0.25; } 4% { opacity: 1; } 30% { opacity: 0.25; } }
+.g-blip { animation: gBlip 2400ms linear infinite; opacity: 0.25; }
+@keyframes gPen { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+.g-pen { animation: gPen 1600ms var(--ease-ledger) infinite; }
+/* a block that assembles itself on first view (AssembleOnce): its parts rise 50ms apart */
+.assemble [data-assemble] { animation: rowIn var(--duration-slow) var(--ease-ledger) calc(var(--i, 0) * 50ms) both; }
+/* the ripple off a copy button */
+@keyframes gCopied { from { opacity: 0.6; transform: scale(1); } to { opacity: 0; transform: scale(1.18, 1.5); } }
+.g-copied { animation: gCopied 520ms var(--ease-ledger) forwards; }
+/* a withdrawal: the line draws out of the balance, the coin runs off its end */
+@keyframes gCoinLine { 0% { transform: scaleX(0); opacity: 0.5; } 30% { transform: scaleX(1); opacity: 0.5; } 100% { transform: scaleX(1); opacity: 0; } }
+@keyframes gCoinRun { 0% { transform: translateX(0); opacity: 0; } 10%, 85% { opacity: 1; } 100% { transform: translateX(100%); opacity: 0; } }
+.g-coin-line { animation: gCoinLine 900ms var(--ease-ledger) forwards; }
+.g-coin-run { animation: gCoinRun 800ms var(--ease-ledger) 120ms both; }
+/* ambient loops rest while off screen (Loop marks them) */
+.g-loop[data-offscreen] * { animation-play-state: paused !important; }
+@media (prefers-reduced-motion: reduce) { .g-ring, .g-orbit, .g-dot, .g-sweep, .g-blip, .g-pen, .assemble [data-assemble], .g-copied, .g-coin-line, .g-coin-run { animation: none; } .g-copied, .g-coin-line, .g-coin-run { opacity: 0; } .g-blip { opacity: 0.6; } }

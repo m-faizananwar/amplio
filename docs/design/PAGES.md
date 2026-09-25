@@ -317,9 +317,17 @@ One motif, the trail, drawn by hand in SVG on currentColor: DrawOnPath (a stroke
 TrailLoader (the only loader: the mark's dots pulse), StatusGlyph (a glyph per collaboration
 state — envelope, arrow, joined dots, pen, revise, check, calendar, pulse, coin, cross — that
 redraws when the state changes), Stamp (a paid ledger row prints in), Burst (a spray of dots
-when money moves), and empty-state scenes (a brief writing itself, two dots joining, a link
-rippling, three dots typing). Transform, opacity and dashoffset only; final frame under
-reduced motion; loops are ambient. Numbers roll through the primitives' RollingNumber.
+when something clears: a Needs-you item that moved on since the last visit), CoinTrail (a
+withdrawal: a line draws out of the Available balance and a coin runs off its end), BrandMark
+(a brand without a logo gets its own trail, 3–4 dots seeded by the name, so no letters and no
+stock art), AssembleOnce (My card builds itself block by block the first time it is seen in a
+tab), the copy ripple on "Copy link", and empty-state scenes (a brief writing itself, two dots
+joining, a link rippling, three dots typing, a radar sweeping a field of dots for "no
+opportunities", an empty ledger with a pen waiting for "no earnings"). Transform, opacity and
+dashoffset only; final frame under reduced motion; ambient loops pause off screen (Loop).
+Numbers roll through the primitives' RollingNumber. Why the trail everywhere: the product is
+a chain of links (brief → post → click → sign-up → payout), and one drawn motif keeps every
+screen reading as the same product without decoration that means nothing.
 
 ## The loop, end to end (QA, localhost, fresh accounts)
 
