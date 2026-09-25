@@ -20,8 +20,8 @@ export function CallNavItem({ role, onNavigate }: { role: "brand" | "creator"; o
         onClick={onNavigate}
         aria-current={active ? "page" : undefined}
         className={cn(
-          "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40",
-          active && "bg-brand/10 text-brand hover:bg-brand/10 hover:text-brand",
+          "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40",
+          active && "text-brand hover:text-brand",
         )}
       >
         <span className="icon-chip -m-1 inline-flex rounded-full p-1" aria-hidden="true"><PhoneCall className="size-4 shrink-0" /></span>

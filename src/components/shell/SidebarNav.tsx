@@ -7,6 +7,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { isActive, navFor } from "./nav";
 import { CallNavItem } from "./CallNavItem";
+import { SlidingIndicator } from "@/components/motion/SlidingIndicator";
 
 type Props = { role: "brand" | "creator"; section: "primary" | "secondary"; onNavigate?: () => void };
 
@@ -19,6 +20,9 @@ export function SidebarNav({ role, section, onNavigate }: Props) {
   const root = `/${role}`;
   const items = navFor(role)[section];
   return (
+    // The capsule sits behind the items and slides to the active one; hovering
+    // another item previews where it would land.
+    <SlidingIndicator axis="y" variant="capsule">
     <ul className="grid gap-0.5">
       {items.map((item, index) => {
         const active = isActive(pathname, item.href, root);
@@ -34,8 +38,8 @@ export function SidebarNav({ role, section, onNavigate }: Props) {
               onPointerEnter={() => router.prefetch(item.href)}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40",
-                active && "bg-brand/10 text-brand hover:bg-brand/10 hover:text-brand",
+                "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40",
+                active && "text-brand hover:text-brand",
               )}
             >
               <span className="icon-chip -m-1 inline-flex rounded-full p-1" aria-hidden="true"><item.icon className="size-4 shrink-0" /></span>
@@ -47,5 +51,6 @@ export function SidebarNav({ role, section, onNavigate }: Props) {
         );
       })}
     </ul>
+    </SlidingIndicator>
   );
 }

@@ -305,3 +305,46 @@ main [aria-busy="true"][aria-label^="Loading"] { animation: skeletonAppear 0s 0.
 .section-ink .btn-glass:hover { background-color: #f2f0ec; color: #0d0c0b; }
 .section-ink .card-invert:hover .btn-glass { color: #0d0c0b; }
 .section-ink .card-invert:hover .btn-glass:hover { background-color: #0d0c0b; color: #f2f0ec; }
+
+/* ---- the sliding indicator: one capsule, measured from the items ----
+   The public nav's capsule, brought into the app. A .slide-track holds one
+   .slide-ind and positions it from --ind-x/y/w/h, written by the component
+   after it measures whichever child is active. Movement is a spring (the
+   blovio overshoot), size a shorter ease so a wide tab doesn't wobble.
+   Pointing at another item previews the move at .55 opacity. */
+:root { --ix-spring: cubic-bezier(0.34, 1.3, 0.56, 1); }
+.slide-track { position: relative; }
+.slide-track > :not(.slide-ind) { position: relative; z-index: 1; }
+.slide-ind {
+  position: absolute; left: 0; top: 0; z-index: 0; pointer-events: none; opacity: 0;
+  width: var(--ind-w, 0px); height: var(--ind-h, 0px);
+  transform: translate3d(var(--ind-x, 0px), var(--ind-y, 0px), 0);
+}
+.slide-track[data-ready="true"] > .slide-ind { opacity: 1; }
+.slide-track[data-ready="true"][data-preview="true"] > .slide-ind { opacity: 0.55; }
+.slide-track[data-anim="true"] > .slide-ind {
+  transition: transform .42s var(--ix-spring), width .34s var(--ix-ease), height .34s var(--ix-ease), opacity .2s linear;
+}
+/* the rail capsule: app-light glass, the nav's inset highlights at paper values */
+.slide-ind[data-variant="capsule"] {
+  border-radius: 0.5rem;
+  background: color-mix(in oklab, var(--brand) 10%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--brand) 16%, transparent), 0 1px 2px rgb(13 12 11 / 0.04);
+}
+/* the segmented pill (Creators' two tabs): the white chip that used to be a class */
+.slide-ind[data-variant="pill"] {
+  border-radius: calc(var(--radius) - 2px);
+  background: var(--background);
+  box-shadow: 0 1px 2px rgb(13 12 11 / 0.08), inset 0 0 0 1px rgb(13 12 11 / 0.04);
+}
+/* the strip underline: 2px on the track's baseline, width only */
+.slide-ind[data-variant="underline"] {
+  top: auto; bottom: -1px; height: 2px; border-radius: 2px;
+  background: var(--brand);
+  transform: translate3d(var(--ind-x, 0px), 0, 0);
+}
+.slide-track[data-axis="x"] > .slide-ind[data-variant="capsule"],
+.slide-track[data-axis="x"] > .slide-ind[data-variant="pill"] { transform: translate3d(var(--ind-x, 0px), var(--ind-y, 0px), 0); }
+@media (prefers-reduced-motion: reduce) {
+  .slide-track[data-anim="true"] > .slide-ind { transition: opacity .2s linear; }
+}
