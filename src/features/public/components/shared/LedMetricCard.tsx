@@ -17,7 +17,7 @@ export function LedMetricCard({ value, label, caption, className }: Props) {
   const [hover, setHover] = useState(false);
   const dots = useRef<HTMLSpanElement>(null);
   const match = NUMBER.exec(value);
-  const [pre, digits, post] = match ? [match[1], match[2].replace(/,/g, ""), match[3]] : ["", "", value];
+  const [pre, digits, post] = match ? [match[1], match[2], match[3]] : ["", "", value];
 
   useEffect(() => {
     if (dots.current && digits) renderDots(dots.current);
