@@ -1,4 +1,5 @@
 import { getFormatter, getTranslations } from "next-intl/server";
+import { getOptionLabel } from "@/i18n/option-label";
 import { AudienceOrbit } from "@/components/graphics/AudienceOrbit";
 import { PersonAvatar } from "@/components/ui/avatar";
 import { COUNTRIES } from "@/features/creator-onboarding/constants";
@@ -17,7 +18,7 @@ function Figure({ label, value }: { label: string; value: string }) {
   );
 }
 
-function CardHeader({ card, industriesLabel }: { card: PublicCard; industriesLabel: string }) {
+function CardHeader({ card, industriesLabel, industry }: { card: PublicCard; industriesLabel: string; industry: (value: string) => string }) {
   return (
       <header className="flex items-start gap-4 border-b border-rule p-5">
         <AudienceOrbit followers={card.followers} topTitles={Object.entries(card.audienceJobTitles).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([title]) => title)}>
@@ -29,7 +30,7 @@ function CardHeader({ card, industriesLabel }: { card: PublicCard; industriesLab
           <p className="mt-2 text-body text-ink">{card.headline}</p>
           {card.industries.length > 0 ? (
             <ul aria-label={industriesLabel} className="mt-3 flex flex-wrap gap-1.5">
-              {card.industries.map((i) => <li key={i} className="rounded-chip border border-rule px-2.5 py-0.5 text-caption text-ink-muted">{i}</li>)}
+              {card.industries.map((i) => <li key={i} className="rounded-chip border border-rule px-2.5 py-0.5 text-caption text-ink-muted">{industry(i)}</li>)}
             </ul>
           ) : null}
         </div>
@@ -40,14 +41,14 @@ function CardHeader({ card, industriesLabel }: { card: PublicCard; industriesLab
 // The card as brands see it: who, the proof, the audience, the price. The
 // same view on My card and on the public /c/[handle] page.
 export async function CreatorCardView({ card }: { card: PublicCard }) {
-  const [t, format] = await Promise.all([getTranslations("creator.publicCard"), getFormatter()]);
+  const [t, format, industry] = await Promise.all([getTranslations("creator.publicCard"), getFormatter(), getOptionLabel("industries")]);
   const n = (v: number) => format.number(v);
   const money = (cents: number) => format.number(cents / PERCENT, { style: "currency", currency: "EUR" });
   // audience mixes are stored as whole percentages (0–100)
   const pct = (share: number) => format.number(share / PERCENT, { style: "percent", maximumFractionDigits: 0 });
   return (
     <article className="rounded-card border border-rule bg-surface">
-      <CardHeader card={card} industriesLabel={t("fields.industries")} />
+      <CardHeader card={card} industriesLabel={t("fields.industries")} industry={industry} />
       <section aria-label={t("sections.performance")} className="border-b border-rule p-5">
         <dl className="grid grid-cols-2 gap-4 sm:grid-cols-3">
           <Figure label={t("fields.followers")} value={n(card.followers)} />

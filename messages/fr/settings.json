@@ -23,7 +23,7 @@
       "url": {
         "label": "URL du profil public",
         "placeholder": "https://www.linkedin.com/in/votre-nom",
-        "help": "Nous ne lisons que des informations publiques : nom, photo, accroche, pays et nombre d’abonnés."
+        "help": "Nous ne lisons que des informations publiques : photo, accroche, pays et nombre d’abonnés. Votre nom reste celui de votre inscription."
       },
       "lastRead": "Dernière lecture le {date}",
       "reread": "Relire le profil",

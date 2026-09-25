@@ -23,7 +23,7 @@
       "url": {
         "label": "Public profile URL",
         "placeholder": "https://www.linkedin.com/in/your-name",
-        "help": "We read only public details: name, photo, headline, country and follower count."
+        "help": "We read only public details: photo, headline, country and follower count. Your name stays the one you signed up with."
       },
       "lastRead": "Last read {date}",
       "reread": "Re-read profile",

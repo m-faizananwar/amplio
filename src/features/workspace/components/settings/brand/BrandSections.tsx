@@ -60,10 +60,10 @@ export function AudienceSection({ defaults }: { defaults: BrandAudienceInput }) 
     <SettingsSection id="audience" title={t("audience.title")} description={t("audience.description")}>
       <form onSubmit={onSubmit} noValidate className="grid gap-5">
         <Controller control={form.control} name="targetIndustries" render={({ field }) => (
-          <IndustryPicker name="targetIndustries" options={INDUSTRIES} legend={t("audience.industries.label")} help={t("audience.industries.help")} counter={counter(field.value.length)} value={field.value} onChange={field.onChange} max={INDUSTRIES.length} />
+          <IndustryPicker name="targetIndustries" group="industries" options={INDUSTRIES} legend={t("audience.industries.label")} help={t("audience.industries.help")} counter={counter(field.value.length)} value={field.value} onChange={field.onChange} max={INDUSTRIES.length} />
         )} />
         <Controller control={form.control} name="targetRegions" render={({ field }) => (
-          <IndustryPicker name="targetRegions" options={REGIONS} legend={t("audience.regions.label")} help={t("audience.regions.help")} counter={counter(field.value.length)} value={field.value} onChange={field.onChange} max={REGIONS.length} />
+          <IndustryPicker name="targetRegions" group="regions" options={REGIONS} legend={t("audience.regions.label")} help={t("audience.regions.help")} counter={counter(field.value.length)} value={field.value} onChange={field.onChange} max={REGIONS.length} />
         )} />
         <SaveRow form={form} />
       </form>

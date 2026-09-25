@@ -32,7 +32,7 @@ export function CardFields({ control }: { control: Control<CardInput> }) {
         </FormField>
       )} />
       <Controller control={control} name="industries" render={({ field, fieldState }) => (
-        <IndustryPicker name="industries" options={INDUSTRIES} legend={t("industries.label")} help={t("industries.help", { max: MAX_INDUSTRIES })} counter={t("industries.counter", { count: field.value.length, max: MAX_INDUSTRIES })}
+        <IndustryPicker name="industries" group="industries" options={INDUSTRIES} legend={t("industries.label")} help={t("industries.help", { max: MAX_INDUSTRIES })} counter={t("industries.counter", { count: field.value.length, max: MAX_INDUSTRIES })}
           value={field.value} onChange={field.onChange} max={MAX_INDUSTRIES}
           error={fieldError(fieldState.error, { too_small: t("errors.industriesMin"), too_big: t("errors.industriesMax", { max: MAX_INDUSTRIES }) })} />
       )} />

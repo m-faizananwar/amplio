@@ -83,5 +83,43 @@
       "faultBlocked": "Allow the microphone in your browser. Typing works."
     }
   },
-  "notKnown": "Not known"
+  "notKnown": "Not known",
+  "options": {
+    "industries": {
+      "b2b": "B2B",
+      "b2c": "B2C",
+      "ai": "AI",
+      "saas": "SaaS",
+      "sales": "Sales",
+      "marketing": "Marketing",
+      "seo": "SEO",
+      "outreach": "Outreach",
+      "crm": "CRM",
+      "creative": "Creative",
+      "productivity": "Productivity",
+      "fintech": "Fintech",
+      "healthtech": "HealthTech",
+      "edtech": "EdTech",
+      "cybersecurity": "Cybersecurity",
+      "growth_gtm": "Growth / GTM",
+      "hr": "HR",
+      "e_commerce": "E-commerce",
+      "developer_tools": "Developer Tools",
+      "data_analytics": "Data / Analytics",
+      "customer_support": "Customer Support",
+      "design": "Design",
+      "real_estate_proptech": "Real Estate / PropTech",
+      "legaltech": "LegalTech"
+    },
+    "regions": {
+      "europe": "Europe",
+      "north_america": "North America",
+      "latin_america": "Latin America",
+      "asia": "Asia",
+      "africa": "Africa",
+      "oceania": "Oceania",
+      "middle_east": "Middle East",
+      "worldwide": "Worldwide"
+    }
+  }
 }

@@ -83,5 +83,43 @@
       "faultBlocked": "Autorisez le micro dans votre navigateur. Vous pouvez écrire."
     }
   },
-  "notKnown": "Non connu"
+  "notKnown": "Non connu",
+  "options": {
+    "industries": {
+      "b2b": "B2B",
+      "b2c": "B2C",
+      "ai": "IA",
+      "saas": "SaaS",
+      "sales": "Ventes",
+      "marketing": "Marketing",
+      "seo": "SEO",
+      "outreach": "Prospection",
+      "crm": "CRM",
+      "creative": "Création",
+      "productivity": "Productivité",
+      "fintech": "Fintech",
+      "healthtech": "HealthTech",
+      "edtech": "EdTech",
+      "cybersecurity": "Cybersécurité",
+      "growth_gtm": "Growth / GTM",
+      "hr": "RH",
+      "e_commerce": "E-commerce",
+      "developer_tools": "Outils pour développeurs",
+      "data_analytics": "Données / Analytics",
+      "customer_support": "Support client",
+      "design": "Design",
+      "real_estate_proptech": "Immobilier / PropTech",
+      "legaltech": "LegalTech"
+    },
+    "regions": {
+      "europe": "Europe",
+      "north_america": "Amérique du Nord",
+      "latin_america": "Amérique latine",
+      "asia": "Asie",
+      "africa": "Afrique",
+      "oceania": "Océanie",
+      "middle_east": "Moyen-Orient",
+      "worldwide": "Monde entier"
+    }
+  }
 }
