@@ -5,11 +5,12 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { ControlsGallery } from "./ControlsGallery"
 import { DataGallery } from "./DataGallery"
+import { GraphicsGallery } from "./GraphicsGallery"
 import { OverlaysGallery } from "./OverlaysGallery"
 
 const SECTIONS = [
   ["buttons", "Button"], ["fields", "Fields"], ["choices", "Choices"], ["stats", "StatCard"],
-  ["chips", "Chips"], ["table", "Table"], ["empty", "Empty"], ["overlays", "Overlays"],
+  ["chips", "Chips"], ["table", "Table"], ["empty", "Empty"], ["overlays", "Overlays"], ["motion", "Motion"],
 ] as const
 
 // /dev/ui: the component sheet. The theme switch here only flips the `.dark`
@@ -39,6 +40,7 @@ export function UiGallery() {
         <ControlsGallery />
         <DataGallery />
         <OverlaysGallery />
+        <GraphicsGallery />
       </main>
     </div>
   )
