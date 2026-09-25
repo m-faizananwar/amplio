@@ -50,6 +50,9 @@ Claims the reference made that we couldn't back, so we took them out rather than
 | "A human replies within a business day" | Removed | No one is on the other end |
 | Launch estimate from the reference's published benchmarks | Estimate from our own live posts, with the sample size; "not enough data yet" below 3 posts / 30 clicks | A number from someone else's customers isn't a forecast for yours |
 | Logged-out assistant quoting benchmark figures | Answers from a checked list of product facts | Every figure it says has to exist in our data |
+| A coin that splits into "the creator's share and the fee" | The brand pays the creator's price, the creator is paid in full, the fee reads €0 | That's what the ledger does; there is no cut in this build |
+| The reference's figures, customer logos, testimonials and team on the public pages | Public numbers from the seeded demo workspace, labelled as such; the pages that carried the rest are gone | None of it was ours |
+| A LinkedIn "import" that made up followers, views and engagement from the URL | A real read of the public profile; reach and engagement aren't on it, so they stay blank | A number we didn't read isn't one we show |
 
 ## Merged
 
@@ -74,13 +77,3 @@ wallet/ledger. They are the product; the interface around them is what we rebuil
 Stripe (the ledger stands in). The UI says so where it appears. The LinkedIn profile
 import is real now (Apify, pinned actor); a profile it can't read is entered by hand.
 
-## Stopped pretending
-
-- Pricing shows the creator paid in full and the fee at €0, because that's what the ledger
-  does: the brand pays the creator's price and the creator receives all of it. The coin on
-  the landing and /pricing rolls whole to the creator; it doesn't split into a cut we don't
-  take.
-- Public numbers are the seeded demo workspace's, labelled as such; naano's figures,
-  customer logos, testimonials and team are gone, with the pages that carried them.
-- No invented profile numbers: reach and engagement aren't on a public LinkedIn profile, so
-  the import never fills them in.

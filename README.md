@@ -1,14 +1,45 @@
-# naano-rebuild
+# Amplio
 
-Shipped under the name Amplio; naano.com is the reference product. The mark is the ink footer's oval-and-sprig (`src/components/brand`), the wordmark is Cormorant Garamond 500; `pnpm icons` re-renders the favicon PNGs.
+## For reviewers: what changed for the resubmission
+
+The brief changed from a clone of naano.com to **our own interface on the same idea and the
+same real backend**. The idea — a B2B marketplace where brands pay LinkedIn creators per post
+and every click and sign-up is traced back to the post — and the backend (Postgres, Drizzle,
+server actions, tracked links, the pixel, the wallet and ledger, the assistant) stayed. The
+frontend was rebuilt from scratch in our own design system, every borrowed figure, logo,
+testimonial and page was removed, and the stubs that could be made real were (the LinkedIn
+profile import now reads the public profile through Apify).
+
+- **Live:** https://amplio-mvp.vercel.app — on `/login`, **Open the demo brand** or **Open the
+  demo creator** (one click). Accounts `brand@demo.amplio` / `creator@demo.amplio`, password
+  `demo1234`. Demo accounts can switch Brand ↔ Creator in the top bar. Health: `/api/health`.
+- **The design and why:** [`docs/design/DIRECTION.md`](docs/design/DIRECTION.md) (the system
+  and the one idea), [`DECISIONS.md`](docs/design/DECISIONS.md) (what we changed, cut, merged,
+  and stopped pretending), [`PAGES.md`](docs/design/PAGES.md) (why each page is laid out the
+  way it is, the landing's two recorded passes, the QA runs).
+- **Screens:** [`docs/design/screens/`](docs/design/screens/) at 1440 and 375; the full loop —
+  brand signs up → books a creator → draft, changes, approval → published → a tracked click and a
+  sign-up attributed → paid → withdrawn — as `loop-01…39-*.jpg`; landing recordings in
+  [`docs/design/recordings/`](docs/design/recordings/).
+- **Lighthouse (live):** desktop 99–100 on `/`, `/for-creators`, `/pricing`, `/login`; mobile
+  95–100 on `/` and `/for-creators`, 96 `/pricing`, 94 `/login`; accessibility, best practices
+  and SEO 100 everywhere. The table is in
+  [`PAGES.md`](docs/design/PAGES.md#lighthouse-live-amplio-mvpvercelapp-lighthouse-12-2026-09-26).
+- **How it was built:** one orchestrating Claude Code session and three builder sessions in
+  parallel; every prompt and final reply is in [`.agent-logs/`](.agent-logs/).
+- **Walkthrough script:** [`docs/walkthrough-script.md`](docs/walkthrough-script.md).
+
+---
+
+Shipped under the name Amplio; naano.com was the reference product. The mark is three dots joined by one line (`src/components/brand`), the wordmark is Geist 600; `node scripts/icons.mjs` re-renders the favicon PNGs.
 
 A working rebuild of [naano](https://naano.com), the B2B LinkedIn creator marketplace: brands book vetted creators at a
 fixed price per post, creators write in their own voice, and every post's clicks, sign-ups and purchases are attributed
 back to the creator through a tracked link and a pixel. Next.js 16 (App Router), TypeScript, Tailwind v4, shadcn, Vercel Web Analytics + Speed Insights are mounted in the root layout (no custom events).
 Drizzle + Postgres, deployed on Vercel.
 
-**Live: https://naano-rebuild-opal.vercel.app** (auto-deployed from `main`; Postgres on Neon). Demo logins on `/login`:
-**Explore as demo brand** (Zune) / **Explore as demo creator** — one click, no typing. Accounts `brand@demo.amplio` /
+**Live: https://amplio-mvp.vercel.app** (auto-deployed from `main`; Postgres on Neon). Demo logins on `/login`:
+**Open the demo brand** (Zune) / **Open the demo creator** — one click, no typing. Accounts `brand@demo.amplio` /
 `creator@demo.amplio`, password `demo1234`, if you prefer the form. Smoke test: `/api/health`.
 
 ## How this was built
