@@ -131,25 +131,20 @@
       },
       "referral": {
         "title": "Lien de parrainage",
-        "description": "Envoyez-le à une marque. Si elle s’inscrit et lance des campagnes, vous touchez une part.",
+        "description": "Envoyez-le à une marque. Si elle s’inscrit via votre lien, elle est enregistrée comme votre parrainage.",
         "copy": "Copier le lien",
         "copied": "Lien de parrainage copié"
       },
       "numbers": {
-        "rewardsEarned": "Récompenses gagnées",
         "brandsIntroduced": "Marques parrainées",
-        "brandsRewarding": "Marques qui rapportent",
-        "earningNow": "En cours",
-        "earningNowHint": "Dans la période de {months} mois"
+        "brandsBooked": "Marques qui ont réservé",
+        "paidCollaborations": "Collaborations payées"
       },
-      "terms": "Vous touchez {percent} % de la commission de la plateforme sur chaque marque parrainée, pendant {months} mois à partir de sa première campagne payée. La commission de la plateforme est de {commission} %.",
+      "terms": "Les récompenses de parrainage ne font pas partie de cette version : la plateforme ne prend encore aucune commission, il n’y a donc rien à partager. Chaque marque inscrite via votre lien est enregistrée ici.",
       "introduced": {
         "title": "Marques parrainées",
         "joined": "Inscrite le {date}",
-        "paid": "{count, plural, one {# collaboration payée} other {# collaborations payées}}",
-        "reward": "Gagné : {amount}",
-        "windowEnds": "Fin de la période le {date}",
-        "windowNotStarted": "La période démarre à sa première campagne payée"
+        "paid": "{count, plural, one {# collaboration payée} other {# collaborations payées}}"
       },
       "empty": {
         "title": "Aucun parrainage pour l’instant",

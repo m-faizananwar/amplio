@@ -12,7 +12,7 @@ any total, and each number leads to the rows it is made of.
 
 ### My card — `/creator/card` (+ public `/c/[handle]`)
 Two columns: the card exactly as brands see it on the left, "Your links" on the right
-(deal link, referral link, what referrals earned, the brands introduced). The affiliate
+(deal link, referral link, the brands it brought in and what they have booked). The affiliate
 program was a separate page saying the same thing twice; one place for your links is enough.
 The public page is the same card in one column with the single action a brand came for,
 and seeded creators are labelled as demo data.

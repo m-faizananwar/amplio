@@ -131,25 +131,20 @@
       },
       "referral": {
         "title": "Referral link",
-        "description": "Send it to a brand. If it signs up and runs campaigns, you earn a share.",
+        "description": "Send it to a brand. When it signs up through your link, it's recorded as yours.",
         "copy": "Copy link",
         "copied": "Referral link copied"
       },
       "numbers": {
-        "rewardsEarned": "Rewards earned",
         "brandsIntroduced": "Brands introduced",
-        "brandsRewarding": "Brands paying rewards",
-        "earningNow": "Earning now",
-        "earningNowHint": "Inside the {months}-month window"
+        "brandsBooked": "Brands that have booked",
+        "paidCollaborations": "Paid collaborations"
       },
-      "terms": "You earn {percent}% of the platform commission on each brand you introduce, for {months} months from its first paid campaign. The platform commission is {commission}%.",
+      "terms": "Referral rewards aren't part of this build: the platform takes no fee yet, so there's no commission to share. Every brand that signs up through your link is recorded here.",
       "introduced": {
         "title": "Brands you introduced",
         "joined": "Joined {date}",
-        "paid": "{count, plural, one {# paid collaboration} other {# paid collaborations}}",
-        "reward": "{amount} earned",
-        "windowEnds": "Window ends {date}",
-        "windowNotStarted": "Window starts at its first paid campaign"
+        "paid": "{count, plural, one {# paid collaboration} other {# paid collaborations}}"
       },
       "empty": {
         "title": "No referrals yet",

@@ -3,12 +3,8 @@ export const NEW_CREATORS_LIMIT = 5;
 export const NEW_CREATORS_POOL = 60;
 export const LOW_WALLET_CENTS = 100_000;
 export const NOTIFICATION_LIMIT = 6;
-export const AFFILIATE_SHARE_PERCENT = 25;
-export const AFFILIATE_MONTHS = 3;
-// naano does not publish its take rate; 20% is the assumption the reward maths use.
-export const PLATFORM_COMMISSION_PERCENT = 20;
 
-// naano's 24 industries, verbatim from the creator onboarding (product map).
+// The 24 industries creators pick from in onboarding; settings edit the same list.
 export const INDUSTRIES = [
   "B2B", "B2C", "AI", "SaaS", "Sales", "Marketing", "SEO", "Outreach", "CRM", "Creative", "Productivity",
   "Fintech", "HealthTech", "EdTech", "Cybersecurity", "Growth / GTM", "HR", "E-commerce", "Developer Tools",
