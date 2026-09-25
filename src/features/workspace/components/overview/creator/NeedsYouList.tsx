@@ -2,6 +2,7 @@ import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import type { NeedsYouRow } from "./needs-you-rows";
+import { JoiningDotsScene } from "@/components/graphics/scenes";
 
 type Labels = { title: string; emptyTitle: string; emptyBody: string; emptyAction: string };
 
@@ -11,6 +12,7 @@ export function NeedsYouList({ rows, labels }: { rows: NeedsYouRow[]; labels: La
   if (rows.length === 0) {
     return (
       <EmptyState
+        illustration={<JoiningDotsScene />}
         title={labels.emptyTitle}
         body={labels.emptyBody}
         action={<Link href="/creator/opportunities" className={buttonVariants()}>{labels.emptyAction}</Link>}

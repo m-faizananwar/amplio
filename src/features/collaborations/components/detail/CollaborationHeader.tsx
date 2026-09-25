@@ -12,6 +12,7 @@ import { ownerFor } from "@/lib/next-step";
 import type { BriefDto, CollaborationDto, ViewerRole } from "../../schemas";
 import { ViewBriefButton } from "../brief/ViewBriefButton";
 import { useDetailFormat } from "./useDetailFormat";
+import { StatusGlyph } from "@/components/graphics/StatusGlyph";
 
 type Props = { collaboration: CollaborationDto; status: CollaborationStatus; role: ViewerRole; brief: BriefDto };
 
@@ -34,6 +35,7 @@ export function CollaborationHeader({ collaboration: c, status, role, brief }: P
             <h1 className="text-h3">{other}</h1>
             <p className="text-ink-muted">{c.campaignName}</p>
             <p className="mt-2 flex flex-wrap items-center gap-2 text-small">
+              <StatusGlyph key={status} status={status} className="size-5 text-ink" />
               <StatusChip tone={statusTone(status)}>{t(`status.${status}`)}</StatusChip>
               <span className={yours ? "font-medium text-ink" : "text-ink-muted"}>{t(`nextAction.${role}.${status}.action`, vars)}</span>
             </p>

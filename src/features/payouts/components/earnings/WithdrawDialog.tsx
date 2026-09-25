@@ -14,7 +14,7 @@ import { MIN_WITHDRAWAL_CENTS, type PayoutMethod } from "../../constants";
 import { withdrawEarnings } from "../../server/actions";
 
 export type PayoutOnFile = { method: "stripe" | "bank" | null; accountHolder: string; ibanLast4: string };
-type Props = { open: boolean; onOpenChange: (open: boolean) => void; availableCents: number; awaitingReleaseCents: number; payout: PayoutOnFile };
+type Props = { open: boolean; onOpenChange: (open: boolean) => void; availableCents: number; awaitingReleaseCents: number; payout: PayoutOnFile; onWithdrawn?: () => void };
 
 const CENTS = 100;
 
@@ -73,13 +73,13 @@ function useWithdraw(availableCents: number, onDone: () => void) {
 
 // Amount (or all of it), where it goes, one confirm. The ledger is the rail:
 // Stripe isn't connected, and the dialog says so.
-export function WithdrawDialog({ open, onOpenChange, availableCents, awaitingReleaseCents, payout }: Props) {
+export function WithdrawDialog({ open, onOpenChange, availableCents, awaitingReleaseCents, payout, onWithdrawn }: Props) {
   const t = useTranslations("creator.earnings.withdraw");
   const format = useFormatter();
   const money = (c: number) => format.number(c / CENTS, { style: "currency", currency: "EUR" });
   const [method, setMethod] = useState<PayoutMethod>(payout.method ?? "bank");
   const [cents, setCents] = useState(0);
-  const { withdraw, pending } = useWithdraw(availableCents, () => { setCents(0); onOpenChange(false); });
+  const { withdraw, pending } = useWithdraw(availableCents, () => { setCents(0); onOpenChange(false); onWithdrawn?.(); });
   const error = cents === 0 ? null : cents < MIN_WITHDRAWAL_CENTS ? t("validation.min", { amount: money(MIN_WITHDRAWAL_CENTS) }) : cents > availableCents ? t("validation.overBalance") : null;
 
   return (

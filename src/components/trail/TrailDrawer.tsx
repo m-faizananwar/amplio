@@ -5,6 +5,7 @@ import type { ReactNode } from "react"
 import { buttonVariants } from "@/components/ui/button"
 import { Drawer, DrawerContent } from "@/components/ui/drawer"
 import { Skeleton } from "@/components/ui/skeleton"
+import { TrailLoader } from "@/components/graphics/TrailLoader"
 import type { TrailRow } from "./types"
 
 type Props = {
@@ -74,6 +75,7 @@ export function TrailDrawer({ open, onOpenChange, title, total, rows, loading, e
 function TrailSkeleton() {
   return (
     <div className="divide-y divide-rule" aria-busy="true">
+      <div className="px-5 py-3"><TrailLoader /></div>
       {Array.from({ length: ROWS_SKELETON }, (_, i) => (
         <div key={i} className="grid grid-cols-[8.5rem_1fr_auto] gap-3 px-5 py-3">
           <Skeleton className="h-3.5 w-24" />

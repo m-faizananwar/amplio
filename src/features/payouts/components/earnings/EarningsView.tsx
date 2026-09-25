@@ -4,6 +4,7 @@ import { useFormatter, useTranslations } from "next-intl";
 import { useState } from "react";
 import { TrailDrawer } from "@/components/trail/TrailDrawer";
 import type { TrailRow } from "@/components/trail/types";
+import { Burst } from "@/components/graphics/Burst";
 import { Button } from "@/components/ui/button";
 import { StatCard } from "@/components/ui/stat-card";
 import type { LedgerRowDto } from "../../schemas";
@@ -25,6 +26,8 @@ export function EarningsView({ summary: s, months, ledger, payout, openWithdraw 
   const format = useFormatter();
   const [withdrawing, setWithdrawing] = useState(openWithdraw && s.availableCents > 0);
   const [open, setOpen] = useState<Key | null>(null);
+  // bumps once per successful withdrawal so the burst plays each time
+  const [bursts, setBursts] = useState(0);
   const money = (c: number) => format.number(c / CENTS, { style: "currency", currency: "EUR" });
   const trail = earningsTrail(ledger, (r) => t(`ledger.types.${r.type}`));
   const cards: Array<{ key: Key; label: string; hint: string; value: number; rows: TrailRow[] }> = [
@@ -37,7 +40,10 @@ export function EarningsView({ summary: s, months, ledger, payout, openWithdraw 
   return (
     <div className="grid gap-6">
       <div className="flex flex-wrap items-center gap-3">
-        <Button type="button" onClick={() => setWithdrawing(true)} disabled={s.availableCents <= 0}>{t("withdraw.button")}</Button>
+        <span className="relative inline-flex">
+          <Button type="button" onClick={() => setWithdrawing(true)} disabled={s.availableCents <= 0}>{t("withdraw.button")}</Button>
+          {bursts > 0 ? <Burst key={bursts} /> : null}
+        </span>
         {s.availableCents <= 0 ? <p className="text-small text-ink-muted">{t("withdraw.disabledReason")}</p> : null}
       </div>
       <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4" aria-label={t("title")}>
@@ -47,7 +53,7 @@ export function EarningsView({ summary: s, months, ledger, payout, openWithdraw 
       <CreatorLedger rows={ledger} />
       <TrailDrawer open={active !== undefined} onOpenChange={(v) => !v && setOpen(null)} title={active ? tt("title", { metric: active.label, count: active.rows.length }) : ""} total={active ? money(active.value) : ""} rows={active?.rows ?? []} emptyText={tt("empty.body")} formatAmount={money}
         formatTime={(iso) => format.dateTime(new Date(iso), { dateStyle: "medium" })} />
-      <WithdrawDialog open={withdrawing} onOpenChange={setWithdrawing} availableCents={s.availableCents} awaitingReleaseCents={s.awaitingReleaseCents} payout={payout} />
+      <WithdrawDialog open={withdrawing} onOpenChange={setWithdrawing} availableCents={s.availableCents} awaitingReleaseCents={s.awaitingReleaseCents} payout={payout} onWithdrawn={() => setBursts((n) => n + 1)} />
     </div>
   );
 }

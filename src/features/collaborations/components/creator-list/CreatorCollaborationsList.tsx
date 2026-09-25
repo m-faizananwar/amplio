@@ -10,6 +10,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { countByFilter, filterFor, type NextStepFilter } from "@/lib/next-step";
 import type { CollaborationDto } from "../../schemas";
 import { CreatorCollaborationRow } from "./CreatorCollaborationRow";
+import { JoiningDotsScene } from "@/components/graphics/scenes";
 
 export type ListFilter = NextStepFilter | "all";
 const FILTERS: ListFilter[] = ["needs_you", "waiting", "live", "done", "all"];
@@ -30,7 +31,7 @@ export function CreatorCollaborationsList({ rows, initialFilter }: { rows: Colla
   };
 
   if (rows.length === 0) {
-    return <EmptyState title={t("empty.none.title")} body={t("empty.none.body")} action={<Link href="/creator/opportunities" className={buttonVariants()}>{t("empty.none.action")}</Link>} />;
+    return <EmptyState illustration={<JoiningDotsScene />} title={t("empty.none.title")} body={t("empty.none.body")} action={<Link href="/creator/opportunities" className={buttonVariants()}>{t("empty.none.action")}</Link>} />;
   }
   const emptyKey = LABEL_KEY[filter];
   return (

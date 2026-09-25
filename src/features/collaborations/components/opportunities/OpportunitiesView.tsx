@@ -13,6 +13,7 @@ import { ApplyDialog } from "./ApplyDialog";
 import { distinctValues, filterOpportunities } from "./filterOpportunities";
 import { INITIAL_FILTERS, OpportunityFilters } from "./OpportunityFilters";
 import { OpportunityRow } from "./OpportunityRow";
+import { BlankBriefScene } from "@/components/graphics/scenes";
 
 type Props = { opportunities: OpportunityDto[]; csrfToken: string };
 
@@ -40,7 +41,7 @@ export function OpportunitiesView({ opportunities, csrfToken }: Props) {
   }
 
   if (opportunities.length === 0) {
-    return <EmptyState title={t("empty.none.title")} body={t("empty.none.body")} action={<Link href="/creator/card" className={buttonVariants()}>{t("empty.none.action")}</Link>} />;
+    return <EmptyState illustration={<BlankBriefScene />} title={t("empty.none.title")} body={t("empty.none.body")} action={<Link href="/creator/card" className={buttonVariants()}>{t("empty.none.action")}</Link>} />;
   }
   return (
     <div className="grid gap-4">

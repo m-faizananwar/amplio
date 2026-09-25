@@ -9,6 +9,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { Input } from "@/components/ui/input";
 import type { CampaignOption, ThreadDto, ViewerRole } from "../../schemas";
 import { ThreadListItem } from "./ThreadListItem";
+import { TypingScene } from "@/components/graphics/scenes";
 
 type Props = { threads: ThreadDto[]; role: ViewerRole; activeId: string | null; campaigns: CampaignOption[] };
 
@@ -23,7 +24,7 @@ export function ThreadList({ threads, role, activeId }: Props) {
   if (threads.length === 0) {
     const empty = role === "brand" ? "brandNoThreads" : "noThreads";
     const href = role === "brand" ? "/brand/creators" : "/creator/opportunities";
-    return <EmptyState size="compact" className="m-4 border-0" title={t(`empty.${empty}.title`)} body={t(`empty.${empty}.body`)} action={<Link href={href} className={buttonVariants({ variant: "secondary" })}>{t(`empty.${empty}.action`)}</Link>} />;
+    return <EmptyState size="compact" className="m-4 border-0" illustration={<TypingScene />} title={t(`empty.${empty}.title`)} body={t(`empty.${empty}.body`)} action={<Link href={href} className={buttonVariants({ variant: "secondary" })}>{t(`empty.${empty}.action`)}</Link>} />;
   }
   return (
     <div className="flex h-full flex-col">

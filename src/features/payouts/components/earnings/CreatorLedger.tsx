@@ -8,6 +8,7 @@ import { TableEmpty } from "@/components/ui/table-parts";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { LedgerRowDto } from "../../schemas";
 import { ledgerDetail, ledgerFilter, type LedgerView } from "./ledger-rows";
+import { Stamp } from "@/components/graphics/Stamp";
 
 const CENTS = 100;
 const VIEWS: LedgerView[] = ["all", "awaiting", "payments"];
@@ -15,6 +16,7 @@ const VIEWS: LedgerView[] = ["all", "awaiting", "payments"];
 // Every movement, one row each: payments in, withdrawals out.
 export function CreatorLedger({ rows }: { rows: LedgerRowDto[] }) {
   const t = useTranslations("creator.earnings.ledger");
+  const ts = useTranslations("collaboration.status");
   const format = useFormatter();
   const [view, setView] = useState<LedgerView>("all");
   const visible = ledgerFilter(rows, view);
@@ -41,7 +43,7 @@ export function CreatorLedger({ rows }: { rows: LedgerRowDto[] }) {
             <TableRow key={r.id}>
               <TableCell className="num text-small text-ink-muted">{format.dateTime(new Date(r.date), { dateStyle: "medium" })}</TableCell>
               <TableCell><span className="block text-ink">{ledgerDetail(r)}</span><span className="num block text-caption text-ink-muted">{t(`types.${r.type}`)} · {r.reference}</span></TableCell>
-              <TableCell className="hidden sm:table-cell"><StatusChip tone={r.status === "completed" ? "money" : "attention"}>{status(r)}</StatusChip></TableCell>
+              <TableCell className="hidden sm:table-cell">{r.type === "payout" && r.status === "completed" ? <Stamp>{ts("paid")}</Stamp> : <StatusChip tone={r.status === "completed" ? "money" : "attention"}>{status(r)}</StatusChip>}</TableCell>
               <TableCell className={`num text-right ${r.amountCents >= 0 ? "text-money" : "text-ink"}`}>{format.number(r.amountCents / CENTS, { style: "currency", currency: "EUR", signDisplay: "exceptZero" })}</TableCell>
             </TableRow>
           ))}

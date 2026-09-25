@@ -6,6 +6,7 @@ import { PersonAvatar } from "@/components/ui/avatar";
 import { StatusChip, statusTone } from "@/components/ui/status-chip";
 import { ownerFor } from "@/lib/next-step";
 import type { CollaborationDto } from "../../schemas";
+import { StatusGlyph } from "@/components/graphics/StatusGlyph";
 
 const CENTS = 100;
 
@@ -29,7 +30,7 @@ export function CreatorCollaborationRow({ c }: { c: CollaborationDto }) {
           </span>
         </span>
         <span className="flex min-w-0 items-center gap-2">
-          {owner === "you" ? <span aria-hidden="true" className="size-2 shrink-0 rounded-chip bg-attention" /> : null}
+          <StatusGlyph key={c.status} status={c.status} className={`size-4 ${owner === "you" ? "text-attention" : c.status === "live" || c.status === "paid" ? "text-money" : c.status === "declined" ? "text-failure" : "text-ink-muted"}`} />
           <span className="min-w-0">
             <span className={`block truncate text-body ${owner === "you" ? "font-medium text-ink" : "text-ink-muted"}`}>{t(`nextAction.creator.${c.status}.action`, vars)}</span>
             <span className="flex items-center gap-2 text-caption text-ink-muted">

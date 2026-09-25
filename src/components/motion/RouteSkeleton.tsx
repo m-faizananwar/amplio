@@ -1,3 +1,4 @@
+import { TrailLoader } from "@/components/graphics/TrailLoader";
 import { PageHeaderSkeleton } from "@/components/skeleton/PageHeaderSkeleton";
 import { StatTilesSkeleton, TableSkeleton } from "@/components/skeleton/Skeletons";
 
@@ -9,6 +10,8 @@ import { StatTilesSkeleton, TableSkeleton } from "@/components/skeleton/Skeleton
 export function RouteSkeleton() {
   return (
     <div aria-busy="true" aria-label="Loading">
+      {/* the app's one loader, above the boxes the page will land on */}
+      <TrailLoader className="mb-4" />
       <PageHeaderSkeleton withActions />
       <div className="mt-8"><StatTilesSkeleton /></div>
       <div className="mt-6"><TableSkeleton columns={4} rows={5} /></div>

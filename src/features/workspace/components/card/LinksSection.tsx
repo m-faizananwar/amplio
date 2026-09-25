@@ -6,6 +6,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { AFFILIATE_MONTHS, AFFILIATE_SHARE_PERCENT, PLATFORM_COMMISSION_PERCENT } from "../../constants";
 import type { AffiliateSummary } from "../../server/affiliate-queries";
 import { CopyLinkButton } from "../CopyLinkButton";
+import { LinkRipplesScene } from "@/components/graphics/scenes";
 
 type Props = { dealUrl: string; referralUrl: string; affiliate: AffiliateSummary };
 
@@ -44,7 +45,7 @@ type T = Awaited<ReturnType<typeof getTranslations<"creator.card.links">>>;
 
 // The brands the creator brought in, with what each has paid them so far.
 function Introduced({ brands, t, money, date }: { brands: AffiliateSummary["brands"]; t: T; money: (c: number) => string; date: (iso: string) => string }) {
-  if (brands.length === 0) return <EmptyState size="compact" title={t("empty.title")} body={t("empty.body")} />;
+  if (brands.length === 0) return <EmptyState size="compact" illustration={<LinkRipplesScene />} title={t("empty.title")} body={t("empty.body")} />;
   return (
     <>
       <h3 className="text-small font-medium text-ink">{t("introduced.title")}</h3>

@@ -9,6 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { SectionHead } from "./SectionHead";
 import type { CollaborationStatus } from "@/lib/collaboration-status";
 import type { TrackedLinkPerformance } from "@/features/tracking/server/creator-queries";
+import { LinkRipplesScene } from "@/components/graphics/scenes";
 
 // One tracked link per collaboration; its click count opens its own clicks.
 export function TrackedLinks({ links, onOpen }: { links: TrackedLinkPerformance[]; onOpen: (l: TrackedLinkPerformance) => void }) {
@@ -19,7 +20,7 @@ export function TrackedLinks({ links, onOpen }: { links: TrackedLinkPerformance[
     <section className="grid gap-3">
       <SectionHead title={t("trackedLinks.title")} description={t("trackedLinks.description")} />
       {links.length === 0 ? (
-        <EmptyState size="compact" title={t("empty.noLinks.title")} body={t("empty.noLinks.body")} action={<Link href="/creator/opportunities" className={buttonVariants({ variant: "secondary" })}>{t("empty.noLinks.action")}</Link>} />
+        <EmptyState size="compact" illustration={<LinkRipplesScene />} title={t("empty.noLinks.title")} body={t("empty.noLinks.body")} action={<Link href="/creator/opportunities" className={buttonVariants({ variant: "secondary" })}>{t("empty.noLinks.action")}</Link>} />
       ) : (
         <Table framed>
           <TableHeader>

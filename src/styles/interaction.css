@@ -88,3 +88,32 @@ html { scroll-behavior: smooth; }
 @keyframes wordIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 .word-in { display: inline-block; animation: wordIn var(--duration-slow) var(--ease-ledger) both; animation-delay: calc(var(--w, 0) * 30ms); }
 @media (prefers-reduced-motion: reduce) { .word-in { animation: none; } }
+
+/* ---- graphics: the motion kit (src/components/graphics) ----
+   Hand-drawn SVG on currentColor. Strokes draw in with dashoffset; dots move
+   with transform; loops (ripples, typing, the loader) are ambient and stop
+   under reduced motion, where every graphic shows its final frame. */
+@keyframes gDraw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.g-draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: gDraw var(--g-dur, 420ms) var(--ease-ledger) var(--g-delay, 0ms) forwards; }
+@keyframes gPulse { 0%, 100% { opacity: 0.25; } 40% { opacity: 1; } }
+.g-trail circle { animation: gPulse 900ms var(--ease-ledger) infinite; }
+.g-trail circle:nth-of-type(2) { animation-delay: 150ms; }
+.g-trail circle:nth-of-type(3) { animation-delay: 300ms; }
+@keyframes gBurst { from { opacity: 1; transform: rotate(var(--g-angle)) translateX(0) scale(1); } to { opacity: 0; transform: rotate(var(--g-angle)) translateX(22px) scale(0.4); } }
+.g-burst { animation: gBurst 520ms var(--ease-ledger) forwards; }
+@keyframes gStamp { from { opacity: 0; transform: rotate(-6deg) scale(1.6); } to { opacity: 1; transform: rotate(-6deg) scale(1); } }
+.g-stamp { animation: gStamp var(--duration-slow) var(--ease-ledger) both; }
+@keyframes gReachL { from { transform: translateX(-10px); } to { transform: none; } }
+@keyframes gReachR { from { transform: translateX(10px); } to { transform: none; } }
+.g-reach-left { animation: gReachL 520ms var(--ease-ledger) both; }
+.g-reach-right { animation: gReachR 520ms var(--ease-ledger) both; }
+@keyframes gRipple { from { opacity: 0.6; transform: scale(0.25); } to { opacity: 0; transform: scale(1.4); } }
+.g-ripple { transform-box: fill-box; transform-origin: center; animation: gRipple 1800ms var(--ease-ledger) infinite; }
+@keyframes gType { 0%, 100% { transform: translateY(0); opacity: 0.4; } 40% { transform: translateY(-3px); opacity: 1; } }
+.g-type { transform-box: fill-box; transform-origin: center; animation: gType 900ms var(--ease-ledger) infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .g-draw { animation: none; stroke-dashoffset: 0; }
+  .g-trail circle, .g-burst, .g-stamp, .g-reach-left, .g-reach-right, .g-ripple, .g-type { animation: none; }
+  .g-burst { opacity: 0; }
+  .g-ripple { opacity: 0.3; }
+}

@@ -4,6 +4,8 @@ import { cn } from "@/lib/cn"
 
 type Props = {
   icon?: LucideIcon
+  /** A small drawn scene (src/components/graphics/scenes); takes the icon's place. */
+  illustration?: ReactNode
   title: ReactNode
   /** Say what to do next, not that there is nothing here. */
   body?: ReactNode
@@ -15,7 +17,7 @@ type Props = {
 
 // Every empty list says the next step and carries the button for it
 // (DECISIONS.md: "Empty states always say the next step").
-export function EmptyState({ icon: Icon, title, body, action, className, size = "default" }: Props) {
+export function EmptyState({ icon: Icon, illustration, title, body, action, className, size = "default" }: Props) {
   return (
     <div
       data-slot="empty-state"
@@ -25,7 +27,7 @@ export function EmptyState({ icon: Icon, title, body, action, className, size = 
         className
       )}
     >
-      {Icon ? (
+      {illustration ? <span aria-hidden="true">{illustration}</span> : Icon ? (
         <span className="grid size-10 place-items-center rounded-full border border-rule bg-paper text-ink-muted" aria-hidden="true">
           <Icon className="size-4.5" />
         </span>

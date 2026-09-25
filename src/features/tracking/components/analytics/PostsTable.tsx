@@ -7,6 +7,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SectionHead } from "./SectionHead";
 import type { PublicPostDto } from "@/features/tracking/server/creator-queries";
+import { BlankBriefScene } from "@/components/graphics/scenes";
 
 const SNIPPET = 80;
 
@@ -19,7 +20,7 @@ export function PostsTable({ posts }: { posts: PublicPostDto[] }) {
     <section className="grid gap-3">
       <SectionHead title={t("posts.title")} description={t("posts.description")} />
       {posts.length === 0 ? (
-        <EmptyState size="compact" title={t("empty.noPosts.title")} body={t("empty.noPosts.body")} action={<Link href="/creator/settings#linkedin" className={buttonVariants({ variant: "secondary" })}>{t("empty.noPosts.action")}</Link>} />
+        <EmptyState size="compact" illustration={<BlankBriefScene />} title={t("empty.noPosts.title")} body={t("empty.noPosts.body")} action={<Link href="/creator/settings#linkedin" className={buttonVariants({ variant: "secondary" })}>{t("empty.noPosts.action")}</Link>} />
       ) : (
         <Table framed>
           <TableHeader>
