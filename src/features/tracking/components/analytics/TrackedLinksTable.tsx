@@ -2,8 +2,7 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { STATUS_LABELS } from "@/lib/collaboration-labels";
 import type { CollaborationStatus } from "@/lib/collaboration-status";
-import { StaggerIn } from "@/components/motion/StaggerIn";
-import { Table, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import type { TrackedLinkPerformance } from "../../server/creator-queries";
 
 import { BRAND } from "@/config/brand";
@@ -26,7 +25,7 @@ export function TrackedLinksTable({ rows }: { rows: TrackedLinkPerformance[] }) 
                 <TableHead className="text-right">Clicks</TableHead>
               </TableRow>
             </TableHeader>
-            <StaggerIn as="tbody" replayKey={rows.length} className="[&_tr:last-child]:border-0">
+            <TableBody key={rows.length}>
               {rows.map((r) => (
                 <TableRow key={r.collaborationId}>
                   <TableCell className="font-medium">{r.brand}</TableCell>
@@ -42,7 +41,7 @@ export function TrackedLinksTable({ rows }: { rows: TrackedLinkPerformance[] }) 
                   <TableCell className="text-right font-medium">{r.clicks.toLocaleString("en-US")}</TableCell>
                 </TableRow>
               ))}
-            </StaggerIn>
+            </TableBody>
           </Table>
         </div>
       )}

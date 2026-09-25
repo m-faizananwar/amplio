@@ -414,3 +414,60 @@ main [aria-busy="true"][aria-label^="Loading"] { animation: skeletonAppear 0s 0.
     animation: none !important; transition-duration: 0.01ms !important; transform: none !important; opacity: 1;
   }
 }
+
+
+/* ---- tables and lists ----
+   Rows arrive one after another (20ms apart, the first twelve only — past
+   that the stagger reads as lag, not rhythm) and lift a hair under the
+   pointer with a brand hairline down the leading edge, which also tells you
+   which row a stretched link belongs to. */
+@keyframes rowIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+[data-slot="table-body"] > tr { animation: rowIn .34s var(--ix-ease) both; }
+[data-slot="table-body"] > tr:nth-child(n+13) { animation: none; }
+[data-slot="table-body"] > tr:nth-child(1) { animation-delay: 0ms; }
+[data-slot="table-body"] > tr:nth-child(2) { animation-delay: 20ms; }
+[data-slot="table-body"] > tr:nth-child(3) { animation-delay: 40ms; }
+[data-slot="table-body"] > tr:nth-child(4) { animation-delay: 60ms; }
+[data-slot="table-body"] > tr:nth-child(5) { animation-delay: 80ms; }
+[data-slot="table-body"] > tr:nth-child(6) { animation-delay: 100ms; }
+[data-slot="table-body"] > tr:nth-child(7) { animation-delay: 120ms; }
+[data-slot="table-body"] > tr:nth-child(8) { animation-delay: 140ms; }
+[data-slot="table-body"] > tr:nth-child(9) { animation-delay: 160ms; }
+[data-slot="table-body"] > tr:nth-child(10) { animation-delay: 180ms; }
+[data-slot="table-body"] > tr:nth-child(11) { animation-delay: 200ms; }
+[data-slot="table-body"] > tr:nth-child(12) { animation-delay: 220ms; }
+/* A table row ignores `transform` in Chrome, so the lift rides the
+   independent `translate` property (the same trick the card inversion uses). */
+[data-slot="table-body"] > tr { transition: background-color .2s var(--ix-ease), box-shadow .2s var(--ix-ease), translate .2s var(--ix-ease); }
+[data-slot="table-body"] > tr:hover { box-shadow: inset 2px 0 0 var(--brand); translate: 0 -1px; }
+
+/* A status chip that changes state pops once — the same beat the creator and
+   the brand see right after an accept or an approve — and crossfades its tone
+   rather than cutting to it. */
+.status-chip { transition: background-color .3s var(--ix-ease), color .3s var(--ix-ease); }
+@keyframes statusPop { 0% { transform: scale(0.82); } 55% { transform: scale(1.08); } 100% { transform: none; } }
+.status-pop { animation: statusPop .42s var(--ix-pop) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-slot="table-body"] > tr { animation: none; transition: background-color .2s linear; }
+  [data-slot="table-body"] > tr:hover { translate: none; }
+  .status-pop { animation: none; }
+  .status-chip { transition: none; }
+}
+
+/* The same rhythm for lists that aren't tables (the notifications popover). */
+.list-stagger > * { animation: rowIn .34s var(--ix-ease) both; }
+.list-stagger > :nth-child(n+13) { animation: none; }
+.list-stagger > :nth-child(1) { animation-delay: 0ms; }
+.list-stagger > :nth-child(2) { animation-delay: 20ms; }
+.list-stagger > :nth-child(3) { animation-delay: 40ms; }
+.list-stagger > :nth-child(4) { animation-delay: 60ms; }
+.list-stagger > :nth-child(5) { animation-delay: 80ms; }
+.list-stagger > :nth-child(6) { animation-delay: 100ms; }
+.list-stagger > :nth-child(7) { animation-delay: 120ms; }
+.list-stagger > :nth-child(8) { animation-delay: 140ms; }
+.list-stagger > :nth-child(9) { animation-delay: 160ms; }
+.list-stagger > :nth-child(10) { animation-delay: 180ms; }
+.list-stagger > :nth-child(11) { animation-delay: 200ms; }
+.list-stagger > :nth-child(12) { animation-delay: 220ms; }
+@media (prefers-reduced-motion: reduce) { .list-stagger > * { animation: none; } }

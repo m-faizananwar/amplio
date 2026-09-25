@@ -54,7 +54,7 @@ export function NotificationsButton({ role, notifications }: Props) {
             <p className="text-xs text-muted-foreground">New activity on your {role === "brand" ? "campaigns" : "collaborations"} will show up here.</p>
           </div>
         ) : (
-          <ul className="max-h-96 overflow-y-auto py-1">
+          <ul className="list-stagger max-h-96 overflow-y-auto py-1">
             {notifications.map((n) => (
               <li key={n.id}>
                 <Link href={n.href} onClick={() => setOpen(false)} className="grid gap-0.5 px-4 py-2.5 hover:bg-muted focus-visible:bg-muted focus-visible:outline-none">

@@ -1,5 +1,4 @@
-import { StaggerIn } from "@/components/motion/StaggerIn";
-import { Table, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import type { CollaborationDto, ViewerRole } from "../../schemas";
 import { CollaborationRow } from "./CollaborationRow";
 
@@ -22,7 +21,7 @@ export function CollaborationsTable({ rows, role, emptyMessage }: Props) {
           ))}
         </TableRow>
       </TableHeader>
-      <StaggerIn as="tbody" replayKey={rows.map((r) => r.id).join(",")} className="[&_tr:last-child]:border-0">
+      <TableBody key={rows.map((r) => r.id).join(",")}>
         {rows.length === 0 ? (
           <TableRow className="hover:bg-transparent">
             <TableCell colSpan={columns.length} className="py-10 text-center text-muted-foreground">
@@ -32,7 +31,7 @@ export function CollaborationsTable({ rows, role, emptyMessage }: Props) {
         ) : (
           rows.map((row) => <CollaborationRow key={row.id} row={row} role={role} />)
         )}
-      </StaggerIn>
+      </TableBody>
     </Table>
   );
 }

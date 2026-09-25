@@ -1,6 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import { StaggerIn } from "@/components/motion/StaggerIn";
-import { Table, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { formatCents } from "@/lib/money";
 import type { LedgerRowDto } from "../schemas";
 
@@ -26,7 +25,7 @@ export function LedgerTable({ rows, emptyText }: { rows: LedgerRowDto[]; emptyTe
             <TableHead>Status</TableHead>
           </TableRow>
         </TableHeader>
-        <StaggerIn as="tbody" replayKey={rows.map((r) => r.id).join(",")} className="[&_tr:last-child]:border-0">
+        <TableBody key={rows.map((r) => r.id).join(",")}>
           {rows.map((r) => (
             <TableRow key={r.id}>
               <TableCell className="text-muted-foreground">{r.date.slice(0, "YYYY-MM-DD".length)}</TableCell>
@@ -42,7 +41,7 @@ export function LedgerTable({ rows, emptyText }: { rows: LedgerRowDto[]; emptyTe
               </TableCell>
             </TableRow>
           ))}
-        </StaggerIn>
+        </TableBody>
       </Table>
     </div>
   );
