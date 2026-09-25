@@ -12,6 +12,10 @@ export type PublicSnapshot = {
   reach: number;
   engagements: number;
   postsWithReach: number;
+  // Where the followers figure came from and when it was last read — the
+  // one row behind that number.
+  linkedinUrl: string;
+  profileReadAt: string | null;
 };
 export type PublicPostDto = {
   id: string;
@@ -60,7 +64,7 @@ function sinceFor(range: AnalyticsRange) {
 async function loadPublicSnapshot(creatorId: string, range: AnalyticsRange = "all"): Promise<PublicSnapshot> {
   const db = getDb();
   const since = sinceFor(range);
-  const [creator] = await db.select({ followers: creators.followers }).from(creators).where(eq(creators.id, creatorId));
+  const [creator] = await db.select({ followers: creators.followers, linkedinUrl: creators.linkedinUrl, updatedAt: creators.updatedAt }).from(creators).where(eq(creators.id, creatorId));
   const [agg] = await db
     .select({
       posts: count(),
@@ -76,6 +80,8 @@ async function loadPublicSnapshot(creatorId: string, range: AnalyticsRange = "al
     reach: agg?.reach ?? 0,
     engagements: agg?.engagements ?? 0,
     postsWithReach: agg?.withReach ?? 0,
+    linkedinUrl: creator?.linkedinUrl ?? "",
+    profileReadAt: creator?.updatedAt?.toISOString() ?? null,
   };
 }
 

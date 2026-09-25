@@ -29,6 +29,16 @@ of a status name; the default view is Needs you, then Waiting on brand, Live, Do
 (the filter lives in the URL so the Overview can link to Live). The whole row opens the
 collaboration, where the action is.
 
+### Collaboration — `/creator/collaborations/[id]` (shared with the brand side)
+Two columns: what to do now (or one line saying what the other side does next), the draft,
+the tracked link and the history on the left; where the money is and the offer terms on
+the right. The page is the one place a status changes, so the action sits first.
+
+### Analytics — `/creator/analytics`
+Five numbers in a row, each opening the rows it is made of (followers → the profile read;
+posts, reach, engagements → the posts; clicks → every click), then the tracked links (each
+link's count opens its own clicks) and the posts. A range switch re-queries the server.
+
 ### Settings — `/creator/settings`
 Stacked sections with a sticky index on wide screens, one form per schema. Each section
 saves on its own, so a validation error in pricing never blocks the card, and the fields
