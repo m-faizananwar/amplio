@@ -1,0 +1,158 @@
+{
+  "meta": {
+    "title": "Amplio · Des posts LinkedIn qui laissent une trace",
+    "description": "Réservez des créateurs LinkedIn pour vos posts sponsorisés. Chaque clic et chaque inscription vous revient, rattaché au post et au créateur qui l’ont provoqué."
+  },
+  "hero": {
+    "eyebrow": "Créateurs LinkedIn, réservés et suivis",
+    "title": "Chaque clic vous revient.",
+    "sub": "Avec Amplio, l’argent mis dans un post LinkedIn laisse une trace : chaque clic et chaque inscription reviennent en ligne, avec le post et le créateur à l’origine.",
+    "primary": "Inscrire ma marque",
+    "secondary": "Devenir créateur",
+    "liveLabel": "données de l’espace démo",
+    "counts": {
+      "posts": "{count, plural, one {# post} other {# posts}}",
+      "links": "{count, plural, one {# lien suivi} other {# liens suivis}}",
+      "clicks": "{count, plural, one {# clic} other {# clics}}",
+      "signups": "{count, plural, one {# inscription} other {# inscriptions}}"
+    },
+    "lastClick": "dernier clic {time}",
+    "offline": "Les chiffres en direct sont indisponibles pour le moment."
+  },
+  "scenes": {
+    "post": {
+      "kicker": "01",
+      "title": "Le post est en ligne.",
+      "body": "Le créateur que vous avez choisi publie votre post sponsorisé sur LinkedIn, avec un lien suivi rien que pour cette collaboration."
+    },
+    "audience": {
+      "kicker": "02",
+      "title": "Il touche les bonnes personnes.",
+      "body": "Le post circule dans l’audience du créateur, choisi pour son score d’affinité avec les clients que vous visez vraiment."
+    },
+    "clicks": {
+      "kicker": "03",
+      "title": "Les clics s’allument.",
+      "body": "Quelqu’un clique sur le lien. Ce clic devient une ligne, avec l’heure et sa provenance."
+    },
+    "signups": {
+      "kicker": "04",
+      "title": "Les inscriptions arrivent.",
+      "body": "Un petit pixel sur votre site relie chaque inscription à son clic, à son post et à son créateur."
+    },
+    "ledger": {
+      "kicker": "05",
+      "title": "Chaque ligne porte un nom.",
+      "body": "Chaque clic, chaque inscription se range dans une ligne au nom d’un créateur. Payer un post publié en ajoute une aussi.",
+      "rowLabel": "Inscription · via le post de {creator}",
+      "stampPaid": "PAYÉ"
+    },
+    "proof": {
+      "kicker": "06",
+      "title": "Facture et preuve, côte à côte.",
+      "body": "D’un côté, ce que vous avez payé. De l’autre, les clics et les inscriptions obtenus. Même écran, même post.",
+      "billTitle": "La facture",
+      "proofTitle": "La preuve",
+      "billLine": "{amount} pour un post publié",
+      "proofClicks": "{count, plural, one {# clic} other {# clics}}",
+      "proofSignups": "{count, plural, one {# inscription} other {# inscriptions}}"
+    }
+  },
+  "start": {
+    "title": "Choisissez votre camp.",
+    "brands": {
+      "title": "Côté marques",
+      "steps": [
+        "Parcourez des créateurs classés selon leur affinité avec vos clients.",
+        "Envoyez une offre, rédigez le brief, validez le brouillon.",
+        "Le post est publié. Regardez les clics et les inscriptions remonter."
+      ],
+      "cta": "Inscrire ma marque"
+    },
+    "creators": {
+      "title": "Côté créateurs",
+      "steps": [
+        "Inscription gratuite, sans exclusivité.",
+        "Fixez votre propre prix par post.",
+        "Acceptez les offres qui vous plaisent, publiez, retrouvez-les dans vos gains."
+      ],
+      "cta": "Devenir créateur"
+    }
+  },
+  "pricing": {
+    "title": "Un prix par post. Point.",
+    "sub": "Pas d’abonnement, pas de forfait récurrent, pas de paiement au clic ni à la vue. Un prix fixe pour chaque post publié.",
+    "brands": {
+      "title": "Marques",
+      "price": "0 €",
+      "unit": "par mois",
+      "points": [
+        "Pas d’abonnement, rien à résilier.",
+        "Vous payez le prix de chaque créateur, par post publié.",
+        "Chaque clic et chaque inscription rattachés au post."
+      ]
+    },
+    "creators": {
+      "title": "Créateurs",
+      "price": "Gratuit",
+      "unit": "pour s’inscrire",
+      "points": [
+        "Votre prix fixe par post, à partir de 20 €.",
+        "Aucune exclusivité. Travaillez avec toutes les marques.",
+        "Ni paiement au clic, ni à la vue. Votre prix reste votre prix."
+      ]
+    },
+    "stubNote": "Dans cette version, les recharges par carte et les virements bancaires sont simulés avec Stripe : vous voyez tout le parcours, mais aucun argent réel ne circule."
+  },
+  "faq": {
+    "title": "Vos questions, nos réponses.",
+    "items": [
+      {
+        "q": "Comment savez-vous qu’une inscription vient d’un post ?",
+        "a": "Chaque collaboration a son propre lien suivi. Chaque clic dessus est enregistré avec l’heure et la provenance. Un petit pixel sur votre site relie ensuite chaque inscription à ce clic : vous voyez le post et le créateur à l’origine."
+      },
+      {
+        "q": "Combien ça coûte ?",
+        "a": "Pour les marques, 0 € par mois. Vous payez le prix fixe de chaque créateur, pour chaque post publié. Les créateurs s’inscrivent gratuitement et fixent leur prix, à partir de 20 € par post."
+      },
+      {
+        "q": "Comment les créateurs sont-ils payés ?",
+        "a": "Chaque marque dispose d’un portefeuille. Quand un post est en ligne et que la marque le paie, une ligne est inscrite au registre et le créateur la retrouve dans ses gains. Dans cette version, les recharges par carte et les virements bancaires sont simulés avec Stripe : le parcours est complet, mais aucun argent réel ne circule."
+      },
+      {
+        "q": "Faut-il signer un contrat longue durée ?",
+        "a": "Pas d’abonnement, pas de forfait récurrent. Chaque collaboration se suffit à elle-même : une offre, un brief, un brouillon validé, un post. Et les créateurs ne sont exclusifs à personne."
+      },
+      {
+        "q": "D’où viennent les données de démo ?",
+        "a": "Les chiffres en direct de cette page viennent d’un espace de démo rempli de données d’exemple. Ils montrent à quoi ressemble le suivi, pas les résultats de vrais clients."
+      },
+      {
+        "q": "Puis-je arrêter ? Y a-t-il un engagement ?",
+        "a": "Il n’y a rien à résilier. Les marques n’ont pas d’abonnement et paient par post publié. Les créateurs n’acceptent que les offres qui leur conviennent."
+      }
+    ]
+  },
+  "signup": {
+    "title": "Mettez un nom sur chaque clic.",
+    "sub": "Côté marque, 0 € par mois. Côté créateur, inscription gratuite et prix libre.",
+    "primary": "Inscrire ma marque",
+    "secondary": "Devenir créateur"
+  },
+  "footer": {
+    "tagline": "Des posts LinkedIn qui laissent une trace.",
+    "product": "Produit",
+    "company": "Entreprise",
+    "legal": "Juridique",
+    "links": {
+      "forCreators": "Pour les créateurs",
+      "pricing": "Tarifs",
+      "faq": "FAQ",
+      "signIn": "Se connecter",
+      "signUp": "S’inscrire",
+      "privacy": "Confidentialité",
+      "terms": "Conditions d’utilisation"
+    },
+    "demoNote": "Les chiffres publics de cette page proviennent d’un espace de démo alimenté par des données d’exemple, pas de vrais clients."
+  }
+}

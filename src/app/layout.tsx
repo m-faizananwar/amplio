@@ -10,6 +10,7 @@ import { Cormorant_Garamond, Geist, Geist_Mono } from "next/font/google";
 import { PointerTilt } from "@/components/motion/PointerTilt";
 import { RouteProgress } from "@/components/motion/RouteProgress";
 import { PublicChrome } from "@/components/shell/PublicChrome";
+import { PublicNav } from "@/features/public/components/nav/PublicNav";
 import { ScrollMorph } from "@/components/motion/ScrollMorph";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
@@ -48,7 +49,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
       <body className="flex min-h-full flex-col">
         <ClientMessages namespaces={[]}>
         <RouteProgress />
-        <PublicChrome />
+        <PublicChrome nav={<PublicNav />} />
         <ScrollMorph />
         <PointerTilt />
         {children}

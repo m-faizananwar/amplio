@@ -241,4 +241,4 @@ export const CTA = {
 // The landing hero's live trail (/api/public/trail): the demo workspace's
 // counts, re-read at most once a minute.
 export const TRAIL_TTL_S = 60;
-export type PublicTrail = { posts: number; links: number; clicks: number; signups: number; lastClickAt: string | null; asOf: string };
+export type PublicTrail = { posts: number; links: number; clicks: number; signups: number; paidPosts: number; paidCents: number; lastClickAt: string | null; asOf: string };

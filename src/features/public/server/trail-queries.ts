@@ -1,6 +1,6 @@
 import "server-only";
 
-import { and, count, eq, inArray, isNotNull, max } from "drizzle-orm";
+import { and, count, eq, inArray, isNotNull, max, sum } from "drizzle-orm";
 import { cachedRead } from "@/db/cache";
 import { brands, campaigns, clicks, collaborations, pixelEvents, trackingLinks, users } from "@/db/schema";
 import { getDb, isDbConfigured } from "@/db";
@@ -26,7 +26,7 @@ async function loadTrail(): Promise<PublicTrail | null> {
     if (!brand) return null;
 
     const ofBrand = eq(campaigns.brandId, brand.id);
-    const [[posts], [links], [clickRows], [signups]] = await Promise.all([
+    const [[posts], [links], [clickRows], [signups], [paid]] = await Promise.all([
       db.select({ n: count() }).from(collaborations).innerJoin(campaigns, eq(campaigns.id, collaborations.campaignId)).where(and(ofBrand, isNotNull(collaborations.publishedAt))),
       db.select({ n: count() }).from(trackingLinks).innerJoin(collaborations, eq(collaborations.id, trackingLinks.collaborationId)).innerJoin(campaigns, eq(campaigns.id, collaborations.campaignId)).where(ofBrand),
       db
@@ -37,12 +37,16 @@ async function loadTrail(): Promise<PublicTrail | null> {
         .innerJoin(campaigns, eq(campaigns.id, collaborations.campaignId))
         .where(ofBrand),
       db.select({ n: count() }).from(pixelEvents).where(and(eq(pixelEvents.brandId, brand.id), eq(pixelEvents.type, "signup"), isNotNull(pixelEvents.clickId))),
+      // the bill: what the demo brand paid for the posts it paid for
+      db.select({ n: count(), cents: sum(collaborations.feeCents) }).from(collaborations).innerJoin(campaigns, eq(campaigns.id, collaborations.campaignId)).where(and(ofBrand, isNotNull(collaborations.paidAt))),
     ]);
     return {
       posts: posts.n,
       links: links.n,
       clicks: clickRows.n,
       signups: signups.n,
+      paidPosts: paid.n,
+      paidCents: Number(paid.cents ?? 0),
       lastClickAt: clickRows.last ? clickRows.last.toISOString() : null,
       asOf: new Date().toISOString(),
     };

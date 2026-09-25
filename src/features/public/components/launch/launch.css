@@ -1,0 +1,50 @@
+/* The landing's motion: quick cuts (250–400ms), ease-out, transform and
+   opacity only. Everything is visible without JS and under reduced motion;
+   hidden states only exist behind .launch-js, which the page sets on mount. */
+
+.launch-word { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.06em; }
+.launch-word > span { display: inline-block; }
+.launch-js .launch-words:not(.is-on) .launch-word > span { transform: translateY(105%); }
+.launch-js .launch-words .launch-word > span { transition: transform 320ms cubic-bezier(.2,.8,.2,1); }
+
+.launch-js .launch-scene .launch-body,
+.launch-js .launch-scene .launch-kicker { opacity: 0; transform: translateY(10px); transition: opacity 260ms cubic-bezier(.2,.8,.2,1), transform 260ms cubic-bezier(.2,.8,.2,1); }
+.launch-js .launch-scene[data-on] .launch-body { opacity: 1; transform: none; transition-delay: 220ms; }
+.launch-js .launch-scene[data-on] .launch-kicker { opacity: 1; transform: none; }
+
+.launch-js .launch-scene .launch-visual { opacity: 0; transform: scale(0.96); transition: opacity 300ms cubic-bezier(.2,.8,.2,1), transform 300ms cubic-bezier(.2,.8,.2,1); }
+.launch-js .launch-scene[data-on] .launch-visual { opacity: 1; transform: none; }
+
+/* ink scene: the one inverted beat of the story */
+.launch-scene--ink { background: var(--color-ink); color: var(--color-paper); }
+.launch-scene--ink .text-ink-muted { color: color-mix(in srgb, var(--color-paper) 62%, transparent); }
+
+/* visuals: parts that wait for the scene, then cut in with their own delay */
+.launch-js .launch-scene .cut { opacity: 0; transform: translateY(8px); }
+.launch-js .launch-scene[data-on] .cut { opacity: 1; transform: none; transition: opacity 250ms cubic-bezier(.2,.8,.2,1), transform 250ms cubic-bezier(.2,.8,.2,1); transition-delay: var(--d, 0ms); }
+
+.launch-js .launch-scene .draw { stroke-dasharray: var(--len, 400); stroke-dashoffset: var(--len, 400); }
+.launch-js .launch-scene[data-on] .draw { stroke-dashoffset: 0; transition: stroke-dashoffset 400ms cubic-bezier(.2,.8,.2,1) var(--d, 0ms); }
+
+@keyframes launch-ping { 0% { transform: scale(0.6); opacity: 0.9; } 100% { transform: scale(2.4); opacity: 0; } }
+.launch-scene[data-on] .ping { animation: launch-ping 1.2s cubic-bezier(.2,.8,.2,1) infinite; animation-delay: var(--d, 0ms); transform-origin: center; transform-box: fill-box; }
+
+@keyframes launch-travel { from { offset-distance: 0%; } to { offset-distance: 100%; } }
+.launch-scene[data-on] .travel { animation: launch-travel 1.4s cubic-bezier(.4,0,.2,1) infinite; animation-delay: var(--d, 0ms); }
+
+@keyframes launch-stamp { 0% { transform: scale(1.8) rotate(-8deg); opacity: 0; } 60% { transform: scale(0.95) rotate(-8deg); opacity: 1; } 100% { transform: scale(1) rotate(-8deg); opacity: 1; } }
+.launch-js .launch-scene .stamp { opacity: 0; }
+.launch-js .launch-scene[data-on] .stamp { animation: launch-stamp 320ms cubic-bezier(.2,.8,.2,1) forwards; animation-delay: var(--d, 0ms); }
+
+@media (prefers-reduced-motion: reduce) {
+  .launch-js .launch-words .launch-word > span,
+  .launch-js .launch-scene .launch-body, .launch-js .launch-scene .launch-kicker,
+  .launch-js .launch-scene .launch-visual, .launch-js .launch-scene .cut { transform: none !important; opacity: 1 !important; transition: none !important; }
+  .launch-js .launch-scene .draw { stroke-dashoffset: 0 !important; }
+  .launch-js .launch-scene .stamp { opacity: 1 !important; animation: none !important; transform: rotate(-8deg); }
+  .launch-scene .ping, .launch-scene .travel { animation: none !important; }
+}
+
+/* the money green on ink is the dark palette's (tokens: dark accent) */
+.launch-scene { --scene-money: var(--color-money); }
+.launch-scene--ink { --scene-money: #34c77b; }

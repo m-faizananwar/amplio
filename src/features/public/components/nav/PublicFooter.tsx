@@ -1,49 +1,36 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { BrandLockup } from "@/components/brand/BrandLockup";
-import { FOOTER_COLUMNS, FOOTER_TAGLINE } from "../../constants";
-import { LinkedInMark } from "../shared/LinkedInMark";
 
-import { BRAND } from "@/config/brand";
-const YEAR = 2026;
-
-export function PublicFooter() {
+// The public footer: lockup + tagline, three short columns, the demo-data
+// note. Calm: paper, a hairline above, no effects.
+export async function PublicFooter() {
+  const t = await getTranslations("landing.footer");
+  const l = (key: string) => t(`links.${key}`);
+  const cols = [
+    { title: t("product"), links: [["/for-creators", l("forCreators")], ["/pricing", l("pricing")], ["/faq", l("faq")]] },
+    { title: t("company"), links: [["/login", l("signIn")], ["/register", l("signUp")]] },
+    { title: t("legal"), links: [["/privacy", l("privacy")], ["/terms", l("terms")]] },
+  ];
   return (
-    <footer className="border-t bg-linear-to-b from-background to-brand-soft">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="grid gap-10 lg:grid-cols-[1.2fr_repeat(5,minmax(0,1fr))]">
-          <div>
-            <BrandLockup size="md" />
-            <p className="mt-4 max-w-xs text-sm text-muted-foreground">{FOOTER_TAGLINE}</p>
-            <a
-              href={`https://www.linkedin.com/company/${BRAND.wordmark}`}
-              target="_blank"
-              rel="noreferrer"
-              aria-label={`${BRAND.wordmark} on LinkedIn`}
-              className="mt-6 inline-flex size-9 items-center justify-center rounded-lg bg-foreground text-background hover:bg-foreground/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50"
-            >
-              <LinkedInMark className="size-5 bg-transparent text-base text-background" />
-            </a>
+    <footer className="border-t border-rule bg-paper">
+      <div className="mx-auto grid max-w-content gap-10 px-4 py-16 sm:px-8 md:grid-cols-[1.4fr_repeat(3,1fr)]">
+        <div>
+          <BrandLockup size="md" />
+          <p className="mt-3 max-w-xs text-ink-muted">{t("tagline")}</p>
+        </div>
+        {cols.map((col) => (
+          <div key={col.title}>
+            <p className="text-small font-medium">{col.title}</p>
+            <ul className="mt-3 space-y-2">
+              {col.links.map(([href, label]) => (
+                <li key={href}><Link href={href} className="text-ink-muted hover:text-ink">{label}</Link></li>
+              ))}
+            </ul>
           </div>
-          {FOOTER_COLUMNS.map((column) => (
-            <nav key={column.heading} aria-label={column.heading}>
-              <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{column.heading}</h2>
-              <ul className="mt-4 space-y-2.5">
-                {column.links.map((link) => (
-                  <li key={link.label}>
-                    <Link href={link.href} className="text-sm text-foreground/80 hover:text-foreground hover:underline">
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          ))}
-        </div>
-        <div className="mt-14 flex flex-col gap-2 border-t pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-          <p>© {YEAR} {BRAND.wordmark}. All rights reserved.</p>
-          <p>Rebuild for demonstration · not affiliated with naano.com</p>
-        </div>
+        ))}
       </div>
+      <p className="mx-auto max-w-content border-t border-rule px-4 py-6 text-caption text-ink-muted sm:px-8">© 2026 Amplio · {t("demoNote")}</p>
     </footer>
   );
 }

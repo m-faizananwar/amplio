@@ -1,0 +1,158 @@
+{
+  "meta": {
+    "title": "Amplio · LinkedIn posts you can trace",
+    "description": "Book LinkedIn creators for sponsored posts. Every click and every sign-up comes back as a row, tied to the post and the creator that caused it."
+  },
+  "hero": {
+    "eyebrow": "LinkedIn creators, booked and tracked",
+    "title": "Every click comes back.",
+    "sub": "Amplio turns a LinkedIn post into money you can trace: every click and every sign-up comes back as a row, to the post and the creator behind it.",
+    "primary": "Start as a brand",
+    "secondary": "Join as a creator",
+    "liveLabel": "demo workspace data",
+    "counts": {
+      "posts": "{count, plural, one {# post} other {# posts}}",
+      "links": "{count, plural, one {# tracked link} other {# tracked links}}",
+      "clicks": "{count, plural, one {# click} other {# clicks}}",
+      "signups": "{count, plural, one {# sign-up} other {# sign-ups}}"
+    },
+    "lastClick": "last click {time}",
+    "offline": "Live counts are unavailable right now."
+  },
+  "scenes": {
+    "post": {
+      "kicker": "01",
+      "title": "A post goes out.",
+      "body": "A creator you picked publishes your sponsored post on LinkedIn. It carries its own tracked link, made for this collaboration only."
+    },
+    "audience": {
+      "kicker": "02",
+      "title": "It reaches the right people.",
+      "body": "The post travels through the creator's audience. You picked them by fit score against the customers you actually want."
+    },
+    "clicks": {
+      "kicker": "03",
+      "title": "Clicks light up.",
+      "body": "Someone taps the link. That click is saved as a row, with the time and where it came from."
+    },
+    "signups": {
+      "kicker": "04",
+      "title": "Sign-ups land.",
+      "body": "A small pixel on your site ties each sign-up back to its click, its post and its creator."
+    },
+    "ledger": {
+      "kicker": "05",
+      "title": "Every row has a name.",
+      "body": "Each click and sign-up snaps into a row with a creator on it. Paying for a live post writes one too.",
+      "rowLabel": "Sign-up · from {creator}'s post",
+      "stampPaid": "PAID"
+    },
+    "proof": {
+      "kicker": "06",
+      "title": "The bill, next to the proof.",
+      "body": "What you paid on one side. The clicks and sign-ups it brought on the other. Same screen, same post.",
+      "billTitle": "The bill",
+      "proofTitle": "The proof",
+      "billLine": "{amount} for one published post",
+      "proofClicks": "{count, plural, one {# click} other {# clicks}}",
+      "proofSignups": "{count, plural, one {# sign-up} other {# sign-ups}}"
+    }
+  },
+  "start": {
+    "title": "Pick your side.",
+    "brands": {
+      "title": "For brands",
+      "steps": [
+        "Browse creators ranked by how well they fit your customers.",
+        "Send an offer, write the brief, approve the draft.",
+        "The post goes live. Watch clicks and sign-ups come back."
+      ],
+      "cta": "Start as a brand"
+    },
+    "creators": {
+      "title": "For creators",
+      "steps": [
+        "Join free. No exclusivity.",
+        "Set your own price per post.",
+        "Accept the offers you like, publish, and see it in your earnings."
+      ],
+      "cta": "Join as a creator"
+    }
+  },
+  "pricing": {
+    "title": "Pay per post. That's it.",
+    "sub": "No subscription. No retainer. No paying per click or per view. One fixed price for each published post.",
+    "brands": {
+      "title": "Brands",
+      "price": "€0",
+      "unit": "per month",
+      "points": [
+        "No subscription, nothing to cancel.",
+        "Pay each creator's price per published post.",
+        "Every click and sign-up traced to the post."
+      ]
+    },
+    "creators": {
+      "title": "Creators",
+      "price": "Free",
+      "unit": "to join",
+      "points": [
+        "Set your own fixed price per post, from €20.",
+        "No exclusivity. Work with any brand.",
+        "No per-click or per-view deals. Your price is your price."
+      ]
+    },
+    "stubNote": "In this build, card top-ups and bank payouts are Stripe stubs: you see the full flow, but no real money moves."
+  },
+  "faq": {
+    "title": "Questions, answered.",
+    "items": [
+      {
+        "q": "How do you know a sign-up came from a post?",
+        "a": "Each collaboration gets its own tracked link. Every click on it is saved with the time and the source. A small pixel on your site then ties each sign-up back to that click, so you see the post and the creator behind it."
+      },
+      {
+        "q": "What does it cost?",
+        "a": "Brands pay €0 per month. You pay each creator's fixed price for each post that gets published. Creators join free and set their own price, from €20 per post."
+      },
+      {
+        "q": "How do creators get paid?",
+        "a": "Brands keep a wallet. When a post is live and the brand pays for it, a ledger row is written and the creator sees it in their earnings. In this build, card top-ups and bank payouts are Stripe stubs: the flow is all there, but no real money moves."
+      },
+      {
+        "q": "Do I have to sign a long contract?",
+        "a": "No subscription, no retainer. Each collaboration stands on its own: one offer, one brief, one approved draft, one post. And creators aren't exclusive to anyone."
+      },
+      {
+        "q": "What is the demo data?",
+        "a": "The live numbers on this page come from a demo workspace filled with sample data. They show what tracking looks like, not results from real customers."
+      },
+      {
+        "q": "Can I cancel? Is there a commitment?",
+        "a": "There's nothing to cancel. Brands have no subscription and pay per published post. Creators only take the offers they want."
+      }
+    ]
+  },
+  "signup": {
+    "title": "Put a name on every click.",
+    "sub": "Brands start at €0 a month. Creators join free and set their own price.",
+    "primary": "Start as a brand",
+    "secondary": "Join as a creator"
+  },
+  "footer": {
+    "tagline": "LinkedIn posts you can trace.",
+    "product": "Product",
+    "company": "Company",
+    "legal": "Legal",
+    "links": {
+      "forCreators": "For creators",
+      "pricing": "Pricing",
+      "faq": "FAQ",
+      "signIn": "Sign in",
+      "signUp": "Sign up",
+      "privacy": "Privacy",
+      "terms": "Terms"
+    },
+    "demoNote": "Public numbers on this page come from a seeded demo workspace, not from real customers."
+  }
+}
