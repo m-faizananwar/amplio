@@ -1,33 +1,42 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BrandLockup } from "@/components/brand/BrandLockup";
 import { buttonVariants } from "@/components/ui/button";
-import { WorkspaceCard } from "@/features/workspace/components/card/WorkspaceCard";
+import { CreatorCardView } from "@/features/workspace/components/card/CreatorCardView";
 import { getPublicCard } from "@/features/workspace/server/card-queries";
 
-import { BRAND } from "@/config/brand";
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: { params: Promise<{ handle: string }> }): Promise<Metadata> {
   const { handle } = await params;
-  return { title: `@${handle} · ${BRAND.wordmark} creator card` };
+  const [card, t] = await Promise.all([getPublicCard(handle), getTranslations("creator.publicCard")]);
+  if (!card) return { title: t("notFound.title") };
+  return { title: t("metaTitle", { name: card.name }), description: t("metaDescription", { name: card.name }) };
 }
 
-// The shareable "deal link": a creator's marketplace card, public.
+// The shareable deal link: a creator's card, public, with the one action a
+// brand came for. Seeded creators say so.
 export default async function PublicCardPage({ params }: { params: Promise<{ handle: string }> }) {
   const { handle } = await params;
-  const card = await getPublicCard(handle);
+  const [card, t] = await Promise.all([getPublicCard(handle), getTranslations("creator.publicCard")]);
   if (!card) notFound();
+  const first = card.name.split(" ")[0] ?? card.name;
+  const book = `/register/brand?ref=${card.handle}`;
   return (
-    <main className="mx-auto grid max-w-4xl gap-6 px-6 py-10">
-      <div className="flex items-center justify-between">
-        <Link href="/"><BrandLockup size="sm" /></Link>
-        <Link href="/register/brand" className={buttonVariants({ size: "sm" })}>Book {card.name.split(" ")[0]} on {BRAND.name}</Link>
+    <main className="mx-auto grid w-full max-w-2xl gap-5 px-4 py-8 animate-rise sm:py-12">
+      <div className="flex items-center justify-between gap-3">
+        <Link href="/" aria-label="Amplio"><BrandLockup size="sm" /></Link>
+        <Link href={book} className={buttonVariants({ size: "sm" })}>{t("book", { name: first })}</Link>
       </div>
-      <div className="grid gap-6 lg:grid-cols-[22rem_1fr]">
-        <WorkspaceCard card={card} />
+      {card.seeded ? <p role="note" className="rounded-control border border-rule bg-tint px-3 py-2 text-small text-ink-muted">{t("demoLabel")}</p> : null}
+      <CreatorCardView card={card} />
+      <div className="grid gap-3 rounded-card border border-rule bg-surface p-5">
+        <Link href={book} className={buttonVariants({ size: "lg", className: "justify-self-start" })}>{t("book", { name: first })}</Link>
+        <p className="text-small text-ink-muted">{t("bookHint", { name: first })}</p>
       </div>
+      <p className="text-caption text-ink-muted">{t("stubNote")}</p>
     </main>
   );
 }

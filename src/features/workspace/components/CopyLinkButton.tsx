@@ -4,13 +4,16 @@ import { Copy } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 
-export function CopyLinkButton({ value, label, variant = "default", size = "default" }: { value: string; label: string; variant?: "default" | "outline"; size?: "default" | "sm" }) {
+type Props = { value: string; label: string; copied: string; failed: string; variant?: "primary" | "secondary"; size?: "default" | "sm" };
+
+// Copies a link and says so; a blocked clipboard says how to copy by hand.
+export function CopyLinkButton({ value, label, copied, failed, variant = "secondary", size = "default" }: Props) {
   async function copy() {
     try {
       await navigator.clipboard.writeText(value);
-      toast.success("Link copied");
+      toast.success(copied);
     } catch {
-      toast.error("Could not copy the link");
+      toast.error(failed);
     }
   }
   return (

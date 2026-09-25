@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { headers } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { PageHeader } from "@/components/page/PageHeader";
-import { buttonVariants } from "@/components/ui/button";
+import { ErrorState } from "@/components/page/ErrorState";
 import { getViewer } from "@/features/auth/server/session";
-import { DealLinkDialog } from "@/features/workspace/components/card/DealLinkDialog";
-import { WorkspaceCard } from "@/features/workspace/components/card/WorkspaceCard";
-import { AFFILIATE_MONTHS, AFFILIATE_SHARE_PERCENT } from "@/features/workspace/constants";
+import { CardIncomplete } from "@/features/workspace/components/card/CardIncomplete";
+import { CreatorCardView } from "@/features/workspace/components/card/CreatorCardView";
+import { LinksSection } from "@/features/workspace/components/card/LinksSection";
+import { buttonVariants } from "@/components/ui/button";
+import { getAffiliateSummary } from "@/features/workspace/server/affiliate-queries";
 import { getPublicCard } from "@/features/workspace/server/card-queries";
 
 import { BRAND } from "@/config/brand";
@@ -16,39 +18,37 @@ export const metadata: Metadata = { title: `My card · ${BRAND.wordmark}` };
 export default async function CreatorCardPage() {
   const viewer = await getViewer();
   if (!viewer?.creator) redirect("/login");
-  const card = await getPublicCard(viewer.creator.handle);
+  const { handle, id } = viewer.creator;
+  let data;
+  try {
+    data = await Promise.all([getPublicCard(handle), getAffiliateSummary(id), headers(), getTranslations("creator.card")]);
+  } catch (error) {
+    console.error("[card] my card failed", { creatorId: id, error });
+    return <ErrorState body="We could not load your card. Try again in a moment." retryHref="/creator/card" />;
+  }
+  const [card, affiliate, h, t] = data;
   if (!card) redirect("/login");
-  const h = await headers();
-  const link = `${h.get("x-forwarded-proto") ?? "http"}://${h.get("host") ?? "localhost:3000"}/c/${card.handle}`;
+  const origin = `${h.get("x-forwarded-proto") ?? "http"}://${h.get("host") ?? "localhost:3000"}`;
   return (
-    <>
-      <PageHeader
-        eyebrow="Your creator storefront"
-        title={`Your ${BRAND.name} card, ready to travel.`}
-        description="Share clear proof of your positioning, audience and offers."
-        actions={<Link href="/creator/settings" className={buttonVariants({ variant: "outline" })}>Edit</Link>}
-      />
-      <div className="grid gap-4 lg:grid-cols-[22rem_1fr]">
-        <div className="grid gap-4">
-          <WorkspaceCard card={card} />
-          <div className="flex flex-wrap gap-2">
-            <DealLinkDialog url={link} handle={card.handle} />
-            <Link href={`/c/${card.handle}`} target="_blank" className={buttonVariants({ variant: "outline" })}>Open card</Link>
-          </div>
+    <div className="grid gap-6 animate-rise">
+      <header className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h1 className="text-h2">{t("title")}</h1>
+          <p className="mt-1 text-ink-muted">{t("description")}</p>
         </div>
-        <div className="grid gap-4">
-          <section className="rounded-2xl border bg-background p-5">
-            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Your card is your deal link</p>
-            <h2 className="mt-1 text-xl font-semibold">Put it on LinkedIn. Earn when a brand joins through it.</h2>
-            <ul className="mt-3 grid gap-2 text-sm text-muted-foreground">
-              <li>· Add it as a LinkedIn experience — brands discover your positioning without a DM.</li>
-              <li>· Send it when a brand contacts you — price, audience and proof in one link.</li>
-            </ul>
-            <p className="mt-3 text-sm"><span className="font-semibold">Your share {AFFILIATE_SHARE_PERCENT}%</span> · reward period {AFFILIATE_MONTHS} months</p>
-            <p className="mt-2 break-all rounded-lg bg-muted px-3 py-2 font-mono text-xs">{link}</p>
-          </section>
+        <div className="flex gap-2">
+          <Link href="/creator/settings#card" className={buttonVariants({ variant: "secondary" })}>{t("actions.edit")}</Link>
+          <Link href={`/c/${card.handle}`} target="_blank" className={buttonVariants({ variant: "ghost" })}>{t("actions.openPublic")}</Link>
         </div>
+      </header>
+      <CardIncomplete missingPrice={card.priceCents <= 0} missingIndustries={card.industries.length === 0} />
+      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,26rem)_minmax(0,1fr)]">
+        <div className="grid gap-2">
+          <CreatorCardView card={card} />
+          <p className="text-caption text-ink-muted">{t("stubNote")}</p>
+        </div>
+        <LinksSection dealUrl={`${origin}/c/${card.handle}`} referralUrl={`${origin}/register/brand?ref=${card.handle}`} affiliate={affiliate} />
       </div>
-    </>
+    </div>
   );
 }

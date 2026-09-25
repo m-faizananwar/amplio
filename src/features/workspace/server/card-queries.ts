@@ -1,4 +1,6 @@
 import "server-only";
+import { DEMO_DOMAINS } from "@/features/auth/constants";
+import { isSeededEmail } from "@/lib/seeded";
 import { count, eq, inArray, sql } from "drizzle-orm";
 import { getDb, isDbConfigured } from "@/db";
 import { collaborations, creatorPosts, creators, users } from "@/db/schema";
@@ -24,13 +26,15 @@ export type PublicCard = {
   reactionsPerPost: number;
   commentsPerPost: number;
   publishedCollaborations: number;
+  /** Seeded demo creator: labelled wherever the card is public. */
+  seeded: boolean;
 };
 
 async function loadPublicCard(handle: string): Promise<PublicCard | null> {
   if (!isDbConfigured()) return null;
   const db = getDb();
   const [row] = await db
-    .select({ creator: creators, firstName: users.firstName, lastName: users.lastName })
+    .select({ creator: creators, firstName: users.firstName, lastName: users.lastName, email: users.email })
     .from(creators)
     .innerJoin(users, eq(users.id, creators.userId))
     .where(eq(creators.handle, handle));
@@ -66,6 +70,7 @@ async function loadPublicCard(handle: string): Promise<PublicCard | null> {
     reactionsPerPost: posts?.reactions ?? 0,
     commentsPerPost: posts?.comments ?? 0,
     publishedCollaborations: published?.n ?? 0,
+    seeded: isSeededEmail(row.email, DEMO_DOMAINS),
   };
 }
 
