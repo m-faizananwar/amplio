@@ -7,7 +7,7 @@ import type { CreatorDto, MarketplaceContextDto } from "../schemas";
 import { toggleShortlist as toggleShortlistAction } from "../server/actions";
 import { SelectionDialog } from "./booking/SelectionDialog";
 import { OfferDialog } from "./booking/OfferDialog";
-import { CreatorProfileDialog } from "./profile/CreatorProfileDialog";
+import { CreatorProfileDrawer } from "./profile/CreatorProfileDrawer";
 import { type BookingState, type BookingStep, MarketplaceContext, type MarketplaceState } from "./useMarketplace";
 
 type Props = { ctx: MarketplaceContextDto; children: ReactNode };
@@ -81,7 +81,7 @@ export function MarketplaceProvider({ ctx, children }: Props) {
   return (
     <MarketplaceContext.Provider value={value}>
       {children}
-      <CreatorProfileDialog />
+      <CreatorProfileDrawer />
       <SelectionDialog />
       <OfferDialog />
     </MarketplaceContext.Provider>

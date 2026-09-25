@@ -1,37 +1,39 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { addDays, format } from "date-fns";
-import { FileText } from "lucide-react";
+import { addDays, format as formatDate } from "date-fns";
+import { useFormatter, useTranslations } from "next-intl";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { DatePicker } from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { formatEuro } from "@/lib/format-euro";
 import { toCents } from "@/lib/money";
-import { ACCEPT_WINDOW_HOURS, DEFAULT_DISCOUNT_PRESET, DEFAULT_POST_BY_DAYS, MIN_TOPUP_CENTS, TOPUP_STEP_CENTS } from "../../constants";
+import { DEFAULT_DISCOUNT_PRESET, DEFAULT_POST_BY_DAYS } from "../../constants";
 import { type CreatorDto, type OfferFormValues, offerFormSchema } from "../../schemas";
 import { sendOffer } from "../../server/actions";
 import { useMarketplace } from "../useMarketplace";
 import { DiscountPresets, discountedCents } from "./DiscountPresets";
 import { InsufficientFundsCta } from "./InsufficientFundsCta";
+import { topupFor } from "./SelectionDialog";
 
 const PERCENT = 100;
 const CENTS = 100;
+const ISO = "yyyy-MM-dd";
 
 function discountOf(priceCents: number, offerCents: number) {
   return Math.max(0, Math.round(((priceCents - offerCents) / priceCents) * PERCENT));
 }
 
-function topupFor(shortfallCents: number) {
-  return Math.max(MIN_TOPUP_CENTS, Math.ceil(shortfallCents / TOPUP_STEP_CENTS) * TOPUP_STEP_CENTS);
-}
-
+// The offer: a price (a preset below the listed price or your own), the date
+// the post must be up by, the campaign whose brief applies, and whether the
+// draft needs your approval first. Held from the wallet when sent.
 export function OfferForm({ creator }: { creator: CreatorDto }) {
+  const t = useTranslations("brand.creators.booking.offer");
+  const format = useFormatter();
   const { ctx, setBookingStep, markInvited } = useMarketplace();
   const [serverError, setServerError] = useState<string | null>(null);
   const campaigns = ctx.campaigns.filter((c) => c.status !== "completed");
@@ -40,16 +42,16 @@ export function OfferForm({ creator }: { creator: CreatorDto }) {
     defaultValues: {
       preset: "20",
       offerEuros: discountedCents(creator.priceCents, DEFAULT_DISCOUNT_PRESET) / CENTS,
-      postBy: format(addDays(new Date(), DEFAULT_POST_BY_DAYS), "yyyy-MM-dd"),
+      postBy: formatDate(addDays(new Date(), DEFAULT_POST_BY_DAYS), ISO),
       campaignId: ctx.selectedCampaign?.id ?? campaigns[0]?.id ?? "",
       approveBeforePublish: true,
     },
   });
   const { errors, isSubmitting } = form.formState;
-  const offerEuros = Number(form.watch("offerEuros")) || 0;
-  const offerCents = toCents(offerEuros);
+  const offerCents = toCents(Number(form.watch("offerEuros")) || 0);
   const discount = discountOf(creator.priceCents, offerCents);
   const short = ctx.walletCents < offerCents;
+  const euros = (c: number) => format.number(c / CENTS, { style: "currency", currency: "EUR" });
 
   function choosePreset(preset: string) {
     form.setValue("preset", preset as OfferFormValues["preset"]);
@@ -66,7 +68,7 @@ export function OfferForm({ creator }: { creator: CreatorDto }) {
       discountPercent: discountOf(creator.priceCents, toCents(values.offerEuros)),
       postBy: values.postBy,
       approveBeforePublish: values.approveBeforePublish,
-      note: campaignName ? `Specific brief · ${campaignName}` : undefined,
+      note: campaignName || undefined,
     });
     if (!result.ok) {
       setServerError(result.error);
@@ -75,92 +77,56 @@ export function OfferForm({ creator }: { creator: CreatorDto }) {
     }
     markInvited(creator.id, result.data.status);
     setBookingStep("sent", result.data.acceptBy);
-    toast.success(`Offer sent to ${creator.name}`);
+    toast.success(t("sentToast", { name: creator.name }));
   }
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-5" noValidate>
-      <fieldset className="grid gap-2">
-        <legend className="text-sm font-semibold">Choose a discount</legend>
+      <div className="grid gap-2">
         <Controller control={form.control} name="preset" render={({ field }) => <DiscountPresets priceCents={creator.priceCents} value={field.value} onChange={choosePreset} />} />
-        <div className="grid gap-1.5">
-          <Label htmlFor="offer-euros">Your offer €</Label>
-          <Input id="offer-euros" type="number" step="0.1" min={0} inputMode="decimal" {...form.register("offerEuros", { valueAsNumber: true, onChange: () => form.setValue("preset", "other") })} />
-          <p className="text-xs text-muted-foreground">The creator will see a {discount}% discount request.</p>
-          {errors.offerEuros ? <p role="alert" className="text-sm text-destructive">{errors.offerEuros.message}</p> : null}
-        </div>
-      </fieldset>
-
-      <div className="grid gap-1.5">
-        <div className="flex items-baseline justify-between">
-          <Label htmlFor="post-by">Post by</Label>
-          <span className="text-xs text-muted-foreground">{DEFAULT_POST_BY_DAYS} days from now</span>
-        </div>
-        <Input id="post-by" type="date" {...form.register("postBy")} />
-        <p className="text-xs text-muted-foreground">Latest date the creator must publish the post. Defaults to {DEFAULT_POST_BY_DAYS} days.</p>
-        {errors.postBy ? <p role="alert" className="text-sm text-destructive">{errors.postBy.message}</p> : null}
+        <label htmlFor="offer-euros" className="text-small font-medium">{t("amount")}</label>
+        <Input id="offer-euros" type="number" step="1" min={0} inputMode="decimal" className="num" {...form.register("offerEuros", { valueAsNumber: true, onChange: () => form.setValue("preset", "other") })} aria-invalid={Boolean(errors.offerEuros)} />
+        <p className="text-caption text-ink-muted">{t("discountNote", { percent: discount })}</p>
+        {errors.offerEuros ? <p role="alert" className="text-caption text-failure">{errors.offerEuros.message}</p> : null}
       </div>
-
-      <fieldset className="grid gap-2">
-        <legend className="text-sm font-semibold">How should the creator work?</legend>
-        <div className="rounded-xl border-2 border-brand bg-brand/5 p-3">
-          <p className="flex items-center gap-2 text-sm font-semibold">
-            <FileText className="size-4 text-brand" aria-hidden="true" />
-            Specific brief
-          </p>
-          <p className="text-xs text-muted-foreground">Use detailed instructions from one of your campaign briefs.</p>
-          <div className="mt-3 grid gap-1.5">
-            <Label id="offer-campaign-label" htmlFor="offer-campaign">Campaign</Label>
-            <Controller
-              control={form.control}
-              name="campaignId"
-              render={({ field }) => (
-                <Select value={field.value} items={Object.fromEntries(campaigns.map((c) => [c.id, c.name]))} onValueChange={(v) => field.onChange(String(v ?? ""))}>
-                  <SelectTrigger id="offer-campaign" aria-labelledby="offer-campaign-label" className="w-full">
-                    <SelectValue placeholder="Pick a campaign that has a brief." />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {campaigns.map((c) => (
-                      <SelectItem key={c.id} value={c.id}>
-                        {c.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              )}
-            />
-            <p className="text-xs text-muted-foreground">Pick a campaign that has a brief.</p>
-            {errors.campaignId ? <p role="alert" className="text-sm text-destructive">{errors.campaignId.message}</p> : null}
-          </div>
-        </div>
-      </fieldset>
-
+      <div className="grid gap-1.5">
+        <span id="post-by-label" className="text-small font-medium">{t("postBy")}</span>
+        <Controller control={form.control} name="postBy" render={({ field }) => <DatePicker value={field.value} onValueChange={field.onChange} min={formatDate(new Date(), ISO)} placeholder={t("postByPlaceholder")} />} />
+        <p className="text-caption text-ink-muted">{t("postByHint", { days: DEFAULT_POST_BY_DAYS })}</p>
+        {errors.postBy ? <p role="alert" className="text-caption text-failure">{errors.postBy.message}</p> : null}
+      </div>
+      <div className="grid gap-1.5">
+        <span id="offer-campaign-label" className="text-small font-medium">{t("campaign")}</span>
+        <Controller
+          control={form.control}
+          name="campaignId"
+          render={({ field }) => (
+            <Select value={field.value} items={Object.fromEntries(campaigns.map((c) => [c.id, c.name]))} onValueChange={(v) => field.onChange(String(v ?? ""))}>
+              <SelectTrigger aria-labelledby="offer-campaign-label" className="w-full"><SelectValue placeholder={t("campaignPlaceholder")} /></SelectTrigger>
+              <SelectContent>{campaigns.map((c) => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}</SelectContent>
+            </Select>
+          )}
+        />
+        <p className="text-caption text-ink-muted">{t("campaignHint")}</p>
+        {errors.campaignId ? <p role="alert" className="text-caption text-failure">{errors.campaignId.message}</p> : null}
+      </div>
       <Controller
         control={form.control}
         name="approveBeforePublish"
         render={({ field }) => (
-          <Label htmlFor="approve-first" className="flex items-center gap-2 text-sm font-normal">
+          <label htmlFor="approve-first" className="flex items-center gap-2 text-body">
             <Checkbox id="approve-first" checked={field.value} onCheckedChange={(checked) => field.onChange(checked)} />
-            I want to approve the content before it is published.
-          </Label>
+            {t("approveFirst")}
+          </label>
         )}
       />
-
-      <p className="text-xs text-muted-foreground">The creator receives the offer immediately and can accept or decline it within {ACCEPT_WINDOW_HOURS} hours.</p>
-
-      {serverError ? (
-        <p role="alert" className="rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">
-          {serverError}
-        </p>
-      ) : null}
-
+      {serverError ? <p role="alert" className="rounded-control border border-failure/30 bg-failure-soft px-3 py-2 text-small text-failure">{serverError}</p> : null}
       {short ? (
         <InsufficientFundsCta topupCents={topupFor(offerCents - ctx.walletCents)} walletCents={ctx.walletCents} feeCents={offerCents} />
       ) : (
-        <Button type="submit" size="lg" disabled={isSubmitting} className="bg-brand text-brand-foreground hover:bg-brand/90">
-          {isSubmitting ? "Sending…" : `Send offer · ${formatEuro(offerCents)}`}
-        </Button>
+        <Button type="submit" size="lg" disabled={isSubmitting}>{isSubmitting ? t("sending") : t("send", { amount: euros(offerCents) })}</Button>
       )}
+      <p className="text-caption text-ink-muted">{t("held")}</p>
     </form>
   );
 }

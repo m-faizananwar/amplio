@@ -17,7 +17,10 @@ export type FitCampaign = {
   icpTitles: string[];
 };
 
-export type FitSignal = { key: "audience" | "category" | "engagement" | "consistency"; label: string; score: number; weight: number; detail: string };
+// `detail` is the English sentence; `facts` are the same values, structured, so
+// a view can word the signal in the reader's language (brand.creators.fit.*).
+export type FitFacts = Record<string, string | number>;
+export type FitSignal = { key: "audience" | "category" | "engagement" | "consistency"; label: string; score: number; weight: number; detail: string; facts: FitFacts };
 export type FitResult = { score: number; signals: FitSignal[]; reason: string };
 
 export const FIT_WEIGHTS = { audience: 0.4, category: 0.3, engagement: 0.2, consistency: 0.1 } as const;
@@ -80,13 +83,15 @@ function audienceSignal(creator: FitCreator, campaign: FitCampaign): FitSignal {
     .sort((a, b) => b[1] - a[1])[0];
   // A 50% overlap with the buyer already counts as a strong fit.
   const score = clampPercent((overlap / LIMITS.strongAudienceOverlap) * PERCENT);
+  const match = top && top[1] > 0 ? top : null;
   const detail =
     buckets.length === 0
       ? "No ICP titles on the campaign yet"
-      : top && top[1] > 0
-        ? `${top[1]}% of their audience are ${top[0]} — your ICP`
+      : match
+        ? `${match[1]}% of their audience are ${match[0]} — your ICP`
         : `Their audience rarely includes ${buckets.join(" / ")}`;
-  return { key: "audience", label: "Audience overlap", score, weight: FIT_WEIGHTS.audience, detail };
+  const facts: FitFacts = buckets.length === 0 ? { case: "noIcp" } : match ? { case: "match", percent: match[1], bucket: match[0] } : { case: "rare", buckets: buckets.join(" / ") };
+  return { key: "audience", label: "Audience overlap", score, weight: FIT_WEIGHTS.audience, detail, facts };
 }
 
 function categorySignal(creator: FitCreator, campaign: FitCampaign): FitSignal {
@@ -95,7 +100,8 @@ function categorySignal(creator: FitCreator, campaign: FitCampaign): FitSignal {
   const denominator = Math.max(1, Math.min(creator.industries.length, target.size));
   const score = clampPercent((matched.length / denominator) * PERCENT);
   const detail = matched.length > 0 ? `Already writes about ${matched.join(", ")}` : "Writes about other categories";
-  return { key: "category", label: "Category match", score, weight: FIT_WEIGHTS.category, detail };
+  const facts: FitFacts = matched.length > 0 ? { case: "match", industries: matched.join(", ") } : { case: "none" };
+  return { key: "category", label: "Category match", score, weight: FIT_WEIGHTS.category, detail, facts };
 }
 
 function engagementSignal(creator: FitCreator, baseline: EngagementBaseline | undefined): FitSignal {
@@ -103,13 +109,15 @@ function engagementSignal(creator: FitCreator, baseline: EngagementBaseline | un
   const reference = tierRate ?? baseline?.overall ?? null;
   const rate = `${(creator.engagementRate * PERCENT).toFixed(1)}%`;
   const base = { key: "engagement" as const, label: "Engagement quality", weight: FIT_WEIGHTS.engagement };
-  if (creator.engagementRate <= 0) return { ...base, score: 0, detail: "No engagement measured yet" };
+  if (creator.engagementRate <= 0) return { ...base, score: 0, detail: "No engagement measured yet", facts: { case: "zero" } };
   // No reference yet (an empty marketplace): a neutral score, and the detail says why.
-  if (!reference) return { ...base, score: LIMITS.atBenchmarkScore, detail: `${rate} engagement, nothing on Amplio to compare it with yet` };
+  const pct = (creator.engagementRate * PERCENT).toFixed(1);
+  if (!reference) return { ...base, score: LIMITS.atBenchmarkScore, detail: `${rate} engagement, nothing on Amplio to compare it with yet`, facts: { case: "none", rate: pct } };
   // At the median = 70, 1.5× the median = 100.
   const score = clampPercent((creator.engagementRate / reference) * LIMITS.atBenchmarkScore);
   const scope = tierRate === null ? "on Amplio" : "for creators their size on Amplio";
-  return { ...base, score, detail: `${rate} engagement vs a ${(reference * PERCENT).toFixed(1)}% median ${scope}` };
+  const median = (reference * PERCENT).toFixed(1);
+  return { ...base, score, detail: `${rate} engagement vs a ${median}% median ${scope}`, facts: { case: tierRate === null ? "overall" : "tier", rate: pct, median } };
 }
 
 function consistencySignal(creator: FitCreator): FitSignal {
@@ -120,11 +128,17 @@ function consistencySignal(creator: FitCreator): FitSignal {
     score,
     weight: FIT_WEIGHTS.consistency,
     detail: `${creator.postsPerMonth.toFixed(0)} posts a month`,
+    facts: { perMonth: Math.round(creator.postsPerMonth) },
   };
 }
 
+/** The two signals that contribute most: what the one-line reason is made of. */
+export function topSignals(signals: FitSignal[]): FitSignal[] {
+  return [...signals].sort((a, b) => b.score * b.weight - a.score * a.weight).slice(0, 2);
+}
+
 function reasonFor(signals: FitSignal[]) {
-  const [best, second] = [...signals].sort((a, b) => b.score * b.weight - a.score * a.weight);
+  const [best, second] = topSignals(signals);
   const first = best.detail.charAt(0).toUpperCase() + best.detail.slice(1);
   return second ? `${first}, and ${second.detail.charAt(0).toLowerCase()}${second.detail.slice(1)}.` : `${first}.`;
 }

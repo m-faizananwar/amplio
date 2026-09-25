@@ -84,6 +84,16 @@ answered yet**, committed to accepted work, paid to creators — then the ledger
 by bookings and top-ups. Held funds stay visible until the creator accepts (a decline returns
 them). The top-up is presets plus a custom amount and says plainly that no card is charged.
 
+### Creators — `/brand/creators` (+ describe-who-you-want mode)
+A ranked ledger, not a card grid: best fit for the selected campaign first, one row per
+creator with the same facts side by side (fit, followers, median views, price) so they can
+be compared. The fit score opens its four signals and a one-line reason in place, worded in
+the reader's language (DECISIONS: a number you can question). Invite is on the row and in
+the profile — a funded invitation, fee held until the creator answers — so there is no
+separate Invite page. The profile is a wide drawer over the list, so the next creator is one
+click away. The second mode lets the assistant rank the same list from a sentence and say
+why, with one trade-off; its answer lands as the same rows.
+
 ### Messages — `/brand/messages`
 Two panes on wide screens (threads, open conversation), two screens on a phone. One
 thread per collaboration, opened when a booking is accepted — no separate inbox objects

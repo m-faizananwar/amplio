@@ -2,6 +2,7 @@
 
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { getLocale } from "next-intl/server";
 import { getDb } from "@/db";
 import { updateTags } from "@/db/cache";
 import { tagsForMutation } from "@/lib/cache-tags";
@@ -148,7 +149,7 @@ export async function sendOffer(input: unknown): Promise<ActionResult<BookingRes
 // ---- Nao · Creator intelligence -------------------------------------------------------
 
 function requestedCount(prompt: string) {
-  const match = /\b(\d{1,2})\s+creators?\b/i.exec(prompt);
+  const match = /\b(\d{1,2})\s+(?:creators?|créat(?:eur|rice)s?)\b/i.exec(prompt);
   const n = match ? Number(match[1]) : MATCHING_DEFAULT_COUNT;
   return Math.min(MATCHING_MAX_COUNT, Math.max(1, n));
 }
@@ -177,7 +178,7 @@ export async function runMatching(input: unknown): Promise<ActionResult<Matching
     let ranked = industries.length ? await rankCreators(ctx, industries) : [];
     if (ranked.length < requested) ranked = await rankCreators(ctx, []);
     const creators = ranked.slice(0, requested);
-    const written = await writeRationale({ company: ctx.company, campaignName: ctx.selectedCampaign.name, prompt, requested, creators });
+    const written = await writeRationale({ locale: await getLocale(), company: ctx.company, campaignName: ctx.selectedCampaign.name, prompt, requested, creators });
     return {
       ok: true,
       data: {

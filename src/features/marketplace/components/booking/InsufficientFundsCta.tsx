@@ -1,27 +1,26 @@
 import { Wallet } from "lucide-react";
 import Link from "next/link";
-import { cn } from "@/lib/cn";
+import { useFormatter, useTranslations } from "next-intl";
 import { buttonVariants } from "@/components/ui/button";
-import { formatCents } from "@/lib/money";
 import { BILLING_PATH } from "../../constants";
 
 type Props = { topupCents: number; walletCents: number; feeCents: number };
 
-// Bookings are funded: when the wallet is short, the CTA becomes naano's
-// "Add €500.00 and continue" and points at Billing.
+const CENTS = 100;
+
+// Invitations are funded: when the wallet is short, the next step is a top-up
+// of the missing amount (rounded up), which Billing opens pre-filled.
 export function InsufficientFundsCta({ topupCents, walletCents, feeCents }: Props) {
+  const t = useTranslations("brand.creators.booking.short");
+  const format = useFormatter();
+  const euros = (c: number) => format.number(c / CENTS, { style: "currency", currency: "EUR" });
   return (
-    <div className="grid gap-2 rounded-xl border border-amber-300 bg-amber-50 p-3 text-sm dark:border-amber-800 dark:bg-amber-950/40">
-      <p className="flex items-start gap-2 text-amber-900 dark:text-amber-200">
-        <Wallet className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
-        <span>
-          Your balance is {formatCents(walletCents, "EUR")} and this booking holds {formatCents(feeCents, "EUR")}. Invitations are funded up front so the
-          creator is paid on delivery.
-        </span>
+    <div className="grid gap-3 rounded-control border border-attention/30 bg-attention-soft p-3 text-small">
+      <p className="flex items-start gap-2 text-ink">
+        <Wallet className="mt-0.5 size-4 shrink-0 text-attention" aria-hidden="true" />
+        <span>{t("body", { balance: euros(walletCents), fee: euros(feeCents) })}</span>
       </p>
-      <Link href={BILLING_PATH} className={cn(buttonVariants({ size: "lg" }), "w-full bg-brand text-brand-foreground hover:bg-brand/90")}>
-        Add {formatCents(topupCents, "EUR")} and continue
-      </Link>
+      <Link href={`${BILLING_PATH}?topup=${topupCents}`} className={buttonVariants({ className: "w-full" })}>{t("action", { amount: euros(topupCents) })}</Link>
     </div>
   );
 }

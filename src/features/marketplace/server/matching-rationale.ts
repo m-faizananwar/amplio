@@ -7,6 +7,8 @@ import type { CreatorDto } from "../schemas";
 
 import { BRAND } from "@/config/brand";
 export type RationaleInput = {
+  /** The reader's language; the model writes in it (the template is English only). */
+  locale?: string;
   company: string;
   campaignName: string;
   prompt: string;
@@ -69,10 +71,13 @@ function parseRationale(text: string): Omit<Rationale, "source"> | null {
 }
 
 async function modelRationale(input: RationaleInput): Promise<Rationale | null> {
+  const language = input.locale === "fr"
+    ? `\nWrite both paragraphs in French, but keep the marker "${TRADEOFF_PREFIX}" in English at the start of paragraph 2.`
+    : "";
   const user =
     `Brand: ${input.company}. Campaign: ${input.campaignName}.\nRequest: ${input.prompt}\n` +
     `Requested ${input.requested} creators; selection (best first):\n${input.creators.map(creatorSummary).join("\n")}`;
-  const result = await generateText({ system: SYSTEM_PROMPT, user, maxTokens: MATCHING_MAX_TOKENS, timeoutMs: MATCHING_TIMEOUT_MS, effort: "low" });
+  const result = await generateText({ system: SYSTEM_PROMPT + language, user, maxTokens: MATCHING_MAX_TOKENS, timeoutMs: MATCHING_TIMEOUT_MS, effort: "low" });
   if (!result) return null;
   const parsed = parseRationale(result.text);
   return parsed ? { ...parsed, source: "model" } : null;

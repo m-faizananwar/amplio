@@ -1,11 +1,11 @@
 "use client";
 
 import { ArrowLeftRight } from "lucide-react";
+import { useFormatter, useTranslations } from "next-intl";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { formatEuro } from "@/lib/format-euro";
 import { MIN_TOPUP_CENTS, TOPUP_STEP_CENTS } from "../../constants";
 import type { CreatorDto } from "../../schemas";
 import { bookCreator } from "../../server/actions";
@@ -14,49 +14,43 @@ import { BookingSent } from "./BookingSent";
 import { InsufficientFundsCta } from "./InsufficientFundsCta";
 
 type Option = "single" | "bundle";
+const CENTS = 100;
 
-function topupFor(shortfallCents: number) {
+export function topupFor(shortfallCents: number) {
   return Math.max(MIN_TOPUP_CENTS, Math.ceil(shortfallCents / TOPUP_STEP_CENTS) * TOPUP_STEP_CENTS);
 }
 
-function RateRow({ creator, option, onBook, onNegotiate, pending, walletCents }: {
-  creator: CreatorDto; option: Option; onBook: () => void; onNegotiate?: () => void; pending: boolean; walletCents: number;
-}) {
+type RateProps = { creator: CreatorDto; option: Option; onBook: () => void; onNegotiate?: () => void; pending: boolean; walletCents: number };
+
+function RateRow({ creator, option, onBook, onNegotiate, pending, walletCents }: RateProps) {
+  const t = useTranslations("brand.creators.booking");
+  const format = useFormatter();
   const feeCents = option === "single" ? creator.priceCents : (creator.bundle?.totalCents ?? 0);
+  const euros = (c: number) => format.number(c / CENTS, { style: "currency", currency: "EUR" });
   const short = walletCents < feeCents;
   return (
-    <div className="rounded-xl border p-4">
-      <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Creator rate</p>
-      <div className="mt-1 flex items-baseline justify-between gap-2">
-        <p className="font-semibold">{option === "single" ? "Single post" : `Bundle · ${creator.bundle?.posts} posts`}</p>
-        <p className="text-lg font-semibold tabular-nums">{formatEuro(feeCents)}</p>
+    <div className="grid gap-3 rounded-control border border-rule p-4">
+      <div className="flex items-baseline justify-between gap-2">
+        <p className="font-medium">{option === "single" ? t("single") : t("bundle", { count: creator.bundle?.posts ?? 0 })}</p>
+        <p className="num text-lead font-semibold">{euros(feeCents)}</p>
       </div>
-      <p className="text-xs text-muted-foreground">
-        {option === "single" ? "Standard rate · Book this option at the listed price, or propose a lower price." : "Bundle rate · One invitation for the whole series."}
-      </p>
+      <p className="text-caption text-ink-muted">{option === "single" ? t("singleHint") : t("bundleHint")}</p>
       {short ? (
-        <div className="mt-3">
-          <InsufficientFundsCta topupCents={topupFor(feeCents - walletCents)} walletCents={walletCents} feeCents={feeCents} />
-        </div>
+        <InsufficientFundsCta topupCents={topupFor(feeCents - walletCents)} walletCents={walletCents} feeCents={feeCents} />
       ) : (
-        <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:justify-end">
-          {onNegotiate ? (
-            <Button type="button" variant="glass" onClick={onNegotiate} disabled={pending}>
-              <ArrowLeftRight className="size-4" aria-hidden="true" />
-              Negotiate
-            </Button>
-          ) : null}
-          <Button type="button" onClick={onBook} disabled={pending} className="bg-brand text-brand-foreground hover:bg-brand/90">
-            {pending ? "Booking…" : `Book · ${formatEuro(feeCents)}`}
-          </Button>
+        <div className="flex flex-col gap-2 sm:flex-row sm:justify-end">
+          {onNegotiate ? <Button type="button" variant="secondary" onClick={onNegotiate} disabled={pending}><ArrowLeftRight aria-hidden="true" />{t("negotiate")}</Button> : null}
+          <Button type="button" onClick={onBook} disabled={pending}>{pending ? t("inviting") : t("invite", { amount: euros(feeCents) })}</Button>
         </div>
       )}
     </div>
   );
 }
 
-// "Your selection": book at the listed price or open "Make an offer".
+// Invite at the listed price (or the bundle), or go to "make an offer". The
+// fee is held from the wallet when the invitation is sent.
 export function SelectionDialog() {
+  const t = useTranslations("brand.creators.booking");
   const { booking, closeBooking, setBookingStep, markInvited, ctx } = useMarketplace();
   const [pending, setPending] = useState<Option | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -76,37 +70,26 @@ export function SelectionDialog() {
     }
     markInvited(creator.id, result.data.status);
     setBookingStep("sent", result.data.acceptBy);
-    toast.success(`Invitation sent to ${creator.name}`);
+    toast.success(t("sentToast", { name: creator.name }));
   }
 
   return (
     <Dialog open={open} onOpenChange={(next) => (next ? undefined : closeBooking())}>
       <DialogContent className="sm:max-w-md">
-        {creator && booking?.step === "sent" ? <BookingSent creatorName={creator.name} onClose={closeBooking} /> : null}
+        {creator && booking?.step === "sent" ? <BookingSent creatorName={creator.name} acceptBy={booking.acceptBy} onClose={closeBooking} /> : null}
         {creator && booking?.step === "selection" ? (
           <>
             <DialogHeader>
-              <DialogTitle>Your selection</DialogTitle>
-              <DialogDescription>
-                {creator.name} · {ctx.selectedCampaign?.name ?? "No campaign selected"}
-              </DialogDescription>
+              <DialogTitle>{t("title", { name: creator.name })}</DialogTitle>
+              <DialogDescription>{ctx.selectedCampaign ? t("forCampaign", { campaign: ctx.selectedCampaign.name }) : t("noCampaign")}</DialogDescription>
             </DialogHeader>
             <div className="grid gap-3">
               <RateRow creator={creator} option="single" walletCents={ctx.walletCents} pending={pending === "single"} onBook={() => book("single")} onNegotiate={() => setBookingStep("offer")} />
-              {creator.bundle ? (
-                <RateRow creator={creator} option="bundle" walletCents={ctx.walletCents} pending={pending === "bundle"} onBook={() => book("bundle")} />
-              ) : null}
+              {creator.bundle ? <RateRow creator={creator} option="bundle" walletCents={ctx.walletCents} pending={pending === "bundle"} onBook={() => book("bundle")} /> : null}
             </div>
-            {error ? (
-              <p role="alert" className="rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">
-                {error}
-              </p>
-            ) : null}
-            <DialogFooter>
-              <Button type="button" variant="ghost" onClick={closeBooking}>
-                Back
-              </Button>
-            </DialogFooter>
+            <p className="text-caption text-ink-muted">{t("held")}</p>
+            {error ? <p role="alert" className="rounded-control border border-failure/30 bg-failure-soft px-3 py-2 text-small text-failure">{error}</p> : null}
+            <DialogFooter><Button type="button" variant="ghost" onClick={closeBooking}>{t("cancel")}</Button></DialogFooter>
           </>
         ) : null}
       </DialogContent>
