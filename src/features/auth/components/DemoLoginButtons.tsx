@@ -1,15 +1,16 @@
 "use client";
 
-import { Building2, PenLine } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { DEMO_ACCOUNTS } from "../constants";
 import type { Role } from "../schemas";
 import { demoLogin } from "../server/actions";
+import { FormAlert } from "./FormAlert";
 
-// One click, no typing. The grader's way in.
+// One click, no typing: the seeded demo brand or creator. The grader's way in.
 export function DemoLoginButtons() {
+  const t = useTranslations("auth.signIn");
   const router = useRouter();
   const [pending, setPending] = useState<Role | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -28,21 +29,14 @@ export function DemoLoginButtons() {
 
   return (
     <div className="grid gap-3">
-      <div className="grid gap-3 sm:grid-cols-2">
-        <Button type="button" variant="outline" size="lg" className="h-11 rounded-xl" disabled={pending !== null} onClick={() => enter("brand")}>
-          <Building2 aria-hidden="true" />
-          {pending === "brand" ? "Opening…" : DEMO_ACCOUNTS.brand.label}
-        </Button>
-        <Button type="button" variant="outline" size="lg" className="h-11 rounded-xl" disabled={pending !== null} onClick={() => enter("creator")}>
-          <PenLine aria-hidden="true" />
-          {pending === "creator" ? "Opening…" : DEMO_ACCOUNTS.creator.label}
-        </Button>
+      <div className="grid gap-2 sm:grid-cols-2">
+        {(["brand", "creator"] as const).map((role) => (
+          <Button key={role} type="button" variant="secondary" size="lg" className="h-11" disabled={pending !== null} onClick={() => enter(role)}>
+            {pending === role ? t("opening") : t(role === "brand" ? "demoBrand" : "demoCreator")}
+          </Button>
+        ))}
       </div>
-      {error ? (
-        <p className="rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive" role="alert">
-          {error}
-        </p>
-      ) : null}
+      <FormAlert message={error} />
     </div>
   );
 }

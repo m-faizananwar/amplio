@@ -1,20 +1,19 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { FormField } from "@/features/profile-fields/components/FormField";
 import { type ResetPasswordInput, resetPasswordSchema } from "../schemas";
 import { resetPassword } from "../server/reset-actions";
-import { FormField } from "./FormField";
+import { FormAlert } from "./FormAlert";
 
-const INPUT = "h-12 rounded-xl px-4";
-
-// New password + confirm; on success the action has already signed the user
-// in, so we just go to their shell.
 export function ResetPasswordForm({ token }: { token: string }) {
+  const t = useTranslations("auth");
   const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
   const form = useForm<ResetPasswordInput>({ resolver: zodResolver(resetPasswordSchema), defaultValues: { token, password: "", confirm: "" } });
@@ -23,30 +22,21 @@ export function ResetPasswordForm({ token }: { token: string }) {
   async function onSubmit(values: ResetPasswordInput) {
     setServerError(null);
     const result = await resetPassword(values);
-    if (!result.ok) {
-      setServerError(result.error);
-      return;
-    }
+    if (!result.ok) return setServerError(result.error);
     router.push(result.data.redirectTo);
   }
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-5" noValidate>
+    <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4" noValidate>
       <input type="hidden" {...form.register("token")} />
-      <FormField id="password" label="New password" error={errors.password?.message}>
-        <Input id="password" type="password" autoComplete="new-password" placeholder="At least 8 characters" className={INPUT} {...form.register("password")} />
+      <FormField id="password" label={t("reset.password")} hint={t("reset.passwordPlaceholder")} error={errors.password ? t("errors.password") : undefined}>
+        <Input id="password" type="password" autoComplete="new-password" aria-invalid={!!errors.password} {...form.register("password")} />
       </FormField>
-      <FormField id="confirm" label="Confirm password" error={errors.confirm?.message}>
-        <Input id="confirm" type="password" autoComplete="new-password" placeholder="••••••••" className={INPUT} {...form.register("confirm")} />
+      <FormField id="confirm" label={t("reset.confirm")} error={errors.confirm ? t("errors.confirm") : undefined}>
+        <Input id="confirm" type="password" autoComplete="new-password" aria-invalid={!!errors.confirm} {...form.register("confirm")} />
       </FormField>
-      {serverError ? (
-        <p className="rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive" role="alert">
-          {serverError}
-        </p>
-      ) : null}
-      <Button type="submit" size="lg" disabled={isSubmitting} className="h-12 rounded-xl bg-brand text-base text-brand-foreground hover:bg-brand/90">
-        {isSubmitting ? "Saving…" : "Set new password"}
-      </Button>
+      <FormAlert message={serverError} />
+      <Button type="submit" size="lg" className="h-11" disabled={isSubmitting}>{isSubmitting ? t("reset.submitting") : t("reset.submit")}</Button>
     </form>
   );
 }

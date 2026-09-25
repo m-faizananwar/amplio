@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
-import { AuthSplitLayout } from "@/features/auth/components/AuthSplitLayout";
-import { SignUpOptions } from "@/features/auth/components/SignUpOptions";
+import { getTranslations } from "next-intl/server";
+import { AuthColumn } from "@/features/auth/components/AuthColumn";
+import { RegisterView } from "@/features/auth/components/RegisterView";
 
-import { BRAND } from "@/config/brand";
-export const metadata: Metadata = { title: `Join ${BRAND.name} as a creator` };
+export async function generateMetadata(): Promise<Metadata> {
+  return { title: (await getTranslations("auth.meta"))("signUpCreator") };
+}
 
 export default function RegisterCreatorPage() {
   return (
-    <AuthSplitLayout panelVariant="card">
-      <SignUpOptions role="creator" />
-    </AuthSplitLayout>
+    <AuthColumn>
+      <RegisterView initialRole="creator" />
+    </AuthColumn>
   );
 }

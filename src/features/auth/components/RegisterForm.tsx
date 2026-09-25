@@ -1,131 +1,84 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { type Control, Controller, useForm, useWatch } from "react-hook-form";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { FormField } from "@/features/profile-fields/components/FormField";
+import { cn } from "@/lib/cn";
 import { HEARD_ABOUT_OPTIONS } from "../constants";
 import { type RegisterInput, type Role, registerSchema } from "../schemas";
 import { register } from "../server/actions";
-import { FormField } from "./FormField";
-import { useSignupPreview } from "./preview/SignupPreviewContext";
+import { FormAlert } from "./FormAlert";
 
-import { BRAND } from "@/config/brand";
-const COPY: Record<Role, { eyebrow?: string; title: string; sub: string }> = {
-  brand: { title: `Join ${BRAND.name}`, sub: "The #1 platform to run LinkedIn creator campaigns that drive real business." },
-  creator: { eyebrow: "Step 1 of 4", title: `Join ${BRAND.name}`, sub: "Get paid to create LinkedIn content for B2B brands you actually use." },
-};
+// the stored values stay the schema's English enums; only the labels translate
+const HEARD_KEY: Record<(typeof HEARD_ABOUT_OPTIONS)[number], string> = { LinkedIn: "linkedin", "Word of mouth": "wordOfMouth", "Google search": "google", "A creator": "creator", Other: "other" };
 
-const INPUT = "h-12 rounded-xl px-4";
-const BACK = "inline-flex items-center gap-2 text-sm text-foreground/80 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 rounded-md";
-
-// onBack: when rendered behind the sign-up options, "back" returns to them
-// instead of leaving the page.
-// Mirrors name + email into the sign-up preview (the live card next to creator
-// sign-up) while the person types. No provider → nothing happens.
-function usePreviewPublish(control: Control<RegisterInput>) {
-  const preview = useSignupPreview();
-  const [firstName, lastName, email] = useWatch({ control, name: ["firstName", "lastName", "email"] });
-  const publish = preview?.publish;
-  useEffect(() => {
-    publish?.({ firstName, lastName, email });
-  }, [publish, firstName, lastName, email]);
-}
-
-export function RegisterForm({ role, onBack }: { role: Role; onBack?: () => void }) {
+export function RegisterForm({ role }: { role: Role }) {
+  const t = useTranslations("auth");
   const router = useRouter();
   const ref = useSearchParams().get("ref") ?? undefined;
   const [serverError, setServerError] = useState<string | null>(null);
-  const form = useForm<RegisterInput>({
-    resolver: zodResolver(registerSchema),
-    defaultValues: { role, firstName: "", lastName: "", email: "", password: "", ref },
-  });
+  const form = useForm<RegisterInput>({ resolver: zodResolver(registerSchema), defaultValues: { role, firstName: "", lastName: "", email: "", password: "", ref } });
   const { errors, isSubmitting } = form.formState;
-  usePreviewPublish(form.control);
+  const brand = role === "brand";
 
   async function onSubmit(values: RegisterInput) {
     setServerError(null);
     const result = await register(values);
-    if (!result.ok) {
-      setServerError(result.error);
-      return;
-    }
+    if (!result.ok) return setServerError(result.error);
     router.push(result.data.redirectTo);
   }
 
+  const err = (field: "firstName" | "lastName" | "email" | "password") => (errors[field] ? t(`errors.${field}`) : undefined);
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-5" noValidate>
-      <div>
-        {onBack ? (
-          <button type="button" onClick={onBack} className={BACK}>
-            <ArrowLeft className="size-4" aria-hidden="true" />
-            Back to sign-up options
-          </button>
-        ) : (
-          <Link href="/register" className={BACK}>
-            <ArrowLeft className="size-4" aria-hidden="true" />
-            Back to sign-up options
-          </Link>
-        )}
-        {COPY[role].eyebrow ? <p className="mt-6 text-xs font-semibold uppercase tracking-wider text-brand">{COPY[role].eyebrow}</p> : null}
-        <h1 className="mt-2 text-3xl font-bold tracking-tight">{COPY[role].title}</h1>
-        {role === "brand" ? <p className="mt-4 font-semibold text-brand">Creators. Brands. Results.</p> : null}
-        <p className="mt-2 text-sm text-muted-foreground">{COPY[role].sub}</p>
-      </div>
+    <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4" noValidate>
       <div className="grid gap-4 sm:grid-cols-2">
-        <FormField id="firstName" label="First name" error={errors.firstName?.message}>
-          <Input id="firstName" autoComplete="given-name" className={INPUT} {...form.register("firstName")} />
+        <FormField id="firstName" label={t("signUp.firstName")} error={err("firstName")}>
+          <Input id="firstName" autoComplete="given-name" aria-invalid={!!errors.firstName} {...form.register("firstName")} />
         </FormField>
-        <FormField id="lastName" label="Last name" error={errors.lastName?.message}>
-          <Input id="lastName" autoComplete="family-name" className={INPUT} {...form.register("lastName")} />
+        <FormField id="lastName" label={t("signUp.lastName")} error={err("lastName")}>
+          <Input id="lastName" autoComplete="family-name" aria-invalid={!!errors.lastName} {...form.register("lastName")} />
         </FormField>
       </div>
-      <FormField id="email" label={role === "brand" ? "Business email" : "Email"} error={errors.email?.message}>
-        <Input id="email" type="email" autoComplete="email" placeholder={role === "brand" ? "you@company.com" : "you@example.com"} className={INPUT} {...form.register("email")} />
+      <FormField id="email" label={t(brand ? "signUp.emailBrand" : "signUp.emailCreator")} error={err("email")}>
+        <Input id="email" type="email" autoComplete="email" placeholder={t(brand ? "signUp.emailPlaceholderBrand" : "signUp.emailPlaceholderCreator")} aria-invalid={!!errors.email} {...form.register("email")} />
       </FormField>
-      <FormField id="password" label="Password" error={errors.password?.message}>
-        <Input id="password" type="password" autoComplete="new-password" placeholder="Create a strong password" className={INPUT} {...form.register("password")} />
+      <FormField id="password" label={t("signUp.password")} hint={t("signUp.passwordPlaceholder")} error={err("password")}>
+        <Input id="password" type="password" autoComplete="new-password" aria-invalid={!!errors.password} {...form.register("password")} />
       </FormField>
       <Controller
         control={form.control}
         name="heardAbout"
         render={({ field }) => (
           <fieldset className="grid gap-2">
-            <legend className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">How did you hear about us?</legend>
-            <div className="flex flex-wrap gap-2">
+            <legend className="mb-1.5 text-small font-medium">{t("signUp.heardAbout")} <span className="font-normal text-ink-muted">· {t("signUp.optional")}</span></legend>
+            <div className="flex flex-wrap gap-1.5">
               {HEARD_ABOUT_OPTIONS.map((option) => (
                 <button
                   key={option}
                   type="button"
                   aria-pressed={field.value === option}
                   onClick={() => field.onChange(field.value === option ? undefined : option)}
-                  className="rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50 aria-pressed:border-brand aria-pressed:bg-brand aria-pressed:text-brand-foreground"
+                  className={cn("rounded-chip border px-3 py-1 text-small transition-colors duration-(--duration-fast) focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ink/20", field.value === option ? "border-ink bg-ink text-paper" : "border-rule hover:bg-tint")}
                 >
-                  {option}
+                  {t(`signUp.heard.${HEARD_KEY[option]}`)}
                 </button>
               ))}
             </div>
           </fieldset>
         )}
       />
-      {serverError ? (
-        <p className="rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive" role="alert">
-          {serverError}
-        </p>
-      ) : null}
-      <Button type="submit" size="lg" disabled={isSubmitting} className="h-12 rounded-xl bg-brand text-base text-brand-foreground hover:bg-brand/90">
-        {isSubmitting ? "Creating your account…" : "Continue"}
-      </Button>
-      <p className="text-center text-xs text-muted-foreground">
-        Already have an account?{" "}
-        <Link href="/login" className="font-semibold text-brand hover:underline">
-          Sign in here
-        </Link>
+      <FormAlert message={serverError} />
+      <Button type="submit" size="lg" className="h-11" disabled={isSubmitting}>{isSubmitting ? t("signUp.submitting") : t("signUp.submit")}</Button>
+      <p className="text-center text-small text-ink-muted">
+        {t("signUp.haveAccount")} <Link href="/login" className="font-medium text-ink underline-offset-4 hover:underline">{t("signUp.signIn")}</Link>
       </p>
+      <p className="text-center text-caption text-ink-muted">{t("signUp.demoHint")}</p>
     </form>
   );
 }

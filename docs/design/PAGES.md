@@ -222,6 +222,21 @@ Documents, not pages: sections at reading width, a sticky "on this page"
 index on wide screens, the date at the top. The copy states what this build
 actually stores and that money doesn't move.
 
+## Auth
+
+### Sign in, sign up, forgot, reset — `/login`, `/register[/brand|/creator]`, `/forgot-password`, `/reset-password/[token]`
+One centred column (DIRECTION.md), no second pane: the lockup home, the
+form, quiet legal links. Sign-in puts the two demo accounts first, in their
+own box, because they are the fastest honest way to see the product; email
+and password follow. Sign-up picks the role with a segmented control instead
+of a choice page, and the step rail above it shows the whole path for that
+role (brand: account → website → profile; creator: account → LinkedIn →
+card → price → legal) — onboarding carries on the same rail. The fake
+"continue with Google/LinkedIn" buttons are gone: there is no OAuth here.
+Forgot-password always shows the reset link on screen, labelled by whether
+it was also emailed. Validation messages are translated; server messages
+(wrong password, email taken) are the server's own English for now.
+
 ## Real vs stubbed
 
 | Where | What | Status |

@@ -1,19 +1,20 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { FormField } from "@/features/profile-fields/components/FormField";
 import { type LoginInput, loginSchema } from "../schemas";
 import { login } from "../server/actions";
-import { FormField } from "./FormField";
-
-const INPUT = "h-12 rounded-xl px-4";
+import { FormAlert } from "./FormAlert";
 
 export function LoginForm({ next }: { next?: string }) {
+  const t = useTranslations("auth");
   const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
   const form = useForm<LoginInput>({ resolver: zodResolver(loginSchema), defaultValues: { email: "", password: "" } });
@@ -22,37 +23,23 @@ export function LoginForm({ next }: { next?: string }) {
   async function onSubmit(values: LoginInput) {
     setServerError(null);
     const result = await login(values);
-    if (!result.ok) {
-      setServerError(result.error);
-      return;
-    }
+    if (!result.ok) return setServerError(result.error);
     router.push(next && next.startsWith("/") ? next : result.data.redirectTo);
   }
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-5" noValidate>
-      <FormField id="email" label="Email" error={errors.email?.message}>
-        <Input id="email" type="email" autoComplete="email" placeholder="john@company.com" className={INPUT} {...form.register("email")} />
+    <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4" noValidate>
+      <FormField id="email" label={t("signIn.email")} error={errors.email ? t("errors.email") : undefined}>
+        <Input id="email" type="email" autoComplete="email" placeholder={t("signIn.emailPlaceholder")} aria-invalid={!!errors.email} {...form.register("email")} />
       </FormField>
-      <FormField id="password" label="Password" error={errors.password?.message}>
-        <Input id="password" type="password" autoComplete="current-password" placeholder="••••••••" className={INPUT} {...form.register("password")} />
-        <Link href="/forgot-password" className="justify-self-end text-xs font-semibold text-brand hover:underline">
-          Forgot password?
-        </Link>
+      <FormField id="password" label={t("signIn.password")} error={errors.password ? t("errors.passwordRequired") : undefined}>
+        <Input id="password" type="password" autoComplete="current-password" aria-invalid={!!errors.password} {...form.register("password")} />
       </FormField>
-      {serverError ? (
-        <p className="rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive" role="alert">
-          {serverError}
-        </p>
-      ) : null}
-      <Button type="submit" size="lg" disabled={isSubmitting} className="h-12 rounded-xl bg-brand text-base text-brand-foreground hover:bg-brand/90">
-        {isSubmitting ? "Signing in…" : "Sign in"}
-      </Button>
-      <p className="text-center text-xs text-muted-foreground">
-        Don&apos;t have an account?{" "}
-        <Link href="/register" className="font-semibold text-brand hover:underline">
-          Sign up
-        </Link>
+      <Link href="/forgot-password" className="-mt-1 justify-self-end text-small text-ink-muted underline-offset-4 hover:text-ink hover:underline">{t("signIn.forgot")}</Link>
+      <FormAlert message={serverError} />
+      <Button type="submit" size="lg" className="h-11" disabled={isSubmitting}>{isSubmitting ? t("signIn.submitting") : t("signIn.submit")}</Button>
+      <p className="text-center text-small text-ink-muted">
+        {t("signIn.noAccount")} <Link href="/register" className="font-medium text-ink underline-offset-4 hover:underline">{t("signIn.signUp")}</Link>
       </p>
     </form>
   );

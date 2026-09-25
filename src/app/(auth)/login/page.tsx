@@ -1,37 +1,30 @@
 import type { Metadata } from "next";
-import { Separator } from "@/components/ui/separator";
-import { AuthSplitLayout } from "@/features/auth/components/AuthSplitLayout";
+import { getTranslations } from "next-intl/server";
+import { AuthColumn } from "@/features/auth/components/AuthColumn";
 import { DemoLoginButtons } from "@/features/auth/components/DemoLoginButtons";
 import { LoginForm } from "@/features/auth/components/LoginForm";
-import { SocialAuthButtons } from "@/features/auth/components/SocialAuthButtons";
 
-import { BRAND } from "@/config/brand";
-export const metadata: Metadata = { title: `Sign in · ${BRAND.wordmark}` };
-
-function Divider({ label }: { label: string }) {
-  return (
-    <div className="my-6 flex items-center gap-3 text-[0.65rem] font-medium uppercase tracking-wider text-muted-foreground">
-      <Separator className="flex-1" />
-      {label}
-      <Separator className="flex-1" />
-    </div>
-  );
+export async function generateMetadata(): Promise<Metadata> {
+  return { title: (await getTranslations("auth.meta"))("signIn") };
 }
 
+// The demo accounts first (the fastest way in), then email and password.
 export default async function LoginPage({ searchParams }: { searchParams: Promise<{ next?: string }> }) {
   const { next } = await searchParams;
+  const t = await getTranslations("auth.signIn");
   return (
-    <AuthSplitLayout>
-      <h1 className="text-3xl font-bold tracking-tight">Welcome back</h1>
-      <p className="mt-2 text-sm text-muted-foreground">Sign in to your account</p>
-      <div className="mt-6 rounded-2xl bg-brand-soft/60 p-4">
-        <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-brand">Explore without an account</p>
+    <AuthColumn>
+      <h1 className="text-h2">{t("title")}</h1>
+      <p className="mt-2 text-ink-muted">{t("sub")}</p>
+      <section className="mt-8 rounded-card border border-rule bg-surface p-4" aria-labelledby="demo-title">
+        <p id="demo-title" className="text-small font-medium">{t("demoTitle")}</p>
+        <p className="mb-3 mt-1 text-small text-ink-muted">{t("demoBody")}</p>
         <DemoLoginButtons />
+      </section>
+      <div className="my-6 flex items-center gap-3 text-caption text-ink-muted" aria-hidden="true">
+        <span className="h-px flex-1 bg-rule" />{t("or")}<span className="h-px flex-1 bg-rule" />
       </div>
-      <Divider label="or" />
-      <SocialAuthButtons mode="signin" />
-      <Divider label="or continue with email" />
       <LoginForm next={next} />
-    </AuthSplitLayout>
+    </AuthColumn>
   );
 }

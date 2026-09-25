@@ -1,18 +1,19 @@
 import type { Metadata } from "next";
-import { BRAND } from "@/config/brand";
-import { AuthSplitLayout } from "@/features/auth/components/AuthSplitLayout";
+import { getTranslations } from "next-intl/server";
+import { AuthColumn } from "@/features/auth/components/AuthColumn";
 import { ForgotPasswordForm } from "@/features/auth/components/ForgotPasswordForm";
 
-export const metadata: Metadata = { title: `Forgot password · ${BRAND.wordmark}` };
+export async function generateMetadata(): Promise<Metadata> {
+  return { title: (await getTranslations("auth.meta"))("forgot") };
+}
 
-export default function ForgotPasswordPage() {
+export default async function ForgotPasswordPage() {
+  const t = await getTranslations("auth.forgot");
   return (
-    <AuthSplitLayout>
-      <h1 className="text-3xl font-bold tracking-tight">Forgot your password?</h1>
-      <p className="mt-2 text-sm text-muted-foreground">Enter your email and we&apos;ll make you a reset link.</p>
-      <div className="mt-8">
-        <ForgotPasswordForm />
-      </div>
-    </AuthSplitLayout>
+    <AuthColumn>
+      <h1 className="text-h2">{t("title")}</h1>
+      <p className="mt-2 text-ink-muted">{t("sub")}</p>
+      <div className="mt-8"><ForgotPasswordForm /></div>
+    </AuthColumn>
   );
 }
