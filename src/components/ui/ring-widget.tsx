@@ -21,6 +21,7 @@ const CENTER = 100
 const INNER = 72
 const OUTER = 90
 const STAGGER_MS = 9
+const PRECISION = 100
 const TONE: Record<string, string> = { needs_you: "var(--attention)", waiting: "var(--ink-muted)", live: "var(--money)", done: "var(--ink)" }
 const toneOf = (key: string) => TONE[key] ?? "var(--ink)"
 
@@ -47,7 +48,10 @@ function tick(index: number) {
   const angle = (index / TICKS) * 2 * Math.PI - Math.PI / 2
   const cos = Math.cos(angle)
   const sin = Math.sin(angle)
-  return { x1: CENTER + INNER * cos, y1: CENTER + INNER * sin, x2: CENTER + OUTER * cos, y2: CENTER + OUTER * sin }
+  // rounded: full-precision trig can print differently on the server and in
+  // the browser, which breaks hydration
+  const r = (v: number) => Math.round(v * PRECISION) / PRECISION
+  return { x1: r(CENTER + INNER * cos), y1: r(CENTER + INNER * sin), x2: r(CENTER + OUTER * cos), y2: r(CENTER + OUTER * sin) }
 }
 
 // Switches on once, the first time the dial scrolls into view.
