@@ -22,7 +22,7 @@ export function UiGallery() {
     setDark(!dark)
   }
   return (
-    <div className="min-h-screen bg-paper text-ink">
+    <div className="font-app min-h-screen bg-paper text-ink">
       <header className="sticky top-0 z-20 border-b border-rule bg-paper/95">
         <div className="mx-auto flex max-w-content items-center gap-6 px-4 py-3 md:px-8">
           <p className="text-body font-semibold">Amplio · UI</p>

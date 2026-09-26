@@ -41,8 +41,10 @@
   --color-field: var(--field);
 
   /* type: Geist for text, Geist Mono for every number, id, date and code */
-  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* --app-sans / --app-mono are set only where the app is mounted (.font-app);
+     elsewhere (landing, public pages) they are unset and Geist is used */
+  --font-sans: var(--app-sans, var(--font-geist)), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--app-mono, var(--font-geist-mono)), ui-monospace, SFMono-Regular, Menlo, monospace;
   --font-heading: var(--font-sans);
   --text-caption: 12px;
   --text-caption--line-height: 16px;
@@ -239,6 +241,12 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+  }
+  /* The app's faces switch on for the whole document (portals included)
+     while an app surface is mounted. */
+  html:has(.font-app) {
+    --app-sans: var(--font-instrument);
+    --app-mono: var(--font-jetbrains);
   }
   /* One focus ring on every control: 2px solid accent. */
   :focus-visible {

@@ -5,6 +5,7 @@ import { DEFAULT_LOCALE } from "@/i18n/config";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { instrumentSans, interApp, jetbrainsMono } from "./app-fonts";
 import { RouteProgress } from "@/components/motion/RouteProgress";
 import { ScrollMorph } from "@/components/motion/ScrollMorph";
 import { Toaster } from "@/components/ui/sonner";
@@ -14,6 +15,7 @@ import "@/styles/interaction.css";
 import "@/styles/blob-button.css";
 import "@/styles/fields.css";
 import "@/styles/shell.css";
+import "@/styles/dropdown.css";
 
 import { BRAND } from "@/config/brand";
 
@@ -48,7 +50,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     // The boot script adds `dark` before hydration, so the class the server
     // sent is expected to differ from the one React finds.
-    <html lang={DEFAULT_LOCALE} data-scroll-behavior="smooth" suppressHydrationWarning className={`${geist.variable} ${geistMono.variable} h-full antialiased`}>
+    <html lang={DEFAULT_LOCALE} data-scroll-behavior="smooth" suppressHydrationWarning className={`${geist.variable} ${geistMono.variable} ${instrumentSans.variable} ${interApp.variable} ${jetbrainsMono.variable} h-full antialiased`}>
       <head>
         {/* Before first paint: light, dark, or whatever the OS says. */}
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
