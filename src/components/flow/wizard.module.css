@@ -101,8 +101,9 @@
 @media (max-width: 639px) {
   .band, .body { padding-left: 20px; padding-right: 20px; }
   .stats { gap: 10px; padding: 14px 20px 18px; }
-  .statLabel, .statValue { white-space: normal; overflow-wrap: anywhere; }
-  .statValue { font-size: 15px; }
+  .statLabel { white-space: normal; }
+  /* values wrap between words only (a host name stays whole) at a size that fits three columns */
+  .statValue { white-space: normal; overflow-wrap: normal; font-size: 14px; }
   .facts { padding: 8px 20px; }
   .fact { grid-template-columns: minmax(0, 7rem) minmax(0, 1fr); }
   .flip { margin-left: 20px; margin-right: 20px; }
