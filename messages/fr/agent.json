@@ -66,7 +66,8 @@
     "cancel": "Annuler",
     "working": "Confirmation en cours…",
     "done": "Terminé",
-    "sayYes": "Dites “oui” pour confirmer"
+    "sayYes": "Dites “oui” pour confirmer",
+    "expired": "Plus disponible. Redemandez pour le refaire."
   },
   "error": {
     "line": "Une erreur s’est produite à cette étape. Rien n’a été réservé ni payé.",

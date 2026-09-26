@@ -54,7 +54,7 @@ export function AgentView({ role, firstName, csrfToken, profile, notes, threads 
             <div aria-hidden="true" className="h-20" />
         </>
       </div>
-      <KnowRail profile={profile} notes={notes} threads={threads} current={current?.id ?? null} onNewChat={() => { setCurrent(null); if (call && !live) call.close(); own.reset(); }} onResume={(th) => { setCurrent(th); if (call && !live) call.close(); own.resume(th.id); }} />
+      <KnowRail profile={profile} notes={notes} threads={threads} current={current?.id ?? null} onNewChat={() => { setCurrent(null); if (call && !live) call.close(); own.reset(); }} onResume={(th) => { setCurrent(th); if (call && !live) call.close(); void own.replay(th.id); }} />
     </div>
   );
 }

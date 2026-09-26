@@ -1,10 +1,10 @@
 "use client";
 
-import { Plus } from "lucide-react";
+import { Phone, Plus } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 
-export type RailThread = { id: string; title: string };
+export type RailThread = { id: string; title: string; kind?: "chat" | "call" };
 
 type Props = { profile: Array<{ label: string; value: string }>; notes: string[]; threads: RailThread[]; current: string | null; onNewChat: () => void; onResume: (thread: RailThread) => void };
 
@@ -34,7 +34,7 @@ export function KnowRail({ profile, notes, threads, current, onNewChat, onResume
           <h2 className="text-small font-semibold">{t("threads")}</h2>
           {threads.length ? (
             <ul className="grid gap-0.5">
-              {threads.map((th) => <li key={th.id}><button type="button" aria-current={th.id === current || undefined} onClick={() => onResume(th)} className="w-full truncate rounded-control px-2.5 py-1.5 text-left text-small outline-none hover:bg-well focus-visible:ring-2 focus-visible:ring-money aria-[current]:bg-well aria-[current]:font-medium">{th.title}</button></li>)}
+              {threads.map((th) => <li key={th.id}><button type="button" aria-current={th.id === current || undefined} onClick={() => onResume(th)} className="flex w-full items-center gap-2 rounded-control px-2.5 py-1.5 text-left text-small outline-none hover:bg-well focus-visible:ring-2 focus-visible:ring-money aria-[current]:bg-well aria-[current]:font-medium">{th.kind === "call" ? <Phone className="size-3.5 shrink-0 text-ink-muted" aria-hidden="true" /> : null}<span className="truncate">{th.title}</span></button></li>)}
             </ul>
           ) : <p className="text-small text-ink-muted">{t("noThreads")}</p>}
         </section>

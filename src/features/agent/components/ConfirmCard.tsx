@@ -13,7 +13,7 @@ import type { ConfirmState } from "./useAgentRun";
 // `compact` is the call widget's: each fact stacks its value under its label.
 export function ConfirmCard({ event, state = "open", onDecide, big = false, compact = false }: { event: ConfirmEvent; state?: ConfirmState; onDecide: (decision: "confirm" | "cancel") => void; big?: boolean; compact?: boolean }) {
   const t = useTranslations("agent.confirm");
-  const settled = state === "done" || state === "cancelled";
+  const settled = state === "done" || state === "cancelled" || state === "expired";
   const money = event.facts.find((f) => f.cents !== undefined);
   return (
     <section aria-label={event.title} className={`agent-rise min-w-0 overflow-hidden rounded-card border bg-surface shadow-lift ${state === "done" ? "border-money/40" : "border-rule"} ${big ? "w-full max-w-md" : ""}`}>
@@ -35,6 +35,8 @@ export function ConfirmCard({ event, state = "open", onDecide, big = false, comp
       <footer className={`flex flex-wrap items-center gap-2 border-t border-rule ${compact ? "px-3 py-2.5" : "px-4 py-3"}`}>
         {state === "done" ? (
           <span className="flex items-center gap-3"><Stamp>{t("done")}</Stamp>{money ? <span className="num text-small text-ink-muted">{money.label} · {money.value}</span> : null}</span>
+        ) : state === "expired" ? (
+          <span className="text-small text-ink-muted">{t("expired")}</span>
         ) : state === "cancelled" ? (
           <span className="text-small text-ink-muted">{event.cancelLabel}</span>
         ) : (

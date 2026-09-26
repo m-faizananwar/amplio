@@ -17,7 +17,8 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 const FORBIDDEN = 403;
 export const STALE = "stale";
 
-export type ConfirmState = "open" | "working" | "done" | "cancelled";
+// "expired": a card from an earlier session that can no longer be answered
+export type ConfirmState = "open" | "working" | "done" | "cancelled" | "expired";
 // What the page renders: the stream's events, plus the person's own turns,
 // each with a stable key.
 export type AgentItem = { key: string } & (AgentEvent | { type: "user"; text: string });
@@ -40,6 +41,7 @@ export function useAgentRun(role: "brand" | "creator", csrfToken: string, option
   const seq = useRef(0);
   const thread = useRef<{ id: string | null; history: Array<{ role: "user" | "assistant"; text: string }> }>({ id: null, history: [] });
   const onNavigate = useRef(options.onNavigate);
+  const replaying = useRef(false);
   useEffect(() => {
     onNavigate.current = options.onNavigate;
   });
@@ -48,11 +50,11 @@ export function useAgentRun(role: "brand" | "creator", csrfToken: string, option
     // a page move and a settled confirm change state, not the thread's rows
     if (incoming.type === "navigate") return void onNavigate.current?.(incoming);
     // money moved (booking, payment, top-up): the shell re-reads the wallet chip
-    if (incoming.type === "refresh") return void router.refresh();
+    if (incoming.type === "refresh") return void (replaying.current || router.refresh());
     if (incoming.type === "resolved") {
       setConfirms((c) => ({ ...c, [incoming.id]: incoming.outcome === "failed" ? "open" : incoming.outcome }));
       // a done action may have moved money: the shell's wallet chip re-reads it
-      if (incoming.outcome === "done") router.refresh();
+      if (incoming.outcome === "done" && !replaying.current) router.refresh();
       return;
     }
     const event: AgentEvent = incoming;
@@ -162,5 +164,25 @@ export function useAgentRun(role: "brand" | "creator", csrfToken: string, option
     thread.current.id = threadId;
   }, []);
 
-  return { items, confirms, busy, sample, send, decide, reset, resume, ingest: apply, addUser, adopt };
+  // Reopen a stored thread as it happened (GET /api/agent/threads/{id}); only
+  // the card the server still holds (`pending`) stays answerable.
+  const replay = useCallback(async (threadId: string) => {
+    resume(threadId);
+    const res = await fetch(`/api/agent/threads/${encodeURIComponent(threadId)}`, { cache: "no-store" }).catch(() => null);
+    if (!res?.ok) return;
+    const body = (await res.json()) as { pending: string | null; items: Array<AgentEvent | CallEvent | { type: "user"; text: string }> };
+    replaying.current = true;
+    for (const item of body.items) {
+      if (item.type === "user") addUser(item.text);
+      else apply(item);
+    }
+    replaying.current = false;
+    setConfirms((c) => {
+      const next = { ...c };
+      for (const item of body.items) if (item.type === "confirm" && item.id !== body.pending && !next[item.id]) next[item.id] = "expired";
+      return next;
+    });
+  }, [addUser, apply, resume]);
+
+  return { items, confirms, busy, sample, send, decide, reset, resume, replay, ingest: apply, addUser, adopt };
 }
