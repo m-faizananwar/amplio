@@ -1,11 +1,11 @@
 {
   "nav": {
-    "label": "Agent"
+    "label": "Mode agent"
   },
   "command": {
     "ask": "Demander à l’agent"
   },
-  "title": "Agent",
+  "title": "Mode agent",
   "description": "Il peut chercher, réserver et vérifier des choses pour vous, et demande confirmation avant tout mouvement d’argent.",
   "greeting": {
     "brand": "Qu’est-ce qu’on fait aujourd’hui, {name} ?",

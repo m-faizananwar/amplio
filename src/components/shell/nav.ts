@@ -1,11 +1,13 @@
 import {
-  BarChart3, Briefcase, CreditCard, Sparkles, Handshake, IdCard, LayoutGrid, LineChart, type LucideIcon, MessageCircle, Settings, Store, Users, Wallet,
+  BarChart3, Briefcase, CreditCard, Handshake, IdCard, LayoutGrid, LineChart, MessageCircle, Settings, Store, Users, Wallet,
 } from "lucide-react";
+import type { ComponentType } from "react";
+import { AgentMark } from "@/components/brand/AgentMark";
 import { AGENT_MODE } from "@/features/agent/flag";
 
 export type Role = "brand" | "creator";
 // `key` is the message key under shell.nav.<role>; labels never live here.
-export type NavItem = { href: string; key: string; icon: LucideIcon };
+export type NavItem = { href: string; key: string; icon: ComponentType<{ "aria-hidden"?: boolean | "true" | "false"; className?: string }> };
 
 // DIRECTION.md: Brand — Overview, Creators, Campaigns, Collaborations,
 // Results, Messages, Billing. Creator — Overview, My card, Opportunities,
@@ -35,7 +37,7 @@ export function navFor(role: Role) {
   const base = role === "brand" ? BRAND_NAV : CREATOR_NAV;
   return {
     // the Agent sits right after Overview while agent mode is on
-    primary: AGENT_MODE ? [base[0] as NavItem, { href: `/${role}/agent`, key: "agent", icon: Sparkles }, ...base.slice(1)] : base,
+    primary: AGENT_MODE ? [base[0] as NavItem, { href: `/${role}/agent`, key: "agent", icon: AgentMark }, ...base.slice(1)] : base,
     settings: { href: `/${role}/settings`, key: "settings", icon: Settings } satisfies NavItem,
   };
 }

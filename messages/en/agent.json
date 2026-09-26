@@ -1,11 +1,11 @@
 {
   "nav": {
-    "label": "Agent"
+    "label": "Agentic mode"
   },
   "command": {
     "ask": "Ask the agent"
   },
-  "title": "Agent",
+  "title": "Agentic mode",
   "description": "It can find, book and check things for you, and asks before anything that moves money.",
   "greeting": {
     "brand": "What should we do today, {name}?",

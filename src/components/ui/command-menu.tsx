@@ -1,7 +1,6 @@
 "use client"
 
-import type { LucideIcon } from "lucide-react"
-import { useEffect } from "react"
+import { useEffect, type ComponentType } from "react"
 import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandShortcut } from "./command"
 
 export type CommandMenuItem = {
@@ -10,7 +9,8 @@ export type CommandMenuItem = {
   /** Extra words that should match, e.g. a creator's handle. */
   keywords?: string[]
   hint?: string
-  icon?: LucideIcon
+  /** A lucide icon or any icon component taking className and aria-hidden. */
+  icon?: ComponentType<{ "aria-hidden"?: boolean | "true" | "false"; className?: string }>
   onSelect: () => void
 }
 

@@ -11,7 +11,7 @@
       "messages": "Messages",
       "billing": "Facturation",
       "settings": "Paramètres",
-      "agent": "Agent",
+      "agent": "Mode agent",
       "setup": "Configuration"
     },
     "creator": {
@@ -23,7 +23,7 @@
       "earnings": "Revenus",
       "messages": "Messages",
       "settings": "Paramètres",
-      "agent": "Agent",
+      "agent": "Mode agent",
       "setup": "Configuration"
     },
     "sections": {
