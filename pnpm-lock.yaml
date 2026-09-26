@@ -38,6 +38,12 @@ importers:
       bcryptjs:
         specifier: ^3.0.3
         version: 3.0.3
+      border-beam:
+        specifier: 1.4.1
+        version: 1.4.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      bot-avatars:
+        specifier: 0.1.1
+        version: 0.1.1(react@19.2.8)
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -95,6 +101,9 @@ importers:
       tw-animate-css:
         specifier: ^1.4.0
         version: 1.4.0
+      voice-glow:
+        specifier: 0.2.1
+        version: 0.2.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       zod:
         specifier: ^4.6.2
         version: 4.6.2
@@ -2386,6 +2395,17 @@ packages:
   body-parser@2.3.0:
     resolution: {integrity: sha512-2cGmJupaNgg+QUwVLAucDuWuoMZ6EX9iHDRswZ5lsNYEmwPaRknMPCLZz07yTzVq/83p4o/wzbDZbBrTvGGTIw==}
     engines: {node: '>=18'}
+
+  border-beam@1.4.1:
+    resolution: {integrity: sha512-YyugmKjrhkg1PBC1ZKX7JvFo/zYzha6NXOq24VWrnvBYmDRvGCgFS9oxZoKJ+oS9Kn436l1etYGlAdGiWK+3ag==}
+    peerDependencies:
+      react: '>=18.0.0'
+      react-dom: '>=18.0.0'
+
+  bot-avatars@0.1.1:
+    resolution: {integrity: sha512-J1gamb44dLXWViX6N+qz8wQyMmVUEtv9GrrHXo+xP3GlzbVzPTO4g+bWme0F9OXpX31nyDXSnUG9/mctUi7t3w==}
+    peerDependencies:
+      react: '>=18.0.0'
 
   bowser@2.14.1:
     resolution: {integrity: sha512-tzPjzCxygAKWFOJP011oxFHs57HzIhOEracIgAePE4pqB3LikALKnSzUyU4MGs9/iCEUuHlAJTjTc5M+u7YEGg==}
@@ -4902,6 +4922,12 @@ packages:
       jsdom:
         optional: true
 
+  voice-glow@0.2.1:
+    resolution: {integrity: sha512-Lpc+Ppd788kCDC88p9Hr8u3eFQh0X/hdISX76hqx1/x4BZiidrmCuQRLOE+jGOIkqB1BdaFBJ7F2rg1GsST6tw==}
+    peerDependencies:
+      react: '>=18.0.0'
+      react-dom: '>=18.0.0'
+
   web-streams-polyfill@3.3.3:
     resolution: {integrity: sha512-d2JWLCivmZYTSIoge9MsgFCZrt571BikcWGYkjC1khllbTeDlGqZ2D8vD8E/lJa8WGWbb7Plm8/XJYV7IJHZZw==}
     engines: {node: '>= 8'}
@@ -6764,6 +6790,15 @@ snapshots:
       type-is: 2.1.0
     transitivePeerDependencies:
       - supports-color
+
+  border-beam@1.4.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
+    dependencies:
+      react: 19.2.8
+      react-dom: 19.2.8(react@19.2.8)
+
+  bot-avatars@0.1.1(react@19.2.8):
+    dependencies:
+      react: 19.2.8
 
   bowser@2.14.1: {}
 
@@ -9445,6 +9480,11 @@ snapshots:
       '@types/node': 20.19.43
     transitivePeerDependencies:
       - msw
+
+  voice-glow@0.2.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
+    dependencies:
+      react: 19.2.8
+      react-dom: 19.2.8(react@19.2.8)
 
   web-streams-polyfill@3.3.3: {}
 

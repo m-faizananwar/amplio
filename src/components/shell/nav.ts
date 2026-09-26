@@ -2,8 +2,8 @@ import {
   BarChart3, Briefcase, CreditCard, Handshake, IdCard, LayoutGrid, LineChart, MessageCircle, Settings, Store, Users, Wallet,
 } from "lucide-react";
 import type { ComponentType } from "react";
-import { AgentMark } from "@/components/brand/AgentMark";
 import { AGENT_MODE } from "@/features/agent/flag";
+import { AgentNavIcon } from "@/features/agent/components/identity/AgentNavIcon";
 
 export type Role = "brand" | "creator";
 // `key` is the message key under shell.nav.<role>; labels never live here.
@@ -37,7 +37,7 @@ export function navFor(role: Role) {
   const base = role === "brand" ? BRAND_NAV : CREATOR_NAV;
   return {
     // the Agent sits right after Overview while agent mode is on
-    primary: AGENT_MODE ? [base[0] as NavItem, { href: `/${role}/agent`, key: "agent", icon: AgentMark }, ...base.slice(1)] : base,
+    primary: AGENT_MODE ? [base[0] as NavItem, { href: `/${role}/agent`, key: "agent", icon: AgentNavIcon }, ...base.slice(1)] : base,
     settings: { href: `/${role}/settings`, key: "settings", icon: Settings } satisfies NavItem,
   };
 }

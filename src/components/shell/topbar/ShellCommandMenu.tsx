@@ -1,9 +1,10 @@
 "use client";
 
-import { Briefcase, Handshake, Languages, Moon, PhoneCall, Plus, Search, UserPlus, Users, Wallet, BarChart3, Sparkles } from "lucide-react";
+import { Briefcase, Handshake, Languages, Moon, PhoneCall, Plus, Search, UserPlus, Users, Wallet, BarChart3 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { useCallback, useState } from "react";
+import { AgentMark } from "@/components/brand/AgentMark";
 import { CommandMenu, useCommandShortcut, type CommandMenuGroup } from "@/components/ui/command-menu";
 import type { CommandIndex } from "@/features/workspace/server/command-queries";
 import { useCall } from "@/features/agent/components/call/callContext";
@@ -37,12 +38,12 @@ export function ShellCommandMenu({ role }: Props) {
   const go = (href: string) => () => router.push(href);
   const nav = navFor(role);
   const groups: CommandMenuGroup[] = [
-    { heading: t("commandMenu.groups.goTo"), items: [...nav.primary, nav.settings].map((n) => ({ id: n.href, label: t(`nav.${role}.${n.key}`), icon: n.icon, onSelect: go(n.href) })) },
+    { heading: t("commandMenu.groups.goTo"), items: [...nav.primary, nav.settings].map((n) => ({ id: n.href, label: t(`nav.${role}.${n.key}`), icon: n.key === "agent" ? AgentMark : n.icon, onSelect: go(n.href) })) },
     { heading: t("commandMenu.groups.campaigns"), items: (index?.campaigns ?? []).map((e) => ({ id: e.id, label: e.label, icon: Briefcase, onSelect: go(e.href) })) },
     { heading: t("commandMenu.groups.collaborations"), items: (index?.collaborations ?? []).map((e) => ({ id: e.id, label: e.label, icon: Handshake, onSelect: go(e.href) })) },
     { heading: t("commandMenu.groups.creators"), items: (index?.creators ?? []).map((e) => ({ id: e.id, label: e.label, hint: e.hint, keywords: e.hint ? [e.hint] : undefined, icon: Users, onSelect: go(e.href) })) },
     { heading: t("commandMenu.groups.actions"), items: [
-      ...(AGENT_MODE ? [{ id: "ask-agent", label: t("commandMenu.actions.askAgent"), icon: Sparkles, onSelect: go(`/${role}/agent`) }] : []),
+      ...(AGENT_MODE ? [{ id: "ask-agent", label: t("commandMenu.actions.askAgent"), icon: AgentMark, onSelect: go(`/${role}/agent`) }] : []),
       ...(call ? [{ id: "call-agent", label: t("commandMenu.actions.callAgent"), icon: PhoneCall, onSelect: call.start }] : []),
       ...(role === "brand" ? [
         { id: "new-campaign", label: t("commandMenu.actions.newCampaign"), icon: Plus, onSelect: go("/brand/campaigns/new") },
