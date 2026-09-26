@@ -17,7 +17,7 @@ export function WalletChip({ role, walletCents }: { role: "brand" | "creator"; w
   return (
     <Link
       href={role === "brand" ? "/brand/billing" : "/creator/earnings"}
-      className="inline-flex h-9 items-center gap-2 rounded-control border border-rule bg-surface px-3 outline-none transition-colors duration-(--duration-fast) ease-ledger hover:border-rule-strong focus-visible:ring-2 focus-visible:ring-money"
+      className="inline-flex h-9 items-center gap-2 rounded-chip border border-money/25 bg-money-soft px-3.5 outline-none transition-colors duration-(--duration-fast) ease-ledger hover:border-money/50 focus-visible:ring-2 focus-visible:ring-money"
     >
       <span className="hidden text-caption text-ink-muted sm:inline">{t("label")}</span>
       <RollingNumber value={wallet.walletCents} format={euros} className="text-small font-medium text-money" />

@@ -21,8 +21,8 @@ export async function AppShell({ viewer, children }: { viewer: ShellViewer; chil
       <WalletProvider initialCents={viewer.walletCents}>
         <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded-control focus:bg-ink focus:px-3 focus:py-2 focus:text-paper">{t("skipToContent")}</a>
         <div className="flex min-h-screen bg-paper">
-          <aside className="sticky top-0 hidden h-screen w-58 shrink-0 border-r border-rule bg-paper lg:block">
-            <Rail role={viewer.role} />
+          <aside className="sticky top-0 hidden h-screen w-60 shrink-0 border-r border-rule bg-paper transition-[width] duration-(--duration-slow) ease-ledger has-[[data-rail-collapsed]]:w-18 lg:block">
+            <Rail role={viewer.role} collapsible />
           </aside>
           <div className="flex min-w-0 flex-1 flex-col">
             <TopBar viewer={viewer} />

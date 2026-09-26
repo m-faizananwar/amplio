@@ -1,0 +1,50 @@
+/* The app shell (docs/design/DIRECTION.md, "Sidebar and top bar"). */
+@layer components {
+  .nav-item {
+    display: flex;
+    height: 40px;
+    align-items: center;
+    gap: 10px;
+    padding: 0 6px;
+    border-radius: 12px;
+    color: var(--ink-muted);
+    font-size: 14px;
+    outline: none;
+    transition:
+      background-color var(--duration-fast) var(--ease-ledger),
+      color var(--duration-fast) var(--ease-ledger),
+      box-shadow var(--duration-base) var(--ease-ledger);
+  }
+  .nav-item:hover { background: var(--well); color: var(--ink); }
+  .nav-item:focus-visible { outline: 2px solid var(--money); outline-offset: 2px; }
+  .nav-item[aria-current="page"] { background: var(--surface); color: var(--ink); font-weight: 500; box-shadow: var(--lift-shadow), 0 0 0 1px var(--rule); }
+
+  /* the icon's 28px square: the active item's pops in filled (like a field's) */
+  .nav-icon { position: relative; display: grid; width: 28px; height: 28px; flex-shrink: 0; place-items: center; border-radius: 9px; }
+  .nav-icon::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--money);
+    box-shadow: 0 4px 10px -2px color-mix(in oklab, var(--money) 45%, transparent);
+    opacity: 0;
+    transform: scale(0.4);
+    transition: transform 450ms var(--ease-spring), opacity var(--duration-fast) var(--ease-ledger);
+  }
+  .nav-icon svg { position: relative; width: 16px; height: 16px; }
+  [aria-current="page"] > .nav-icon { color: var(--surface); }
+  [aria-current="page"] > .nav-icon::before { opacity: 1; transform: scale(1); }
+  .dark [aria-current="page"] > .nav-icon { color: var(--paper); }
+
+  /* RingWidget: each tick switches on in turn (delay set inline, 9 ms apart). */
+  .ring-tick { opacity: 0; transition: opacity 360ms var(--ease-ledger), stroke-width var(--duration-fast) var(--ease-ledger); }
+  .ring-tick[data-on] { opacity: 1; }
+
+  .nav-section { padding: 0 8px; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-muted); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-icon::before, .nav-item { transition: none !important; }
+  .ring-tick { opacity: 1; transition: none !important; }
+}

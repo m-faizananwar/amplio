@@ -13,6 +13,7 @@ import "./globals.css";
 import "@/styles/interaction.css";
 import "@/styles/blob-button.css";
 import "@/styles/fields.css";
+import "@/styles/shell.css";
 
 import { BRAND } from "@/config/brand";
 

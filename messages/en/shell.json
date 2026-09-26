@@ -21,7 +21,13 @@
       "earnings": "Earnings",
       "messages": "Messages",
       "settings": "Settings"
-    }
+    },
+    "sections": {
+      "main": "Workspace",
+      "account": "Account"
+    },
+    "collapse": "Collapse sidebar",
+    "expand": "Expand sidebar"
   },
   "topBar": {
     "roleSwitch": {

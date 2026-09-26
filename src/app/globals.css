@@ -38,6 +38,7 @@
   /* zinc wells: the field / hover surface, and its pressed step */
   --color-well: var(--well);
   --color-press: var(--press);
+  --color-field: var(--field);
 
   /* type: Geist for text, Geist Mono for every number, id, date and code */
   --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
@@ -140,10 +141,12 @@
   --ink-muted: #71717a;
   --rule: #e4e4e7;
   --rule-strong: #d4d4d8;
-  /* the one hover/selected wash (zinc-100); fields sit in the well, press is its hover */
+  /* zinc-100 wash; the hover well (#ededf0) under options, rows and nav items;
+     fields rest on zinc-50 and darken to press on hover */
   --tint: #f4f4f5;
-  --well: #fafafa;
+  --well: #ededf0;
   --press: #f0f0f2;
+  --field: #fafafa;
   --label: #3f3f46;
   /* one accent for action, money and verified attribution */
   --money: #0f7b4a;
@@ -214,8 +217,9 @@
   --rule: #27272a;
   --rule-strong: #3f3f46;
   --tint: #202023;
-  --well: #1f1f23;
-  --press: #27272a;
+  --well: #27272a;
+  --press: #232326;
+  --field: #1c1c1f;
   --label: #d4d4d8;
   --money: #34c77b;
   --money-soft: #12291c;

@@ -12,7 +12,7 @@ import type { ShellViewer } from "./viewer";
 // switch (demo accounts), the wallet, language, theme, the bell, the account.
 export function TopBar({ viewer }: { viewer: ShellViewer }) {
   return (
-    <header className="sticky top-0 z-30 border-b border-rule bg-paper/95">
+    <header className="sticky top-0 z-30 border-b border-rule bg-surface">
       <div className="mx-auto flex h-14 max-w-content items-center gap-2 px-4 lg:px-8">
         <MobileNav role={viewer.role} />
         <div className="min-w-0 flex-1"><ShellCommandMenu role={viewer.role} /></div>

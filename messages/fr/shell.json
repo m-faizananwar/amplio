@@ -21,7 +21,13 @@
       "earnings": "Revenus",
       "messages": "Messages",
       "settings": "Paramètres"
-    }
+    },
+    "sections": {
+      "main": "Espace",
+      "account": "Compte"
+    },
+    "collapse": "Réduire la barre latérale",
+    "expand": "Agrandir la barre latérale"
   },
   "topBar": {
     "roleSwitch": {
