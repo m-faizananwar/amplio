@@ -29,3 +29,30 @@ export function legalDefaults(state: OnboardingState): Partial<ProfessionalInput
     invoicingAuthorized: p.invoicingAuthorized ? true : undefined,
   };
 }
+
+// What the preview card starts from on every step (the step's form overrides
+// the fields it edits, live).
+export type CreatorCardData = {
+  name: string; avatarUrl: string; headline: string; country: string; industries: string[];
+  followers: number; fromLinkedin: boolean; priceCents: number; bundles: number;
+  legalName: string; legalCountry: string; registeredBusiness: boolean | null;
+};
+
+export function cardData(state: OnboardingState): CreatorCardData {
+  const p = state.professional;
+  return {
+    name: state.name,
+    avatarUrl: state.avatarUrl,
+    headline: state.headline,
+    country: state.country.toUpperCase(),
+    industries: state.industries,
+    followers: state.followers,
+    fromLinkedin: state.profileRead && state.followers > 0,
+    // the €20 floor is a registration placeholder, not a price the creator chose
+    priceCents: state.onboarded || state.priceCents !== PRICE_FLOOR_CENTS ? state.priceCents : 0,
+    bundles: state.bundles.length,
+    legalName: p.legalName ?? "",
+    legalCountry: (p.legalCountry ?? "").toUpperCase(),
+    registeredBusiness: p.registeredBusiness ?? null,
+  };
+}

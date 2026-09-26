@@ -64,5 +64,54 @@
       "sub": "Needed to invoice brands and pay you: your tax country, business status, legal name and address, and two confirmations.",
       "laterNote": "You can finish this later in Settings. It's needed before you apply, accept a booking or withdraw."
     }
+  },
+  "eyebrows": {
+    "brand": "Brand setup · your profile",
+    "linkedin": "Creator setup · your profile",
+    "card": "Creator setup · your card",
+    "price": "Creator setup · your price",
+    "legal": "Creator setup · invoicing"
+  },
+  "preview": {
+    "flip": {
+      "toBack": "Show the details",
+      "toFront": "Show the card"
+    },
+    "creator": {
+      "label": "Your card, as brands will see it",
+      "band": "Your creator card",
+      "namePlaceholder": "Your name",
+      "progress": "Card complete",
+      "headlinePlaceholder": "Your headline appears here",
+      "followers": "Followers",
+      "country": "Country",
+      "perPost": "Per post",
+      "facts": "What brands will see",
+      "headline": "Headline",
+      "industries": "Industries",
+      "bundles": "Bundles",
+      "legalName": "Legal name",
+      "legalCountry": "Tax country",
+      "business": "Registered business",
+      "yes": "Yes",
+      "no": "No",
+      "none": "—"
+    },
+    "brand": {
+      "label": "Your brand profile, as creators will see it",
+      "band": "Your brand profile",
+      "namePlaceholder": "Your company",
+      "progress": "Profile complete",
+      "valuePropPlaceholder": "Your value proposition appears here once your site is read.",
+      "website": "Website",
+      "customers": "Ideal customers",
+      "status": "Draft",
+      "statusReady": "Ready",
+      "statusEmpty": "Not read yet",
+      "facts": "Your profile",
+      "valueProp": "Value proposition",
+      "customer": "Customer {n}",
+      "none": "—"
+    }
   }
 }

@@ -1,11 +1,11 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useLocale, useTranslations } from "next-intl";
-import { formatCount } from "@/lib/money";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
+import { WizardActions } from "@/components/flow/WizardActions";
 import { Button } from "@/components/ui/button";
 import { FormAlert } from "@/features/auth/components/FormAlert";
 import { CardFields } from "@/features/profile-fields/components/CardFields";
@@ -13,15 +13,15 @@ import { COUNTRIES, ONBOARDING_STEPS } from "../../constants";
 import { type CardInput, cardSchema } from "../../schemas";
 import { saveCreatorCard } from "../../server/actions";
 import type { OnboardingState } from "../../server/queries";
-import { cardDefaults } from "./step-defaults";
+import { CreatorPreview } from "./CreatorPreview";
+import { cardData, cardDefaults } from "./step-defaults";
 import { useFlyToCard } from "./useFlyToCard";
 
 // Headline, country, up to three industries — and the card brands will see,
-// building itself underneath as the fields fill in.
-export function CardForm({ state }: { state: OnboardingState }) {
+// building itself beside them as the fields fill in (each value flies in).
+export function CardForm({ state, back }: { state: OnboardingState; back: string }) {
   const t = useTranslations("onboarding.creator.card");
   const tc = useTranslations("onboarding.common");
-  const locale = useLocale();
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const form = useForm<CardInput>({ resolver: zodResolver(cardSchema), defaultValues: cardDefaults(state) });
@@ -31,6 +31,7 @@ export function CardForm({ state }: { state: OnboardingState }) {
   const countrySlot = useRef<HTMLSpanElement>(null);
   const industrySlot = useRef<HTMLDivElement>(null);
   const countryName = COUNTRIES.find((c) => c.code === country)?.name ?? "";
+  const live = { ...cardData(state), headline: headline ?? "", country: country ?? "", industries: industries ?? [] };
   useFlyToCard(headline ?? "", "headline", headlineSlot);
   useFlyToCard(countryName, "country", countrySlot);
   useFlyToCard((industries ?? []).at(-1) ?? "", "industries-count", industrySlot);
@@ -43,25 +44,18 @@ export function CardForm({ state }: { state: OnboardingState }) {
   }
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-6" noValidate>
-      <CardFields control={form.control} />
-      <figure className="rounded-card border border-rule bg-surface p-5 shadow-float" aria-label={t("previewLabel")}>
-        <div className="flex items-center gap-3">
-          <span className="flex size-11 items-center justify-center rounded-full bg-ink font-semibold text-paper" aria-hidden="true">{state.name.slice(0, 1)}</span>
-          <div className="min-w-0">
-            <p className="font-semibold">{state.name}</p>
-            <p ref={headlineSlot} className="truncate text-small text-ink-muted">{headline || "—"}</p>
-          </div>
-          <span ref={countrySlot} className="ml-auto text-caption text-ink-muted">{countryName}</span>
-        </div>
-        <div ref={industrySlot} className="mt-4 flex flex-wrap items-center gap-1.5 border-t border-rule pt-3">
-          {state.followers > 0 ? <span className="num text-small">{formatCount(state.followers, locale)}</span> : null}
-          {(industries ?? []).map((i) => <span key={i} className="rounded-chip border border-rule px-2.5 py-0.5 text-caption">{i}</span>)}
-        </div>
-        <figcaption className="mt-3 text-caption text-ink-muted">{state.profileRead && state.followers > 0 ? t("fromLinkedin") : t("enteredByHand")}</figcaption>
-      </figure>
-      <FormAlert message={error} />
-      <Button type="submit" size="lg" className="h-11" disabled={busy}>{busy ? tc("saving") : tc("continue")}</Button>
-    </form>
+    <>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="grid content-start gap-6" data-area="fields" noValidate>
+        <CardFields control={form.control} />
+        <p className="text-caption text-ink-muted">{state.profileRead && state.followers > 0 ? t("fromLinkedin") : t("enteredByHand")}</p>
+        <FormAlert message={error} />
+        <WizardActions back={back} backLabel={tc("back")}>
+          <Button type="submit" size="lg" className="h-11" disabled={busy}>{busy ? tc("saving") : tc("continue")}</Button>
+        </WizardActions>
+      </form>
+      <div data-area="card">
+        <CreatorPreview data={live} slots={{ headline: headlineSlot, country: countrySlot, industries: industrySlot }} />
+      </div>
+    </>
   );
 }

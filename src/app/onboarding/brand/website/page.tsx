@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+import { StepRail } from "@/components/flow/StepRail";
+import { WizardShell } from "@/components/flow/WizardShell";
 import { ErrorState } from "@/components/page/ErrorState";
-import { AuthColumn } from "@/features/auth/components/AuthColumn";
 import { BrandSetup } from "@/features/brand-onboarding/components/BrandSetup";
 import { ONBOARDING_ROUTES } from "@/features/brand-onboarding/constants";
 import { loadOnboardingProfile } from "@/features/brand-onboarding/server/queries";
@@ -11,14 +12,22 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: (await getTranslations("onboarding.brand"))("meta") };
 }
 
-// The whole brand onboarding: website in, draft out, on one screen.
+// The whole brand onboarding: website in, draft out, on one screen. The rail
+// moves from Website to Profile once there is a draft.
 export default async function BrandOnboardingPage() {
   const viewer = await requireOnboardingBrand(ONBOARDING_ROUTES.website);
-  const profile = await loadOnboardingProfile(viewer.brand.id);
+  const [profile, t, tAuth] = await Promise.all([loadOnboardingProfile(viewer.brand.id), getTranslations("onboarding"), getTranslations("auth.signUp")]);
   const hasDraft = !!profile && (!!profile.website && (profile.valueProp.trim().length > 0 || profile.icps.some((i) => i.title.trim())));
+  const steps = tAuth.raw("stepsBrand") as string[];
+  const current = hasDraft ? 2 : 1;
   return (
-    <AuthColumn wide>
-      {profile ? <BrandSetup profile={profile} hasDraft={hasDraft} /> : <ErrorState body="Your brand workspace could not be loaded. The database may be unreachable." retryHref={ONBOARDING_ROUTES.website} />}
-    </AuthColumn>
+    <WizardShell
+      rail={<StepRail steps={steps} current={current} label={t("rail.label")} stepOf={t("rail.stepOf", { current: current + 1, total: steps.length })} />}
+      eyebrow={t("eyebrows.brand")}
+      title={t("brand.title")}
+      sub={t("brand.sub")}
+    >
+      {profile ? <BrandSetup profile={profile} hasDraft={hasDraft} /> : <div data-area="fields"><ErrorState body="Your brand workspace could not be loaded. The database may be unreachable." retryHref={ONBOARDING_ROUTES.website} /></div>}
+    </WizardShell>
   );
 }

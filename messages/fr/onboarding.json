@@ -64,5 +64,54 @@
       "sub": "Nécessaires pour facturer les marques et vous payer : pays de résidence fiscale, statut, nom et adresse légaux, et deux confirmations.",
       "laterNote": "Vous pourrez terminer plus tard dans les Paramètres. Ces informations sont obligatoires avant de postuler, d’accepter une réservation ou de retirer vos revenus."
     }
+  },
+  "eyebrows": {
+    "brand": "Configuration marque · votre profil",
+    "linkedin": "Configuration créateur · votre profil",
+    "card": "Configuration créateur · votre carte",
+    "price": "Configuration créateur · votre prix",
+    "legal": "Configuration créateur · facturation"
+  },
+  "preview": {
+    "flip": {
+      "toBack": "Voir le détail",
+      "toFront": "Voir la carte"
+    },
+    "creator": {
+      "label": "Votre carte, telle que les marques la verront",
+      "band": "Votre carte créateur",
+      "namePlaceholder": "Votre nom",
+      "progress": "Carte complétée",
+      "headlinePlaceholder": "Votre titre apparaîtra ici",
+      "followers": "Abonnés",
+      "country": "Pays",
+      "perPost": "Par post",
+      "facts": "Ce que verront les marques",
+      "headline": "Titre",
+      "industries": "Secteurs",
+      "bundles": "Offres groupées",
+      "legalName": "Nom légal",
+      "legalCountry": "Pays fiscal",
+      "business": "Entreprise immatriculée",
+      "yes": "Oui",
+      "no": "Non",
+      "none": "—"
+    },
+    "brand": {
+      "label": "Votre profil de marque, tel que les créateurs le verront",
+      "band": "Votre profil de marque",
+      "namePlaceholder": "Votre entreprise",
+      "progress": "Profil complété",
+      "valuePropPlaceholder": "Votre proposition de valeur apparaîtra ici une fois votre site lu.",
+      "website": "Site web",
+      "customers": "Clients idéaux",
+      "status": "Brouillon",
+      "statusReady": "Prêt",
+      "statusEmpty": "Pas encore lu",
+      "facts": "Votre profil",
+      "valueProp": "Proposition de valeur",
+      "customer": "Client {n}",
+      "none": "—"
+    }
   }
 }

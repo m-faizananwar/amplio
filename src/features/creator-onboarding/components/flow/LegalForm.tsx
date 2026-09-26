@@ -4,22 +4,26 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
+import { WizardActions } from "@/components/flow/WizardActions";
 import { Button } from "@/components/ui/button";
 import { FormAlert } from "@/features/auth/components/FormAlert";
 import { ProfessionalFields } from "@/features/profile-fields/components/ProfessionalFields";
 import { type ProfessionalInput, professionalSchema } from "../../schemas";
 import { completeOnboarding, saveProfessionalInfo } from "../../server/actions";
+import { CreatorPreview } from "./CreatorPreview";
+import type { CreatorCardData } from "./step-defaults";
 
 // The legal details for invoicing — now, or later from Settings. Either
 // button finishes onboarding and opens the workspace.
-export function LegalForm({ defaults }: { defaults: Partial<ProfessionalInput> }) {
+export function LegalForm({ defaults, card, back }: { defaults: Partial<ProfessionalInput>; card: CreatorCardData; back: string }) {
   const t = useTranslations("onboarding");
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [skipping, setSkipping] = useState(false);
   const form = useForm<ProfessionalInput>({ resolver: zodResolver(professionalSchema), defaultValues: defaults });
   const busy = form.formState.isSubmitting || skipping;
+  const [legalName, legalCountry, registeredBusiness] = useWatch({ control: form.control, name: ["legalName", "legalCountry", "registeredBusiness"] });
 
   async function onSubmit(values: ProfessionalInput) {
     setError(null);
@@ -40,14 +44,21 @@ export function LegalForm({ defaults }: { defaults: Partial<ProfessionalInput> }
   }
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-6" noValidate>
-      <ProfessionalFields control={form.control} />
-      <FormAlert message={error} />
-      <div className="grid gap-2 sm:grid-cols-2">
-        <Button type="submit" size="lg" className="h-11" disabled={busy}>{form.formState.isSubmitting ? t("common.opening") : t("common.continue")}</Button>
-        <Button type="button" variant="secondary" size="lg" className="h-11" disabled={busy} onClick={later}>{skipping ? t("common.opening") : t("common.later")}</Button>
+    <>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="grid content-start gap-6" data-area="fields" noValidate>
+        <ProfessionalFields control={form.control} />
+        <FormAlert message={error} />
+        <WizardActions back={back} backLabel={t("common.back")}>
+          <div className="grid gap-2 sm:grid-cols-2">
+            <Button type="submit" size="lg" className="h-11" disabled={busy}>{form.formState.isSubmitting ? t("common.opening") : t("common.continue")}</Button>
+            <Button type="button" variant="secondary" size="lg" className="h-11" disabled={busy} onClick={later}>{skipping ? t("common.opening") : t("common.later")}</Button>
+          </div>
+        </WizardActions>
+        <p className="text-small text-ink-muted">{t("creator.legal.laterNote")}</p>
+      </form>
+      <div data-area="card">
+        <CreatorPreview data={{ ...card, legalName: legalName ?? "", legalCountry: legalCountry ?? "", registeredBusiness: registeredBusiness ?? null }} showBack />
       </div>
-      <p className="text-small text-ink-muted">{t("creator.legal.laterNote")}</p>
-    </form>
+    </>
   );
 }

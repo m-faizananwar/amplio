@@ -9,14 +9,17 @@ import { useForm } from "react-hook-form";
 import { buttonVariants, Button } from "@/components/ui/button";
 import { FormAlert } from "@/features/auth/components/FormAlert";
 import { LinkedinFields } from "@/features/profile-fields/components/LinkedinFields";
+import { WizardActions } from "@/components/flow/WizardActions";
 import { cn } from "@/lib/cn";
 import { ONBOARDING_STEPS } from "../../constants";
 import { type LinkedinInput, linkedinSchema } from "../../schemas";
 import { readLinkedinProfile } from "../../server/actions";
+import { CreatorPreview } from "./CreatorPreview";
+import type { CreatorCardData } from "./step-defaults";
 
 // Paste the public profile URL; we read it once to fill the card. If it can't
 // be read, say so and let the creator type the card by hand — never a guess.
-export function LinkedinForm({ linkedinUrl, alreadyRead }: { linkedinUrl: string; alreadyRead: boolean }) {
+export function LinkedinForm({ linkedinUrl, alreadyRead, card }: { linkedinUrl: string; alreadyRead: boolean; card: CreatorCardData }) {
   const t = useTranslations("onboarding");
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
@@ -39,7 +42,8 @@ export function LinkedinForm({ linkedinUrl, alreadyRead }: { linkedinUrl: string
   }
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4" noValidate>
+    <>
+    <form onSubmit={form.handleSubmit(onSubmit)} className="grid content-start gap-4" data-area="fields" noValidate>
       <LinkedinFields control={form.control} />
       <p className="text-small text-ink-muted">{t("creator.linkedin.privacy")}</p>
       <FormAlert message={error} />
@@ -50,10 +54,14 @@ export function LinkedinForm({ linkedinUrl, alreadyRead }: { linkedinUrl: string
           <Link href={ONBOARDING_STEPS.card.path} className={cn(buttonVariants({ variant: "secondary" }), "mt-3")}>{t("creator.linkedin.manual")}</Link>
         </div>
       ) : null}
-      <Button type="submit" size="lg" className="h-11" disabled={busy}>{busy ? t("creator.linkedin.importing") : t("creator.linkedin.import")}</Button>
+      <WizardActions backLabel={t("common.back")}>
+        <Button type="submit" size="lg" className="h-11" disabled={busy}>{busy ? t("creator.linkedin.importing") : t("creator.linkedin.import")}</Button>
+      </WizardActions>
       {alreadyRead ? (
         <Link href={ONBOARDING_STEPS.card.path} className="text-center text-small text-ink-muted underline-offset-4 hover:text-ink hover:underline">{t("common.continue")}</Link>
       ) : null}
     </form>
+    <div data-area="card"><CreatorPreview data={card} /></div>
+    </>
   );
 }

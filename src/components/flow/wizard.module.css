@@ -1,0 +1,96 @@
+/* The onboarding wizard: an aside (eyebrow, title, one line, the step's
+   fields) beside a large preview card that is the thing being made. Phones
+   stack the card above the fields. The card tilts toward the pointer and
+   flips to a list of the entered facts when a step adds details. */
+.shell { display: flex; min-height: 100svh; flex-direction: column; background: var(--color-paper); }
+.top { margin: 0 auto; display: flex; width: 100%; max-width: 76rem; align-items: center; justify-content: space-between; padding: 20px 16px; }
+.main { margin: 0 auto; width: 100%; max-width: 76rem; padding: 8px 16px 64px; }
+.rail { margin-bottom: 40px; max-width: 36rem; }
+.grid {
+  display: grid; gap: 28px;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "head" "card" "fields";
+}
+.grid > [data-area="fields"] { grid-area: fields; min-width: 0; }
+.grid > [data-area="card"] { grid-area: card; min-width: 0; }
+.head { grid-area: head; }
+.eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--color-ink-muted); }
+.title { margin-top: 10px; font-size: var(--text-h2); line-height: 1.1; font-weight: 600; letter-spacing: -0.02em; }
+.sub { margin-top: 8px; max-width: 34rem; color: var(--color-ink-muted); }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.actions > :last-child { flex: 1 1 12rem; }
+@media (min-width: 640px) {
+  .top, .main { padding-left: 32px; padding-right: 32px; }
+}
+@media (min-width: 1024px) {
+  .grid {
+    column-gap: 64px; row-gap: 32px; align-items: start;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    grid-template-areas: "head card" "fields card";
+    grid-template-rows: auto 1fr;
+  }
+  .grid > [data-area="card"] { position: sticky; top: 32px; }
+}
+
+/* ---- the preview card ---- */
+.stage { perspective: 1400px; }
+.tilt {
+  transform-origin: 50% 72%;
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform .3s cubic-bezier(.22, 1, .36, 1);
+  transform-style: preserve-3d;
+}
+.flipper {
+  position: relative; display: grid; transform-style: preserve-3d;
+  transition: transform 320ms cubic-bezier(.4, 0, .2, 1);
+}
+.flipper[data-side="back"] { transform: rotateY(180deg); }
+.face {
+  grid-area: 1 / 1; min-width: 0; overflow: hidden;
+  -webkit-backface-visibility: hidden; backface-visibility: hidden;
+  border-radius: 34px;
+  background: color-mix(in oklab, var(--color-surface) 90%, transparent);
+  border: 1px solid color-mix(in oklab, var(--color-rule) 70%, transparent);
+  box-shadow: 0 1px 2px rgba(16, 24, 40, .05), 0 12px 32px -8px rgba(16, 24, 40, .12), 0 40px 80px -28px rgba(16, 24, 40, .20);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+}
+.back { transform: rotateY(180deg); display: flex; flex-direction: column; }
+@media (min-width: 1024px) { .face { border-radius: 42px; } }
+.band {
+  display: flex; align-items: center; gap: 14px; min-height: 92px; padding: 22px 28px;
+  background:
+    radial-gradient(120% 140% at 0% 0%, color-mix(in oklab, var(--color-money) 16%, transparent), transparent 60%),
+    color-mix(in oklab, var(--color-money) 7%, var(--color-surface));
+  border-bottom: 1px solid color-mix(in oklab, var(--color-money) 14%, transparent);
+}
+.bandLabel { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--color-money); }
+.body { padding: 24px 28px 8px; }
+.name { font-size: 28px; line-height: 1.15; font-weight: 600; letter-spacing: -0.02em; overflow-wrap: anywhere; transition: color .3s cubic-bezier(.22, 1, .36, 1); }
+.name[data-empty] { color: color-mix(in oklab, var(--color-ink-muted) 55%, transparent); font-weight: 500; }
+.track { margin-top: 14px; height: 6px; border-radius: 999px; background: color-mix(in oklab, var(--color-rule) 80%, transparent); overflow: hidden; }
+.fill {
+  display: block; height: 100%; border-radius: inherit; width: var(--progress, 0%);
+  background: linear-gradient(90deg, var(--color-money), color-mix(in oklab, var(--color-money) 55%, white));
+  transition: width 300ms cubic-bezier(.22, 1, .36, 1);
+}
+.content { padding: 18px 0 8px; }
+.stats { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 12px; margin-top: 16px; padding: 16px 28px 22px; border-top: 1px solid var(--color-rule); }
+.stat { min-width: 0; }
+.statLabel { display: block; font-size: 12px; color: var(--color-ink-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.statValue { display: block; margin-top: 2px; font-size: 16px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.facts { flex: 1; margin: 0; padding: 8px 28px; }
+.fact { display: grid; grid-template-columns: minmax(0, 9rem) minmax(0, 1fr); gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--color-rule); }
+.fact:last-child { border-bottom: 0; }
+.fact dt { font-size: 13px; color: var(--color-ink-muted); }
+.fact dd { margin: 0; font-size: 14px; font-weight: 500; overflow-wrap: anywhere; }
+.flip {
+  display: inline-flex; align-items: center; gap: 6px; margin: 0 28px 20px; align-self: flex-start;
+  font-size: 13px; font-weight: 600; color: var(--color-ink-muted); background: none; border: 0; padding: 4px 0; cursor: pointer;
+}
+.flip:hover { color: var(--color-ink); }
+.flip:focus-visible { outline: 2px solid var(--color-money); outline-offset: 3px; border-radius: 6px; }
+.flipFront { margin-top: 4px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tilt, .flipper, .fill, .name { transition: none; }
+}

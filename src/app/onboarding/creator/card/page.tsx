@@ -12,8 +12,8 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function CardStepPage() {
   const state = await requireOnboardingCreator(ONBOARDING_STEPS.card.path);
   return (
-    <CreatorStep step="card" back={ONBOARDING_STEPS.linkedin.path}>
-      <CardForm state={state} />
+    <CreatorStep step="card">
+      <CardForm state={state} back={ONBOARDING_STEPS.linkedin.path} />
     </CreatorStep>
   );
 }
