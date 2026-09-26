@@ -53,7 +53,11 @@
       "label": "Account menu",
       "settings": "Settings",
       "signOut": "Sign out",
-      "signedInAs": "Signed in as {name}"
+      "signedInAs": "Signed in as {name}",
+      "profile": "Profile",
+      "open": "Open account menu",
+      "close": "Close account menu",
+      "menu": "Account"
     }
   },
   "commandMenu": {

@@ -9,8 +9,8 @@ import { getBrandNotifications, getCreatorNotifications } from "@/features/works
 import { getViewer, type Viewer } from "./session";
 
 const PREVIEW: Record<Role, ShellViewer> = {
-  brand: { role: "brand", firstName: "Demo", lastName: "Brand", workspace: "Preview workspace", avatarUrl: null, walletCents: 0, csrfToken: "", preview: true, demo: false, notifications: [], launchPlan: null },
-  creator: { role: "creator", firstName: "Demo", lastName: "Creator", workspace: "Preview workspace", avatarUrl: null, walletCents: 0, csrfToken: "", preview: true, demo: false, notifications: [], launchPlan: null },
+  brand: { role: "brand", firstName: "Demo", lastName: "Brand", workspace: "Preview workspace", email: "", avatarUrl: null, walletCents: 0, csrfToken: "", preview: true, demo: false, notifications: [], launchPlan: null },
+  creator: { role: "creator", firstName: "Demo", lastName: "Creator", workspace: "Preview workspace", email: "", avatarUrl: null, walletCents: 0, csrfToken: "", preview: true, demo: false, notifications: [], launchPlan: null },
 };
 
 export async function toShellViewer(viewer: Viewer): Promise<ShellViewer> {
@@ -27,6 +27,7 @@ export async function toShellViewer(viewer: Viewer): Promise<ShellViewer> {
     firstName: viewer.firstName,
     lastName: viewer.lastName,
     workspace: viewer.brand?.company ?? (viewer.creator ? `@${viewer.creator.handle}` : viewer.email),
+    email: viewer.email,
     avatarUrl: viewer.creator?.avatarUrl ?? null,
     walletCents: viewer.brand?.walletCents ?? viewer.creator?.availableCents ?? 0,
     csrfToken: viewer.csrfToken,

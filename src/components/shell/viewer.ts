@@ -5,6 +5,8 @@ export type ShellViewer = {
   firstName: string;
   lastName: string;
   workspace: string;
+  /** Shown under the account pill's header when it opens. */
+  email: string;
   avatarUrl: string | null;
   walletCents: number;
   csrfToken: string;
