@@ -25,23 +25,31 @@ the landing's glass hero and the public header are set in Inter (variable, self-
 through next/font as a 22 KB en/fr subset) at the comp's own weights — 200, 360, 400,
 425, 470, 500, 520, 570 — and nowhere else.
 
-**Colour.** Tokens only, light and dark.
-- paper `#FAFAF7`, surface `#FFFFFF`, ink `#111111`, muted `#6B6B66`, rule `#E6E4DE`
-- accent (money, attributed, verified) `#0F7B4A`
-- attention (pending, needs you) `#B45309`, failure `#B42318`, info `#1D4ED8` (links only)
-- dark: paper `#0E0E0D`, surface `#161615`, ink `#F2F1EC`, rule `#2A2926`, accent `#34C77B`
+**Colour.** Tokens only, light and dark (`src/app/globals.css`). The app runs on a cool
+zinc scale; reading ink stays near-black.
+- zinc 900 `#18181B` (ink) · 800 `#27272A` · 700 `#3F3F46` (labels) · 600 `#52525B` ·
+  500 `#71717A` (muted) · 400 `#A1A1AA` · 300 `#D4D4D8` (strong rule) · 200 `#E4E4E7` (rule) ·
+  150 `#ECECEE` · well `#EDEDF0` (hover under options, rows, nav) · press `#F0F0F2` (a field
+  on hover) · 100 `#F4F4F5` (tint) · 50 `#FAFAFA` (page, and a field at rest). Cards `#FFFFFF`.
+- one accent for action, money and verified attribution: Amplio green `#0F7B4A` (dark
+  `#34C77B`), with a soft tint of it for fills
+- status tones: good `#067647` · owed `#B54708` · info `#175CD3` (links) · lost `#C01F14`
+- dark: page `#09090B`, cards `#18181B`, ink `#FAFAFA`, rules `#27272A` / `#3F3F46`
 In the app and on every page below the landing's first screen: no gradients, no glass,
 no blur, no background video. The one exception is the landing's first screen and the
 public header (below): a pale glass plate behind the hero, glass on the nav pill, the
 panel and the pills, and the header frosting once you scroll.
 
-**Shape.** Hairline 1px rules. Radius 10 (cards), 8 (inputs, buttons), 999 (status chips).
-Shadows only on floating layers (menus, dialogs, toasts). 8px spacing grid; content
-max-width 1200; 12-column grid.
+**Shape.** White cards on the zinc-50 page with a hairline lift `0 1px 2px rgba(16,24,40,.05)`;
+a card that opens something lifts 2px with a deeper shadow on hover. Radius 20 (cards),
+16 (dropdown panels), 12 (fields, controls), 30 (blob buttons), 999 (chips). Panels carry
+`0 12px 32px rgba(16,24,40,.12)`. One focus ring on every control: 2px solid accent.
+8px spacing grid; content max-width 1200.
 
-**Motion.** 150–220 ms, ease-out `cubic-bezier(.2,.8,.2,1)`, opacity and transform only.
-Numbers roll when they change. Tab indicators slide. Lists stagger 20 ms for the first 12
-rows. Pages fade up 8px on enter. Reduced motion: no movement, instant state.
+**Motion.** UI 180–300 ms. Ease-out `cubic-bezier(.22,1,.36,1)` for moves, a spring
+`cubic-bezier(.34,1.56,.64,1)` for things that pop (a field's icon square, the active nav
+square, a switch thumb). Opacity and transform only. Numbers roll when they change. Drawings
+(charts, glyphs, the ring) take up to about 0.9 s. Reduced motion shows final states.
 The public site keeps the earlier interaction language instead (restored from before
 a2e204b, scoped to the public pages): sections below the hero pop on a spring (700 ms,
 `cubic-bezier(.34,1.56,.64,1)`, children 80 ms apart, headings word by word) and replay
@@ -136,12 +144,29 @@ clearly labelled "demo workspace data".
 
 ## Components (one set, used everywhere)
 
-Button (primary ink / secondary outline / ghost / danger with confirm step), Input,
-Textarea, Select, Combobox, DatePicker, SegmentedControl, Tabs, Table (sortable, sticky
-header, row hover, empty state), StatCard (label, rolling value, delta, sparkline, opens
-the trail), StatusChip (collaboration states), Card, EmptyState (says what to do next),
-Dialog, Drawer, Toast, Skeleton, Avatar (photo, initials only as fallback), CommandMenu (⌘K).
-Onboarding and Settings use exactly the same fields.
+Fewer, richer, tactile. Every one is on `/dev/ui`.
+
+- **Blob button** (`ui/button`, `src/styles/blob-button.css`): every primary action and every
+  wizard forward/back. An uppercase pill (13px, 700, tracked .12em); a 2px border; an offset
+  shadow that tucks back on hover; four blobs that rise through one goo filter (defined once in
+  the root layout) and merge into a liquid fill; an optional icon disc that turns 90°. Variants
+  primary (ink), money (pay, top up, release, withdraw), quiet (secondary), danger (irreversible;
+  the armed step of ConfirmButton's two clicks). Keyboard focus fills the same way; reduced
+  motion fills without travel. Ghost, link, `chip` (filter triggers) and icon buttons stay plain.
+- **Fields** (`src/styles/fields.css`): Input (with `leadingIcon`: an accent square pops in
+  behind the glyph on value or focus), Textarea, Select, Combobox, DatePicker (day · month ·
+  year chips), Switch. A 44px zinc well, press on hover, white + a soft accent ring + a 1px
+  spring lift on focus or open, red ring when invalid; the label turns accent while its field is
+  focused. Dropdowns open a panel (radius 16) from the trigger edge; the selected check draws in.
+- **Cards and widgets**: Card; StatCard (label, rolling number, a toned delta chip, "Show rows"
+  opening the trail); RingWidget (a dial of ticks, one arc per state, each opening its filter);
+  Table rows 52px with a hover well; StatusChip with its state glyph.
+- **Shell**: the sidebar (icon squares, the active item a white pill whose square pops in
+  accent, folds to icons) and the white top bar.
+- Also: SegmentedControl, Tabs, EmptyState (says what to do next, with a small scene), Dialog,
+  Drawer, Toast, Skeleton, Avatar, CommandMenu (⌘K), the trail graphics.
+Onboarding and Settings use exactly the same fields. Where a page stacks several blocks to say
+one thing, it merges them (PAGES.md says what merged and why).
 
 ## What each surface shows (relevant only)
 
