@@ -17,6 +17,8 @@ export function ResultCard({ result, sample }: { result: ResultEvent; sample: bo
   const format = useFormatter();
   const euros = (cents: number) => format.number(cents / CENTS, { style: "currency", currency: "EUR" });
   const title = <p className="text-small font-medium text-ink-muted">{result.title}</p>;
+  // an empty list is said in the reply; a heading over nothing isn't a result
+  if ("items" in result && result.items.length === 0) return null;
   switch (result.kind) {
     case "creators":
       return (

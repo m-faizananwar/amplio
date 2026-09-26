@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { AgentBeam } from "./fx/AgentBeam";
 import { useSpeechInput } from "@/features/assistant/components/useSpeechInput";
 import { AGENT_INPUT_MAX } from "../events";
 
@@ -25,16 +26,19 @@ export function AgentComposer({ busy, onSend, onCall }: { busy: boolean; onSend:
   return (
     <form className="grid gap-2" onSubmit={(e) => { e.preventDefault(); submit(); }}>
       <label htmlFor="agent-input" className="sr-only">{t("label")}</label>
-      <Textarea
-        ref={box}
-        id="agent-input"
-        minRows={1}
-        value={text}
-        maxLength={AGENT_INPUT_MAX}
-        placeholder={t("placeholder")}
-        onChange={(e) => setText(e.target.value)}
-        onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submit(); } }}
-      />
+      {/* while a run is going the beam rides the box */}
+      <AgentBeam active={busy} radius={22}>
+        <Textarea
+          ref={box}
+          id="agent-input"
+          minRows={1}
+          value={text}
+          maxLength={AGENT_INPUT_MAX}
+          placeholder={t("placeholder")}
+          onChange={(e) => setText(e.target.value)}
+          onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submit(); } }}
+        />
+      </AgentBeam>
       <div className="flex items-center justify-end gap-2">
         <Button type="button" variant="ghost" size="icon-sm" aria-label={t("mic")} aria-pressed={speech.status !== "idle"} onClick={speech.toggle}><Mic /></Button>
         <Button type="button" variant="quiet" size="sm" icon={<Phone />} onClick={onCall}>{t("call")}</Button>

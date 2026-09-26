@@ -4,10 +4,10 @@ import { Phone } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { TrailDots } from "@/features/assistant/components/TrailDots";
 import { AgentComposer } from "./AgentComposer";
 import { useCall } from "./call/callContext";
 import { AgentThread } from "./AgentThread";
+import { AgentOrb } from "./fx/AgentOrb";
 import { HistoryBar } from "./rail/HistoryBar";
 import { KnowRail, type RailThread } from "./rail/KnowRail";
 import { dayTime, minutesOf, startedAt } from "./rail/threadTime";
@@ -60,14 +60,14 @@ export function AgentView({ role, firstName, csrfToken, profile, notes, threads,
     </div>
   ) : run.items.length === 0 ? (
     <div className="grid justify-items-center gap-5 py-16 text-center">
-      <TrailDots state="idle" className="h-5 w-12" />
+      <AgentOrb size={64} state="breathing" />
       <div className="grid gap-2"><h2 className="text-h3">{t(`greeting.${role}`, { name: firstName })}</h2><p className="max-w-md text-body text-ink-muted">{t("greeting.sub")}</p></div>
       <div className="flex max-w-xl flex-wrap justify-center gap-2">
         {STARTERS[role].map((key) => <button key={key} type="button" onClick={() => void run.send(t(`starters.${role}.${key}`))} className="rounded-chip border border-rule bg-surface px-4 py-2 text-body shadow-lift outline-none transition-colors duration-(--duration-fast) hover:bg-well focus-visible:ring-2 focus-visible:ring-money">{t(`starters.${role}.${key}`)}</button>)}
       </div>
     </div>
   ) : (
-    <AgentThread items={run.items} confirms={run.confirms} sample={run.sample} onSend={(text) => void run.send(text)} onDecide={(e, d) => void run.decide(e, d)} onRetry={() => lastUser && lastUser.type === "user" && void run.send(lastUser.text)} />
+    <AgentThread busy={run.busy} items={run.items} confirms={run.confirms} sample={run.sample} onSend={(text) => void run.send(text)} onDecide={(e, d) => void run.decide(e, d)} onRetry={() => lastUser && lastUser.type === "user" && void run.send(lastUser.text)} />
   );
 
   return (
@@ -79,6 +79,8 @@ export function AgentView({ role, firstName, csrfToken, profile, notes, threads,
         {run.sample ? <p className="justify-self-start rounded-chip bg-attention-soft px-3 py-1 text-caption text-attention" title={t("sample.note")}>{t("sample.badge")} · {t("sample.note")}</p> : null}
         <>
             {thread}
+            {/* a turn is under way with no step on screen yet: the orb says so */}
+            {run.busy && !run.items.some((i) => i.type === "step" && i.status === "running") ? <p className="flex items-center gap-2.5 text-small text-ink-muted" role="status"><AgentOrb size={32} />{t("steps.running")}</p> : null}
             {/* scrolled to with room for the composer and the assistant pill below it */}
             <div ref={end} className="scroll-mb-48" />
             <div className="sticky bottom-4 z-10 rounded-card bg-paper pt-2"><AgentComposer busy={run.busy} onSend={(text) => void run.send(text)} onCall={() => call?.start()} /></div>
