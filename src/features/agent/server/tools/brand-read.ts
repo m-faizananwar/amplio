@@ -7,9 +7,9 @@ import type { CreatorDto } from "@/features/marketplace/schemas";
 import { getBillingBuckets } from "@/features/payouts/server/queries";
 import { filterFor } from "@/lib/next-step";
 import type { CreatorCard } from "../../events";
+import { describeFilters, searchLimit } from "../../filters";
 import { arr, euros, num, obj, type ReadTool, str, type ToolContext } from "./types";
 
-const SEARCH_LIMIT = 6;
 
 const brandId = (ctx: ToolContext) => ctx.viewer.brand?.id ?? "";
 
@@ -40,7 +40,7 @@ const listCampaigns: ReadTool = {
 
 const searchCreators: ReadTool = {
   name: "searchCreators", role: "brand", kind: "read", label: "Searching creators",
-  description: "Search creators ranked by fit for one of the brand's campaigns. Filters: industries, countries (ISO codes like FR), price range in euros, minimum followers. Returns at most 6, best fit first.",
+  description: "Search creators ranked by fit for one of the brand's campaigns. Filters: industries, countries (ISO codes like FR — pass them whenever the user names a country), price range in euros, minimum followers. `limit` = how many the user asked for (default 6, max 10). The output lists appliedFilters: only those were applied.",
   parameters: obj({
     campaignId: str("Campaign id to rank fit against; omit for the active campaign"),
     industries: arr("Industries, e.g. SaaS, B2B"),
@@ -49,6 +49,7 @@ const searchCreators: ReadTool = {
     maxPriceEuros: num("Highest price per post in euros"),
     minFollowers: num("Minimum LinkedIn followers"),
     query: str("Free text: a name, topic or headline word"),
+    limit: num("How many creators to return: the number the user asked for"),
   }),
   async run(ctx, a) {
     const mctx = await getMarketplaceContext(ctx.viewer, typeof a.campaignId === "string" ? a.campaignId : undefined);
@@ -64,11 +65,12 @@ const searchCreators: ReadTool = {
     const minFollowers = typeof a.minFollowers === "number" ? a.minFollowers : 0;
     // creators already invited to or working on this campaign can't be booked again
     const already = list.items.filter((c) => c.collaborationStatus).length;
-    const top = list.items.filter((c) => c.followers >= minFollowers && !c.collaborationStatus).slice(0, SEARCH_LIMIT);
+    const top = list.items.filter((c) => c.followers >= minFollowers && !c.collaborationStatus).slice(0, searchLimit(a));
+    const applied = describeFilters(a);
     const cards = top.map(toCreatorCard);
     return {
-      summary: `${list.total} match · ${cards.length} best by fit${mctx.selectedCampaign ? ` for ${mctx.selectedCampaign.name}` : ""}${already ? ` · ${already} already on it` : ""}`,
-      data: { campaign: mctx.selectedCampaign, walletCents: mctx.walletCents, alreadyOnCampaign: already, creators: top.map((c) => ({ id: c.id, name: c.name, country: c.country, industries: c.industries, followers: c.followers, priceCents: c.priceCents, fitScore: c.fit.score, fitReason: c.fit.reason })) },
+      summary: `${applied.length ? `${applied.join(" · ")} → ` : "no filters → "}${list.total} match · ${cards.length} best by fit${mctx.selectedCampaign ? ` for ${mctx.selectedCampaign.name}` : ""}${already ? ` · ${already} already on it` : ""}`,
+      data: { appliedFilters: applied.length ? applied : ["none"], campaign: mctx.selectedCampaign, walletCents: mctx.walletCents, alreadyOnCampaign: already, creators: top.map((c) => ({ id: c.id, name: c.name, country: c.country, industries: c.industries, followers: c.followers, priceCents: c.priceCents, fitScore: c.fit.score, fitReason: c.fit.reason })) },
       result: { type: "result", kind: "creators", title: mctx.selectedCampaign ? mctx.selectedCampaign.name : "Creators", items: cards },
     };
   },

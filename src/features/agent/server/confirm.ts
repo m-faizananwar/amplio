@@ -2,7 +2,6 @@ import "server-only";
 import type { Viewer } from "@/features/auth/server/session";
 import type { AgentEvent } from "../events";
 import { ID_RADIX } from "../constants";
-import { runTurn } from "./loop";
 import { openThread, saveTurn } from "./memory";
 import { claimPending, readPending } from "./pending";
 import { findTool } from "./tools";
@@ -28,10 +27,10 @@ export async function runConfirmed({ viewer, locale, id, decision, emit, threadI
   emit({ type: "step", id: "c1", label: tool.label.replace(/^Preparing/, "Doing"), status: "running", tool: tool.name });
   const outcome = await tool.execute({ viewer, locale }, check.action.args);
   emit({ type: "step", id: "c1", label: tool.label.replace(/^Preparing/, "Doing"), status: outcome.ok ? "done" : "failed", tool: tool.name, output: outcome.summary });
-  const note = outcome.ok ? `The user confirmed and it was done: ${outcome.summary}. Tell them in one or two sentences what happened and what comes next.` : `The user confirmed but it failed: ${outcome.summary}. Say so plainly and suggest the fix.`;
-  // carry on inside the thread the card came from, when threads are stored
+  // what happened is said from the action's own result, never by the model
+  const reply = outcome.ok ? outcome.summary : `${locale === "fr" ? "Ça n’a pas marché" : "That didn't go through"}: ${outcome.summary}`;
+  msg(reply);
   const thread = threadId ? await openThread(viewer.userId, threadId, tool.name) : null;
-  const reply = await runTurn({ viewer, locale, text: note, history: thread?.history ?? [], emit });
   if (thread) await saveTurn(thread.threadId, { user: `(confirmed: ${tool.name})`, assistant: reply });
   return thread?.threadId ?? null;
 }

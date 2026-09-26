@@ -74,7 +74,7 @@ const apply: ConfirmTool = {
   },
   async execute(ctx, a) {
     const r = await applyToCampaign({ campaignId: String(a.campaignId), csrfToken: ctx.viewer.csrfToken });
-    return { ok: r.ok, summary: r.ok ? "application sent" : r.error };
+    return { ok: r.ok, summary: r.ok ? L(ctx, "Application sent. The brand answers next.", "Candidature envoyée. C’est à la marque de répondre.") : r.error };
   },
 };
 
@@ -91,7 +91,7 @@ const decide = (decision: "accept" | "decline"): ConfirmTool => ({
   },
   async execute(ctx, a) {
     const r = await decideInvitation({ collaborationId: String(a.collaborationId), csrfToken: ctx.viewer.csrfToken, decision });
-    return { ok: r.ok, summary: r.ok ? `invitation ${decision === "accept" ? "accepted" : "declined"}` : r.error };
+    return { ok: r.ok, summary: r.ok ? (decision === "accept" ? L(ctx, "Accepted. Your next step is the draft.", "Accepté. Prochaine étape : le brouillon.") : L(ctx, "Declined. The brand gets its fee back.", "Refusé. La marque récupère sa rémunération.")) : r.error };
   },
 });
 
@@ -107,7 +107,7 @@ const draft: ConfirmTool = {
   },
   async execute(ctx, a) {
     const r = await submitDraft({ collaborationId: String(a.collaborationId), csrfToken: ctx.viewer.csrfToken, draftText: String(a.draftText ?? "") });
-    return { ok: r.ok, summary: r.ok ? "draft submitted" : r.error };
+    return { ok: r.ok, summary: r.ok ? L(ctx, "Draft sent. The brand reviews it next.", "Brouillon envoyé. La marque le relit.") : r.error };
   },
 };
 

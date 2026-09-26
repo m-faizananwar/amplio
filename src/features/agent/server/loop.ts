@@ -6,6 +6,7 @@ import { GEMINI_MODEL } from "@/features/ai/constants";
 import { resolveAiProvider } from "@/lib/ai-provider";
 import { ID_RADIX, MAX_CHIPS, SUMMARY_MAX } from "../constants";
 import type { AgentEvent } from "../events";
+import { amountsFrom, checkMoney } from "../money-check";
 import { compactForModel } from "./compact";
 import { createPending } from "./pending";
 import { ASK_USER, type Recall, systemPrompt } from "./prompt";
@@ -43,8 +44,8 @@ function say(emit: Emit, text: string) {
 
 // One call the model asked for: a question ends the turn, a read runs (with
 // its own timeout) and reports a step, a confirm tool is only prepared.
-type CallInput = { call: { name?: string; args?: Record<string, unknown> }; ctx: ToolContext; emit: Emit; stepId: string };
-export async function runCall({ call, ctx, emit, stepId }: CallInput): Promise<{ response: Record<string, unknown>; stop?: "question" | "confirm" }> {
+type CallInput = { call: { name?: string; args?: Record<string, unknown> }; ctx: ToolContext; emit: Emit; stepId: string; seen?: Set<number> };
+export async function runCall({ call, ctx, emit, stepId, seen }: CallInput): Promise<{ response: Record<string, unknown>; stop?: "question" | "confirm" }> {
   const name = call.name ?? "";
   const args = call.args ?? {};
   if (name === ASK_USER.name) {
@@ -60,6 +61,7 @@ export async function runCall({ call, ctx, emit, stepId }: CallInput): Promise<{
       const out = await withTimeout(tool.run(ctx, args), CALL_TIMEOUT_MS);
       emit({ type: "step", id: stepId, label: tool.label, status: "done", tool: name, output: out.summary });
       if (out.result) emit(out.result);
+      if (seen) amountsFrom(out.data, seen);
       return { response: compactForModel(out.data) };
     }
     const prepared = await withTimeout(tool.prepare(ctx, args), CALL_TIMEOUT_MS);
@@ -67,6 +69,7 @@ export async function runCall({ call, ctx, emit, stepId }: CallInput): Promise<{
       emit({ type: "step", id: stepId, label: tool.label, status: "failed", tool: name, output: prepared.error });
       return { response: { error: prepared.error } };
     }
+    if (seen) amountsFrom(prepared.facts, seen);
     const pending = createPending({ tool: name, args, userId: ctx.viewer.userId }, ctx.viewer.csrfToken);
     emit({ type: "step", id: stepId, label: tool.label, status: "done", tool: name, output: "waiting for your confirmation" });
     emit({ type: "confirm", id: pending.id, title: prepared.title, facts: prepared.facts, confirmLabel: prepared.confirmLabel, cancelLabel: ctx.locale === "fr" ? "Pas maintenant" : "Not now", expiresAt: pending.expiresAt });
@@ -102,6 +105,8 @@ export async function runTurn({ viewer, locale, text, history, emit, recall }: T
   const ctx: ToolContext = { viewer, locale };
   const contents = toContents(history, text);
   const deadline = Date.now() + TURN_BUDGET_MS;
+  // every amount a tool returned this turn; the reply may only use these
+  const seen = amountsFrom({ walletCents: viewer.brand?.walletCents ?? 0, availableCents: viewer.creator?.availableCents ?? 0 });
   let steps = 0;
   while (Date.now() < deadline) {
     const res = await withTimeout(ai.models.generateContent({
@@ -112,12 +117,14 @@ export async function runTurn({ viewer, locale, text, history, emit, recall }: T
     const calls = res.functionCalls ?? [];
     const modelParts: Part[] = res.candidates?.[0]?.content?.parts ?? [];
     if (calls.length === 0 || steps >= MAX_TOOL_STEPS) {
-      const reply = res.text?.trim() || (locale === "fr" ? "Je n’ai pas de réponse utile pour l’instant." : "I don't have a useful answer yet.");
+      const checked = checkMoney(res.text?.trim() ?? "", seen);
+      if (checked.dropped) console.warn("[agent] dropped unverified amounts", { sentences: checked.dropped });
+      const reply = checked.text || (locale === "fr" ? "Voici ce que j’ai trouvé." : "Here's what I found.");
       say(emit, reply);
       return reply;
     }
     contents.push({ role: "model", parts: modelParts });
-    const outcomes = await Promise.all(calls.map((call, i) => runCall({ call, ctx, emit, stepId: `s${steps + i + 1}` })));
+    const outcomes = await Promise.all(calls.map((call, i) => runCall({ call, ctx, emit, stepId: `s${steps + i + 1}`, seen })));
     steps += calls.length;
     contents.push({ role: "user", parts: calls.map((call, i) => ({ functionResponse: { name: call.name ?? "", response: outcomes[i].response } })) });
     const stop = outcomes.find((o) => o.stop)?.stop;

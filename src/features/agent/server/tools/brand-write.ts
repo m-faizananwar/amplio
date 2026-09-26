@@ -39,12 +39,20 @@ const bookCreators: ConfirmTool = {
       confirmLabel: picks.length > 1 ? "Book them" : "Book",
     };
   },
-  async execute(_ctx, a) {
-    const results = [];
-    for (const creatorId of ids(a.creatorIds)) results.push(await bookCreator({ campaignId: a.campaignId, creatorId, option: "single" }));
-    const ok = results.filter((r) => r.ok).length;
-    const failed = results.find((r) => !r.ok);
-    return { ok: ok > 0, summary: `${ok} of ${results.length} invitations sent${failed && !failed.ok ? ` (${failed.error})` : ""}` };
+  async execute(ctx, a) {
+    const [campaign, brand] = await Promise.all([getCampaign(brandId(ctx), String(a.campaignId ?? "")), getBrandProfile(brandId(ctx))]);
+    const picks = campaign && brand ? await getCreatorPicks(ids(a.creatorIds), campaign, brand) : [];
+    const booked: typeof picks = [];
+    let error = "";
+    for (const p of picks) {
+      const r = await bookCreator({ campaignId: a.campaignId, creatorId: p.id, option: "single" });
+      if (r.ok) booked.push(p); else error = r.error;
+    }
+    const held = booked.reduce((s, p) => s + p.priceCents, 0);
+    const wallet = (ctx.viewer.brand?.walletCents ?? 0) - held;
+    const who = booked.map((p) => `${p.name} (${euros(p.priceCents, ctx.locale)})`).join(", ");
+    if (booked.length === 0) return { ok: false, summary: error || L(ctx, "no invitation went out", "aucune invitation n’est partie") };
+    return { ok: true, summary: L(ctx, `Invited ${who}. ${euros(held, ctx.locale)} is held from your wallet, which now has ${euros(wallet, ctx.locale)}.`, `Invitations envoyées à ${who}. ${euros(held, ctx.locale)} est bloqué sur votre portefeuille, qui affiche maintenant ${euros(wallet, ctx.locale)}.`) + (booked.length < picks.length ? ` ${error}` : "") };
   },
 };
 
@@ -61,7 +69,7 @@ const review = (decision: "approve" | "request_changes"): ConfirmTool => ({
   },
   async execute(ctx, a) {
     const r = await reviewDraft({ collaborationId: String(a.collaborationId), csrfToken: ctx.viewer.csrfToken, decision, note: String(a.note ?? "") });
-    return { ok: r.ok, summary: r.ok ? (decision === "approve" ? "draft approved" : "changes requested") : r.error };
+    return { ok: r.ok, summary: r.ok ? (decision === "approve" ? L(ctx, "Draft approved. The creator can schedule it now.", "Brouillon approuvé. Le créateur peut le programmer.") : L(ctx, "Changes requested. The creator has your note.", "Modifications demandées. Le créateur a votre note.")) : r.error };
   },
 });
 
@@ -76,8 +84,9 @@ const releasePayment: ConfirmTool = {
     return { title: L(ctx, `Pay ${c.creatorName}`, `Payer ${c.creatorName}`), facts: [{ label: "Campaign", value: c.campaignName }, { label: "Amount released", value: euros(c.feeCents, ctx.locale), cents: c.feeCents }], confirmLabel: `Release ${euros(c.feeCents, ctx.locale)}` };
   },
   async execute(ctx, a) {
+    const c = await own(ctx, a.collaborationId);
     const r = await payCollaboration({ collaborationId: String(a.collaborationId), csrfToken: ctx.viewer.csrfToken });
-    return { ok: r.ok, summary: r.ok ? "payment released" : r.error };
+    return { ok: r.ok, summary: r.ok ? L(ctx, `Paid ${c?.creatorName ?? "the creator"} ${c ? euros(c.feeCents, ctx.locale) : ""}.`, `${c ? euros(c.feeCents, ctx.locale) : ""} versés à ${c?.creatorName ?? "le créateur"}.`) : r.error };
   },
 };
 
@@ -91,9 +100,9 @@ const topUp: ConfirmTool = {
     const wallet = ctx.viewer.brand?.walletCents ?? 0;
     return { title: L(ctx, "Top up the wallet", "Recharger le portefeuille"), facts: [{ label: "Amount", value: euros(cents, ctx.locale), cents }, { label: "Wallet after", value: euros(wallet + cents, ctx.locale), cents: wallet + cents }, { label: "Card", value: "None charged: demo top-up" }], confirmLabel: `Add ${euros(cents, ctx.locale)}` };
   },
-  async execute(_ctx, a) {
+  async execute(ctx, a) {
     const r = await topUpWallet({ amountCents: Math.round(Number(a.amountEuros) * 100) });
-    return { ok: r.ok, summary: r.ok ? "wallet topped up" : r.error };
+    return { ok: r.ok, summary: r.ok ? L(ctx, `Added. Your wallet now has ${euros(r.data.balanceCents, ctx.locale)} (a demo top-up, no card charged).`, `Ajouté. Votre portefeuille affiche ${euros(r.data.balanceCents, ctx.locale)} (rechargement de démonstration, aucune carte débitée).`) : r.error };
   },
 };
 
@@ -108,7 +117,7 @@ export const messageTool = (role: "brand" | "creator"): ConfirmTool => ({
   },
   async execute(ctx, a) {
     const r = await sendMessage({ collaborationId: String(a.collaborationId), body: String(a.body), csrfToken: ctx.viewer.csrfToken });
-    return { ok: r.ok, summary: r.ok ? "message sent" : r.error };
+    return { ok: r.ok, summary: r.ok ? L(ctx, "Message sent.", "Message envoyé.") : r.error };
   },
 });
 
