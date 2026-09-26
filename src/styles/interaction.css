@@ -256,3 +256,8 @@ html { scroll-behavior: smooth; }
     :is([data-slot="dialog-overlay"], [data-slot="alert-dialog-overlay"]) { backdrop-filter: blur(2px); }
   }
 }
+
+/* ---- the theme switch: one 200ms colour cross-fade, removed right after ---- */
+html.theme-fade, html.theme-fade *, html.theme-fade *::before, html.theme-fade *::after {
+  transition: background-color 200ms ease, color 200ms ease !important;
+}

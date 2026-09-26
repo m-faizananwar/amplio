@@ -41,8 +41,9 @@ export const metadata: Metadata = {
   },
 };
 
-// The canvas behind the page follows the OS until the boot script has run.
-export const viewport: Viewport = { colorScheme: "light dark" };
+// Light by default: form controls and the canvas stay light even on a dark
+// OS; the boot script sets color-scheme to dark when dark was picked.
+export const viewport: Viewport = { colorScheme: "light" };
 
 // Reads nothing from the request, so the public pages under [locale] can be
 // static. Each area brings its own messages (ClientMessages) and corrects
@@ -53,7 +54,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     // sent is expected to differ from the one React finds.
     <html lang={DEFAULT_LOCALE} data-scroll-behavior="smooth" suppressHydrationWarning className={`${geist.variable} ${geistMono.variable} ${instrumentSans.variable} ${interApp.variable} ${jetbrainsMono.variable} h-full antialiased`}>
       <head>
-        {/* Before first paint: light, dark, or whatever the OS says. */}
+        {/* Before first paint: light unless dark (or "system") was picked. */}
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
       </head>
       <body className="flex min-h-full flex-col">
