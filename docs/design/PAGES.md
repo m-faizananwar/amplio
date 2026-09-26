@@ -120,6 +120,9 @@ the profile — a funded invitation, fee held until the creator answers — so t
 separate Invite page. The profile is a wide drawer over the list, so the next creator is one
 click away. The second mode lets the assistant rank the same list from a sentence and say
 why, with one trade-off; its answer lands as the same rows.
+**Merged (components round):** the list tabs and campaign picker, the search + sort row, the
+filter row and the table were four stacked blocks. They are one card now: which list and for
+which campaign in its head, then search · filter chips · sort on one line, then the rows.
 
 ### Campaigns — `/brand/campaigns` (+ detail, brief, new, launch)
 The list is a ledger of campaigns — name, state, creators, published, committed, and the

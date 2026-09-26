@@ -26,11 +26,9 @@ export function MarketplaceToolbar({ query, countries, count }: Props) {
   const filtered =
     query.industry.length > 0 || query.country.length > 0 || query.min !== undefined || query.max !== undefined || Boolean(query.q) || query.activity !== "any";
   return (
-    <div className="flex flex-col gap-3">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <SearchInput key={query.q ?? ""} initial={query.q ?? ""} />
-        <SortSelect value={query.sort} />
-      </div>
+    // one row: search, the filter chips, reset, and sort at the end
+    <div className="flex flex-wrap items-center gap-2">
+      <SearchInput key={query.q ?? ""} initial={query.q ?? ""} />
       <div className="flex flex-wrap items-center gap-2">
         <MultiSelectPill
           label={t("industry")}
@@ -55,6 +53,7 @@ export function MarketplaceToolbar({ query, countries, count }: Props) {
           </Button>
         ) : null}
       </div>
+      <div className="ml-auto"><SortSelect value={query.sort} /></div>
     </div>
   );
 }

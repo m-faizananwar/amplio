@@ -27,46 +27,59 @@ export function MarketplaceView({ ctx, list, query, countries }: Props) {
         {ctx.campaigns.length === 0 ? (
           <EmptyState size="compact" title={t("noCampaign.title")} body={t("noCampaign.body")} action={<Link href="/brand/campaigns/new" className={buttonVariants()}>{t("noCampaign.action")}</Link>} />
         ) : null}
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <Tabs value={query.tab} onValueChange={(v) => update({ tab: v === "all" ? undefined : String(v) })}>
-            <TabsList variant="pill" aria-label={t("lists.label")}>
-              <TabsTrigger value="all">{t("lists.all")} <span className="num text-caption text-ink-muted">{query.tab === "all" ? list.total : list.allCount}</span></TabsTrigger>
-              <TabsTrigger value="shortlist">{t("lists.shortlist")} <span className="num text-caption text-ink-muted">{list.shortlistCount}</span></TabsTrigger>
-            </TabsList>
-          </Tabs>
-          <CampaignSelector campaigns={ctx.campaigns} selected={ctx.selectedCampaign} />
-        </div>
-        <MarketplaceToolbar query={query} countries={countries} count={list.total} />
-        <ListBody list={list} query={query} />
+        {/* One card is the list: which list and for which campaign, then
+            search · filters · sort, then the rows. They were four stacked rows. */}
+        <section aria-label={t("lists.label")} className="overflow-hidden rounded-card border border-rule bg-surface shadow-lift">
+          <div className="grid gap-3 border-b border-rule p-4">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <Tabs value={query.tab} onValueChange={(v) => update({ tab: v === "all" ? undefined : String(v) })}>
+                <TabsList variant="pill" aria-label={t("lists.label")}>
+                  <TabsTrigger value="all">{t("lists.all")} <span className="num text-caption text-ink-muted">{query.tab === "all" ? list.total : list.allCount}</span></TabsTrigger>
+                  <TabsTrigger value="shortlist">{t("lists.shortlist")} <span className="num text-caption text-ink-muted">{list.shortlistCount}</span></TabsTrigger>
+                </TabsList>
+              </Tabs>
+              <CampaignSelector campaigns={ctx.campaigns} selected={ctx.selectedCampaign} />
+            </div>
+            <MarketplaceToolbar query={query} countries={countries} count={list.total} />
+          </div>
+          <ListRows list={list} query={query} />
+        </section>
+        <ListFooter list={list} query={query} />
       </div>
     </MarketplaceProvider>
   );
 }
 
-function ListBody({ list, query }: { list: CreatorListDto; query: MarketplaceQuery }) {
+function ListRows({ list, query }: { list: CreatorListDto; query: MarketplaceQuery }) {
   const t = useTranslations("brand.creators");
   const { reset, update } = useMarketplaceUrl();
   if (list.items.length === 0) {
-    return query.tab === "shortlist"
-      ? <EmptyState title={t("empty.shortlist.title")} body={t("empty.shortlist.body")} action={<Button variant="secondary" onClick={() => update({ tab: undefined })}>{t("empty.shortlist.action")}</Button>} />
-      : <EmptyState title={t("empty.filters.title")} body={t("empty.filters.body")} action={<Button variant="secondary" onClick={reset}>{t("empty.filters.action")}</Button>} />;
-  }
-  const shown = Math.min(list.items.length, query.page * PAGE_SIZE);
-  return (
-    <div className="grid gap-4">
-      <div className="overflow-hidden rounded-card border border-rule bg-surface">
-        <div className="hidden grid-cols-[minmax(0,1.6fr)_6.5rem_5.5rem_5.5rem_5.5rem_9.5rem] gap-4 border-b border-rule px-5 py-2.5 text-caption text-ink-muted md:grid" aria-hidden="true">
-          <span>{t("columns.creator")}</span><span>{t("columns.fit")}</span><span>{t("columns.followers")}</span><span>{t("columns.views")}</span><span>{t("columns.price")}</span><span />
-        </div>
-        <ol key={`${query.tab}-${query.sort}`} className="list-stagger divide-y divide-rule">
-          {list.items.map((c) => <CreatorLedgerRow key={c.id} creator={c} />)}
-        </ol>
+    return (
+      <div className="p-4">
+        {query.tab === "shortlist"
+          ? <EmptyState title={t("empty.shortlist.title")} body={t("empty.shortlist.body")} action={<Button variant="secondary" onClick={() => update({ tab: undefined })}>{t("empty.shortlist.action")}</Button>} />
+          : <EmptyState title={t("empty.filters.title")} body={t("empty.filters.body")} action={<Button variant="secondary" onClick={reset}>{t("empty.filters.action")}</Button>} />}
       </div>
-      {list.hasMore ? (
-        <Button variant="secondary" className="justify-self-center" onClick={() => update({ page: query.page + 1 }, { keepPage: true })}>{t("more", { shown, total: list.total })}</Button>
-      ) : (
-        <p className="text-center text-small text-ink-muted">{t("all", { total: list.total })}</p>
-      )}
-    </div>
+    );
+  }
+  return (
+    <>
+      <div className="hidden grid-cols-[minmax(0,1.6fr)_6.5rem_5.5rem_5.5rem_5.5rem_9.5rem] gap-4 border-b border-rule px-5 py-2.5 text-caption text-ink-muted md:grid" aria-hidden="true">
+        <span>{t("columns.creator")}</span><span>{t("columns.fit")}</span><span>{t("columns.followers")}</span><span>{t("columns.views")}</span><span>{t("columns.price")}</span><span />
+      </div>
+      <ol key={`${query.tab}-${query.sort}`} className="list-stagger divide-y divide-rule">
+        {list.items.map((c) => <CreatorLedgerRow key={c.id} creator={c} />)}
+      </ol>
+    </>
   );
+}
+
+function ListFooter({ list, query }: { list: CreatorListDto; query: MarketplaceQuery }) {
+  const t = useTranslations("brand.creators");
+  const { update } = useMarketplaceUrl();
+  if (list.items.length === 0) return null;
+  const shown = Math.min(list.items.length, query.page * PAGE_SIZE);
+  return list.hasMore
+    ? <Button variant="secondary" className="justify-self-center" onClick={() => update({ page: query.page + 1 }, { keepPage: true })}>{t("more", { shown, total: list.total })}</Button>
+    : <p className="text-center text-small text-ink-muted">{t("all", { total: list.total })}</p>;
 }
