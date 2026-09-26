@@ -84,17 +84,24 @@
 /* ---- sign in + the Start free pill ---- */
 .menu { display: contents; }
 .menuRule { display: none; }
-.signin {
-  position: absolute; right: calc(324 * var(--u)); top: calc(72.5 * var(--u));
-  font-size: calc(15 * var(--t)); font-weight: 520; line-height: 1; color: var(--nav-ink); text-decoration: none;
+/* Sign in with the theme switch beside it, centred where Sign in sat (80u) */
+.signinRow {
+  position: absolute; right: calc(324 * var(--u)); top: calc(80 * var(--u)); translate: 0 -50%;
+  display: flex; align-items: center; gap: 14px;
   transition: right 500ms var(--expo), top 500ms var(--expo);
 }
+.signin {
+  position: relative; font-size: calc(15 * var(--t)); font-weight: 520; line-height: 1; color: var(--nav-ink); text-decoration: none;
+}
+/* the switch sits on light glass over the plate, whatever the theme */
+.theme { color: var(--nav-ink); border-color: rgba(32, 41, 64, .16); background: rgba(255, 255, 255, .55); }
+:global(.dark) .header[data-solid] .theme { color: var(--color-ink); border-color: var(--color-rule); background: transparent; }
 .signin::after {
   content: ""; position: absolute; left: 0; right: 0; bottom: calc(-4 * var(--u)); height: 1.5px; border-radius: 2px;
   background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform .28s var(--expo);
 }
 .signin:hover::after { transform: scaleX(1); transform-origin: left; }
-.header[data-solid] .signin { right: calc(280.6 * var(--u)); top: calc(34.5 * var(--u)); }
+.header[data-solid] .signinRow { right: calc(280.6 * var(--u)); top: calc(42 * var(--u)); }
 .cta {
   width: calc(217 * var(--t)); height: calc(70 * var(--t)); border-radius: 999px; background: var(--cta);
   box-shadow: 0 calc(10 * var(--u)) calc(24 * var(--u)) rgba(11, 26, 50, .18);
@@ -138,11 +145,12 @@
   }
   .header[data-solid] { padding-bottom: calc(14 * var(--u)); }
   .header::before { height: 100%; }
-  .l, .t, .r, .nav, .signin { position: relative; left: auto; right: auto; top: auto; }
+  .l, .t, .r, .nav, .signin, .signinRow { position: relative; left: auto; right: auto; top: auto; }
+  .signinRow { translate: none; }
   .brand { margin-right: auto; }
   .nav { transform: none; }
   .menu { display: flex; align-items: center; gap: calc(24 * var(--u)); }
-  .header[data-solid] .brand, .header[data-solid] .nav, .header[data-solid] .signin { top: auto; right: auto; }
+  .header[data-solid] .brand, .header[data-solid] .nav, .header[data-solid] .signinRow { top: auto; right: auto; }
   .header[data-solid] .cta { top: auto; margin: calc(-7 * var(--t)) 0 calc(-7 * var(--t)) calc(-43.4 * var(--t)); }
 }
 
@@ -189,6 +197,7 @@
   .menuRule { display: block; height: 1px; margin: calc(4 * var(--t)) 0; border: 0; background: #CED5E0; }
   .menu .signin, :global(.dark) .header[data-solid] .menu .signin { padding: calc(10 * var(--t)) calc(6 * var(--t)); color: var(--nav-ink); }
   .menu .signin::after { display: none; }
+  .menu .theme, :global(.dark) .header[data-solid] .menu .theme { color: var(--nav-ink); border-color: rgba(32, 41, 64, .16); background: rgba(255, 255, 255, .55); }
   .menu .cta, .header[data-solid] .menu .cta { width: 100%; height: calc(64 * var(--t)); transform: none; margin: 0; }
   .menu .ctaLabel { top: calc(24.5 * var(--t)); }
   .menu .knob { left: auto; right: calc(7.5 * var(--t)); top: calc(7.5 * var(--t)); }
@@ -202,7 +211,7 @@
 :global(html.pre) .menu .nav, :global(html.pre) .menu .cta { opacity: 1; }
 
 @media (prefers-reduced-motion: reduce) {
-  .header, .header::before, .brand, .nav, .item, .signin, .cta, .knob, .knob svg, .ctaLabel, .burger i, .menu { transition: none; }
+  .header, .header::before, .brand, .nav, .item, .signin, .signinRow, .cta, .knob, .knob svg, .ctaLabel, .burger i, .menu { transition: none; }
   .capsule[data-anim] { transition: opacity .2s linear; }
   .cta:hover { translate: none; }
   .cta:hover .knob svg { translate: none; }

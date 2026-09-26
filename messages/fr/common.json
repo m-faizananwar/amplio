@@ -41,7 +41,9 @@
     "label": "Thème",
     "light": "Clair",
     "dark": "Sombre",
-    "system": "Système"
+    "system": "Système",
+    "toDark": "Passer en mode sombre",
+    "toLight": "Passer en mode clair"
   },
   "demoData": "Données de l’espace de démonstration",
   "stub": {

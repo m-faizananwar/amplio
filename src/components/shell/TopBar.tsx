@@ -1,5 +1,6 @@
 import { AccountPill } from "./AccountPill";
 import { MobileNav } from "./MobileNav";
+import { ThemeSwitch } from "./theme/ThemeSwitch";
 import { NotificationsButton } from "./topbar/NotificationsButton";
 import { RoleSwitch } from "./topbar/RoleSwitch";
 import { ShellCommandMenu } from "./topbar/ShellCommandMenu";
@@ -16,6 +17,7 @@ export function TopBar({ viewer }: { viewer: ShellViewer }) {
         <div className="min-w-0 flex-1"><ShellCommandMenu role={viewer.role} /></div>
         {viewer.demo ? <div className="hidden md:block"><RoleSwitch role={viewer.role} /></div> : null}
         <WalletChip role={viewer.role} walletCents={viewer.walletCents} />
+        <ThemeSwitch />
         <NotificationsButton notifications={viewer.notifications} role={viewer.role} />
         {/* from lg up the pill lives at the foot of the sidebar */}
         <div className="lg:hidden"><AccountPill viewer={viewer} /></div>

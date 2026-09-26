@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { type CSSProperties, Fragment, useRef } from "react";
 import { cn } from "@/lib/cn";
+import { ThemeSwitch } from "@/components/shell/theme/ThemeSwitch";
 import { GlassIcon } from "./GlassIcon";
 import s from "./header.module.css";
 import { useNavCapsule } from "./useNavCapsule";
@@ -48,7 +49,10 @@ export function HeaderMenu({ labels, open, current, close }: Props) {
         ))}
       </nav>
       <hr className={s.menuRule} />
-      <Link href="/login" className={s.signin} onClick={() => close()}>{labels.signIn}</Link>
+      <div className={s.signinRow}>
+        <ThemeSwitch className={s.theme} />
+        <Link href="/login" className={s.signin} onClick={() => close()}>{labels.signIn}</Link>
+      </div>
       <Link href="/register?role=brand" className={cn(s.cta, s.l, s.t, s.r)} style={{ "--x": 58, "--y": 30 } as CSSProperties} data-hx="cta" onClick={() => close()}>
         <span className={s.ctaLabel}>{labels.startFree}</span>
         <span className={s.knob}><GlassIcon name="chevron" /></span>

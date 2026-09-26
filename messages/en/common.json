@@ -41,7 +41,9 @@
     "label": "Theme",
     "light": "Light",
     "dark": "Dark",
-    "system": "System"
+    "system": "System",
+    "toDark": "Switch to dark mode",
+    "toLight": "Switch to light mode"
   },
   "demoData": "Demo workspace data",
   "stub": {

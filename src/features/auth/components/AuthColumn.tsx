@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { getTranslations } from "next-intl/server";
 import { BrandLockup } from "@/components/brand/BrandLockup";
+import { ThemeSwitch } from "@/components/shell/theme/ThemeSwitch";
 import { LocaleToggle } from "@/components/shell/topbar/LocaleToggle";
 import { AmbientTrail } from "@/features/public/components/stage/AmbientTrail";
 
@@ -16,7 +17,7 @@ export async function AuthColumn({ rail, children, wide = false }: { rail?: Reac
         <Link href="/" prefetch={false} aria-label="Amplio home" className="rounded-control focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-money">
           <BrandLockup size="md" />
         </Link>
-        <LocaleToggle />
+        <div className="flex items-center gap-2"><ThemeSwitch /><LocaleToggle /></div>
       </header>
       <main className="relative flex flex-1 justify-center px-4 pb-16 pt-6 sm:pt-12">
         <AmbientTrail className="pointer-events-none absolute left-[max(2rem,calc(50%-40rem))] top-24 hidden w-56 opacity-70 lg:block" />
