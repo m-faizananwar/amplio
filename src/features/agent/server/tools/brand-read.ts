@@ -8,7 +8,7 @@ import type { CreatorDto } from "@/features/marketplace/schemas";
 import { billingBucketsNow, walletCentsNow } from "@/features/payouts/server/queries";
 import { pickCollaborations } from "../../collab-list";
 import type { CreatorCard } from "../../events";
-import { describeFilters, searchLimit } from "../../filters";
+import { describeFilters, emptySearchReason, searchLimit } from "../../filters";
 import { withCollabWords } from "./collab-words";
 import { arr, euros, L, num, obj, type ReadTool, str, type ToolContext } from "./types";
 
@@ -63,14 +63,8 @@ const searchCreators: ReadTool = {
       min: typeof a.minPriceEuros === "number" ? String(Math.floor(a.minPriceEuros)) : undefined,
       max: typeof a.maxPriceEuros === "number" ? String(Math.ceil(a.maxPriceEuros)) : undefined,
     });
-    const list = await listCreators(mctx, q);
     const minFollowers = typeof a.minFollowers === "number" ? a.minFollowers : 0;
-    // creators already invited to or working on this campaign can't be booked
-    // again; the list is cached, so the campaign's current rows are read fresh
-    const onIt = mctx.selectedCampaign ? await creatorsOnCampaign(mctx.selectedCampaign.id, list.items.map((c) => c.id)) : new Set<string>();
-    const isOn = (c: CreatorDto) => Boolean(c.collaborationStatus) || onIt.has(c.id);
-    const already = list.items.filter(isOn).length;
-    const top = list.items.filter((c) => c.followers >= minFollowers && !isOn(c)).slice(0, searchLimit(a));
+    const { list, top, already, belowFollowers } = await scanCreators(mctx, q, { minFollowers, want: searchLimit(a) });
     const applied = describeFilters(a);
     // nothing matched: the ways to widen this search, only for filters it used
     const again = `Repeat the last searchCreators call (same campaign and filters)`;
@@ -78,6 +72,7 @@ const searchCreators: ReadTool = {
       ...(Array.isArray(a.countries) && a.countries.length ? [{ label: L(ctx, "Search without the country filter", "Chercher sans filtre de pays"), hint: `${again} without countries.` }] : []),
       ...(typeof a.maxPriceEuros === "number" ? [{ label: L(ctx, "Raise the budget", "Augmenter le budget"), hint: "Ask for the new maximum price per creator with askUser, then repeat the last searchCreators call with it." }] : []),
       ...(Array.isArray(a.industries) && a.industries.length ? [{ label: L(ctx, "Any industry", "Tous secteurs"), hint: `${again} without industries.` }] : []),
+      ...(minFollowers > 0 ? [{ label: L(ctx, "Drop the follower minimum", "Sans minimum d'abonnés"), hint: `${again} without minFollowers.` }] : []),
     ];
     const cards = top.map(toCreatorCard);
     return {
@@ -85,9 +80,28 @@ const searchCreators: ReadTool = {
       data: { appliedFilters: applied.length ? applied : ["none"], campaign: mctx.selectedCampaign, alreadyOnCampaign: already, creators: top.map((c) => ({ id: c.id, name: c.name, country: c.country, industries: c.industries, followers: c.followers, priceCents: c.priceCents, fitScore: c.fit.score, fitReason: c.fit.reason })) },
       result: { type: "result", kind: "creators", title: mctx.selectedCampaign ? mctx.selectedCampaign.name : "Creators", items: cards },
       nextSteps,
+      // nobody to show: why, from the counts, said as the reply's first line
+      blocker: top.length ? undefined : emptySearchReason({ total: list.total, scanned: list.items.length, already, belowFollowers, minFollowers, applied: describeFilters(a, ctx.locale), locale: ctx.locale }),
     };
   },
 };
+
+const SCAN_PAGES = 5;
+type Scan = { minFollowers: number; want: number };
+
+// Best fit first, skipping creators already on the campaign (any state; read
+// fresh, the list is cached) and below the follower floor; looks past the
+// first page when those fill it, up to five pages.
+async function scanCreators(mctx: NonNullable<Awaited<ReturnType<typeof getMarketplaceContext>>>, q: ReturnType<typeof marketplaceQuerySchema.parse>, { minFollowers, want }: Scan) {
+  for (let page = 1; ; page++) {
+    const list = await listCreators(mctx, { ...q, page });
+    const onIt = mctx.selectedCampaign ? await creatorsOnCampaign(mctx.selectedCampaign.id, list.items.map((c) => c.id)) : new Set<string>();
+    const isOn = (c: CreatorDto) => Boolean(c.collaborationStatus) || onIt.has(c.id);
+    const top = list.items.filter((c) => c.followers >= minFollowers && !isOn(c)).slice(0, want);
+    const done = top.length >= want || list.items.length >= list.total || page >= SCAN_PAGES;
+    if (done) return { list, top, already: list.items.filter(isOn).length, belowFollowers: list.items.filter((c) => !isOn(c) && c.followers < minFollowers).length };
+  }
+}
 
 const listCollaborations: ReadTool = {
   name: "listCollaborations", role: "brand", kind: "read", label: "Reading your collaborations",

@@ -48,7 +48,10 @@ function say(emit: Emit, text: string) {
 
 // One call the model asked for: a question ends the turn, a read runs (with
 // its own timeout) and reports a step, a confirm tool is only prepared.
-type CallInput = { call: { name?: string; args?: Record<string, unknown> }; ctx: ToolContext; emit: Emit; stepId: string; seen?: Set<number>; next?: NextStep[]; shown?: string[] };
+// Per tool, what its latest call left the user to do next, and why it had
+// nothing to show (if so).
+type Notes = Map<string, { steps: NextStep[]; blocker?: string }>;
+type CallInput = { call: { name?: string; args?: Record<string, unknown> }; ctx: ToolContext; emit: Emit; stepId: string; seen?: Set<number>; next?: Notes; shown?: string[] };
 export async function runCall({ call, ctx, emit, stepId, seen, next, shown }: CallInput): Promise<{ response: Record<string, unknown>; stop?: "question" | "confirm" }> {
   const name = call.name ?? "";
   const args = call.args ?? {};
@@ -69,13 +72,14 @@ export async function runCall({ call, ctx, emit, stepId, seen, next, shown }: Ca
       if (out.result) { emit(out.result); shown?.push(...cardNames(out.result)); }
       if (out.navigate) emit({ type: "navigate", href: out.navigate });
       if (seen) amountsFrom(out.data, seen);
-      if (next && out.nextSteps) next.push(...out.nextSteps);
+      // the latest call of a tool decides: a widened search that found people clears the earlier blocker
+      next?.set(name, { steps: out.nextSteps ?? [], blocker: out.blocker });
       return { response: compactForModel(withEuros(out.data, ctx.locale)) };
     }
     const prepared = await withTimeout(tool.prepare(ctx, args), CALL_TIMEOUT_MS);
     if ("error" in prepared) {
       emit({ type: "step", id: stepId, label: tool.label, status: "failed", tool: name, output: prepared.error });
-      if (next && prepared.nextSteps) next.push(...prepared.nextSteps);
+      next?.set(name, { steps: prepared.nextSteps ?? [] });
       return { response: { error: prepared.error } };
     }
     if (seen) amountsFrom(prepared.facts, seen);
@@ -117,7 +121,7 @@ export async function runTurn({ viewer, locale, text, history, emit, recall, sco
   // every amount a tool returned this turn; the reply may only use these (no
   // balance from the session: it can be stale, so the model asks a tool)
   const seen = new Set<number>();
-  const next: NextStep[] = [];
+  const next: Notes = new Map();
   const shown: string[] = [];
   let steps = 0;
   while (Date.now() < deadline) {
@@ -132,10 +136,17 @@ export async function runTurn({ viewer, locale, text, history, emit, recall, sco
       const checked = checkMoney(res.text?.trim() ?? "", seen, locale);
       if (checked.dropped) console.warn("[agent] dropped unverified amounts", { sentences: checked.dropped });
       // under a card the reply adds what the card doesn't; it never re-lists it
-      const reply = dropRestatement(checked.text, shown) || (locale === "fr" ? "Voici ce que j’ai trouvé." : "Here's what I found.");
+      // a tool that had nothing to show says why, from its own counts; the
+      // options are the chips, so the text only asks
+      const blockers = [...next.values()].map((n) => n.blocker).filter((b): b is string => Boolean(b));
+      const widen = locale === "fr" ? "Voulez-vous élargir la recherche ?" : "Want to widen it?";
+      const reply = blockers.length
+        ? `${blockers.join(" ")}${[...next.values()].some((n) => n.steps.length) ? ` ${widen}` : ""}`
+        : dropRestatement(checked.text, shown) || (locale === "fr" ? "Voici ce que j’ai trouvé." : "Here's what I found.");
       say(emit, reply);
       // a blocker never ends the turn cold: the tools' own next steps as chips
-      const steps = next.filter((s, i) => next.findIndex((o) => o.label === s.label) === i).slice(0, MAX_CHIPS);
+      const all = [...next.values()].flatMap((n) => n.steps);
+      const steps = all.filter((s, i) => all.findIndex((o) => o.label === s.label) === i).slice(0, MAX_CHIPS);
       if (steps.length) emit({ type: "question", text: "", chips: steps.map((s) => s.label), hints: Object.fromEntries(steps.map((s) => [s.label, s.hint])) });
       return reply;
     }

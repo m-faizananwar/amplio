@@ -14,7 +14,9 @@ export type ToolContext = { viewer: Viewer; locale: "en" | "fr"; scope?: string 
 // user's language, only things the agent's tools or pages can actually do;
 // they become chips if the model doesn't ask on its own.
 export type NextStep = { label: string; hint: string };
-export type ToolOutput = { summary: string; data: unknown; result?: ResultEvent; navigate?: string; nextSteps?: NextStep[] };
+// blocker: why the tool had nothing to show, in one plain sentence from its own
+// counts; it leads the reply, and the chips carry the options.
+export type ToolOutput = { summary: string; data: unknown; result?: ResultEvent; navigate?: string; nextSteps?: NextStep[]; blocker?: string };
 export type Prepared = { title: string; facts: ConfirmEvent["facts"]; confirmLabel: string } | { error: string; nextSteps?: NextStep[] };
 
 type Base = { name: string; role: "brand" | "creator"; label: string; description: string; parameters: Record<string, unknown> };
