@@ -28,5 +28,5 @@ export async function POST(request: Request) {
     const reply = await runTurn({ viewer, locale, text, history: thread ? thread.history : history, emit, recall: { notes, summary: thread?.summary ?? "" } });
     if (thread) await saveTurn(thread.threadId, { user: text, assistant: reply });
     return thread?.threadId ?? null;
-  }, { userId: viewer.userId });
+  }, { userId: viewer.userId, locale });
 }

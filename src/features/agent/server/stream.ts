@@ -1,14 +1,16 @@
 import "server-only";
 import { type AgentEvent, sse } from "../events";
+import { localizer } from "./localize";
 
 // Runs `work` and streams whatever it emits as Server-Sent Events, ending
 // with `done` (carrying the thread id work returns) or `error` if it throws. The error text is friendly; the
 // cause is logged server-side only.
-export function eventStream(work: (emit: (e: AgentEvent) => void) => Promise<string | null | void>, meta: { userId: string }): Response {
+export function eventStream(work: (emit: (e: AgentEvent) => void) => Promise<string | null | void>, meta: { userId: string; locale: "en" | "fr" }): Response {
   const encoder = new TextEncoder();
   const body = new ReadableStream({
     async start(controller) {
-      const emit = (e: AgentEvent) => controller.enqueue(encoder.encode(sse(e)));
+      const local = await localizer(meta.locale);
+      const emit = (e: AgentEvent) => controller.enqueue(encoder.encode(sse(local(e))));
       try {
         const threadId = await work(emit);
         emit({ type: "done", threadId: threadId ?? null });

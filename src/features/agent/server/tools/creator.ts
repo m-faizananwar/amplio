@@ -7,7 +7,7 @@ import { getPublicCard } from "@/features/workspace/server/card-queries";
 import { filterFor } from "@/lib/next-step";
 import { DRAFT_PREVIEW_MAX } from "../../constants";
 import { messageTool } from "./brand-write";
-import { type ConfirmTool, day, euros, obj, type ReadTool, str, type ToolContext } from "./types";
+import { type ConfirmTool, day, euros, L, obj, type ReadTool, str, type ToolContext } from "./types";
 
 const LIST_LIMIT = 8;
 const creatorId = (ctx: ToolContext) => ctx.viewer.creator?.id ?? "";
@@ -70,7 +70,7 @@ const apply: ConfirmTool = {
     const o = (await listOpportunities(creatorId(ctx))).find((x) => x.campaignId === a.campaignId);
     if (!o) return { error: "That campaign isn't open to you." };
     if (o.existingCollaborationId) return { error: "You already have a collaboration on that campaign." };
-    return { title: `Apply to ${o.campaignName}`, facts: [{ label: "Brand", value: o.brandCompany }, { label: "Your price", value: euros(o.listPriceCents, ctx.locale), cents: o.listPriceCents }, { label: "Post deadline", value: day(o.postDeadline, ctx.locale) }], confirmLabel: "Apply" };
+    return { title: L(ctx, `Apply to ${o.campaignName}`, `Postuler à ${o.campaignName}`), facts: [{ label: "Brand", value: o.brandCompany }, { label: "Your price", value: euros(o.listPriceCents, ctx.locale), cents: o.listPriceCents }, { label: "Post deadline", value: day(o.postDeadline, ctx.locale) }], confirmLabel: "Apply" };
   },
   async execute(ctx, a) {
     const r = await applyToCampaign({ campaignId: String(a.campaignId), csrfToken: ctx.viewer.csrfToken });
@@ -87,7 +87,7 @@ const decide = (decision: "accept" | "decline"): ConfirmTool => ({
     const c = await own(ctx, a.collaborationId);
     if (!c) return { error: "That collaboration isn't yours." };
     if (c.status !== "invited") return { error: "There's no open invitation on that collaboration." };
-    return { title: `${decision === "accept" ? "Accept" : "Decline"} ${c.brandCompany}'s invitation`, facts: [{ label: "Campaign", value: c.campaignName }, { label: "Fee", value: euros(c.feeCents, ctx.locale), cents: c.feeCents }], confirmLabel: decision === "accept" ? "Accept" : "Decline" };
+    return { title: decision === "accept" ? L(ctx, `Accept ${c.brandCompany}'s invitation`, `Accepter l’invitation de ${c.brandCompany}`) : L(ctx, `Decline ${c.brandCompany}'s invitation`, `Refuser l’invitation de ${c.brandCompany}`), facts: [{ label: "Campaign", value: c.campaignName }, { label: "Fee", value: euros(c.feeCents, ctx.locale), cents: c.feeCents }], confirmLabel: decision === "accept" ? "Accept" : "Decline" };
   },
   async execute(ctx, a) {
     const r = await decideInvitation({ collaborationId: String(a.collaborationId), csrfToken: ctx.viewer.csrfToken, decision });
@@ -103,7 +103,7 @@ const draft: ConfirmTool = {
     const c = await own(ctx, a.collaborationId);
     if (!c) return { error: "That collaboration isn't yours." };
     if (!["accepted", "changes_requested"].includes(c.status)) return { error: "That collaboration isn't waiting on a draft." };
-    return { title: `Send the draft to ${c.brandCompany}`, facts: [{ label: "Campaign", value: c.campaignName }, { label: "Draft", value: String(a.draftText ?? "").slice(0, DRAFT_PREVIEW_MAX) }], confirmLabel: "Send the draft" };
+    return { title: L(ctx, `Send the draft to ${c.brandCompany}`, `Envoyer le brouillon à ${c.brandCompany}`), facts: [{ label: "Campaign", value: c.campaignName }, { label: "Draft", value: String(a.draftText ?? "").slice(0, DRAFT_PREVIEW_MAX) }], confirmLabel: "Send the draft" };
   },
   async execute(ctx, a) {
     const r = await submitDraft({ collaborationId: String(a.collaborationId), csrfToken: ctx.viewer.csrfToken, draftText: String(a.draftText ?? "") });

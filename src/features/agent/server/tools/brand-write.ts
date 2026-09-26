@@ -6,7 +6,7 @@ import { sendMessage } from "@/features/collaborations/server/messages-actions";
 import { listBrandCollaborations } from "@/features/collaborations/server/queries";
 import { bookCreator } from "@/features/marketplace/server/actions";
 import { topUpWallet } from "@/features/payouts/server/actions";
-import { arr, type ConfirmTool, euros, num, obj, str, type ToolContext } from "./types";
+import { arr, type ConfirmTool, euros, L, num, obj, str, type ToolContext } from "./types";
 
 const MAX_BOOK = 5;
 const brandId = (ctx: ToolContext) => ctx.viewer.brand?.id ?? "";
@@ -30,7 +30,7 @@ const bookCreators: ConfirmTool = {
     const wallet = ctx.viewer.brand?.walletCents ?? 0;
     if (total > wallet) return { error: `The fees total ${euros(total, ctx.locale)} and the wallet has ${euros(wallet, ctx.locale)}. Top up first.` };
     return {
-      title: `Book ${picks.length} creator${picks.length > 1 ? "s" : ""} for ${campaign.name}`,
+      title: L(ctx, `Book ${picks.length} creator${picks.length > 1 ? "s" : ""} for ${campaign.name}`, `Réserver ${picks.length} créateur${picks.length > 1 ? "s" : ""} pour ${campaign.name}`),
       facts: [
         { label: "Creators", value: picks.map((p) => `${p.name} (${euros(p.priceCents, ctx.locale)})`).join(", ") },
         { label: "Held from your wallet", value: euros(total, ctx.locale), cents: total },
@@ -57,7 +57,7 @@ const review = (decision: "approve" | "request_changes"): ConfirmTool => ({
     const c = await own(ctx, a.collaborationId);
     if (!c) return { error: "That collaboration isn't one of yours." };
     if (c.status !== "draft_submitted") return { error: `There's no draft waiting on ${c.creatorName}'s collaboration.` };
-    return { title: decision === "approve" ? `Approve ${c.creatorName}'s draft` : `Ask ${c.creatorName} for changes`, facts: [{ label: "Campaign", value: c.campaignName }, { label: "Creator", value: c.creatorName }, ...(a.note ? [{ label: "Note", value: String(a.note) }] : [])], confirmLabel: decision === "approve" ? "Approve" : "Send" };
+    return { title: decision === "approve" ? L(ctx, `Approve ${c.creatorName}'s draft`, `Approuver le brouillon de ${c.creatorName}`) : L(ctx, `Ask ${c.creatorName} for changes`, `Demander des modifications à ${c.creatorName}`), facts: [{ label: "Campaign", value: c.campaignName }, { label: "Creator", value: c.creatorName }, ...(a.note ? [{ label: "Note", value: String(a.note) }] : [])], confirmLabel: decision === "approve" ? "Approve" : "Send" };
   },
   async execute(ctx, a) {
     const r = await reviewDraft({ collaborationId: String(a.collaborationId), csrfToken: ctx.viewer.csrfToken, decision, note: String(a.note ?? "") });
@@ -73,7 +73,7 @@ const releasePayment: ConfirmTool = {
     const c = await own(ctx, a.collaborationId);
     if (!c) return { error: "That collaboration isn't one of yours." };
     if (c.status !== "live") return { error: "Only a live post's fee can be released." };
-    return { title: `Pay ${c.creatorName}`, facts: [{ label: "Campaign", value: c.campaignName }, { label: "Amount released", value: euros(c.feeCents, ctx.locale), cents: c.feeCents }], confirmLabel: `Release ${euros(c.feeCents, ctx.locale)}` };
+    return { title: L(ctx, `Pay ${c.creatorName}`, `Payer ${c.creatorName}`), facts: [{ label: "Campaign", value: c.campaignName }, { label: "Amount released", value: euros(c.feeCents, ctx.locale), cents: c.feeCents }], confirmLabel: `Release ${euros(c.feeCents, ctx.locale)}` };
   },
   async execute(ctx, a) {
     const r = await payCollaboration({ collaborationId: String(a.collaborationId), csrfToken: ctx.viewer.csrfToken });
@@ -89,7 +89,7 @@ const topUp: ConfirmTool = {
     const cents = Math.round(Number(a.amountEuros) * 100);
     if (!Number.isFinite(cents) || cents <= 0) return { error: "How much should I add?" };
     const wallet = ctx.viewer.brand?.walletCents ?? 0;
-    return { title: "Top up the wallet", facts: [{ label: "Amount", value: euros(cents, ctx.locale), cents }, { label: "Wallet after", value: euros(wallet + cents, ctx.locale), cents: wallet + cents }, { label: "Card", value: "None charged: demo top-up" }], confirmLabel: `Add ${euros(cents, ctx.locale)}` };
+    return { title: L(ctx, "Top up the wallet", "Recharger le portefeuille"), facts: [{ label: "Amount", value: euros(cents, ctx.locale), cents }, { label: "Wallet after", value: euros(wallet + cents, ctx.locale), cents: wallet + cents }, { label: "Card", value: "None charged: demo top-up" }], confirmLabel: `Add ${euros(cents, ctx.locale)}` };
   },
   async execute(_ctx, a) {
     const r = await topUpWallet({ amountCents: Math.round(Number(a.amountEuros) * 100) });
@@ -101,10 +101,10 @@ export const messageTool = (role: "brand" | "creator"): ConfirmTool => ({
   name: "sendMessage", role, kind: "confirm", label: "Preparing the message",
   description: "Send a message in a collaboration's thread. Needs confirmation.",
   parameters: obj({ collaborationId: str("The collaboration id"), body: str("The message text") }, ["collaborationId", "body"]),
-  async prepare(_ctx, a) {
+  async prepare(ctx, a) {
     const body = String(a.body ?? "").trim();
     if (!body) return { error: "What should the message say?" };
-    return { title: "Send this message", facts: [{ label: "Message", value: body }], confirmLabel: "Send" };
+    return { title: L(ctx, "Send this message", "Envoyer ce message"), facts: [{ label: "Message", value: body }], confirmLabel: "Send" };
   },
   async execute(ctx, a) {
     const r = await sendMessage({ collaborationId: String(a.collaborationId), body: String(a.body), csrfToken: ctx.viewer.csrfToken });

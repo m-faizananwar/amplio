@@ -1,120 +1,58 @@
 {
-  "nav": {
-    "label": "Agent"
-  },
-  "command": {
-    "ask": "Demander à l’agent"
-  },
-  "title": "Agent",
-  "description": "Il peut chercher, réserver et vérifier des choses pour vous, et demande confirmation avant tout mouvement d’argent.",
-  "greeting": {
-    "brand": "Qu’est-ce qu’on fait aujourd’hui, {name} ?",
-    "creator": "Qu’est-ce qu’on fait aujourd’hui, {name} ?",
-    "sub": "Dites-lui ce dont vous avez besoin. Il montre chaque étape et demande confirmation avant de réserver ou de payer."
-  },
-  "starters": {
-    "brand": {
-      "find": "Trouver des créateurs pour ma prochaine campagne",
-      "today": "Qu’est-ce qui a besoin de moi aujourd’hui ?",
-      "campaign": "Où en est ma campagne Q4 ?"
-    },
-    "creator": {
-      "find": "Trouver des campagnes qui me correspondent",
-      "week": "Qu’est-ce que je dois faire cette semaine ?",
-      "earned": "Combien ai-je gagné ?"
-    }
-  },
-  "composer": {
-    "label": "Écrire à l’agent",
-    "placeholder": "Demandez n’importe quoi sur Amplio",
+  "labels": {
+    "amount_released": "Montant versé",
+    "amount": "Montant",
+    "brand": "Marque",
+    "campaign": "Campagne",
+    "card": "Carte",
+    "checking_your_wallet": "Lecture de votre portefeuille",
+    "creator": "Créateur",
+    "creators": "Créateurs",
+    "draft": "Brouillon",
+    "fee": "Rémunération",
+    "held_from_your_wallet": "Bloqué sur votre portefeuille",
+    "message": "Message",
+    "note": "Note",
+    "post_deadline": "Date limite de publication",
+    "preparing_the_application": "Préparation de la candidature",
+    "preparing_the_booking": "Préparation de la réservation",
+    "preparing_the_draft": "Préparation du brouillon",
+    "preparing_the_message": "Préparation du message",
+    "preparing_the_payment": "Préparation du paiement",
+    "preparing_the_top_up": "Préparation du rechargement",
+    "preparing_the_approval": "Préparation de l’approbation",
+    "preparing_the_change_request": "Préparation de la demande de modifications",
+    "preparing_to_accept": "Préparation de l’acceptation",
+    "preparing_to_decline": "Préparation du refus",
+    "reading_open_campaigns": "Lecture des campagnes ouvertes",
+    "reading_your_brand_profile": "Lecture de votre profil de marque",
+    "reading_your_campaigns": "Lecture de vos campagnes",
+    "reading_your_card": "Lecture de votre fiche",
+    "reading_your_collaborations": "Lecture de vos collaborations",
+    "reading_your_earnings": "Lecture de vos revenus",
+    "remembering_that": "Je le retiens",
+    "searching_creators": "Recherche de créateurs",
+    "wallet_after": "Portefeuille après",
+    "your_price": "Votre tarif",
+    "doing_the_application": "Envoi de la candidature",
+    "doing_the_booking": "Réservation en cours",
+    "doing_the_draft": "Envoi du brouillon",
+    "doing_the_message": "Envoi du message",
+    "doing_the_payment": "Paiement en cours",
+    "doing_the_top_up": "Rechargement en cours",
+    "doing_the_approval": "Approbation en cours",
+    "doing_the_change_request": "Envoi de la demande",
+    "doing_to_accept": "Acceptation en cours",
+    "doing_to_decline": "Refus en cours",
+    "book_them": "Les réserver",
+    "book": "Réserver",
+    "approve": "Approuver",
     "send": "Envoyer",
-    "mic": "Parler",
-    "call": "Appeler"
-  },
-  "steps": {
-    "worked": "{count, plural, one {# étape faite} other {# étapes faites}}",
-    "running": "En cours…",
-    "failed": "Cette étape a échoué",
-    "input": "Entrée",
-    "output": "Résultat"
-  },
-  "result": {
-    "creatorsTitle": "{count, plural, one {# créateur} other {# créateurs}}",
-    "shortlist": "Présélectionner",
-    "shortlisted": "Présélectionné",
-    "open": "Ouvrir",
-    "followers": "abonnés",
-    "perPost": "par publication",
-    "fit": "{score} % de correspondance",
-    "whyFit": "Pourquoi cette correspondance",
     "apply": "Postuler",
-    "valueProp": "Ce qu’ils vendent",
-    "customers": "Leurs clients",
-    "brief": "Brief",
-    "nextAction": "Suivant",
-    "available": "Disponible",
-    "held": "Bloqué",
-    "earned": "Gagné",
-    "pending": "En attente"
-  },
-  "confirm": {
-    "title": "Confirmez avant que je continue",
-    "total": "Bloqué depuis votre portefeuille",
-    "perCreator": "Par créateur",
-    "confirm": "Confirmer",
-    "change": "Modifier",
-    "cancel": "Annuler",
-    "working": "Confirmation en cours…",
-    "done": "Terminé",
-    "sayYes": "Dites “oui” pour confirmer"
-  },
-  "error": {
-    "line": "Une erreur s’est produite à cette étape. Rien n’a été réservé ni payé.",
-    "retry": "Réessayer"
-  },
-  "sample": {
-    "badge": "Exécution d’exemple",
-    "note": "L’agent en direct n’est pas connecté ici ; ceci rejoue un exemple pour vous montrer à quoi ressemble une exécution."
-  },
-  "rail": {
-    "know": "Ce que je sais",
-    "profile": "Profil",
-    "notes": "Notes que je garde",
-    "noNotes": "Rien d’enregistré pour l’instant. Dites-moi quelque chose à retenir.",
-    "remove": "Oublier ceci",
-    "threads": "Conversations précédentes",
-    "noThreads": "Vos conversations s’afficheront ici.",
-    "newChat": "Nouvelle conversation",
-    "company": "Entreprise",
-    "handle": "Identifiant",
-    "headline": "Accroche"
-  },
-  "voice": {
-    "listening": "Écoute",
-    "thinking": "Réflexion",
-    "speaking": "Parle",
-    "end": "Terminer l’appel",
-    "back": "Retour à la conversation"
-  },
-  "firstRun": {
-    "campaigns": {
-      "title": "Pas encore de campagne",
-      "body": "Créez une campagne pour que l’agent puisse commencer à chercher des créateurs.",
-      "action": "Créer une campagne"
-    },
-    "collaborations": {
-      "title": "Pas encore de collaboration",
-      "body": "Une fois votre campagne créée, l’agent peut trouver des créateurs et lancer des conversations pour vous.",
-      "action": "Trouver des créateurs"
-    },
-    "opportunities": {
-      "title": "Aucune campagne ne correspond encore à votre fiche",
-      "body": "Complétez votre fiche pour que l’agent puisse vous proposer les bonnes campagnes.",
-      "action": "Compléter votre fiche"
-    },
-    "messages": {
-      "title": "Pas encore de message",
-      "body": "Les conversations s’ouvrent dès qu’une réservation est acceptée."
-    }
+    "accept": "Accepter",
+    "decline": "Refuser",
+    "send_the_draft": "Envoyer le brouillon",
+    "waiting_for_your_confirmation": "en attente de votre confirmation",
+    "creators_out_of_budget": "Créateurs hors budget"
   }
 }

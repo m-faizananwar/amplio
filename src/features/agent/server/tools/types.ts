@@ -26,4 +26,6 @@ export const arr = (description: string, items: Record<string, unknown> = { type
 export const obj = (properties: Record<string, unknown>, required: string[] = []) => ({ type: "object", properties, required });
 
 export const day = (iso: string | null, locale: "en" | "fr") => (iso ? new Intl.DateTimeFormat(locale === "fr" ? "fr-FR" : "en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" }).format(new Date(iso)) : "—");
+// A dynamic title in the viewer's language (fixed labels go through agent.json).
+export const L = (ctx: ToolContext, en: string, fr: string) => (ctx.locale === "fr" ? fr : en);
 export const euros = (cents: number, locale: "en" | "fr") => new Intl.NumberFormat(locale === "fr" ? "fr-FR" : "en-GB", { style: "currency", currency: "EUR" }).format(cents / 100);
