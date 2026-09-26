@@ -91,8 +91,8 @@ export function RouteTransition({ children }: { children: ReactNode }) {
   return (
     <div className={styles.shell} data-route-shell data-route-stale={pending ? "true" : undefined}>
       <div className={styles.page} aria-busy={pending ? "true" : undefined}>
-        <Suspense fallback={<RouteSkeleton />}>
-          {stalled ? <RouteSkeleton /> : <div key={pathname}>{children}</div>}
+        <Suspense fallback={<RouteSkeleton pathname={pathname} />}>
+          {stalled ? <RouteSkeleton pathname={pathname} /> : <div key={pathname}>{children}</div>}
         </Suspense>
       </div>
     </div>
