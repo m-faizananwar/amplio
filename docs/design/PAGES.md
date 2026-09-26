@@ -391,6 +391,23 @@ collaboration is described and waits for "yes".
 
 ## Onboarding
 
+**Setup lives inside the app** (26 Sep, screens `screens/onboarding/setup-*`):
+`/brand/setup` and `/creator/setup?step=…` render inside the shell, so the rail
+and top bar stay and the rest of the app is usable before setup is done. The
+left pane names the setup and the step ("Set up your profile · 3 of 5"), then
+lists the steps as tabs on a dark ink rail (number disc, title, a check and
+"Done"); the current step opens in place as its card, growing out of its tab
+(header scales up, fields unroll on the spring, 450 ms). The right pane is the
+live preview card. Phones get a step strip above the card and the preview
+under the fields. Finished steps stay open to edit; LinkedIn and invoicing can
+be skipped. While setup is unfinished the rail shows a Setup item with a
+done/total badge and both Overviews open with a setup card (progress ring,
+next step and why, Continue setup, a check per step); the visit after the last
+step shows "You're set up" once with a small burst, then it's gone. The old
+`/onboarding/*` links redirect to the same step. With AGENT_MODE on, the last
+step offers the agent (brand: finding creators, creator: finding campaigns).
+The panels below describe the forms each step renders.
+
 Both onboardings are the **wizard card** (components spec, "Onboarding"; screens in
 `screens/onboarding/wizard-*`): the rail on top, then an aside — an UPPERCASE
 eyebrow, the title, one line — above the step's fields on the left, and on the
