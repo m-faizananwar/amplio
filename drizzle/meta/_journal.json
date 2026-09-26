@@ -43,6 +43,13 @@
       "when": 1789257646559,
       "tag": "0005_harsh_goliath",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1790429715713,
+      "tag": "0006_goofy_skrulls",
+      "breakpoints": true
     }
   ]
 }

@@ -35,3 +35,18 @@ export const brands = pgTable(
     index("brands_owner_user_id_idx").on(t.ownerUserId),
   ],
 );
+
+// A brand's logo: a small data URL (256px WebP or JPEG, ~20 KB) drawn in the
+// browser. Its own table, so the brand rows every query selects don't change:
+// reading it is optional and falls back to no logo.
+export const brandLogos = pgTable(
+  "brand_logos",
+  {
+    ...baseColumns,
+    brandId: uuid("brand_id")
+      .notNull()
+      .references(() => brands.id, { onDelete: "cascade" }),
+    dataUrl: text("data_url").notNull(),
+  },
+  (t) => [uniqueIndex("brand_logos_brand_id_idx").on(t.brandId)],
+);
