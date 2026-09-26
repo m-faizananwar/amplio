@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { BrandLockup } from "@/components/brand/BrandLockup";
 import { LocaleToggle } from "@/components/shell/topbar/LocaleToggle";
+import { jakarta } from "./jakarta";
 import s from "./wizard.module.css";
 
 type Props = { rail?: ReactNode; eyebrow: string; title: string; sub: string; children: ReactNode };
@@ -12,7 +13,7 @@ type Props = { rail?: ReactNode; eyebrow: string; title: string; sub: string; ch
 // Children place themselves with data-area="fields" | "card".
 export function WizardShell({ rail, eyebrow, title, sub, children }: Props) {
   return (
-    <div className={s.shell}>
+    <div className={`${s.shell} ${jakarta.variable}`}>
       <header className={s.top}>
         <Link href="/" aria-label="Amplio home" className="rounded-control focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ink/20">
           <BrandLockup size="md" />
