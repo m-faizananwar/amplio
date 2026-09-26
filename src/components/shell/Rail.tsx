@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { type ReactNode, useState } from "react";
 import { BrandLockup } from "@/components/brand/BrandLockup";
+import { RailCallControl } from "@/features/agent/components/call/widget/RailCallControl";
 import { isActive, navFor, type NavItem, type Role } from "./nav";
 import { useRailCollapsed } from "./useRailCollapsed";
 
@@ -42,13 +43,16 @@ export function Rail({ role, onNavigate, collapsible = false, account, setup = n
   const item = (entry: NavItem, badge?: string) => {
     const active = isActive(pathname, entry.href, root);
     const label = t(`${role}.${entry.key}`);
+    // the Agent item carries the call: a phone to start one, the live time during one
+    const agent = entry.key === "agent";
     return (
-      <li key={entry.href}>
-        <Link href={entry.href} onClick={onNavigate} aria-current={active ? "page" : undefined} aria-label={folded ? label : undefined} data-tip={folded ? label : undefined} data-tip-side="right" className="nav-item">
+      <li key={entry.href} className={agent ? "relative" : undefined}>
+        <Link href={entry.href} onClick={onNavigate} aria-current={active ? "page" : undefined} aria-label={folded ? label : undefined} data-tip={folded ? label : undefined} data-tip-side="right" className={agent && !folded ? "nav-item pr-20" : "nav-item"}>
           <span className="nav-icon"><entry.icon aria-hidden="true" /></span>
           {folded ? null : <span className="nav-label truncate">{label}</span>}
           {badge && !folded ? <span className="num ml-auto rounded-chip bg-money-soft px-1.5 py-0.5 text-caption font-semibold text-money">{badge}</span> : null}
         </Link>
+        {agent ? <RailCallControl folded={folded} /> : null}
       </li>
     );
   };

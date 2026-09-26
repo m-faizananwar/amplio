@@ -17,6 +17,7 @@ import "@/styles/fields.css";
 import "@/styles/shell.css";
 import "@/styles/dropdown.css";
 import "@/styles/micro.css";
+import "@/styles/call.css";
 
 import { BRAND } from "@/config/brand";
 

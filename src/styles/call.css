@@ -1,0 +1,128 @@
+/* The floating call (src/features/agent/components/call/widget). */
+@layer components {
+  .call-float {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 70;
+    --call-spring: linear(0, 0.2 6%, 0.56 14%, 0.86 23%, 1.02 31%, 1.06 38%, 1.04 46%, 1.01 56%, 0.998 68%, 1);
+    transition: transform 520ms var(--call-spring), width 320ms var(--ease-ledger), height 320ms var(--ease-ledger);
+    will-change: transform;
+  }
+  .call-float[data-moving] { transition: none; }
+  .call-window {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--rule);
+    border-radius: 20px;
+    background: var(--surface);
+    box-shadow: 0 2px 6px rgb(16 24 40 / 0.06), 0 24px 56px -12px rgb(16 24 40 / 0.28);
+  }
+  .dark .call-window { box-shadow: 0 2px 6px rgb(0 0 0 / 0.5), 0 24px 56px -12px rgb(0 0 0 / 0.7); }
+  .call-handle {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    align-items: center;
+    gap: 8px;
+    height: 36px;
+    padding: 0 8px;
+    border-radius: 10px;
+    cursor: grab;
+    touch-action: none;
+    outline: none;
+  }
+  .call-handle:active { cursor: grabbing; }
+  .call-handle:focus-visible { outline: 2px solid var(--money); outline-offset: -2px; }
+
+  .call-bubble {
+    display: grid;
+    width: 64px;
+    height: 64px;
+    place-items: center;
+    border-radius: 999px;
+    background: var(--surface);
+    box-shadow: 0 0 0 1px var(--rule), 0 16px 36px -10px rgb(16 24 40 / 0.35);
+    cursor: grab;
+    touch-action: none;
+    outline: none;
+  }
+  .call-bubble:focus-visible { outline: 2px solid var(--money); outline-offset: 3px; }
+  .call-bubble-timer {
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    translate: -50% 0;
+    padding: 1px 6px;
+    border-radius: 999px;
+    background: var(--money);
+    color: var(--surface);
+    font-size: 11px;
+    line-height: 16px;
+  }
+  .dark .call-bubble-timer { color: var(--paper); }
+
+  .call-dots circle { transform-box: fill-box; transform-origin: center; }
+  .call-dots[data-mode="muted"] { opacity: 0.4; }
+
+  /* connecting: a soft ring breathing out from the mark */
+  .call-ring { position: relative; background: var(--well); }
+  .call-ring::before, .call-ring::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 2px solid color-mix(in oklab, var(--money) 45%, transparent);
+    border-radius: inherit;
+    animation: call-ring 1.8s var(--ease-ledger) infinite;
+  }
+  .call-ring::after { animation-delay: 0.9s; }
+  @keyframes call-ring { from { opacity: 0.9; scale: 1; } to { opacity: 0; scale: 1.6; } }
+
+  .call-live-dot { display: inline-block; width: 8px; height: 8px; border-radius: 999px; background: var(--money); box-shadow: 0 0 0 2px var(--paper); animation: call-live 1.6s ease-in-out infinite; }
+  @keyframes call-live { 50% { box-shadow: 0 0 0 2px var(--paper), 0 0 0 5px color-mix(in oklab, var(--money) 25%, transparent); } }
+
+  /* phones */
+  .call-sheet {
+    position: fixed;
+    inset: auto 0 0 0;
+    z-index: 70;
+    display: flex;
+    max-height: min(75dvh, 560px);
+    flex-direction: column;
+    border-top: 1px solid var(--rule);
+    border-radius: 20px 20px 0 0;
+    background: var(--surface);
+    box-shadow: 0 -16px 40px -12px rgb(16 24 40 / 0.3);
+    transition: transform 320ms var(--ease-ledger);
+    animation: call-sheet-in 360ms var(--ease-ledger);
+  }
+  .call-sheet[data-moving] { transition: none; }
+  @keyframes call-sheet-in { from { transform: translateY(100%); } }
+  .call-sheet-grip { display: grid; height: 24px; place-items: center; touch-action: none; outline: none; }
+  .call-sheet-grip span { width: 40px; height: 4px; border-radius: 999px; background: var(--rule-strong); }
+  .call-sheet-grip:focus-visible span { background: var(--money); }
+  .call-bar {
+    position: fixed;
+    right: 12px;
+    left: 12px;
+    z-index: 70;
+    display: flex;
+    height: 52px;
+    align-items: center;
+    overflow: hidden;
+    border: 1px solid var(--rule);
+    border-radius: 16px;
+    background: var(--surface);
+    box-shadow: 0 12px 28px -10px rgb(16 24 40 / 0.3);
+  }
+  .call-bar > button:first-child { height: 100%; }
+  .call-bar--app { bottom: calc(84px + env(safe-area-inset-bottom)); }
+  .call-bar--agent { bottom: calc(248px + env(safe-area-inset-bottom)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .call-float, .call-sheet { transition: none !important; animation: none !important; }
+  .call-ring::before, .call-ring::after, .call-live-dot { animation: none !important; }
+  .call-ring::before { opacity: 0.6; }
+}

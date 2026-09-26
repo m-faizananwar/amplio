@@ -31,7 +31,8 @@
       "account": "Account"
     },
     "collapse": "Collapse sidebar",
-    "expand": "Expand sidebar"
+    "expand": "Expand sidebar",
+    "callAgent": "Call the agent"
   },
   "topBar": {
     "roleSwitch": {
@@ -83,7 +84,8 @@
       "toggleTheme": "Change theme",
       "switchLanguage": "Change language",
       "call": "Call Amplio",
-      "askAgent": "Ask the agent"
+      "askAgent": "Ask the agent",
+      "callAgent": "Call the agent"
     }
   },
   "pageStates": {

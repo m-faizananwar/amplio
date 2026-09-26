@@ -138,6 +138,15 @@ migration `0008`), which the call widget polls at `/api/agent/threads/{id}/event
 only the card pending in that thread, through the same `/api/agent/confirm` a tap uses. The Vapi assistant is created
 from code, one per host.
 
+**The call widget** (`src/features/agent/components/call`) is mounted once in the app shell, so a call survives every
+route change. It starts from the phone beside the sidebar's Agent item, ⌘K "Call the agent", or the Call button on the
+agent page. On desktop it is a 340 × 460 window, dragged by its header (or moved with the arrow keys; Enter snaps) to the
+nearest corner, remembered per browser, and folds to a 64px bubble. On phones it is a bottom sheet that pulls down to a
+bar. It shows the mark's dots on the voice level, the timer, a two-line caption, the latest steps, result chips and the
+confirm card (tap, or say yes), and ends on a summary with "Continue in chat". The sidebar shows a live dot and the time.
+When Vapi can't start (no keys, an older session route, a failed start), the call falls back to the browser's own speech
+recognition and voice, one turn at a time against `/api/agent`. A blocked microphone gets its own state with chat offered.
+
 ## What's real vs stubbed
 
 | Area | Status |
