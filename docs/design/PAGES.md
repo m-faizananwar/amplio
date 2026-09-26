@@ -302,6 +302,15 @@ than designed by eye, replacing the WebGL trail hero (v1/v2 above).
   frames the assistant's corner button sat on Open the demo; it steps aside
   while the hero is at the top.
 
+#### Inside Amplio (right after the hero; screens `screens/hero/inside-*`)
+The product itself, straight after the claim: a centred two-line headline
+that wipes in, one line and a pill into the demo, then a full-bleed green band
+with the trail drifting across it and a collaboration review from the demo
+workspace on its edge — a 548×340 card drawn in design pixels so it scales
+whole, with the live clicks and posts from the hero's source, labelled demo
+workspace data. Entrance on clip-path, opacity and the translate property,
+once in view; the trail pauses off-screen and holds still under reduced motion.
+
 ### For creators — `/for-creators`
 A creator's path in the order they live it: four ruled steps with the trail
 running through their numbers (the last dot green — paid), then the card
