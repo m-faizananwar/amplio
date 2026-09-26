@@ -4,7 +4,7 @@ import { THEME_BOOT_SCRIPT } from "@/components/shell/theme/theme";
 import { DEFAULT_LOCALE } from "@/i18n/config";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Cormorant_Garamond, Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import { RouteProgress } from "@/components/motion/RouteProgress";
 import { ScrollMorph } from "@/components/motion/ScrollMorph";
 import { Toaster } from "@/components/ui/sonner";
@@ -12,8 +12,6 @@ import "./globals.css";
 import "@/styles/interaction.css";
 
 import { BRAND } from "@/config/brand";
-// Cormorant stays only until the last old landing component that names it is removed.
-const cormorant = Cormorant_Garamond({ subsets: ["latin"], weight: ["500"], variable: "--font-cormorant", display: "swap" });
 
 // Geist for every word, Geist Mono for every number (docs/design/DIRECTION.md).
 // next/font downloads them at build time and serves them from our origin.
@@ -46,7 +44,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     // The boot script adds `dark` before hydration, so the class the server
     // sent is expected to differ from the one React finds.
-    <html lang={DEFAULT_LOCALE} data-scroll-behavior="smooth" suppressHydrationWarning className={`${geist.variable} ${geistMono.variable} ${cormorant.variable} h-full antialiased`}>
+    <html lang={DEFAULT_LOCALE} data-scroll-behavior="smooth" suppressHydrationWarning className={`${geist.variable} ${geistMono.variable} h-full antialiased`}>
       <head>
         {/* Before first paint: light, dark, or whatever the OS says. */}
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />

@@ -35,6 +35,9 @@
 .b { left: calc((var(--x) + 13) * var(--u)); bottom: calc((var(--y) + 19) * var(--u)); }
 .r { left: auto; right: calc((var(--x) + 19) * var(--u)); }
 .sx { display: inline-block; transform-origin: left top; transform: scaleX(var(--sx, 1)); }
+/* the entrance's count is drawn over the real number, which keeps its width */
+.num[data-count] { color: transparent; }
+.num[data-count]::after { content: attr(data-count); position: absolute; left: 0; top: 0; color: var(--ink); }
 /* the rise masks each line at its own box; the box reaches past the descenders
    (and gives the space back) so nothing peeks out under the mask at frame 0 */
 .h1 .sx, .num { padding-bottom: .3em; margin-bottom: -.3em; }

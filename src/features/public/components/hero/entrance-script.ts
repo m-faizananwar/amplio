@@ -5,7 +5,8 @@
 // the hero renders finished. TIMELINE runs at the end of the hero: WAAPI only,
 // four behaviours (rise, lift, settle, accent), then it removes html.pre and
 // cancels itself. Phones run it at .86 of the timings. The numbers count up
-// from 0 while they rise and end on the real value the server rendered.
+// from 0 while they rise, drawn over the server's text (data-count, ::after),
+// so the real value and its width never change under the count.
 
 export const PRE_SCRIPT = `(function(){try{var h=document.documentElement;if(location.pathname!=="/"||!("animate" in h)||matchMedia("(prefers-reduced-motion: reduce)").matches)return;h.classList.add("pre");setTimeout(function(){h.classList.remove("pre")},4000)}catch(e){}})();`;
 
@@ -18,10 +19,9 @@ function rise(el,delay,dur){go(el,[{clipPath:"inset(100% 0 -14% 0)",translate:"0
 function lift(el,delay,dist,dur){go(el,[{opacity:0,translate:"0 "+dist},{opacity:1,translate:"0 0"}],delay,dur,S)}
 function settle(el,delay,dur,from,dist){go(el,[{opacity:0,scale:from,translate:"0 "+dist},{opacity:1,scale:1,translate:"0 0"}],delay,dur,G)}
 function count(el,delay,dur){if(!el)return;var end=Number(el.getAttribute("data-value"));if(!(end>0))return;
-var f=new Intl.NumberFormat(el.getAttribute("data-locale")||void 0),last=f.format(end),t0=performance.now()+delay*k,T=dur*k;
-function pad(v){var x=f.format(v);while(x.length<last.length)x+="\\u2007";return x}
-function tick(now){var p=Math.min(1,Math.max(0,(now-t0)/T));el.textContent=pad(Math.round(end*(1-Math.pow(1-p,4))));if(p<1)requestAnimationFrame(tick)}
-el.textContent=pad(0);requestAnimationFrame(tick);C.push(function(){el.textContent=last})}
+var f=new Intl.NumberFormat(el.getAttribute("data-locale")||void 0),t0=performance.now()+delay*k,T=dur*k;
+function tick(now){var p=Math.min(1,Math.max(0,(now-t0)/T));el.setAttribute("data-count",f.format(Math.round(end*(1-Math.pow(1-p,4)))));if(p<1)requestAnimationFrame(tick)}
+el.setAttribute("data-count",f.format(0));requestAnimationFrame(tick);C.push(function(){el.removeAttribute("data-count")})}
 lift(q("brand"),60,".55em",600);settle(q("nav"),150,700,.99,".5em");settle(q("cta"),200,700,.985,".5em");settle(q("burger"),150,700,.9,".4em");
 lift(q("eyebrow"),300,".8em",520);rise(q("line1"),380,980);rise(q("line2"),470,980);
 settle(q("play"),720,640,.88,".3em");lift(q("tag"),770,".7em",560);settle(q("panel"),800,880,.982,"1.4em");
