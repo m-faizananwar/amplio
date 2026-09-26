@@ -33,7 +33,7 @@ export async function LaunchScenes({ trail, creators }: Props) {
   // one real paid post's fee, not an average: the row says "for one published post"
   const perPost = formatWholeEuros(tr.example?.feeCents ?? 0, await getLocale());
   return (
-    <div className="relative">
+    <div id="story" className="relative scroll-mt-20">
       <SceneRail count={SCENES.length} />
       <Scene {...scene("post")} visual={<Stage loop><ShareBurst name={names[0]} linkLabel={LINK} /></Stage>} />
       <Scene {...scene("clicks")} flip visual={<div className="grid gap-6"><Stage loop><ClickField linkLabel="/r/k3x9" /></Stage><ClicksVisual clicks={tr.clicks} label={bare("hero.counts.clicks", tr.clicks)} liveLabel={live} rowLabel={bare("hero.counts.clicks", 1)} link={LINK} /></div>} />

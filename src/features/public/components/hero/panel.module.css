@@ -1,0 +1,83 @@
+/* The glass panel: a live read-out of the demo workspace (posts, links,
+   clicks, sign-ups), in the hero's units. Internals in --t so phones keep
+   them legible. */
+.panel {
+  width: calc(275 * var(--t)); height: calc(271 * var(--t)); border-radius: calc(28 * var(--t));
+  background: linear-gradient(135deg, rgba(255, 255, 255, .44), rgba(255, 255, 255, .16));
+  border: calc(1 * var(--u)) solid rgba(255, 255, 255, .60);
+  -webkit-backdrop-filter: blur(calc(40 * var(--u))) saturate(112%); backdrop-filter: blur(calc(40 * var(--u))) saturate(112%);
+  box-shadow: inset calc(1 * var(--u)) calc(1 * var(--u)) 0 rgba(255, 255, 255, .55),
+    inset calc(-1 * var(--u)) calc(-1 * var(--u)) 0 rgba(255, 255, 255, .18),
+    0 calc(18 * var(--u)) calc(40 * var(--u)) rgba(28, 52, 92, .07);
+  color: var(--ink);
+}
+.panel > * { position: absolute; margin: 0; }
+.title {
+  left: calc(29 * var(--t)); top: calc(44.7 * var(--t)); font-size: calc(24 * var(--t)); font-weight: 500;
+  line-height: 1; letter-spacing: -0.02em; white-space: nowrap;
+  display: inline-block; transform-origin: left top; transform: scaleX(var(--sx, 1));
+}
+.dot {
+  left: calc(137 * var(--t)); top: calc(53 * var(--t)); width: calc(10 * var(--t)); height: calc(10 * var(--t));
+  border-radius: 50%; background: var(--accent);
+}
+/* the pulse is a ring on its own layer, so the dot's own scale stays free for the entrance */
+.dot::after {
+  content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--accent);
+  animation: dotPulse 2.4s cubic-bezier(.22, .7, .25, 1) infinite;
+}
+@keyframes dotPulse { 0% { opacity: .45; transform: scale(1); } 70%, 100% { opacity: 0; transform: scale(2.6); } }
+.badge {
+  left: calc(177 * var(--t)); top: calc(46 * var(--t)); width: calc(73 * var(--t)); height: calc(73 * var(--t));
+  border-radius: 50%; background: rgba(255, 255, 255, .92); display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 calc(24 * var(--u)) rgba(255, 255, 255, .9), 0 calc(6 * var(--u)) calc(18 * var(--u)) rgba(28, 52, 92, .08);
+}
+.badge svg { width: calc(30 * var(--t)); height: calc(30 * var(--t)); }
+.sub {
+  left: calc(29 * var(--t)); top: calc(94.35 * var(--t)); font-size: calc(18 * var(--t)); font-weight: 400;
+  line-height: calc(20.4 * var(--t)); color: var(--muted2);
+}
+.scale {
+  left: calc(47 * var(--t)); top: calc(189 * var(--t)); width: calc(190 * var(--t));
+  display: grid; grid-template-columns: repeat(4, 1fr); padding: 0; list-style: none;
+  font-size: calc(15 * var(--t)); color: #586580; line-height: 1;
+}
+.scale li { display: flex; flex-direction: column; gap: calc(3 * var(--t)); }
+.scale b { font-weight: 500; font-variant-numeric: tabular-nums; }
+.scale span { font-size: calc(11 * var(--t)); }
+.track {
+  left: calc(46 * var(--t)); top: calc(221 * var(--t)); width: calc(190 * var(--t)); height: calc(8 * var(--t));
+  border-radius: 999px; background: var(--track); overflow: hidden;
+}
+.track i { position: absolute; inset: 0 auto 0 0; border-radius: inherit; background: var(--accent); transform-origin: left center; }
+.caption {
+  left: 0; top: calc(100% + 12 * var(--t)); font-size: calc(11 * var(--t)); color: var(--muted); white-space: nowrap;
+}
+
+@media (max-aspect-ratio: 87/80), (max-width: 899px), (max-height: 639px) {
+  .panel { position: relative; left: auto; right: auto; top: auto; align-self: flex-end; margin-top: calc(36 * var(--u)); flex: none; }
+}
+@media (max-aspect-ratio: 87/80) and (min-aspect-ratio: 1/1),
+       (max-width: 899px) and (min-aspect-ratio: 1/1),
+       (max-height: 639px) and (min-aspect-ratio: 1/1) {
+  .panel { grid-column: 2; grid-row: 1 / span 3; align-self: center; margin-top: 0; }
+}
+@media (max-width: 640px) and (max-aspect-ratio: 1/1) {
+  .panel { align-self: stretch; width: auto; height: calc(212 * var(--t)); margin-top: calc(28 * var(--u)); margin-bottom: calc(18 * var(--t)); }
+  .title { left: calc(30 * var(--t)); top: calc(30 * var(--t)); transform: none; }
+  .dot { left: calc(137 * var(--t)); top: calc(40 * var(--t)); }
+  .badge { left: auto; right: calc(26 * var(--t)); top: calc(22 * var(--t)); width: calc(64 * var(--t)); height: calc(64 * var(--t)); }
+  .sub { left: calc(31 * var(--t)); top: calc(80 * var(--t)); font-size: calc(17 * var(--t)); }
+  .scale { left: calc(31 * var(--t)); right: calc(31 * var(--t)); top: calc(150 * var(--t)); width: auto; }
+  .track { left: calc(31 * var(--t)); right: calc(31 * var(--t)); top: calc(178 * var(--t)); width: auto; }
+  .scale li { gap: calc(1 * var(--t)); }
+  .scale span { line-height: .9; }
+}
+
+:global(html.pre) .panel { opacity: 0; }
+:global(html.pre) .dot { scale: 0; }
+:global(html.pre) .track i { scale: 0 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dot::after { animation: none; opacity: 0; }
+}
