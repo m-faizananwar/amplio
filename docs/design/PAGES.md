@@ -81,8 +81,9 @@ next step in words and the button for it, the state drawn on the creator's avata
 committed spend), each opening the rows it is made of. The setup card shows only while
 setup is unfinished. People open the app to act; totals come second.
 **Merged (components round):** the two stacked sections became one screen: Needs you beside the
-ring widget (every collaboration by whose move it is, each arc opening that filter), the three
-numbers under both. The ring answers "how is it all going" without a second list.
+ring widget (every collaboration by whose move it is — needs you, waiting on creators, done —
+the same grouping and counts as the list and the Collaborations tabs, each arc opening that tab),
+the three numbers under both. The ring answers "how is it all going" without a second list.
 
 ### Collaborations — `/brand/collaborations`
 The same ruled list as the creator side, from the brand's chair: creator, **next step and

@@ -26,7 +26,7 @@ export const metadata: Metadata = { title: `Overview · ${BRAND.wordmark}` };
 export default async function BrandOverviewPage() {
   const viewer = await getViewer();
   if (!viewer?.brand) redirect("/login");
-  const [t, tc, ts] = await Promise.all([getTranslations("brand.overview"), getTranslations("brand.collaborations"), getTranslations("collaboration.status")]);
+  const [t, tc] = await Promise.all([getTranslations("brand.overview"), getTranslations("brand.collaborations")]);
   const brand = viewer.brand;
   const loaded = await Promise.all([listBrandCollaborations(brand.id), getResultsSummary(brand.id), getLaunchPlan(brand.id)]).catch((error) => {
     console.error("[overview] brand overview failed", { brandId: brand.id, error });
@@ -35,14 +35,12 @@ export default async function BrandOverviewPage() {
   const header = <PageHeader title={t("title", { name: viewer.firstName })} description={t("description", { company: brand.company })} actions={<Link href="/brand/campaigns/new" className={buttonVariants()}>{t("newCampaign")}</Link>} />;
   if (!loaded) return <>{header}<ErrorState body={t("error")} retryHref="/brand" /></>;
   const [collabs, summary, plan] = loaded;
+  // Same grouping as the Needs-you list and the Collaborations tabs: a live
+  // post whose payment is the brand's to release counts as Needs you.
   const counts = countByFilter(collabs.map((c) => c.status), "brand");
-  // live posts sit in Needs you on the brand side (the payment is theirs to
-  // release); the ring shows them apart so the green arc means "running"
-  const live = collabs.filter((c) => c.status === "live").length;
   const list = "/brand/collaborations?filter=";
   const segments = [
-    { key: "needs_you", label: tc("filters.needsYou"), count: counts.needs_you - live, href: `${list}needs_you` },
-    { key: "live", label: ts("live"), count: live, href: `${list}needs_you` },
+    { key: "needs_you", label: tc("filters.needsYou"), count: counts.needs_you, href: `${list}needs_you` },
     { key: "waiting", label: tc("filters.waiting"), count: counts.waiting, href: `${list}waiting` },
     { key: "done", label: tc("filters.done"), count: counts.done, href: `${list}done` },
   ];
