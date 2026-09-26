@@ -10,7 +10,7 @@ import { Controller, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { PasswordInput } from "@/components/forms/PasswordInput";
 import { Input } from "@/components/ui/input";
-import { FormField } from "@/features/profile-fields/components/FormField";
+import { describedBy, FormField } from "@/features/profile-fields/components/FormField";
 import { cn } from "@/lib/cn";
 import { HEARD_ABOUT_OPTIONS } from "../constants";
 import { type RegisterInput, type Role, registerSchema } from "../schemas";
@@ -44,17 +44,17 @@ export function RegisterForm({ role }: { role: Role }) {
     <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4" noValidate>
       <div className="grid gap-4 sm:grid-cols-2">
         <FormField id="firstName" label={t("signUp.firstName")} error={err("firstName")}>
-          <Input id="firstName" leadingIcon={<UserRound />} placeholder={t("signUp.firstNamePlaceholder")} autoComplete="given-name" aria-invalid={!!errors.firstName} {...form.register("firstName")} />
+          <Input id="firstName" aria-describedby={describedBy("firstName", err("firstName"))} leadingIcon={<UserRound />} placeholder={t("signUp.firstNamePlaceholder")} autoComplete="given-name" aria-invalid={!!errors.firstName} {...form.register("firstName")} />
         </FormField>
         <FormField id="lastName" label={t("signUp.lastName")} error={err("lastName")}>
-          <Input id="lastName" leadingIcon={<UserRound />} placeholder={t("signUp.lastNamePlaceholder")} autoComplete="family-name" aria-invalid={!!errors.lastName} {...form.register("lastName")} />
+          <Input id="lastName" aria-describedby={describedBy("lastName", err("lastName"))} leadingIcon={<UserRound />} placeholder={t("signUp.lastNamePlaceholder")} autoComplete="family-name" aria-invalid={!!errors.lastName} {...form.register("lastName")} />
         </FormField>
       </div>
       <FormField id="email" label={t(brand ? "signUp.emailBrand" : "signUp.emailCreator")} error={err("email")}>
-        <Input id="email" leadingIcon={<Mail />} type="email" autoComplete="email" placeholder={t(brand ? "signUp.emailPlaceholderBrand" : "signUp.emailPlaceholderCreator")} aria-invalid={!!errors.email} {...form.register("email")} />
+        <Input id="email" aria-describedby={describedBy("email", err("email"))} leadingIcon={<Mail />} type="email" autoComplete="email" placeholder={t(brand ? "signUp.emailPlaceholderBrand" : "signUp.emailPlaceholderCreator")} aria-invalid={!!errors.email} {...form.register("email")} />
       </FormField>
       <FormField id="password" label={t("signUp.password")} hint={t("signUp.passwordPlaceholder")} error={err("password")}>
-        <PasswordInput id="password" placeholder={t("signUp.passwordField")} autoComplete="new-password" aria-invalid={!!errors.password} {...form.register("password")} />
+        <PasswordInput id="password" aria-describedby={describedBy("password", err("password"), t("signUp.passwordPlaceholder"))} placeholder={t("signUp.passwordField")} autoComplete="new-password" aria-invalid={!!errors.password} {...form.register("password")} />
       </FormField>
       <Controller
         control={form.control}

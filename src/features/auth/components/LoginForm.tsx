@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { PasswordInput } from "@/components/forms/PasswordInput";
 import { Input } from "@/components/ui/input";
-import { FormField } from "@/features/profile-fields/components/FormField";
+import { describedBy, FormField } from "@/features/profile-fields/components/FormField";
 import { type LoginInput, loginSchema } from "../schemas";
 import { login } from "../server/actions";
 import { FormAlert } from "./FormAlert";
@@ -40,10 +40,10 @@ export function LoginForm() {
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4" noValidate>
       <FormField id="email" label={t("signIn.email")} error={errors.email ? t("errors.email") : undefined}>
-        <Input id="email" leadingIcon={<Mail />} type="email" autoComplete="email" placeholder={t("signIn.emailPlaceholder")} aria-invalid={!!errors.email} {...form.register("email")} />
+        <Input id="email" aria-describedby={describedBy("email", errors.email ? t("errors.email") : undefined)} leadingIcon={<Mail />} type="email" autoComplete="email" placeholder={t("signIn.emailPlaceholder")} aria-invalid={!!errors.email} {...form.register("email")} />
       </FormField>
       <FormField id="password" label={t("signIn.password")} error={errors.password ? t("errors.passwordRequired") : undefined}>
-        <PasswordInput id="password" placeholder={t("signIn.passwordField")} autoComplete="current-password" aria-invalid={!!errors.password} {...form.register("password")} />
+        <PasswordInput id="password" aria-describedby={describedBy("password", errors.password ? t("errors.passwordRequired") : undefined)} placeholder={t("signIn.passwordField")} autoComplete="current-password" aria-invalid={!!errors.password} {...form.register("password")} />
       </FormField>
       <Link href="/forgot-password" className="-mt-1 justify-self-end text-small text-ink-muted underline-offset-4 hover:text-ink hover:underline">{t("signIn.forgot")}</Link>
       <FormAlert message={serverError} />

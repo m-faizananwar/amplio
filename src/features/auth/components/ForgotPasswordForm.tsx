@@ -8,7 +8,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { FormField } from "@/features/profile-fields/components/FormField";
+import { describedBy, FormField } from "@/features/profile-fields/components/FormField";
 import { type ForgotPasswordInput, forgotPasswordSchema } from "../schemas";
 import { requestPasswordReset } from "../server/reset-actions";
 import { FormAlert } from "./FormAlert";
@@ -35,7 +35,7 @@ export function ForgotPasswordForm() {
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4" noValidate>
       <FormField id="email" label={t("forgot.email")} error={errors.email ? t("errors.email") : undefined}>
-        <Input id="email" leadingIcon={<Mail />} type="email" placeholder={t("forgot.emailPlaceholder")} autoComplete="email" aria-invalid={!!errors.email} {...form.register("email")} />
+        <Input id="email" aria-describedby={describedBy("email", errors.email ? t("errors.email") : undefined)} leadingIcon={<Mail />} type="email" placeholder={t("forgot.emailPlaceholder")} autoComplete="email" aria-invalid={!!errors.email} {...form.register("email")} />
       </FormField>
       <FormAlert message={serverError} />
       <Button type="submit" size="lg" className="h-11" disabled={isSubmitting}>{isSubmitting ? t("forgot.submitting") : t("forgot.submit")}</Button>

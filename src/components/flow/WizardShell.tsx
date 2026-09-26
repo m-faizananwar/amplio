@@ -15,7 +15,7 @@ export function WizardShell({ rail, eyebrow, title, sub, children }: Props) {
   return (
     <div className={`${s.shell} ${jakarta.variable}`}>
       <header className={s.top}>
-        <Link href="/" aria-label="Amplio home" className="rounded-control focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ink/20">
+        <Link href="/" prefetch={false} aria-label="Amplio home" className="rounded-control focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ink/20">
           <BrandLockup size="md" />
         </Link>
         <LocaleToggle />

@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { PasswordInput } from "@/components/forms/PasswordInput";
-import { FormField } from "@/features/profile-fields/components/FormField";
+import { describedBy, FormField } from "@/features/profile-fields/components/FormField";
 import { type ResetPasswordInput, resetPasswordSchema } from "../schemas";
 import { resetPassword } from "../server/reset-actions";
 import { FormAlert } from "./FormAlert";
@@ -30,10 +30,10 @@ export function ResetPasswordForm({ token }: { token: string }) {
     <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4" noValidate>
       <input type="hidden" {...form.register("token")} />
       <FormField id="password" label={t("reset.password")} hint={t("reset.passwordPlaceholder")} error={errors.password ? t("errors.password") : undefined}>
-        <PasswordInput id="password" placeholder={t("reset.passwordField")} autoComplete="new-password" aria-invalid={!!errors.password} {...form.register("password")} />
+        <PasswordInput id="password" aria-describedby={describedBy("password", errors.password ? t("errors.password") : undefined, t("reset.passwordPlaceholder"))} placeholder={t("reset.passwordField")} autoComplete="new-password" aria-invalid={!!errors.password} {...form.register("password")} />
       </FormField>
       <FormField id="confirm" label={t("reset.confirm")} error={errors.confirm ? t("errors.confirm") : undefined}>
-        <PasswordInput id="confirm" placeholder={t("reset.confirmPlaceholder")} autoComplete="new-password" aria-invalid={!!errors.confirm} {...form.register("confirm")} />
+        <PasswordInput id="confirm" aria-describedby={describedBy("confirm", errors.confirm ? t("errors.confirm") : undefined)} placeholder={t("reset.confirmPlaceholder")} autoComplete="new-password" aria-invalid={!!errors.confirm} {...form.register("confirm")} />
       </FormField>
       <FormAlert message={serverError} />
       <Button type="submit" size="lg" className="h-11" disabled={isSubmitting}>{isSubmitting ? t("reset.submitting") : t("reset.submit")}</Button>

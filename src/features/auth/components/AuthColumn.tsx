@@ -13,7 +13,7 @@ export async function AuthColumn({ rail, children, wide = false }: { rail?: Reac
   return (
     <div className="font-app flex min-h-[100svh] flex-col bg-paper">
       <header className="mx-auto flex w-full max-w-content items-center justify-between px-4 py-5 sm:px-8">
-        <Link href="/" aria-label="Amplio home" className="rounded-control focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-money">
+        <Link href="/" prefetch={false} aria-label="Amplio home" className="rounded-control focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-money">
           <BrandLockup size="md" />
         </Link>
         <LocaleToggle />
