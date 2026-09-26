@@ -7,10 +7,11 @@ import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { FormAlert } from "@/features/auth/components/FormAlert";
+import { PictureField } from "@/features/profile-fields/components/PictureField";
 import { WebsiteFields } from "@/features/profile-fields/components/WebsiteFields";
 import { ICP_COUNT, WELCOME_PARAMS } from "../constants";
 import { type OnboardingProfileDto, type ProfileInput, profileSchema, type WebsiteInput, websiteSchema } from "../schemas";
-import { analyzeWebsite, completeOnboarding } from "../server/actions";
+import { analyzeWebsite, completeOnboarding, saveBrandLogo } from "../server/actions";
 import { BrandPreview } from "./BrandPreview";
 import { DraftForm } from "./DraftForm";
 import { SortingWords } from "./SortingWords";
@@ -18,7 +19,7 @@ import { SortingWords } from "./SortingWords";
 const SORTING_MIN_MS = 2_400;
 const FALLBACK_WORDS = ["product", "customers", "teams", "pricing", "growth", "sales", "B2B", "platform", "pipeline", "leads"];
 
-type Props = { profile: OnboardingProfileDto; hasDraft: boolean };
+type Props = { profile: OnboardingProfileDto; hasDraft: boolean; logo: string | null };
 
 // the sorting animation runs long enough to read, however fast the site answers
 async function atLeast<T>(task: Promise<T>, ms: number): Promise<T> {
@@ -44,12 +45,13 @@ function wordsOf(profile: OnboardingProfileDto) {
 // customers) appears under it, editable, before anything is used. Beside it,
 // the brand's profile card fills in live and turns over to the facts once
 // the draft lands. The rail (in the page) moves to Profile at the same time.
-export function BrandSetup({ profile, hasDraft }: Props) {
+export function BrandSetup({ profile, hasDraft, logo }: Props) {
   const t = useTranslations("onboarding");
   const router = useRouter();
   const [phase, setPhase] = useState<"idle" | "reading">("idle");
   const [readFailed, setReadFailed] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [logoUrl, setLogoUrl] = useState(logo);
   const site = useForm<WebsiteInput>({ resolver: zodResolver(websiteSchema), defaultValues: { url: profile.website ?? "" } });
   const draft = useForm<ProfileInput>({ resolver: zodResolver(profileSchema), values: { valueProp: profile.valueProp, icps: icpsOf(profile) } });
   const url = useWatch({ control: site.control, name: "url" });
@@ -80,6 +82,7 @@ export function BrandSetup({ profile, hasDraft }: Props) {
   return (
     <>
       <div data-area="fields" className="grid content-start gap-8">
+        <PictureField kind="logo" initial={logo} save={saveBrandLogo} onPreview={setLogoUrl} />
         <form onSubmit={site.handleSubmit(read)} className="grid gap-4" noValidate>
           <WebsiteFields control={site.control} />
           {reading ? null : (
@@ -92,7 +95,7 @@ export function BrandSetup({ profile, hasDraft }: Props) {
         ) : !reading ? <FormAlert message={error} /> : null}
       </div>
       <div data-area="card">
-        <BrandPreview company={profile.company} website={url ?? ""} valueProp={hasDraft ? valueProp ?? "" : ""} icps={hasDraft ? icps ?? [] : []} status={status} showBack={hasDraft && !reading} />
+        <BrandPreview company={profile.company} logoUrl={logoUrl} website={url ?? ""} valueProp={hasDraft ? valueProp ?? "" : ""} icps={hasDraft ? icps ?? [] : []} status={status} showBack={hasDraft && !reading} />
       </div>
     </>
   );

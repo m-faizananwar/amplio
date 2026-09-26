@@ -5,7 +5,7 @@ import { WizardShell } from "@/components/flow/WizardShell";
 import { ErrorState } from "@/components/page/ErrorState";
 import { BrandSetup } from "@/features/brand-onboarding/components/BrandSetup";
 import { ONBOARDING_ROUTES } from "@/features/brand-onboarding/constants";
-import { loadOnboardingProfile } from "@/features/brand-onboarding/server/queries";
+import { getBrandLogo, loadOnboardingProfile } from "@/features/brand-onboarding/server/queries";
 import { requireOnboardingBrand } from "@/features/brand-onboarding/server/require-onboarding-brand";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -16,7 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
 // moves from Website to Profile once there is a draft.
 export default async function BrandOnboardingPage() {
   const viewer = await requireOnboardingBrand(ONBOARDING_ROUTES.website);
-  const [profile, t, tAuth] = await Promise.all([loadOnboardingProfile(viewer.brand.id), getTranslations("onboarding"), getTranslations("auth.signUp")]);
+  const [profile, logo, t, tAuth] = await Promise.all([loadOnboardingProfile(viewer.brand.id), getBrandLogo(viewer.brand.id), getTranslations("onboarding"), getTranslations("auth.signUp")]);
   const hasDraft = !!profile && (!!profile.website && (profile.valueProp.trim().length > 0 || profile.icps.some((i) => i.title.trim())));
   const steps = tAuth.raw("stepsBrand") as string[];
   const current = hasDraft ? 2 : 1;
@@ -27,7 +27,7 @@ export default async function BrandOnboardingPage() {
       title={t("brand.title")}
       sub={t("brand.sub")}
     >
-      {profile ? <BrandSetup profile={profile} hasDraft={hasDraft} /> : <div data-area="fields"><ErrorState body="Your brand workspace could not be loaded. The database may be unreachable." retryHref={ONBOARDING_ROUTES.website} /></div>}
+      {profile ? <BrandSetup profile={profile} hasDraft={hasDraft} logo={logo} /> : <div data-area="fields"><ErrorState body="Your brand workspace could not be loaded. The database may be unreachable." retryHref={ONBOARDING_ROUTES.website} /></div>}
     </WizardShell>
   );
 }

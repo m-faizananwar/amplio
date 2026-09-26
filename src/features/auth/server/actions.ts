@@ -11,7 +11,6 @@ import { csrfOk } from "./csrf";
 import { hashPassword, verifyPassword } from "./password";
 import { createSession, destroySession, getViewer } from "./session";
 
-import { avatarFor } from "@/lib/avatar";
 const NOT_CONFIGURED = "The database is not configured on this deployment, so sign-in is unavailable. /api/health has the details.";
 const PIXEL_KEY_BYTES = 16;
 const SUFFIX_BYTES = 3;
@@ -69,7 +68,8 @@ export async function register(input: RegisterInput): Promise<ActionResult<{ red
       headline: "",
       country: "FR",
       priceCents: 2000,
-      avatarUrl: avatarFor(handle),
+      // no picture until the creator chooses one: the silhouette shows the gap
+      avatarUrl: "",
     });
   }
 

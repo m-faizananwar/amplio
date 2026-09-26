@@ -2,9 +2,10 @@
 
 import { useTranslations } from "next-intl";
 import { PreviewCard } from "@/components/flow/PreviewCard";
+import { Silhouette } from "@/components/Silhouette";
 
 type Icp = { title: string; description: string };
-type Props = { company: string; website: string; valueProp: string; icps: Icp[]; status: string; showBack: boolean };
+type Props = { company: string; logoUrl: string | null; website: string; valueProp: string; icps: Icp[]; status: string; showBack: boolean };
 
 const PARTS = 5; // website, value proposition, three ideal customers
 
@@ -20,7 +21,7 @@ function hostOf(url: string) {
 // its value proposition and its ideal customers, filling in as the draft is
 // edited. The back lists the same facts row by row; it turns over when the
 // draft lands.
-export function BrandPreview({ company, website, valueProp, icps, status, showBack }: Props) {
+export function BrandPreview({ company, logoUrl, website, valueProp, icps, status, showBack }: Props) {
   const t = useTranslations("onboarding.preview");
   const none = t("brand.none");
   const named = icps.filter((i) => i.title.trim());
@@ -29,7 +30,7 @@ export function BrandPreview({ company, website, valueProp, icps, status, showBa
     <PreviewCard
       label={t("brand.label")}
       bandLabel={t("brand.band")}
-      bandStart={<span className="flex size-12 items-center justify-center rounded-2xl bg-ink text-lead font-semibold text-paper" aria-hidden="true">{company.slice(0, 1) || "·"}</span>}
+      bandStart={<span className="block size-12 overflow-hidden rounded-2xl ring-2 ring-surface" aria-hidden="true">{logoUrl ? <img src={logoUrl} alt="" className="size-full object-cover" /> : <Silhouette kind="logo" />}</span>}
       name={company}
       namePlaceholder={t("brand.namePlaceholder")}
       progress={done / PARTS}

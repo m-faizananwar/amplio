@@ -1,7 +1,7 @@
 import "server-only";
 import { eq } from "drizzle-orm";
 import { getDb } from "@/db";
-import { brands, users } from "@/db/schema";
+import { brandLogos, brands, users } from "@/db/schema";
 import type { OnboardingProfileDto } from "../schemas";
 import { companyFromDomain } from "./profile-template";
 
@@ -60,4 +60,16 @@ export function isPlaceholderCompany(company: string, email: string): boolean {
   if (!trimmed) return true;
   if (trimmed.endsWith("'s company")) return true;
   return trimmed === companyFromDomain(emailDomainOf(email)).toLowerCase();
+}
+
+// The brand's logo data URL, or null: none uploaded, or a database that
+// doesn't have the brand_logos table yet (read-only fallback, never throws).
+export async function getBrandLogo(brandId: string): Promise<string | null> {
+  try {
+    const [row] = await getDb().select({ dataUrl: brandLogos.dataUrl }).from(brandLogos).where(eq(brandLogos.brandId, brandId)).limit(1);
+    return row?.dataUrl ?? null;
+  } catch (error) {
+    console.warn("[brand-onboarding] brand logo unavailable", { brandId, error: error instanceof Error ? error.message : String(error) });
+    return null;
+  }
 }

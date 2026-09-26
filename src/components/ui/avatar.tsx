@@ -3,6 +3,7 @@
 import * as React from "react"
 import { Avatar as AvatarPrimitive } from "@base-ui/react/avatar"
 import { cn } from "@/lib/cn"
+import { Silhouette } from "@/components/Silhouette"
 
 function Avatar({
   className,
@@ -107,8 +108,9 @@ export {
   AvatarBadge,
 }
 
-// A person or a company: their photo when we have one, initials only as the
-// fallback (never a generated face). Two letters, first and last word.
+// A person or a company: their photo when we have one, else the drawn
+// silhouette (the gap reads as a gap). initialsOf stays for callers that
+// need letters. Two letters, first and last word.
 function initialsOf(name: string) {
   const words = name.trim().split(/\s+/).filter(Boolean)
   const first = words[0]?.[0] ?? ""
@@ -120,7 +122,7 @@ function PersonAvatar({ name, src, size = "default", className }: { name: string
   return (
     <Avatar size={size} className={className}>
       {src ? <AvatarImage src={src} alt="" /> : null}
-      <AvatarFallback>{initialsOf(name)}</AvatarFallback>
+      <AvatarFallback aria-label={name} className="overflow-hidden p-0"><Silhouette /></AvatarFallback>
     </Avatar>
   )
 }

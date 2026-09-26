@@ -390,5 +390,19 @@
       "title": "Who you sell to",
       "description": "Your value proposition, the three buyers creators write for, and where they are. Creators are ranked for you from this."
     }
+  },
+  "picture": {
+    "photoLabel": "Profile photo",
+    "logoLabel": "Company logo",
+    "choosePhoto": "Choose a photo",
+    "chooseLogo": "Choose a logo",
+    "change": "Change",
+    "removePhoto": "Remove the photo",
+    "removeLogo": "Remove the logo",
+    "errors": {
+      "tooBig": "That file is over 20 MB. Choose a smaller one.",
+      "unreadable": "We couldn't open that file as a picture. Try a JPG, PNG or WebP.",
+      "saveFailed": "We couldn't save it. Try again."
+    }
   }
 }

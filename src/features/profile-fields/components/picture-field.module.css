@@ -1,0 +1,35 @@
+/* The picture field: a round disc that is itself the button, a chip under it,
+   both centred. Picking a file fades the new picture in from .96 on the spring. */
+.field { display: grid; justify-items: center; gap: 12px; }
+.disc {
+  position: relative; width: 112px; height: 112px; border-radius: 50%; overflow: hidden; padding: 0; cursor: pointer;
+  border: 1px solid color-mix(in oklab, var(--color-money) 24%, var(--color-rule));
+  background: var(--color-surface);
+  box-shadow: 0 1px 2px rgba(16, 24, 40, .05), 0 8px 24px -10px rgba(16, 24, 40, .18);
+  transition: translate .3s cubic-bezier(.22, 1, .36, 1), box-shadow .3s cubic-bezier(.22, 1, .36, 1);
+}
+.disc:hover { translate: 0 -1px; box-shadow: 0 1px 2px rgba(16, 24, 40, .05), 0 12px 28px -10px rgba(16, 24, 40, .24); }
+.disc:focus-visible { outline: 2px solid var(--color-money); outline-offset: 3px; }
+.disc img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pop { animation: picturePop 500ms cubic-bezier(.34, 1.56, .64, 1) both; }
+@keyframes picturePop { from { opacity: 0; transform: scale(.96); } to { opacity: 1; transform: none; } }
+.busy::after { content: ""; position: absolute; inset: 0; background: color-mix(in oklab, var(--color-surface) 45%, transparent); }
+.row { display: flex; align-items: center; gap: 8px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px; border-radius: 999px; cursor: pointer;
+  font-size: 13px; font-weight: 600; color: var(--color-ink);
+  background: var(--color-surface); border: 1px solid var(--color-rule-strong);
+  transition: background-color .2s cubic-bezier(.22, 1, .36, 1);
+}
+.chip:hover { background: var(--color-tint); }
+.chip:focus-visible, .remove:focus-visible { outline: 2px solid var(--color-money); outline-offset: 2px; }
+.remove {
+  display: grid; place-items: center; width: 30px; height: 30px; border-radius: 999px; cursor: pointer;
+  color: var(--color-ink-muted); background: none; border: 1px solid transparent;
+}
+.remove:hover { color: var(--color-failure); background: var(--color-failure-soft); }
+.error { max-width: 22rem; text-align: center; font-size: 13px; color: var(--color-failure); }
+@media (prefers-reduced-motion: reduce) {
+  .pop { animation: none; }
+  .disc { transition: none; }
+}

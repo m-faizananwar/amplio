@@ -1,8 +1,12 @@
-// The LinkedIn photo when the profile was read, else the initial.
-export function CreatorAvatar({ name, url }: { name: string; url: string }) {
-  if (url) {
-    // eslint-disable-next-line @next/next/no-img-element -- a LinkedIn CDN photo; next/image would need its host allow-listed
+import { Silhouette } from "@/components/Silhouette";
+import { isChosenPicture } from "@/lib/avatar";
+
+// The creator's chosen photo (an upload or their LinkedIn one), else the
+// silhouette: a gap to fill, not a generated face.
+export function CreatorAvatar({ url }: { url: string }) {
+  if (isChosenPicture(url)) {
+    // eslint-disable-next-line @next/next/no-img-element -- a data URL or a LinkedIn CDN photo; next/image would need hosts allow-listed
     return <img src={url} alt="" width={48} height={48} className="size-12 rounded-full object-cover ring-2 ring-surface" />;
   }
-  return <span className="flex size-12 items-center justify-center rounded-full bg-ink text-lead font-semibold text-paper" aria-hidden="true">{name.slice(0, 1) || "·"}</span>;
+  return <span className="block size-12 overflow-hidden rounded-full ring-2 ring-surface"><Silhouette /></span>;
 }

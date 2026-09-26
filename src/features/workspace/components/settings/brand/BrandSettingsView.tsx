@@ -22,7 +22,7 @@ export async function BrandSettingsView({ settings: s, email, isDemo }: Props) {
     <div className="grid gap-8 animate-rise lg:grid-cols-[12rem_minmax(0,1fr)]">
       <SettingsIndex label={t("indexLabel")} sections={sections} />
       <div className="grid gap-5">
-        <CompanySection defaults={{ company: s.company, website: s.website }} />
+        <CompanySection logo={s.logoUrl} defaults={{ company: s.company, website: s.website }} />
         <CustomersSection defaults={{ valueProp: s.valueProp, icps, targetIndustries: s.targetIndustries, targetRegions: s.targetRegions } as ProfileInput & BrandAudienceInput} />
         <AccountSection role="brand" email={email} isDemo={isDemo} />
       </div>

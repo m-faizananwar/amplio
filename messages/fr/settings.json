@@ -390,5 +390,19 @@
       "title": "À qui vous vendez",
       "description": "Votre proposition de valeur, les trois clients pour lesquels vos créateurs écrivent, et où ils se trouvent. Les créateurs vous sont proposés en fonction de ces choix."
     }
+  },
+  "picture": {
+    "photoLabel": "Photo de profil",
+    "logoLabel": "Logo de l’entreprise",
+    "choosePhoto": "Choisir une photo",
+    "chooseLogo": "Choisir un logo",
+    "change": "Changer",
+    "removePhoto": "Retirer la photo",
+    "removeLogo": "Retirer le logo",
+    "errors": {
+      "tooBig": "Ce fichier dépasse 20 Mo. Choisissez-en un plus léger.",
+      "unreadable": "Impossible d’ouvrir ce fichier comme image. Essayez un JPG, PNG ou WebP.",
+      "saveFailed": "L’enregistrement a échoué. Réessayez."
+    }
   }
 }

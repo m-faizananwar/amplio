@@ -17,13 +17,16 @@ import { updateBrandAudience, updateBrandCompany } from "../../../server/actions
 import { SaveRow } from "../shared/SaveRow";
 import { SettingsSection } from "../shared/SettingsSection";
 import { useSectionForm } from "../shared/useSectionForm";
+import { PictureField } from "@/features/profile-fields/components/PictureField";
+import { saveBrandLogo } from "@/features/brand-onboarding/server/actions";
 
-export function CompanySection({ defaults }: { defaults: BrandCompanyInput }) {
+export function CompanySection({ defaults, logo }: { defaults: BrandCompanyInput; logo: string | null }) {
   const t = useTranslations("settings.brand");
   const { form, onSubmit } = useSectionForm({ schema: brandCompanySchema, defaults, save: updateBrandCompany, saved: t("states.saved") });
   return (
     <SettingsSection id="company" title={t("company.title")} description={t("company.description")}>
       <form onSubmit={onSubmit} noValidate>
+        <div className="mb-6"><PictureField kind="logo" initial={logo} save={saveBrandLogo} /></div>
         <div className="grid gap-5 sm:grid-cols-2">
           <Controller control={form.control} name="company" render={({ field, fieldState }) => (
             <FormField id="company" label={t("company.companyName.label")} error={fieldError(fieldState.error, { too_small: t("company.errors.companyRequired"), too_big: t("company.errors.companyTooLong", { max: 120 }) })}>

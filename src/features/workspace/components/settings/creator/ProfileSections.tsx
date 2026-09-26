@@ -18,6 +18,9 @@ import { SaveRow } from "../shared/SaveRow";
 import { SettingsSection } from "../shared/SettingsSection";
 import { useSectionForm } from "../shared/useSectionForm";
 import type { ProfileSource } from "@/lib/profile-source";
+import { PictureField } from "@/features/profile-fields/components/PictureField";
+import { saveCreatorPicture } from "@/features/creator-onboarding/server/actions";
+import { isChosenPicture } from "@/lib/avatar";
 
 export function LinkedinSection({ defaults, source }: { defaults: LinkedinInput; source: ProfileSource }) {
   const t = useTranslations("settings.creator.linkedin");
@@ -45,7 +48,7 @@ async function saveYourCard(v: YourCardInput) {
   return saveCreatorCard({ headline: v.headline, country: v.country, industries: v.industries });
 }
 
-export function CardSection({ defaults }: { defaults: YourCardInput }) {
+export function CardSection({ defaults, picture }: { defaults: YourCardInput; picture: string }) {
   const t = useTranslations("settings.creator");
   const { form, onSubmit } = useSectionForm({ schema: yourCardSchema, defaults, save: saveYourCard, saved: t("states.saved") });
   const icons: Record<keyof CreatorIdentityInput, ReactNode> = { firstName: <UserRound />, lastName: <UserRound />, xHandle: <AtSign /> };
@@ -59,6 +62,7 @@ export function CardSection({ defaults }: { defaults: YourCardInput }) {
   return (
     <SettingsSection id="card" title={t("card.title")} description={t("card.description")}>
       <form onSubmit={onSubmit} noValidate className="grid gap-5">
+        <PictureField kind="photo" initial={isChosenPicture(picture) ? picture : null} save={saveCreatorPicture} />
         <div className="grid gap-5 sm:grid-cols-2">
           {text("firstName", { label: t("card.firstName.label"), placeholder: t("card.firstName.placeholder") })}
           {text("lastName", { label: t("card.lastName.label"), placeholder: t("card.lastName.placeholder") })}

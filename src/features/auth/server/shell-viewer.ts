@@ -1,4 +1,5 @@
 import "server-only";
+import { getBrandLogo } from "@/features/brand-onboarding/server/queries";
 import { redirect } from "next/navigation";
 import { isDbConfigured } from "@/db";
 import type { ShellViewer } from "@/components/shell/viewer";
@@ -28,7 +29,8 @@ export async function toShellViewer(viewer: Viewer): Promise<ShellViewer> {
     lastName: viewer.lastName,
     workspace: viewer.brand?.company ?? (viewer.creator ? `@${viewer.creator.handle}` : viewer.email),
     email: viewer.email,
-    avatarUrl: viewer.creator?.avatarUrl ?? null,
+    // the creator's photo, or the brand's logo; empty falls back to the silhouette
+    avatarUrl: viewer.creator?.avatarUrl || (viewer.brand ? await getBrandLogo(viewer.brand.id) : null),
     walletCents: viewer.brand?.walletCents ?? viewer.creator?.availableCents ?? 0,
     csrfToken: viewer.csrfToken,
     preview: false,

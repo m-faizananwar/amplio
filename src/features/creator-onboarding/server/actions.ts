@@ -1,6 +1,6 @@
 "use server";
 
-import { and, eq, isNull } from "drizzle-orm";
+import { and, eq, isNull, sql } from "drizzle-orm";
 import { getDb, isDbConfigured } from "@/db";
 import { creators } from "@/db/schema";
 import { updateTags } from "@/db/cache";
@@ -8,6 +8,7 @@ import { tagsForMutation } from "@/lib/cache-tags";
 import { getViewer } from "@/features/auth/server/session";
 import { COUNTRY_CODES, WORKSPACE_AFTER_ONBOARDING } from "../constants";
 import { normalizeLinkedinUrl } from "@/lib/linkedin-url";
+import { type PictureInput, pictureSchema } from "@/features/profile-fields/schemas";
 import { type ImportedLinkedinProfile, importLinkedinProfile } from "./linkedin-import";
 import {
   type ActionResult, type CardInput, type LinkedinInput, type PriceInput, type ProfessionalInput, cardSchema, linkedinSchema,
@@ -78,7 +79,8 @@ export async function readLinkedinProfile(input: LinkedinInput): Promise<ActionR
         ...(p.followers !== null ? { followers: p.followers } : {}),
         ...(p.headline ? { headline: p.headline } : {}),
         ...(country ? { country } : {}),
-        ...(p.photoUrl ? { avatarUrl: p.photoUrl } : {}),
+        // a photo the creator uploaded (a data URL) wins over the LinkedIn one
+        ...(p.photoUrl ? { avatarUrl: sql`case when ${creators.avatarUrl} like 'data:%' then ${creators.avatarUrl} else ${p.photoUrl} end` } : {}),
       })
       .where(ownRow(auth.data));
     dropCaches(auth.data);
@@ -172,6 +174,24 @@ export async function completeOnboarding(): Promise<ActionResult<{ redirectTo: s
     return { ok: true, data: { redirectTo: WORKSPACE_AFTER_ONBOARDING } };
   } catch (error) {
     console.error("[creator-onboarding] completeOnboarding failed", { creatorId: auth.data.creatorId, error });
+    return { ok: false, error: GENERIC };
+  }
+}
+
+// The creator's photo, encoded in the browser (profile-fields PictureField);
+// null clears it back to the silhouette. Onboarding and Settings share it.
+export async function saveCreatorPicture(input: PictureInput): Promise<ActionResult<{ avatarUrl: string }>> {
+  const parsed = pictureSchema.safeParse(input);
+  if (!parsed.success) return { ok: false, error: firstIssue(parsed.error) };
+  const auth = await requireCreator();
+  if (!auth.ok) return auth;
+  try {
+    const avatarUrl = parsed.data.dataUrl ?? "";
+    await getDb().update(creators).set({ avatarUrl }).where(ownRow(auth.data));
+    dropCaches(auth.data);
+    return { ok: true, data: { avatarUrl } };
+  } catch (error) {
+    console.error("[creator-onboarding] saveCreatorPicture failed", { creatorId: auth.data.creatorId, error });
     return { ok: false, error: GENERIC };
   }
 }

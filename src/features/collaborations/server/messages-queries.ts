@@ -1,5 +1,4 @@
 import "server-only";
-import { avatarFor } from "@/lib/avatar";
 import { and, asc, desc, eq, inArray, sql } from "drizzle-orm";
 import { getDb } from "@/db";
 import { campaigns, collaborations, creators, messages, users } from "@/db/schema";
@@ -93,7 +92,7 @@ async function loadThread(scope: ThreadScope, collaborationId: string): Promise<
     body: m.body,
     senderName: m.role === "brand" ? row.brandCompany : `${m.firstName} ${m.lastName}`.trim(),
     senderKind: m.role === "brand" ? "brand" : "person",
-    senderAvatarUrl: m.role === "brand" ? null : (m.avatarUrl ?? avatarFor(`${m.firstName} ${m.lastName}`)),
+    senderAvatarUrl: m.role === "brand" ? null : (m.avatarUrl || null),
     mine: m.senderUserId === scope.userId,
     createdAt: m.createdAt.toISOString(),
   }));

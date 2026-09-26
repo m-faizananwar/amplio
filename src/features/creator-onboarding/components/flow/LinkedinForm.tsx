@@ -9,11 +9,13 @@ import { useForm } from "react-hook-form";
 import { buttonVariants, Button } from "@/components/ui/button";
 import { FormAlert } from "@/features/auth/components/FormAlert";
 import { LinkedinFields } from "@/features/profile-fields/components/LinkedinFields";
+import { PictureField } from "@/features/profile-fields/components/PictureField";
+import { isChosenPicture } from "@/lib/avatar";
 import { WizardActions } from "@/components/flow/WizardActions";
 import { cn } from "@/lib/cn";
 import { ONBOARDING_STEPS } from "../../constants";
 import { type LinkedinInput, linkedinSchema } from "../../schemas";
-import { readLinkedinProfile } from "../../server/actions";
+import { readLinkedinProfile, saveCreatorPicture } from "../../server/actions";
 import { CreatorPreview } from "./CreatorPreview";
 import type { CreatorCardData } from "./step-defaults";
 
@@ -26,6 +28,7 @@ export function LinkedinForm({ linkedinUrl, alreadyRead, card }: { linkedinUrl: 
   const [failed, setFailed] = useState(false);
   const form = useForm<LinkedinInput>({ resolver: zodResolver(linkedinSchema), defaultValues: { linkedinUrl } });
   const busy = form.formState.isSubmitting;
+  const [avatarUrl, setAvatarUrl] = useState(card.avatarUrl);
 
   async function onSubmit(values: LinkedinInput) {
     setError(null);
@@ -44,6 +47,7 @@ export function LinkedinForm({ linkedinUrl, alreadyRead, card }: { linkedinUrl: 
   return (
     <>
     <form onSubmit={form.handleSubmit(onSubmit)} className="grid content-start gap-4" data-area="fields" noValidate>
+      <div className="mb-2"><PictureField kind="photo" initial={isChosenPicture(card.avatarUrl) ? card.avatarUrl : null} save={saveCreatorPicture} onPreview={(url) => setAvatarUrl(url ?? "")} /></div>
       <LinkedinFields control={form.control} />
       <p className="text-small text-ink-muted">{t("creator.linkedin.privacy")}</p>
       <FormAlert message={error} />
@@ -61,7 +65,7 @@ export function LinkedinForm({ linkedinUrl, alreadyRead, card }: { linkedinUrl: 
         <Link href={ONBOARDING_STEPS.card.path} className="text-center text-small text-ink-muted underline-offset-4 hover:text-ink hover:underline">{t("common.continue")}</Link>
       ) : null}
     </form>
-    <div data-area="card"><CreatorPreview data={card} /></div>
+    <div data-area="card"><CreatorPreview data={{ ...card, avatarUrl }} /></div>
     </>
   );
 }

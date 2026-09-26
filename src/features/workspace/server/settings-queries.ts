@@ -7,6 +7,7 @@ import { tag } from "@/lib/cache-tags";
 import { DEMO_DOMAINS } from "@/features/auth/constants";
 import { isSeededEmail } from "@/lib/seeded";
 import { profileSource, type ProfileSource } from "@/lib/profile-source";
+import { getBrandLogo } from "@/features/brand-onboarding/server/queries";
 
 export type BrandSettings = {
   company: string;
@@ -16,6 +17,7 @@ export type BrandSettings = {
   targetRegions: string[];
   owner: { name: string; email: string };
   icps: Array<{ title: string; description: string }>;
+  logoUrl: string | null;
 };
 
 async function loadBrandSettings(brandId: string): Promise<BrandSettings | null> {
@@ -33,10 +35,12 @@ async function loadBrandSettings(brandId: string): Promise<BrandSettings | null>
     targetRegions: row.brand.targetRegions,
     owner: { name: `${row.firstName} ${row.lastName}`, email: row.email },
     icps: row.brand.icps,
+    logoUrl: await getBrandLogo(brandId),
   };
 }
 
 export type CreatorSettings = {
+  avatarUrl: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -75,6 +79,7 @@ async function loadCreatorSettings(creatorId: string): Promise<CreatorSettings |
     firstName: row.firstName,
     lastName: row.lastName,
     email: row.email,
+    avatarUrl: row.creator.avatarUrl,
     headline: row.creator.headline,
     linkedinUrl: row.creator.linkedinUrl,
     industries: row.creator.industries,

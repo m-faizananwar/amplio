@@ -4,7 +4,7 @@ import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { getLocale } from "next-intl/server";
 import { getDb } from "@/db";
-import { brands, campaigns } from "@/db/schema";
+import { brandLogos, brands, campaigns } from "@/db/schema";
 import { updateTags } from "@/db/cache";
 import { tagsForMutation } from "@/lib/cache-tags";
 import { getViewer } from "@/features/auth/server/session";
@@ -13,6 +13,7 @@ import { DAY_MS, DEFAULT_TARGET_REGIONS, STARTER_CAMPAIGN_SUFFIX, STARTER_FEE_CE
 import {
   type ActionResult, type AnalyzeResultDto, type CompleteResultDto, type ProfileInput, profileSchema, type WebsiteInput, websiteSchema,
 } from "../schemas";
+import { type PictureInput, pictureSchema } from "@/features/profile-fields/schemas";
 import { generateBrandProfile } from "./profile-ai";
 import { type BrandOnboardingRow, emailDomainOf, getBrandOnboardingRow, isPlaceholderCompany } from "./queries";
 import { readWebsite } from "./site-reader";
@@ -147,6 +148,30 @@ export async function completeOnboarding(input: ProfileInput): Promise<ActionRes
     return { ok: true, data: result };
   } catch (error) {
     console.error("[brand-onboarding] completeOnboarding failed", { error });
+    return { ok: false, error: GENERIC };
+  }
+}
+
+// The brand's logo, encoded in the browser (profile-fields PictureField); null
+// removes it. Onboarding and Settings share it. The logo lives in its own
+// table (brand_logos), so a database without that table yet only fails here.
+export async function saveBrandLogo(input: PictureInput): Promise<ActionResult<{ logoUrl: string | null }>> {
+  const parsed = pictureSchema.safeParse(input);
+  if (!parsed.success) return { ok: false, error: firstIssue(parsed.error) };
+  const viewer = await getViewer();
+  if (!viewer?.brand) return { ok: false, error: NOT_SIGNED_IN };
+  const brandId = viewer.brand.id;
+  try {
+    const dataUrl = parsed.data.dataUrl;
+    if (dataUrl) {
+      await getDb().insert(brandLogos).values({ brandId, dataUrl }).onConflictDoUpdate({ target: brandLogos.brandId, set: { dataUrl } });
+    } else {
+      await getDb().delete(brandLogos).where(eq(brandLogos.brandId, brandId));
+    }
+    dropCaches({ brandId, ownerUserId: viewer.userId });
+    return { ok: true, data: { logoUrl: dataUrl } };
+  } catch (error) {
+    console.error("[brand-onboarding] saveBrandLogo failed", { brandId, error });
     return { ok: false, error: GENERIC };
   }
 }

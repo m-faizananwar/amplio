@@ -7,3 +7,9 @@ const CREATOR_BG = "e8eefc,dbe4ff,eef2ff";
 export function avatarFor(seed: string): string {
   return `${DICEBEAR}/notionists/svg?seed=${encodeURIComponent(seed.trim().toLowerCase())}&backgroundColor=${CREATOR_BG}`;
 }
+
+// A picture someone chose (an upload or their LinkedIn photo) rather than the
+// generated placeholder face: only chosen pictures fill the picture field.
+export function isChosenPicture(url: string | null | undefined): url is string {
+  return !!url && !url.startsWith(DICEBEAR);
+}

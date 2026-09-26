@@ -38,7 +38,7 @@ export function CreatorPreview({ data, showBack = false, slots }: Props) {
     <PreviewCard
       label={t("creator.label")}
       bandLabel={t("creator.band")}
-      bandStart={<CreatorAvatar name={data.name} url={data.avatarUrl} />}
+      bandStart={<CreatorAvatar url={data.avatarUrl} />}
       name={data.name}
       namePlaceholder={t("creator.namePlaceholder")}
       progress={done / COMPLETE_PARTS}
