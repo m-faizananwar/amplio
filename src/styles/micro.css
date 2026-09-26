@@ -81,3 +81,14 @@
   .g-copy[data-copied] .g-copy-back { animation: none; transform: translate(5px, 5px); }
   .g-copy[data-copied] .g-copy-check { animation: none; stroke-dashoffset: 0; }
 }
+
+/* Agent: each block rises in as it arrives; a message's words fade in one
+   after another (delays set inline). */
+@layer components {
+  .agent-rise { animation: ledger-rise var(--duration-slow) var(--ease-ledger) both; }
+  .agent-message > span { animation: agent-word 260ms var(--ease-ledger) both; }
+  @keyframes agent-word { from { opacity: 0; filter: blur(2px); } to { opacity: 1; filter: blur(0); } }
+}
+@media (prefers-reduced-motion: reduce) {
+  .agent-rise, .agent-message > span { animation: none !important; }
+}

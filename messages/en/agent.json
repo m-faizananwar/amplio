@@ -1,0 +1,120 @@
+{
+  "nav": {
+    "label": "Agent"
+  },
+  "command": {
+    "ask": "Ask the agent"
+  },
+  "title": "Agent",
+  "description": "It can find, book and check things for you, and asks before anything that moves money.",
+  "greeting": {
+    "brand": "What should we do today, {name}?",
+    "creator": "What should we do today, {name}?",
+    "sub": "Tell it what you need. It shows each step and asks before booking or paying."
+  },
+  "starters": {
+    "brand": {
+      "find": "Find creators for my next campaign",
+      "today": "What needs me today?",
+      "campaign": "How is my Q4 campaign doing?"
+    },
+    "creator": {
+      "find": "Find campaigns that fit me",
+      "week": "What do I need to do this week?",
+      "earned": "How much have I earned?"
+    }
+  },
+  "composer": {
+    "label": "Message the agent",
+    "placeholder": "Ask for anything on Amplio",
+    "send": "Send",
+    "mic": "Speak",
+    "call": "Call"
+  },
+  "steps": {
+    "worked": "{count, plural, one {Worked for # step} other {Worked for # steps}}",
+    "running": "Working…",
+    "failed": "This step failed",
+    "input": "Input",
+    "output": "Result"
+  },
+  "result": {
+    "creatorsTitle": "{count, plural, one {# creator} other {# creators}}",
+    "shortlist": "Shortlist",
+    "shortlisted": "Shortlisted",
+    "open": "Open",
+    "followers": "followers",
+    "perPost": "per post",
+    "fit": "{score}% fit",
+    "whyFit": "Why this fit",
+    "apply": "Apply",
+    "valueProp": "What they sell",
+    "customers": "Their customers",
+    "brief": "Brief",
+    "nextAction": "Next",
+    "available": "Available",
+    "held": "Held",
+    "earned": "Earned",
+    "pending": "Pending"
+  },
+  "confirm": {
+    "title": "Confirm before I go ahead",
+    "total": "Held from your wallet",
+    "perCreator": "Per creator",
+    "confirm": "Confirm",
+    "change": "Change",
+    "cancel": "Cancel",
+    "working": "Confirming…",
+    "done": "Done",
+    "sayYes": "Say “yes” to confirm"
+  },
+  "error": {
+    "line": "Something went wrong on that step. Nothing was booked or paid.",
+    "retry": "Try again"
+  },
+  "sample": {
+    "badge": "Sample run",
+    "note": "The live agent isn’t connected here; this replays a sample so you can see how a run looks."
+  },
+  "rail": {
+    "know": "What I know",
+    "profile": "Profile",
+    "notes": "Notes I keep",
+    "noNotes": "Nothing saved yet. Tell me something to remember.",
+    "remove": "Forget this",
+    "threads": "Earlier chats",
+    "noThreads": "Your chats will be listed here.",
+    "newChat": "New chat",
+    "company": "Company",
+    "handle": "Handle",
+    "headline": "Headline"
+  },
+  "voice": {
+    "listening": "Listening",
+    "thinking": "Thinking",
+    "speaking": "Speaking",
+    "end": "End call",
+    "back": "Back to chat"
+  },
+  "firstRun": {
+    "campaigns": {
+      "title": "No campaigns yet",
+      "body": "Create a campaign and the agent can start finding creators for it.",
+      "action": "Create a campaign"
+    },
+    "collaborations": {
+      "title": "No collaborations yet",
+      "body": "Once you have a campaign, the agent can find creators and start conversations for you.",
+      "action": "Find creators"
+    },
+    "opportunities": {
+      "title": "No campaigns match your card yet",
+      "body": "Complete your card so the agent can match you with the right campaigns.",
+      "action": "Complete your card"
+    },
+    "messages": {
+      "title": "No messages yet",
+      "body": "Threads open once a booking is accepted."
+    }
+  }
+}
