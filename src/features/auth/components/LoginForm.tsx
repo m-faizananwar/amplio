@@ -1,6 +1,6 @@
 "use client";
 
-import { LockKeyhole, Mail } from "lucide-react";
+import { Mail } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
+import { PasswordInput } from "@/components/forms/PasswordInput";
 import { Input } from "@/components/ui/input";
 import { FormField } from "@/features/profile-fields/components/FormField";
 import { type LoginInput, loginSchema } from "../schemas";
@@ -42,7 +43,7 @@ export function LoginForm() {
         <Input id="email" leadingIcon={<Mail />} type="email" autoComplete="email" placeholder={t("signIn.emailPlaceholder")} aria-invalid={!!errors.email} {...form.register("email")} />
       </FormField>
       <FormField id="password" label={t("signIn.password")} error={errors.password ? t("errors.passwordRequired") : undefined}>
-        <Input id="password" leadingIcon={<LockKeyhole />} type="password" autoComplete="current-password" aria-invalid={!!errors.password} {...form.register("password")} />
+        <PasswordInput id="password" placeholder={t("signIn.passwordField")} autoComplete="current-password" aria-invalid={!!errors.password} {...form.register("password")} />
       </FormField>
       <Link href="/forgot-password" className="-mt-1 justify-self-end text-small text-ink-muted underline-offset-4 hover:text-ink hover:underline">{t("signIn.forgot")}</Link>
       <FormAlert message={serverError} />

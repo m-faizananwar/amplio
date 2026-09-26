@@ -35,7 +35,7 @@ export function ForgotPasswordForm() {
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4" noValidate>
       <FormField id="email" label={t("forgot.email")} error={errors.email ? t("errors.email") : undefined}>
-        <Input id="email" leadingIcon={<Mail />} type="email" autoComplete="email" aria-invalid={!!errors.email} {...form.register("email")} />
+        <Input id="email" leadingIcon={<Mail />} type="email" placeholder={t("forgot.emailPlaceholder")} autoComplete="email" aria-invalid={!!errors.email} {...form.register("email")} />
       </FormField>
       <FormAlert message={serverError} />
       <Button type="submit" size="lg" className="h-11" disabled={isSubmitting}>{isSubmitting ? t("forgot.submitting") : t("forgot.submit")}</Button>
