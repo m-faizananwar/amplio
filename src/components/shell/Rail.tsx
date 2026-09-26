@@ -43,7 +43,7 @@ export function Rail({ role, onNavigate, collapsible = false }: Props) {
     const label = t(`${role}.${entry.key}`);
     return (
       <li key={entry.href}>
-        <Link href={entry.href} onClick={onNavigate} aria-current={active ? "page" : undefined} aria-label={folded ? label : undefined} title={folded ? label : undefined} className="nav-item">
+        <Link href={entry.href} onClick={onNavigate} aria-current={active ? "page" : undefined} aria-label={folded ? label : undefined} data-tip={folded ? label : undefined} data-tip-side="right" className="nav-item">
           <span className="nav-icon"><entry.icon aria-hidden="true" /></span>
           {folded ? null : <span className="nav-label truncate">{label}</span>}
         </Link>
@@ -63,7 +63,7 @@ export function Rail({ role, onNavigate, collapsible = false }: Props) {
         {folded ? null : <p className="nav-section">{t("sections.account")}</p>}
         <ul className="grid gap-0.5" aria-label={t("accountLabel")}>{item(nav.settings)}</ul>
         {collapsible ? (
-          <button type="button" onClick={fold} className="nav-item" aria-label={folded ? t("expand") : t("collapse")} title={folded ? t("expand") : t("collapse")}>
+          <button type="button" onClick={fold} className="nav-item" aria-label={folded ? t("expand") : t("collapse")} data-tip={folded ? t("expand") : undefined} data-tip-side="right">
             <span className="nav-icon">{folded ? <PanelLeftOpen aria-hidden="true" /> : <PanelLeftClose aria-hidden="true" />}</span>
             {folded ? null : <span className="nav-label truncate">{t("collapse")}</span>}
           </button>

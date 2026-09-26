@@ -86,7 +86,9 @@ type ButtonProps = Omit<ButtonPrimitive.Props, "className"> & {
 function Button({ className, variant = "primary", size = "default", icon, status, children, ...props }: ButtonProps) {
   const tone = blobTone(variant, size)
   if (!tone) {
-    return <ButtonPrimitive data-slot="button" className={buttonVariants({ variant, size, className })} {...props}>{children}</ButtonPrimitive>
+    // an icon-only button names itself in the one sliding tooltip (SlidingTooltip)
+    const tip = size.startsWith("icon") ? props["aria-label"] : undefined
+    return <ButtonPrimitive data-slot="button" data-tip={tip} className={buttonVariants({ variant, size, className })} {...props}>{children}</ButtonPrimitive>
   }
   return (
     <ButtonPrimitive data-slot="button" data-variant={tone} data-state={status} aria-busy={status === "saving" || undefined} className={buttonVariants({ variant, size, className })} {...props}>

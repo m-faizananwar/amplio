@@ -121,3 +121,37 @@
 @media (prefers-reduced-motion: reduce) {
   .nav-label, .nav-section { transition: none !important; animation: none !important; }
 }
+
+/* The one sliding tooltip (SlidingTooltip.tsx). */
+@layer components {
+  .sliding-tip {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 80;
+    display: grid;
+    height: 28px;
+    place-items: center;
+    padding: 0 10px;
+    overflow: hidden;
+    border-radius: 8px;
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition:
+      translate 260ms var(--ease-ledger),
+      width 260ms var(--ease-ledger),
+      opacity var(--duration-fast) var(--ease-ledger);
+  }
+  .sliding-tip[data-visible] { opacity: 1; }
+  .sliding-tip[data-fresh] { transition: opacity var(--duration-fast) var(--ease-ledger); }
+  .sliding-tip-measure { position: absolute; visibility: hidden; padding: 0 10px; }
+  .sliding-tip-text { grid-area: 1 / 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sliding-tip { transition: opacity 120ms linear !important; }
+}

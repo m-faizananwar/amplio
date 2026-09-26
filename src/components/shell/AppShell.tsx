@@ -7,6 +7,7 @@ import { ClientMessages } from "@/i18n/ClientMessages";
 import { AccountMenu } from "./AccountMenu";
 import { AssistantPill } from "./assistant/AssistantPill";
 import { Rail } from "./Rail";
+import { SlidingTooltip } from "./SlidingTooltip";
 import { TopBar } from "./TopBar";
 import type { ShellViewer } from "./viewer";
 import { WalletProvider } from "./WalletProvider";
@@ -32,6 +33,7 @@ export async function AppShell({ viewer, children }: { viewer: ShellViewer; chil
             </main>
           </div>
           <ViewTransitions />
+          <SlidingTooltip />
           <AssistantPill role={viewer.role} workspace={viewer.workspace} csrfToken={viewer.csrfToken} />
           <CallOverlayHost role={viewer.role} csrfToken={viewer.csrfToken} account={<AccountMenu viewer={viewer} />} />
         </div>
