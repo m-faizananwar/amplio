@@ -35,19 +35,6 @@
     },
     "notPublished": "Pas encore publié"
   },
-  "posts": {
-    "title": "Posts récents",
-    "description": "Vos posts publics sur cette période.",
-    "headers": {
-      "post": "Post",
-      "date": "Date",
-      "impressions": "Impressions",
-      "reactions": "Réactions",
-      "comments": "Commentaires",
-      "reposts": "Republications"
-    },
-    "open": "Voir sur LinkedIn"
-  },
   "trail": {
     "followers": "Abonnés",
     "followersSource": "Importé depuis {url} le {date}",
@@ -67,6 +54,18 @@
       "title": "Aucun lien suivi pour l’instant",
       "body": "Votre lien s’active quand vous publiez une collaboration. Commencez par une campagne ouverte.",
       "action": "Voir les opportunités"
+    }
+  },
+  "chart": {
+    "pick": "Choisissez un chiffre à tracer",
+    "followers": "Les abonnés sont une seule lecture de votre profil, pas une série. Voir le détail pour la date de lecture.",
+    "empty": "Rien à tracer sur cette période pour l’instant.",
+    "titles": {
+      "followers": "Abonnés",
+      "posts": "Posts dans le temps",
+      "reach": "Portée, post par post",
+      "engagements": "Interactions, post par post",
+      "clicks": "Clics par jour"
     }
   }
 }

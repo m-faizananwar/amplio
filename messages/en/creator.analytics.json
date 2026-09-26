@@ -35,19 +35,6 @@
     },
     "notPublished": "Not published yet"
   },
-  "posts": {
-    "title": "Recent posts",
-    "description": "Your public posts in this range.",
-    "headers": {
-      "post": "Post",
-      "date": "Date",
-      "impressions": "Impressions",
-      "reactions": "Reactions",
-      "comments": "Comments",
-      "reposts": "Reposts"
-    },
-    "open": "Open on LinkedIn"
-  },
   "trail": {
     "followers": "Followers",
     "followersSource": "Imported from {url} on {date}",
@@ -67,6 +54,18 @@
       "title": "No tracked links yet",
       "body": "Your link goes live when you publish a collaboration. Start with an open campaign.",
       "action": "Browse opportunities"
+    }
+  },
+  "chart": {
+    "pick": "Pick a figure to chart",
+    "followers": "Followers is a single reading from your profile, not a series. See the rows for when it was read.",
+    "empty": "Nothing to draw in this range yet.",
+    "titles": {
+      "followers": "Followers",
+      "posts": "Posts over time",
+      "reach": "Reach, post by post",
+      "engagements": "Engagements, post by post",
+      "clicks": "Clicks per day"
     }
   }
 }
