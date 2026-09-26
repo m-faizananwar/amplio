@@ -64,14 +64,16 @@ export function MatchingView({ ctx }: { ctx: MarketplaceContextDto }) {
           <p className="max-w-xl text-body text-ink-muted">{t("intro")}</p>
           <CampaignSelector campaigns={ctx.campaigns} selected={ctx.selectedCampaign} />
         </div>
-        <form onSubmit={submit} className="relative rounded-card border border-rule bg-surface p-3 focus-within:border-ink">
+        {/* the Textarea is the whole field (border, beam, count); the send button sits in its
+            bottom-right corner and the count moves left of it */}
+        <form onSubmit={submit} className="relative [&_.desc-count]:right-16">
           <label htmlFor="match-prompt" className="sr-only">{t("promptLabel")}</label>
           <Textarea id="match-prompt" value={prompt} maxLength={MATCHING_PROMPT_MAX_LENGTH} rows={3} onChange={(e) => setPrompt(e.target.value)}
             onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) submit(e); }}
-            className="min-h-20 resize-none border-0 bg-transparent p-0 pr-12 focus-visible:ring-0" />
+            className="resize-none pr-16" />
           {pending
-            ? <Button type="button" size="icon-sm" variant="secondary" aria-label={t("stop")} onClick={stop} className="absolute right-3 bottom-3"><Square className="size-3.5" aria-hidden="true" /></Button>
-            : <Button type="submit" size="icon-sm" aria-label={t("send")} disabled={!prompt.trim()} className="absolute right-3 bottom-3"><ArrowUp aria-hidden="true" /></Button>}
+            ? <Button type="button" size="icon-sm" variant="secondary" aria-label={t("stop")} onClick={stop} className="absolute right-3 bottom-2.5 z-10"><Square className="size-3.5" aria-hidden="true" /></Button>
+            : <Button type="submit" size="icon-sm" aria-label={t("send")} disabled={!prompt.trim()} className="absolute right-3 bottom-2.5 z-10"><ArrowUp aria-hidden="true" /></Button>}
         </form>
         {!asked ? (
           <ul className="flex flex-wrap gap-2">
