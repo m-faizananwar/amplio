@@ -315,6 +315,22 @@
         "detailsTooLong": "Restez sous {max} caractères.",
         "count": "Décrivez {count} clients idéaux.",
         "saveFailed": "Impossible d’enregistrer vos clients idéaux."
+      },
+      "card": {
+        "edit": "Modifier",
+        "open": "Modifier le client {n} : {name}",
+        "of": "Client {n} sur {total}",
+        "prev": "Client précédent",
+        "next": "Client suivant",
+        "save": "Enregistrer",
+        "cancel": "Annuler",
+        "close": "Fermer",
+        "count": "{count} / {max}",
+        "notSet": "Pas encore renseigné",
+        "unsaved": "Vous avez des modifications non enregistrées.",
+        "discard": "Les abandonner",
+        "keep": "Continuer",
+        "hasError": "À corriger"
       }
     },
     "audience": {

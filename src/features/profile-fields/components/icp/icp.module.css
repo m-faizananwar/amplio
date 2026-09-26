@@ -1,0 +1,52 @@
+/* The ideal customers: three summary cards (one column on phones) and the
+   dialog each one grows into. */
+.cards { display: grid; gap: 12px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 640px) { .cards { grid-template-columns: minmax(0, 1fr); } }
+.card {
+  position: relative; display: grid; grid-template-rows: auto auto 1fr auto; gap: 8px; min-width: 0; text-align: left;
+  padding: 16px; border-radius: 20px; cursor: pointer; color: var(--color-ink);
+  background: var(--color-surface); border: 1px solid var(--color-rule);
+  box-shadow: 0 1px 2px rgba(16, 24, 40, .05);
+  transition: translate .3s cubic-bezier(.22, 1, .36, 1), box-shadow .3s cubic-bezier(.22, 1, .36, 1), border-color .3s;
+}
+.card:hover { translate: 0 -2px; box-shadow: 0 1px 2px rgba(16, 24, 40, .05), 0 12px 28px -12px rgba(16, 24, 40, .22); }
+.card:focus-visible { outline: 2px solid var(--color-money); outline-offset: 3px; }
+.card[data-invalid] { border-color: var(--color-failure); }
+.disc { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; font-size: 12px; font-weight: 700; color: var(--color-paper); background: var(--color-ink); }
+.who { font-weight: 600; line-height: 1.3; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.cares { font-size: 13px; line-height: 1.45; color: var(--color-ink-muted); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.muted { color: var(--color-ink-muted); font-weight: 500; }
+.foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 4px; font-size: 12px; font-weight: 600; }
+.edit { display: inline-flex; align-items: center; gap: 4px; color: var(--color-ink-muted); transition: color .2s; }
+.card:hover .edit { color: var(--color-money); }
+.bad { color: var(--color-failure); }
+
+/* the dialog: a centred panel that grows out of its card and folds back */
+.dialog { padding: 16px; margin: auto; max-width: none; max-height: none; width: 100%; height: 100%; background: transparent; border: 0; overflow: visible; }
+.dialog::backdrop { background: rgb(9 9 11 / .42); animation: dim 320ms ease-out both; }
+.dialog[data-closing]::backdrop { animation: undim 260ms ease-in both; }
+@keyframes dim { from { opacity: 0; } }
+@keyframes undim { to { opacity: 0; } }
+.frame { display: grid; place-items: center; min-height: 100%; }
+.panel {
+  width: min(640px, 100%); max-height: calc(100dvh - 32px); overflow: auto; border-radius: 24px; transform-origin: 0 0;
+  background: var(--color-surface); color: var(--color-ink);
+  box-shadow: 0 1px 2px rgba(16, 24, 40, .06), 0 24px 64px -16px rgba(16, 24, 40, .32);
+}
+.head { display: flex; align-items: center; gap: 12px; padding: 20px 24px 12px; }
+.head h2 { font-size: 18px; font-weight: 600; }
+.nav { margin-left: auto; display: flex; gap: 6px; }
+.round { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--color-rule); background: var(--color-surface); color: var(--color-ink); cursor: pointer; }
+.round:hover:not(:disabled) { background: var(--color-tint); }
+.round:disabled { opacity: .4; cursor: default; }
+.round:focus-visible { outline: 2px solid var(--color-money); outline-offset: 2px; }
+.body { display: grid; gap: 18px; padding: 8px 24px 8px; }
+.count { justify-self: end; font-size: 12px; color: var(--color-ink-muted); }
+.count[data-over] { color: var(--color-failure); }
+.confirm { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 8px 24px 0; padding: 10px 12px; border-radius: 12px; font-size: 13px; background: var(--color-attention-soft); color: var(--color-attention); }
+.actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; padding: 16px 24px 22px; }
+@media (prefers-reduced-motion: reduce) {
+  .card { transition: none; }
+  .card:hover { translate: none; }
+  .dialog::backdrop, .dialog[data-closing]::backdrop { animation: none; }
+}

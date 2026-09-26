@@ -315,6 +315,22 @@
         "detailsTooLong": "Keep it under {max} characters.",
         "count": "Describe {count} ideal customers.",
         "saveFailed": "We couldn't save your ideal customers."
+      },
+      "card": {
+        "edit": "Edit",
+        "open": "Edit customer {n}: {name}",
+        "of": "Customer {n} of {total}",
+        "prev": "Previous customer",
+        "next": "Next customer",
+        "save": "Save",
+        "cancel": "Cancel",
+        "close": "Close",
+        "count": "{count} / {max}",
+        "notSet": "Not set yet",
+        "unsaved": "You have unsaved changes.",
+        "discard": "Discard them",
+        "keep": "Keep editing",
+        "hasError": "Needs a fix"
       }
     },
     "audience": {
