@@ -1,6 +1,6 @@
 // The product's own name, in one place. Every string in our UI that names the
-// product reads from here; docs/ and the README keep naming naano.com as the
-// reference product. Renaming = edit this file, reseed (demo emails), redeploy.
+// product reads from here; docs/ and the README name the reference product
+// once. Renaming = edit this file, reseed (demo emails), redeploy.
 export const BRAND = {
   name: "Amplio",
   wordmark: "Amplio",
@@ -11,7 +11,7 @@ export const BRAND = {
   // back to it so a live database keeps working until pnpm db:seed:remote.
   legacyDemoDomain: "demo.naano",
   supportEmail: "hello@amplio.example",
-  // The matching copilot (naano's "Nao") and the support bot in Messages.
+  // The matching copilot and the support bot in Messages.
   copilot: "Amp",
   bot: "AmplioBot",
   // Global installed by /n.js on customer sites: window.<pixelGlobal>("event", …).

@@ -345,8 +345,6 @@
 
 .animate-section { animation: contentIn 0.24s ease-out forwards; } /* skeleton → content crossfade: opacity only, no shift */
 @keyframes contentIn { from { opacity: 0; } to { opacity: 1; } }
-.glass-card { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-.glass-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -20px rgb(0 0 0 / 0.25); }
 .lift { transition: transform 0.15s, box-shadow 0.15s; }
 .lift:hover { transform: translateY(-2px); box-shadow: 0 12px 24px -16px rgb(0 0 0 / 0.3); }
 .animate-shimmer { position: relative; overflow: hidden; }
@@ -404,7 +402,7 @@ details.accordion.closing > :not(summary) { animation: accordion-up 0.2s ease-ou
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-section, .glass-card, .lift, .animate-shimmer::after, .animate-locale-in, .animate-pulse-soft, .animate-float,
+  .animate-section, .lift, .animate-shimmer::after, .animate-locale-in, .animate-pulse-soft, .animate-float,
   .animate-pop, .animate-fade, .animate-coach, .animate-fill, .animate-marquee, .animate-collapse, .typing-dot, .stagger > *, details.accordion > :not(summary),
   [data-slot="dialog-content"], [data-slot="sheet-content"], [data-slot="dropdown-menu-content"], [data-slot="popover-content"] {
     animation: none !important;

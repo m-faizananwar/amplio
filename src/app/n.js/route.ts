@@ -3,7 +3,7 @@ import { CLICK_COOKIE, CLICK_QUERY_PARAM } from "@/features/tracking/constants";
 
 export const dynamic = "force-static";
 
-// The pixel, same API as naano's, under our own global (BRAND.pixelGlobal):
+// The pixel, under our own global (BRAND.pixelGlobal):
 // window.amplio('track', 'signup', { email }).
 // Visits attribute themselves on load; the click id comes from the ?nn= param
 // the tracked link appended, or the cookie it set.
