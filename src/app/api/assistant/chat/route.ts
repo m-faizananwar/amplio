@@ -6,19 +6,22 @@ import { getViewer } from "@/features/auth/server/session";
 export const dynamic = "force-dynamic";
 
 // POST { message, pending?, history? } → { ok, text, navigate?, pending?, source }.
-// Signed-in requests carry the session's csrf token (tools mutate); the
-// landing is logged out and gets conversation only.
+// A request with the session's csrf token acts as that user (tools mutate). One
+// with no token is answered as logged out (public facts, no tools), even when a
+// session cookie is present: a static public page may not have the token yet.
+// A token that doesn't match is refused: that is a stale page or a forgery.
 export async function POST(request: Request) {
-  const viewer = await getViewer().catch(() => null);
-  if (viewer && request.headers.get("x-csrf-token") !== viewer.csrfToken) {
+  const sent = request.headers.get("x-csrf-token");
+  const session = sent ? await getViewer().catch(() => null) : null;
+  if (session && sent !== session.csrfToken) {
     return NextResponse.json({ ok: false, text: "This session is stale. Reload the page.", source: "tool" }, { status: 403 });
   }
   const parsed = chatRequestSchema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ ok: false, text: "Say a little more and I'll try again.", source: "template" }, { status: 400 });
   try {
-    return NextResponse.json(await answerChat(parsed.data, viewer));
+    return NextResponse.json(await answerChat(parsed.data, session));
   } catch (error) {
-    console.error("[assistant] chat route failed", { userId: viewer?.userId, error });
+    console.error("[assistant] chat route failed", { userId: session?.userId, error });
     return NextResponse.json({ ok: false, text: "Something went wrong on our side. Try again.", source: "template" }, { status: 500 });
   }
 }
