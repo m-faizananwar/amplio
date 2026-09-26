@@ -6,7 +6,7 @@ import { getMarketplaceContext, listCreators } from "@/features/marketplace/serv
 import { marketplaceQuerySchema } from "@/features/marketplace/schemas";
 import type { CreatorDto } from "@/features/marketplace/schemas";
 import { billingBucketsNow, walletCentsNow } from "@/features/payouts/server/queries";
-import { filterFor } from "@/lib/next-step";
+import { pickCollaborations } from "../../collab-list";
 import type { CreatorCard } from "../../events";
 import { describeFilters, searchLimit } from "../../filters";
 import { arr, euros, L, num, obj, type ReadTool, str, type ToolContext } from "./types";
@@ -90,14 +90,12 @@ const searchCreators: ReadTool = {
 
 const listCollaborations: ReadTool = {
   name: "listCollaborations", role: "brand", kind: "read", label: "Reading your collaborations",
-  description: "The brand's collaborations with status and who acts next. Optional filter: needs_you, waiting, live, done.",
-  parameters: obj({ filter: str("needs_you | waiting | live | done") }),
+  description: "The brand's collaborations with status and who acts next, most recent first. Optional filter: needs_you, waiting, live, done. `limit` = how many the user asked for (default 8, max 20); the output says how many exist in total.",
+  parameters: obj({ filter: str("needs_you | waiting | live | done"), limit: num("How many to return: the number the user asked for") }),
   async run(ctx, a) {
     const rows = await listBrandCollaborations(brandId(ctx));
-    const f = typeof a.filter === "string" ? a.filter : null;
-    const picked = rows.filter((c) => !f || filterFor(c.status, "brand") === f);
-    const items = picked.map((c) => ({ id: c.id, campaign: c.campaignName, counterpart: c.creatorName, status: c.status, nextAction: filterFor(c.status, "brand"), feeCents: c.feeCents }));
-    return { summary: `${items.length} collaborations`, data: items, result: { type: "result", kind: "collaborations", title: "Collaborations", items } };
+    const { total, items } = pickCollaborations(rows, { role: "brand", filter: a.filter, limit: a.limit, counterpart: (c) => c.creatorName });
+    return { summary: `${total} collaborations · ${items.length} shown`, data: { total, shown: items.length, items }, result: { type: "result", kind: "collaborations", title: "Collaborations", items } };
   },
 };
 

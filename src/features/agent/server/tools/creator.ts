@@ -4,10 +4,10 @@ import { listOpportunities } from "@/features/collaborations/server/opportunitie
 import { listCreatorCollaborations } from "@/features/collaborations/server/queries";
 import { getEarningsSummary } from "@/features/payouts/server/queries";
 import { getPublicCard } from "@/features/workspace/server/card-queries";
-import { filterFor } from "@/lib/next-step";
+import { pickCollaborations } from "../../collab-list";
 import { DRAFT_PREVIEW_MAX } from "../../constants";
 import { messageTool } from "./brand-write";
-import { type ConfirmTool, day, euros, L, obj, type ReadTool, str, type ToolContext } from "./types";
+import { type ConfirmTool, day, euros, L, num, obj, type ReadTool, str, type ToolContext } from "./types";
 
 const LIST_LIMIT = 8;
 const creatorId = (ctx: ToolContext) => ctx.viewer.creator?.id ?? "";
@@ -41,13 +41,12 @@ const getOpportunities: ReadTool = {
 
 const getCollaborations: ReadTool = {
   name: "listCollaborations", role: "creator", kind: "read", label: "Reading your collaborations",
-  description: "The creator's collaborations with status and who acts next. Optional filter: needs_you, waiting, live, done.",
-  parameters: obj({ filter: str("needs_you | waiting | live | done") }),
+  description: "The creator's collaborations with status and who acts next, most recent first. Optional filter: needs_you, waiting, live, done. `limit` = how many the user asked for (default 8, max 20); the output says how many exist in total.",
+  parameters: obj({ filter: str("needs_you | waiting | live | done"), limit: num("How many to return: the number the user asked for") }),
   async run(ctx, a) {
     const rows = await listCreatorCollaborations(creatorId(ctx));
-    const f = typeof a.filter === "string" ? a.filter : null;
-    const items = rows.filter((c) => !f || filterFor(c.status, "creator") === f).map((c) => ({ id: c.id, campaign: c.campaignName, counterpart: c.brandCompany, status: c.status, nextAction: filterFor(c.status, "creator"), feeCents: c.feeCents }));
-    return { summary: `${items.length} collaborations`, data: items, result: { type: "result", kind: "collaborations", title: "Your collaborations", items } };
+    const { total, items } = pickCollaborations(rows, { role: "creator", filter: a.filter, limit: a.limit, counterpart: (c) => c.brandCompany });
+    return { summary: `${total} collaborations · ${items.length} shown`, data: { total, shown: items.length, items }, result: { type: "result", kind: "collaborations", title: "Your collaborations", items } };
   },
 };
 
