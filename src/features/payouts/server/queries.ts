@@ -178,3 +178,15 @@ export async function walletCentsNow(brandId: string): Promise<number> {
   const [row] = await getDb().select({ cents: brands.walletCents }).from(brands).where(eq(brands.id, brandId)).limit(1);
   return row?.cents ?? 0;
 }
+
+// What the brand has booked since the start of this month (UTC): held and
+// committed fees, a declined invitation's hold having been removed. Uncached,
+// for the agent keeping a monthly budget.
+export async function bookedThisMonthCents(brandId: string, now = new Date()): Promise<number> {
+  const start = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
+  const [row] = await getDb()
+    .select({ cents: sql<number>`coalesce(-sum(${ledgerEntries.amountCents}), 0)::int` })
+    .from(ledgerEntries)
+    .where(and(eq(ledgerEntries.brandId, brandId), eq(ledgerEntries.type, "booking"), gte(ledgerEntries.createdAt, start)));
+  return row?.cents ?? 0;
+}

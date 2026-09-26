@@ -8,6 +8,7 @@ import type { CreatorDto } from "@/features/marketplace/schemas";
 import { billingBucketsNow, walletCentsNow } from "@/features/payouts/server/queries";
 import { pickCollaborations } from "../../collab-list";
 import type { CreatorCard } from "../../events";
+import { isBudgetAsPriceCap } from "../../budget";
 import { describeFilters, emptySearchReason, searchLimit } from "../../filters";
 import { withCollabWords } from "./collab-words";
 import { arr, euros, L, num, obj, type ReadTool, str, type ToolContext } from "./types";
@@ -53,7 +54,10 @@ const searchCreators: ReadTool = {
     query: str("Free text: a name, topic or headline word"),
     limit: num("How many creators to return: the number the user asked for"),
   }),
-  async run(ctx, a) {
+  async run(ctx, raw) {
+    // a stated monthly or total budget is a spend ceiling, not a price per creator
+    const budgetMisread = isBudgetAsPriceCap(raw.maxPriceEuros, ctx.budget ?? null, ctx.said ?? "");
+    const a = budgetMisread ? { ...raw, maxPriceEuros: undefined } : raw;
     const mctx = await getMarketplaceContext(ctx.viewer, typeof a.campaignId === "string" ? a.campaignId : undefined);
     if (!mctx) return { summary: "no brand context", data: [] };
     const q = marketplaceQuerySchema.parse({
@@ -77,7 +81,7 @@ const searchCreators: ReadTool = {
     const cards = top.map(toCreatorCard);
     return {
       summary: `${applied.length ? `${applied.join(" · ")} → ` : "no filters → "}${list.total} match · ${cards.length} best by fit${mctx.selectedCampaign ? ` for ${mctx.selectedCampaign.name}` : ""}${already ? ` · ${already} already on it` : ""}`,
-      data: { appliedFilters: applied.length ? applied : ["none"], campaign: mctx.selectedCampaign, alreadyOnCampaign: already, creators: top.map((c) => ({ id: c.id, name: c.name, country: c.country, industries: c.industries, followers: c.followers, priceCents: c.priceCents, fitScore: c.fit.score, fitReason: c.fit.reason })) },
+      data: { ...(budgetMisread ? { budgetNote: "The user's budget is a spend ceiling for the booking, not a price per creator; it was not used as a price cap. bookCreators keeps the total within it." } : {}), appliedFilters: applied.length ? applied : ["none"], campaign: mctx.selectedCampaign, alreadyOnCampaign: already, creators: top.map((c) => ({ id: c.id, name: c.name, country: c.country, industries: c.industries, followers: c.followers, priceCents: c.priceCents, fitScore: c.fit.score, fitReason: c.fit.reason })) },
       result: { type: "result", kind: "creators", title: mctx.selectedCampaign ? mctx.selectedCampaign.name : "Creators", items: cards },
       nextSteps,
       // nobody to show: why, from the counts, said as the reply's first line

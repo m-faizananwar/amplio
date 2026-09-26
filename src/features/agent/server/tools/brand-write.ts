@@ -6,7 +6,8 @@ import { sendMessage } from "@/features/collaborations/server/messages-actions";
 import { creatorsOnCampaign, listBrandCollaborations } from "@/features/collaborations/server/queries";
 import { bookCreator } from "@/features/marketplace/server/actions";
 import { topUpWallet } from "@/features/payouts/server/actions";
-import { walletCentsNow } from "@/features/payouts/server/queries";
+import { bookedThisMonthCents, walletCentsNow } from "@/features/payouts/server/queries";
+import { budgetCheck } from "../../budget";
 import { alreadyLine, splitOnCampaign } from "../../on-campaign";
 import { arr, type ConfirmTool, euros, L, num, obj, str, type ToolContext } from "./types";
 
@@ -34,6 +35,11 @@ const bookCreators: ConfirmTool = {
     const { bookable: picks, already } = splitOnCampaign(found, await creatorsOnCampaign(campaign.id, found.map((p) => p.id)));
     if (picks.length === 0) return { error: `${alreadyLine(already, campaign.name, ctx.locale)} ${L(ctx, "Search again for others.", "Cherchez-en d’autres.")}` };
     const total = picks.reduce((s, p) => s + p.priceCents, 0);
+    // a stated budget is a ceiling on the total, never a price per creator
+    const withinBudget = ctx.budget ? budgetCheck({ budget: ctx.budget, spentCents: ctx.budget.period === "month" ? await bookedThisMonthCents(brandId(ctx)) : 0, totalCents: total, locale: ctx.locale }) : null;
+    // "book fewer" only helps if something still fits in what's left
+    const cheapest = Math.min(...picks.map((p) => p.priceCents));
+    if (withinBudget && !withinBudget.ok) return { error: withinBudget.error, nextSteps: withinBudget.leftCents >= cheapest ? [{ label: L(ctx, "Book fewer creators", "Réserver moins de créateurs"), hint: "Ask which of these creators to keep within the budget with askUser, then prepare bookCreators again with only those." }] : [] };
     const wallet = await walletCentsNow(brandId(ctx));
     if (total > wallet) return { error: `The fees total ${euros(total, ctx.locale)} and the wallet has ${euros(wallet, ctx.locale)}. Top up first.`, nextSteps: [
       { label: L(ctx, "Top up the wallet", "Recharger le portefeuille"), hint: `Prepare topUp with amountEuros ${Math.max(MIN_TOPUP_EUROS, Math.ceil((total - wallet) / CENTS))} (the shortfall; €${MIN_TOPUP_EUROS} minimum).` },
@@ -45,6 +51,7 @@ const bookCreators: ConfirmTool = {
         { label: "Creators", value: picks.map((p) => `${p.name} (${euros(p.priceCents, ctx.locale)})`).join(", ") },
         ...(already.length ? [{ label: "Already on it", value: already.map((p) => p.name).join(", ") }] : []),
         { label: "Held from your wallet", value: euros(total, ctx.locale), cents: total },
+        ...(withinBudget?.ok ? [withinBudget.fact] : []),
         { label: "Wallet after", value: euros(wallet - total, ctx.locale), cents: wallet - total },
       ],
       confirmLabel: picks.length > 1 ? "Book them" : "Book",

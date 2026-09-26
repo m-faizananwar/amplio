@@ -1,5 +1,6 @@
 import "server-only";
 import type { Viewer } from "@/features/auth/server/session";
+import type { Budget } from "../../budget";
 import type { ConfirmEvent, ResultEvent } from "../../events";
 
 // One tool the model may call. Reads run in the loop and return a compact
@@ -9,7 +10,9 @@ import type { ConfirmEvent, ResultEvent } from "../../events";
 // scope: what a pending confirmation is bound to besides the user: the
 // thread when there is one (so a card made on a call can be tapped on screen),
 // else the browser session.
-export type ToolContext = { viewer: Viewer; locale: "en" | "fr"; scope?: string };
+// budget: a spend ceiling the user stated (message or saved note), never a
+// per-creator price; said: the user's latest words, to tell the two apart.
+export type ToolContext = { viewer: Viewer; locale: "en" | "fr"; scope?: string; budget?: Budget | null; said?: string };
 // nextSteps: when a tool hits a blocker it names what can be done next, in the
 // user's language, only things the agent's tools or pages can actually do;
 // they become chips if the model doesn't ask on its own.

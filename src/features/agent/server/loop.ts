@@ -6,6 +6,7 @@ import { GEMINI_MODEL } from "@/features/ai/constants";
 import { resolveAiProvider } from "@/lib/ai-provider";
 import { ID_RADIX, MAX_CHIPS, SUMMARY_MAX } from "../constants";
 import type { AgentEvent } from "../events";
+import { budgetFrom } from "../budget";
 import { inventedIds } from "../id-guard";
 import { amountsFrom, checkMoney, withEuros } from "../money-check";
 import { cardNames, dropRestatement } from "../restatement";
@@ -63,7 +64,7 @@ export async function runCall({ call, ctx, emit, stepId, seen, next, shown }: Ca
   const tool = findTool(ctx.viewer.brand ? "brand" : "creator", name);
   if (!tool) return { response: { error: `No tool named ${name} for this account.` } };
   const invented = inventedIds(args);
-  if (invented.length) return { response: { error: `${invented.join(", ")} must come from a tool result in this turn. Call the read tool again to get it.` } };
+  if (invented.length) return { response: { error: `${invented.join(", ")} must come from a tool result in this turn. Get it now yourself (campaignId: listCampaigns; creatorIds: searchCreators; collaborationId: listCollaborations) and call ${name} again. Never ask the user for an id.` } };
   emit({ type: "step", id: stepId, label: tool.label, status: "running", tool: name, input: summarise(args) });
   try {
     if (tool.kind === "read") {
@@ -115,12 +116,15 @@ export async function runTurn({ viewer, locale, text, history, emit, recall, sco
     return fallback.text;
   }
   const ai = new GoogleGenAI({ apiKey });
-  const ctx: ToolContext = { viewer, locale, scope };
+  const budget = budgetFrom(text, recall?.notes ?? []);
+  const ctx: ToolContext = { viewer, locale, scope, budget, said: text };
   const contents = toContents(history, text);
   const deadline = Date.now() + (voice ? VOICE_BUDGET_MS : TURN_BUDGET_MS);
   // every amount a tool returned this turn; the reply may only use these (no
   // balance from the session: it can be stale, so the model asks a tool)
   const seen = new Set<number>();
+  // the user's own budget is a figure the reply may quote
+  if (budget) seen.add(budget.cents / 100);
   const next: Notes = new Map();
   const shown: string[] = [];
   let steps = 0;

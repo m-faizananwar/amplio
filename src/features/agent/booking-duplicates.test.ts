@@ -15,7 +15,7 @@ vi.mock("@/features/collaborations/server/actions", () => ({ payCollaboration: v
 vi.mock("@/features/collaborations/server/messages-actions", () => ({ sendMessage: vi.fn() }));
 vi.mock("@/features/payouts/server/actions", () => ({ topUpWallet: vi.fn() }));
 // the balance is read fresh from the database, not from the session
-vi.mock("@/features/payouts/server/queries", () => ({ walletCentsNow: async () => 500_000 }));
+vi.mock("@/features/payouts/server/queries", () => ({ walletCentsNow: async () => 500_000, bookedThisMonthCents: async () => 150_000 }));
 
 const { BRAND_WRITES } = await import("./server/tools/brand-write");
 const book = BRAND_WRITES.find((t) => t.name === "bookCreators");
@@ -38,5 +38,22 @@ describe("booking creators already on the campaign", () => {
       { label: "Held from your wallet", value: "€145.00", cents: 14_500 },
       { label: "Wallet after", value: "€4,855.00", cents: 485_500 },
     ]);
+  });
+
+  it("with a monthly budget, the card keeps the total within what's left this month", async () => {
+    onCampaign.mockResolvedValue(new Set());
+    const withBudget = { ...(ctx as object), budget: { cents: 200_000, period: "month" } } as never;
+    const out = book && book.kind === "confirm" ? await book.prepare(withBudget, args) : null;
+    // €270 on top of €1,500 already booked this month: €1,770 of €2,000
+    expect(out && "facts" in out ? out.facts.find((f) => f.label === "Budget") : null).toEqual({ label: "Budget", value: "€1,770.00 of your €2,000.00 this month", cents: 177_000 });
+  });
+
+  it("over the budget it refuses, and the price per creator was never capped by it", async () => {
+    onCampaign.mockResolvedValue(new Set());
+    const tight = { ...(ctx as object), budget: { cents: 160_000, period: "month" } } as never;
+    const out = book && book.kind === "confirm" ? await book.prepare(tight, args) : null;
+    expect(out && "error" in out ? out.error : null).toBe("The fees total €270.00, and €100.00 is left of your €1,600.00 this month (€1,500.00 already booked this month).");
+    // €100 left fits neither creator (€125, €145): no "book fewer" to offer
+    expect(out && "error" in out ? out.nextSteps : null).toEqual([]);
   });
 });

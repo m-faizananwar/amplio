@@ -210,7 +210,8 @@
     "next_waiting_creator": "en attente de la marque",
     "next_live": "en ligne",
     "next_done": "terminé",
-    "status_invited_brand": "Invitée"
+    "status_invited_brand": "Invitée",
+    "budget": "Budget"
   },
   "call": {
     "start": "Appeler en mode agent",
