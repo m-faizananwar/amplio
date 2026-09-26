@@ -1,5 +1,5 @@
-/* The landing's motion: quick cuts (250–400ms), ease-out, transform and
-   opacity only. Everything is visible without JS and under reduced motion;
+/* The landing's motion below the hero: scenes pop on the spring (700ms)
+   and their parts cut in (250–400ms); transform, opacity and stroke only. Everything is visible without JS and under reduced motion;
    hidden states only exist behind .launch-js, which the page sets on mount. */
 
 .launch-word { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.06em; }
@@ -7,13 +7,17 @@
 .launch-js .launch-words:not(.is-on) .launch-word > span { transform: translateY(105%); }
 .launch-js .launch-words .launch-word > span { transition: transform 320ms cubic-bezier(.2,.8,.2,1); }
 
+/* a scene pops on the spring as it arrives, 80ms apart (kicker, the heading's
+   words, body, visual), and resets at once when it leaves so it replays */
 .launch-js .launch-scene .launch-body,
-.launch-js .launch-scene .launch-kicker { opacity: 0; transform: translateY(10px); transition: opacity 260ms cubic-bezier(.2,.8,.2,1), transform 260ms cubic-bezier(.2,.8,.2,1); }
-.launch-js .launch-scene[data-on] .launch-body { opacity: 1; transform: none; transition-delay: 220ms; }
-.launch-js .launch-scene[data-on] .launch-kicker { opacity: 1; transform: none; }
-
-.launch-js .launch-scene .launch-visual { opacity: 0; transform: scale(0.96); transition: opacity 300ms cubic-bezier(.2,.8,.2,1), transform 300ms cubic-bezier(.2,.8,.2,1); }
-.launch-js .launch-scene[data-on] .launch-visual { opacity: 1; transform: none; }
+.launch-js .launch-scene .launch-kicker,
+.launch-js .launch-scene .launch-visual { opacity: 0; transform: translateY(8%) scale(.94); }
+.launch-js .launch-scene[data-on] :is(.launch-kicker, .launch-body, .launch-visual) {
+  opacity: 1; transform: none; transition: opacity .7s cubic-bezier(.34,1.56,.64,1), transform .7s cubic-bezier(.34,1.56,.64,1);
+}
+.launch-js .launch-scene[data-on] .launch-body { transition-delay: 160ms; }
+.launch-js .launch-scene[data-on] .launch-visual { transition-delay: 240ms; }
+.launch-js .launch-scene .launch-word > span { transition-duration: 1s; transition-timing-function: cubic-bezier(.16,1,.3,1); }
 
 /* ink scene: the one inverted beat of the story */
 .launch-scene--ink { background: var(--color-ink); color: var(--color-paper); }

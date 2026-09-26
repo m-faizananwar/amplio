@@ -6,6 +6,8 @@ import { CtaLinks } from "./calm/CtaLinks";
 import { PublicHero } from "./calm/PublicHero";
 import { CoinSplit } from "../stage/CoinSplit";
 import { Stage } from "../stage/Stage";
+import { WordReveal } from "../launch/WordReveal";
+import { Pop } from "../motion/Pop";
 
 
 // Two plans side by side (that's all there is), then a worked example from
@@ -15,7 +17,7 @@ export async function PricingPage({ trail }: { trail: PublicTrail | null }) {
   const locale = await getLocale();
   const euros = (cents: number) => formatWholeEuros(cents, locale);
   const plan = (key: "brands" | "creators", href: string) => (
-    <div className="flex flex-col rounded-card border border-rule bg-surface p-6 sm:p-8">
+    <div className="card-invert flex flex-col rounded-card border border-rule bg-surface p-6 sm:p-8">
       <p className="text-small text-ink-muted">{t(`${key}.title`)}</p>
       <p className="mt-3 flex items-baseline gap-2">
         <span className="text-h1 tracking-[-0.03em]">{t(`${key}.price`)}</span>
@@ -37,35 +39,35 @@ export async function PricingPage({ trail }: { trail: PublicTrail | null }) {
         sub={t("hero.sub")}
         art={<Stage><CoinSplit price={trail?.example ? euros(trail.example.feeCents) : "€"} labels={{ brand: t("coin.brand"), creator: t("coin.creator"), fee: t("coin.fee") }} /></Stage>}
       />
-      <section className="mx-auto grid max-w-content gap-4 px-4 py-16 sm:px-8 lg:grid-cols-2">
+      <Pop as="section" className="mx-auto grid max-w-content gap-4 px-4 py-16 sm:px-8 lg:grid-cols-2">
         {plan("brands", "/register/brand")}
         {plan("creators", "/register/creator")}
-      </section>
+      </Pop>
       {trail?.example ? (
         <section className="border-t border-rule">
-          <div className="mx-auto grid max-w-content gap-10 px-4 py-16 sm:px-8 lg:grid-cols-[1fr_1.2fr]">
+          <Pop className="mx-auto grid max-w-content gap-10 px-4 py-16 sm:px-8 lg:grid-cols-[1fr_1.2fr]">
             <div>
-              <h2 className="text-h2">{t("example.title")}</h2>
+              <WordReveal as="h2" text={t("example.title")} className="text-h2" stepMs={80} repeat />
               <p className="mt-3 max-w-md text-ink-muted">{t("example.body")}</p>
             </div>
             <div>
-              <dl className="divide-y divide-rule rounded-card border border-rule bg-surface">
+              <dl className="card-invert divide-y divide-rule rounded-card border border-rule bg-surface">
                 <div className="flex items-center justify-between gap-4 px-5 py-4"><dt>{t("example.rowPost", { price: euros(trail.example.feeCents) })}</dt><dd className="num text-h4">{euros(trail.example.feeCents)}</dd></div>
                 <div className="flex items-center justify-between gap-4 px-5 py-4"><dt>{t("example.rowClicks", { clicks: trail.example.clicks })}</dt><dd className="num text-h4">{formatCount(trail.example.clicks, locale)}</dd></div>
                 <div className="flex items-center justify-between gap-4 px-5 py-4"><dt>{t("example.rowSignups", { signups: trail.example.signups })}</dt><dd className="num text-h4 text-money">{trail.example.signups}</dd></div>
               </dl>
               <p className="mt-3 text-small text-ink-muted">{t("example.note")}</p>
             </div>
-          </div>
+          </Pop>
         </section>
       ) : null}
       <section className="border-t border-rule">
-        <div className="mx-auto max-w-content px-4 py-16 sm:px-8">
-          <h2 className="text-h2">{t("never.title")}</h2>
+        <Pop className="mx-auto max-w-content px-4 py-16 sm:px-8">
+          <WordReveal as="h2" text={t("never.title")} className="text-h2" stepMs={80} repeat />
           <Stage>
           <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {(t.raw("never.items") as string[]).map((item, i) => (
-              <li key={item} className="flex items-center gap-3 rounded-card border border-rule px-4 py-3">
+              <li key={item} className="card-invert flex items-center gap-3 rounded-card border border-rule px-4 py-3">
                 <X className="size-4 shrink-0 text-ink-muted" aria-hidden="true" />
                 <span className="relative">
                   {item}
@@ -78,7 +80,7 @@ export async function PricingPage({ trail }: { trail: PublicTrail | null }) {
           </ul>
           </Stage>
           <p className="mt-8 text-small text-ink-muted">{t("stubNote")}</p>
-        </div>
+        </Pop>
       </section>
     </>
   );

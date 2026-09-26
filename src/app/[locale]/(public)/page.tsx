@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { GlassHero } from "@/features/public/components/hero/GlassHero";
 import { LaunchClosing } from "@/features/public/components/launch/LaunchClosing";
-import { LaunchMotion } from "@/features/public/components/launch/LaunchMotion";
 import { LaunchScenes } from "@/features/public/components/launch/LaunchScenes";
 import { getShowcaseCreators } from "@/features/public/server/queries";
 import { getPublicTrail } from "@/features/public/server/trail-queries";
@@ -26,7 +25,6 @@ export default async function HomePage(props: LocaleParams) {
   const names = creators.map((c) => c.name.split(" ")[0]).slice(0, 3);
   return (
     <>
-      <LaunchMotion />
       <GlassHero trail={trail} />
       <LaunchScenes trail={trail} creators={names} />
       <LaunchClosing trail={trail} />

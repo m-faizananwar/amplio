@@ -6,6 +6,8 @@ import { CtaLinks } from "../calm/CtaLinks";
 import { PublicHero } from "../calm/PublicHero";
 import { CardAssembly } from "../../stage/CardAssembly";
 import { Stage } from "../../stage/Stage";
+import { Pop } from "../../motion/Pop";
+import { WordReveal } from "../../launch/WordReveal";
 
 
 // A creator's path, in the order they live it: four ruled steps with the
@@ -31,8 +33,9 @@ export async function ForCreatorsPage({ creator }: { creator: (PublicCreator & {
       >
         <CtaLinks primary={{ href: "/register/creator", label: t("hero.primary") }} secondary={{ href: "#how", label: t("hero.secondary") }} />
       </PublicHero>
-      <section id="how" className="mx-auto max-w-content scroll-mt-20 px-4 py-16 sm:px-8">
-        <h2 className="text-h2">{t("steps.title")}</h2>
+      <section id="how" className="scroll-mt-20">
+        <Pop className="mx-auto max-w-content px-4 py-16 sm:px-8">
+        <WordReveal as="h2" text={t("steps.title")} className="text-h2" stepMs={80} repeat />
         <Stage className="mt-10">
         <ol className="relative grid gap-8 md:grid-cols-4 md:gap-6">
           <span aria-hidden="true" className="absolute left-[7px] top-2 h-[calc(100%-1rem)] w-px bg-rule md:left-0 md:top-[7px] md:h-px md:w-full" />
@@ -48,11 +51,12 @@ export async function ForCreatorsPage({ creator }: { creator: (PublicCreator & {
           ))}
         </ol>
         </Stage>
+        </Pop>
       </section>
       <section className="border-t border-rule">
-        <div className="mx-auto grid max-w-content items-center gap-10 px-4 py-16 sm:px-8 lg:grid-cols-2">
+        <Pop className="mx-auto grid max-w-content items-center gap-10 px-4 py-16 sm:px-8 lg:grid-cols-2">
           <div>
-            <h2 className="text-h2">{t("card.title")}</h2>
+            <WordReveal as="h2" text={t("card.title")} className="text-h2" stepMs={80} repeat />
             <p className="mt-3 max-w-md text-ink-muted">{t("card.body")}</p>
             <ul className="mt-6 space-y-2">
               {(t.raw("card.points") as string[]).map((p) => <li key={p} className="flex gap-3"><span className="mt-2 size-1.5 shrink-0 rounded-full bg-ink" aria-hidden="true" />{p}</li>)}
@@ -75,23 +79,23 @@ export async function ForCreatorsPage({ creator }: { creator: (PublicCreator & {
               <figcaption className="mt-4 text-caption text-ink-muted">{tc("demoData")}</figcaption>
             </figure>
           ) : null}
-        </div>
+        </Pop>
       </section>
       <section className="border-t border-rule">
-        <div className="mx-auto max-w-content px-4 py-16 sm:px-8">
-          <h2 className="text-h2">{t("money.title")}</h2>
+        <Pop className="mx-auto max-w-content px-4 py-16 sm:px-8">
+          <WordReveal as="h2" text={t("money.title")} className="text-h2" stepMs={80} repeat />
           <p className="mt-3 max-w-2xl text-ink-muted">{t("money.body")}</p>
           <p className="mt-4 max-w-2xl text-small text-ink-muted">{t("money.stubNote")}</p>
-        </div>
+        </Pop>
       </section>
       <section className="border-t border-rule bg-ink text-paper">
-        <div className="mx-auto flex max-w-content flex-col gap-6 px-4 py-20 sm:px-8 md:flex-row md:items-end md:justify-between">
+        <Pop className="mx-auto flex max-w-content flex-col gap-6 px-4 py-20 sm:px-8 md:flex-row md:items-end md:justify-between">
           <div>
-            <h2 className="text-h1 tracking-[-0.03em]">{t("cta.title")}</h2>
+            <WordReveal as="h2" text={t("cta.title")} className="text-h1 tracking-[-0.03em]" stepMs={80} repeat />
             <p className="mt-3 max-w-xl opacity-70">{t("cta.sub")}</p>
           </div>
           <Link href="/register/creator" className="inline-flex h-11 items-center rounded-control bg-paper px-5 font-medium text-ink hover:opacity-90">{t("cta.button")}</Link>
-        </div>
+        </Pop>
       </section>
     </>
   );
