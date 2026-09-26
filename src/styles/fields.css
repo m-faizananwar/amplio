@@ -52,7 +52,9 @@
 
   /* Leading icon in a 28px rounded square. Filled accent square pops in behind
      it (spring, 450 ms) when the field has a value or focus. */
-  .field-shell { position: relative; display: flex; width: 100%; min-width: 0; }
+  /* the shell is as tall as its control and never stretched by a grid or
+     flex parent, so the icon square stays centred on the field itself */
+  .field-shell { position: relative; display: flex; width: 100%; min-width: 0; align-self: start; height: max-content; }
   .field-shell > .field-control { padding-left: 46px; }
   .field-icon {
     position: absolute;
