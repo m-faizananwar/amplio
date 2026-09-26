@@ -18,5 +18,5 @@ export function DeleteCampaignButton({ campaignId }: { campaignId: string }) {
     toast.success(t("done"));
     router.push("/brand/campaigns");
   }
-  return <ConfirmButton size="sm" confirmLabel={t("confirm")} onConfirm={confirm}><Trash2 aria-hidden="true" />{t("label")}</ConfirmButton>;
+  return <ConfirmButton variant="quiet" size="sm" confirmLabel={t("confirm")} onConfirm={confirm}><Trash2 aria-hidden="true" />{t("label")}</ConfirmButton>;
 }
