@@ -66,7 +66,14 @@ export async function createVapiEngine(session: AgentVoiceSession, h: EngineHand
   vapi.on("volume-level", (v) => h.onOutputLevel(v));
   vapi.on("local-volume-level", (v) => h.onInputLevel(v));
   vapi.on("call-end", () => h.onEnd());
-  vapi.on("error", (e: unknown) => h.onError(messageOf(e)));
+  // Vapi reports non-fatal trouble (a noise filter that didn't load, a blip)
+  // as errors too; only call-end ends the call, and only a blocked mic has
+  // its own state. The rest is logged.
+  vapi.on("error", (e: unknown) => {
+    const message = messageOf(e);
+    if (/NotAllowed|permission/i.test(message)) return h.onError("not-allowed");
+    console.warn("[call] vapi error", message);
+  });
   return {
     name: "vapi",
     start: async () => {
