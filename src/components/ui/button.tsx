@@ -77,7 +77,7 @@ type ButtonProps = Omit<ButtonPrimitive.Props, "className"> & {
   className?: string
   variant?: Variant
   size?: Size
-  /** A round filled disc at the start that turns 90° on hover. */
+  /** A round filled disc at the start that pops on hover. */
   icon?: ReactNode
   /** A save in flight: the pill shrinks into a spinner, then shows a check or shakes. */
   status?: "saving" | "saved" | "error"

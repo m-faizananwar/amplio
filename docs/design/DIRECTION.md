@@ -162,7 +162,7 @@ Fewer, richer, tactile. Every one is on `/dev/ui`.
 - **Blob button** (`ui/button`, `src/styles/blob-button.css`): every primary action and every
   wizard forward/back. An uppercase pill (13px, 700, tracked .12em); a 2px border; an offset
   shadow that tucks back on hover; four blobs that rise through one goo filter (defined once in
-  the root layout) and merge into a liquid fill; an optional icon disc that turns 90°. Variants
+  the root layout) and merge into a liquid fill; an optional icon disc that pops (scale 1.12) on hover. Variants
   primary (ink), money (pay, top up, release, withdraw), quiet (secondary), danger (irreversible;
   the armed step of ConfirmButton's two clicks). Keyboard focus fills the same way; reduced
   motion fills without travel. Ghost, link, `chip` (filter triggers) and icon buttons stay plain.

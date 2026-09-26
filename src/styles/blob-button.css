@@ -113,7 +113,9 @@
   .blob-btn:is(:hover, :focus-visible, [data-armed]):not(:disabled) { color: var(--blob-on); }
   .blob-btn:is(:hover, :focus-visible, [data-armed]):not(:disabled)::after { transform: translate3d(0, 0, 0); }
   .blob-btn:is(:hover, :focus-visible, [data-armed]):not(:disabled) .blob-btn__blob { transform: translateZ(0) scale(1.4); }
-  .blob-btn:is(:hover, :focus-visible):not(:disabled) .blob-btn__icon { transform: rotate(90deg); background: var(--blob-on); color: var(--blob-color); }
+  /* The disc pops rather than turning: a quarter turn made a check read as a
+     "back" chevron and tipped every other glyph on its side. */
+  .blob-btn:is(:hover, :focus-visible):not(:disabled) .blob-btn__icon { transform: scale(1.12); background: var(--blob-on); color: var(--blob-color); }
   .blob-btn:is(:hover, :focus-visible):not(:disabled) .blob-btn__label,
   .group:hover .blob-btn:not(:disabled) .blob-btn__label { animation: blob-bounce 450ms var(--ease-spring); }
   .blob-btn:focus-visible { outline: 2px solid var(--money); outline-offset: 3px; }
