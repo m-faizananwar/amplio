@@ -1,6 +1,6 @@
 # Project notes for Claude Code
 
-## Agent capture (8x assignment) — do not touch
+## Agent capture — do not touch
 
 - `.claude/settings.json` wires `UserPromptSubmit` and `Stop` hooks to
   `.claude/hooks/capture.sh`, which appends every prompt and final response to

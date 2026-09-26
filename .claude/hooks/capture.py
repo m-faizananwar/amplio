@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Agent capture hook for the 8x assignment.
+Agent capture hook: writes each coding-agent session to .agent-logs/
 
 Wired from .claude/settings.json to fire automatically on every turn:
 
@@ -32,7 +32,7 @@ import sys
 
 AUTHOR = "m-faizananwar"          # GitHub handle
 TOOL = "claude-code"
-PROJECT = "naano-rebuild"         # project slug for the log frontmatter
+PROJECT = "amplio"                # project slug for the log frontmatter
 UNKNOWN_MODEL = "unknown (no assistant message in this session yet; see the RESPONSE entry)"
 
 
