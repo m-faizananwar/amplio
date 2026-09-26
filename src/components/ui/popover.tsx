@@ -31,12 +31,12 @@ function PopoverContent({
         alignOffset={alignOffset}
         side={side}
         sideOffset={sideOffset}
-        className="isolate z-50"
+        className="dd-pos isolate z-50"
       >
         <PopoverPrimitive.Popup
           data-slot="popover-content"
           className={cn(
-            "dropdown-panel z-50 flex w-72 flex-col gap-2.5 p-3 text-body text-ink outline-hidden",
+            "dd-panel z-50 flex w-72 flex-col gap-2.5 p-3 text-body text-ink outline-hidden",
             className
           )}
           {...props}

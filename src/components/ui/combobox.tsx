@@ -42,8 +42,8 @@ export function Combobox({ options, value, onValueChange, placeholder, emptyText
         </ComboboxPrimitive.Trigger>
       </div>
       <ComboboxPrimitive.Portal>
-        <ComboboxPrimitive.Positioner sideOffset={6} className="z-50 outline-none">
-          <ComboboxPrimitive.Popup className="dropdown-panel max-h-72 w-(--anchor-width) overflow-y-auto p-1.5 text-body">
+        <ComboboxPrimitive.Positioner sideOffset={6} className="dd-pos z-50 outline-none">
+          <ComboboxPrimitive.Popup className="dd-panel max-h-72 w-(--anchor-width) overflow-y-auto p-1.5 text-body">
             <ComboboxPrimitive.Empty className="px-2.5 py-2 text-small text-ink-muted empty:hidden">{emptyText}</ComboboxPrimitive.Empty>
             <ComboboxPrimitive.List>
               {(option: ComboboxOption) => (

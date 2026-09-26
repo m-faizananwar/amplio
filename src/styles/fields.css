@@ -98,8 +98,9 @@
     border-radius: 999px;
     background: var(--tint);
     color: var(--ink-muted);
-    transition: transform var(--duration-slow) var(--ease-ledger), background-color var(--duration-fast) var(--ease-ledger);
+    transition: transform 480ms var(--ease-spring), background-color var(--duration-fast) var(--ease-ledger);
   }
+  .field-control:hover .field-chevron, :hover > .field-chevron { background: var(--rule); }
   .field-chevron svg { width: 14px; height: 14px; }
   :is([data-popup-open], [aria-expanded="true"]) > .field-chevron,
   :is([data-popup-open], [aria-expanded="true"]) ~ .field-chevron,
@@ -109,16 +110,6 @@
   .field-segment { display: inline-grid; min-width: 32px; height: 28px; place-items: center; padding: 0 8px; border-radius: 8px; background: var(--tint); font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 13px; }
   .field-control[data-empty="true"] .field-segment { color: var(--ink-muted); }
 
-  /* The dropdown panel: radius 16, white, deep soft shadow, opens .97 → 1 from the trigger edge. */
-  .dropdown-panel {
-    border: 1px solid var(--rule);
-    border-radius: var(--radius-panel);
-    background: var(--surface);
-    box-shadow: var(--panel-shadow);
-    transform-origin: var(--transform-origin);
-    transition: opacity var(--duration-fast) var(--ease-ledger), scale var(--duration-fast) var(--ease-ledger);
-  }
-  .dropdown-panel:is([data-starting-style], [data-ending-style]) { opacity: 0; scale: 0.97; }
   .dropdown-option {
     display: flex;
     min-height: 36px;
@@ -171,7 +162,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .field-control, .field-icon::before, .field-icon svg, .field-chevron, .switch-thumb, .dropdown-panel { transition: none !important; }
+  .field-control, .field-icon::before, .field-icon svg, .field-chevron, .switch-thumb { transition: none !important; }
   .field-control:is(:focus, :focus-visible, [data-popup-open]), .field-shell:focus-within > .field-control { translate: none; }
   .dropdown-check path, .dropdown-check polyline { animation: none; stroke-dashoffset: 0; }
 }

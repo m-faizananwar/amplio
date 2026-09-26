@@ -1,0 +1,77 @@
+/* One opening for every dropdown in the app (DIRECTION.md, "Dropdowns"):
+   select, combobox, multi-select and filter pills, the date picker, the
+   notifications panel, every menu. Two layers:
+   - .dd-pos, the positioner: carries the shadow as a drop-shadow filter (it
+     follows the clipped shape; a box-shadow would be clipped away) and the
+     spring: opacity 0 → 1, scale .96 → 1 from the corner nearest the trigger.
+   - .dd-panel, the popup: rendered at full size and revealed by a clip-path
+     that grows out of that same corner, on an ease-out.
+   Rows then arrive one after another. Closing plays it back, faster. */
+
+@layer components {
+  .dd-pos {
+    --dd-spring: linear(0, 0.18 5%, 0.53 12%, 0.84 20%, 1.03 28%, 1.08 35%, 1.06 42%, 1.02 52%, 0.995 62%, 0.99 72%, 1);
+    filter: drop-shadow(0 10px 18px rgb(0 0 0 / 0.14));
+    transform-origin: top left;
+    transition:
+      opacity 320ms cubic-bezier(0.16, 1, 0.3, 1),
+      scale 500ms var(--dd-spring);
+  }
+  .dd-pos[data-side="bottom"][data-align="end"] { transform-origin: top right; }
+  .dd-pos[data-side="bottom"][data-align="center"] { transform-origin: top center; }
+  .dd-pos[data-side="top"] { transform-origin: bottom left; }
+  .dd-pos[data-side="top"][data-align="end"] { transform-origin: bottom right; }
+  .dd-pos[data-side="top"][data-align="center"] { transform-origin: bottom center; }
+  .dd-pos[data-side="none"] { transform-origin: center left; }
+  /* keyed off the panel's own states: Select keeps its popup mounted, so
+     @starting-style would never fire there */
+  .dd-pos:has(> [data-starting-style]) { opacity: 0; scale: 0.96; }
+  .dd-pos:has(> [data-ending-style]) {
+    opacity: 0;
+    scale: 0.96;
+    transition: opacity 200ms cubic-bezier(0.16, 1, 0.3, 1), scale 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .dd-panel {
+    --dd-from: inset(0 92% 92% 0 round 16px);
+    border: 1px solid var(--rule);
+    border-radius: 16px;
+    background: var(--surface);
+    color: var(--ink);
+    outline: none;
+    clip-path: inset(0 0 0 0 round 16px);
+    transition: clip-path 320ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .dd-panel[data-side="bottom"][data-align="end"] { --dd-from: inset(0 0 92% 92% round 16px); }
+  .dd-panel[data-side="bottom"][data-align="center"] { --dd-from: inset(0 46% 92% 46% round 16px); }
+  .dd-panel[data-side="top"] { --dd-from: inset(92% 92% 0 0 round 16px); }
+  .dd-panel[data-side="top"][data-align="end"] { --dd-from: inset(92% 0 0 92% round 16px); }
+  .dd-panel[data-side="top"][data-align="center"] { --dd-from: inset(92% 46% 0 46% round 16px); }
+  .dd-panel[data-side="none"] { --dd-from: inset(46% 92% 46% 0 round 16px); }
+  .dd-panel[data-starting-style] { clip-path: var(--dd-from); }
+  .dd-panel[data-ending-style] { clip-path: var(--dd-from); transition-duration: 200ms; }
+
+  /* rows in sequence: 340 ms each, 35 ms apart, capped at the 8th */
+  .dd-panel :is([role="option"], [role="menuitem"], [role="menuitemradio"], [role="menuitemcheckbox"], [data-dd-row]) {
+    animation: dd-row 340ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: 245ms;
+  }
+  .dd-panel :is([role="option"], [role="menuitem"], [role="menuitemradio"], [role="menuitemcheckbox"], [data-dd-row]):nth-child(1) { animation-delay: 0ms; }
+  .dd-panel :is([role="option"], [role="menuitem"], [role="menuitemradio"], [role="menuitemcheckbox"], [data-dd-row]):nth-child(2) { animation-delay: 35ms; }
+  .dd-panel :is([role="option"], [role="menuitem"], [role="menuitemradio"], [role="menuitemcheckbox"], [data-dd-row]):nth-child(3) { animation-delay: 70ms; }
+  .dd-panel :is([role="option"], [role="menuitem"], [role="menuitemradio"], [role="menuitemcheckbox"], [data-dd-row]):nth-child(4) { animation-delay: 105ms; }
+  .dd-panel :is([role="option"], [role="menuitem"], [role="menuitemradio"], [role="menuitemcheckbox"], [data-dd-row]):nth-child(5) { animation-delay: 140ms; }
+  .dd-panel :is([role="option"], [role="menuitem"], [role="menuitemradio"], [role="menuitemcheckbox"], [data-dd-row]):nth-child(6) { animation-delay: 175ms; }
+  .dd-panel :is([role="option"], [role="menuitem"], [role="menuitemradio"], [role="menuitemcheckbox"], [data-dd-row]):nth-child(7) { animation-delay: 210ms; }
+  @keyframes dd-row {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
+
+/* Reduced motion: no clip, no travel — a 120 ms fade only. */
+@media (prefers-reduced-motion: reduce) {
+  .dd-pos { transition: opacity 120ms linear !important; scale: none !important; }
+  .dd-panel, .dd-panel[data-starting-style], .dd-panel[data-ending-style] { clip-path: none !important; transition: none !important; }
+  .dd-panel :is([role="option"], [role="menuitem"], [role="menuitemradio"], [role="menuitemcheckbox"], [data-dd-row]) { animation: none !important; }
+}
