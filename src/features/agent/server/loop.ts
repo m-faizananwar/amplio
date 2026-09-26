@@ -8,6 +8,7 @@ import { ID_RADIX, MAX_CHIPS, SUMMARY_MAX } from "../constants";
 import type { AgentEvent } from "../events";
 import { inventedIds } from "../id-guard";
 import { amountsFrom, checkMoney, withEuros } from "../money-check";
+import { cardNames, dropRestatement } from "../restatement";
 import { compactForModel } from "./compact";
 import { createPending } from "./pending";
 import { ASK_USER, type Recall, systemPrompt } from "./prompt";
@@ -47,8 +48,8 @@ function say(emit: Emit, text: string) {
 
 // One call the model asked for: a question ends the turn, a read runs (with
 // its own timeout) and reports a step, a confirm tool is only prepared.
-type CallInput = { call: { name?: string; args?: Record<string, unknown> }; ctx: ToolContext; emit: Emit; stepId: string; seen?: Set<number>; next?: NextStep[] };
-export async function runCall({ call, ctx, emit, stepId, seen, next }: CallInput): Promise<{ response: Record<string, unknown>; stop?: "question" | "confirm" }> {
+type CallInput = { call: { name?: string; args?: Record<string, unknown> }; ctx: ToolContext; emit: Emit; stepId: string; seen?: Set<number>; next?: NextStep[]; shown?: string[] };
+export async function runCall({ call, ctx, emit, stepId, seen, next, shown }: CallInput): Promise<{ response: Record<string, unknown>; stop?: "question" | "confirm" }> {
   const name = call.name ?? "";
   const args = call.args ?? {};
   if (name === ASK_USER.name) {
@@ -65,7 +66,7 @@ export async function runCall({ call, ctx, emit, stepId, seen, next }: CallInput
     if (tool.kind === "read") {
       const out = await withTimeout(tool.run(ctx, args), CALL_TIMEOUT_MS);
       emit({ type: "step", id: stepId, label: tool.label, status: "done", tool: name, output: out.summary });
-      if (out.result) emit(out.result);
+      if (out.result) { emit(out.result); shown?.push(...cardNames(out.result)); }
       if (out.navigate) emit({ type: "navigate", href: out.navigate });
       if (seen) amountsFrom(out.data, seen);
       if (next && out.nextSteps) next.push(...out.nextSteps);
@@ -117,6 +118,7 @@ export async function runTurn({ viewer, locale, text, history, emit, recall, sco
   // balance from the session: it can be stale, so the model asks a tool)
   const seen = new Set<number>();
   const next: NextStep[] = [];
+  const shown: string[] = [];
   let steps = 0;
   while (Date.now() < deadline) {
     const res = await withTimeout(ai.models.generateContent({
@@ -129,7 +131,8 @@ export async function runTurn({ viewer, locale, text, history, emit, recall, sco
     if (calls.length === 0 || steps >= MAX_TOOL_STEPS) {
       const checked = checkMoney(res.text?.trim() ?? "", seen, locale);
       if (checked.dropped) console.warn("[agent] dropped unverified amounts", { sentences: checked.dropped });
-      const reply = checked.text || (locale === "fr" ? "Voici ce que j’ai trouvé." : "Here's what I found.");
+      // under a card the reply adds what the card doesn't; it never re-lists it
+      const reply = dropRestatement(checked.text, shown) || (locale === "fr" ? "Voici ce que j’ai trouvé." : "Here's what I found.");
       say(emit, reply);
       // a blocker never ends the turn cold: the tools' own next steps as chips
       const steps = next.filter((s, i) => next.findIndex((o) => o.label === s.label) === i).slice(0, MAX_CHIPS);
@@ -137,7 +140,7 @@ export async function runTurn({ viewer, locale, text, history, emit, recall, sco
       return reply;
     }
     contents.push({ role: "model", parts: modelParts });
-    const outcomes = await Promise.all(calls.map((call, i) => runCall({ call, ctx, emit, stepId: `s${steps + i + 1}`, seen, next })));
+    const outcomes = await Promise.all(calls.map((call, i) => runCall({ call, ctx, emit, stepId: `s${steps + i + 1}`, seen, next, shown })));
     steps += calls.length;
     contents.push({ role: "user", parts: calls.map((call, i) => ({ functionResponse: { name: call.name ?? "", response: outcomes[i].response } })) });
     const stop = outcomes.find((o) => o.stop)?.stop;
