@@ -1,6 +1,6 @@
 import type { VoiceProvider, VoiceProviderEvents } from "./types";
 
-export type VapiSession = { assistantId: string; publicKey: string; voiceToken: string };
+export type VapiSession = { assistantId: string; publicKey: string; voiceToken: string; overrides?: Record<string, unknown> };
 
 type VapiMessage = { type?: string; role?: string; transcriptType?: string; transcript?: string };
 
@@ -28,7 +28,8 @@ export async function createVapiProvider(session: VapiSession, events: VoiceProv
     name: "vapi",
     handlesIntents: false,
     start: async () => {
-      await vapi.start(session.assistantId, { variableValues: { voiceToken: session.voiceToken }, metadata: { voiceToken: session.voiceToken } });
+      // the session route builds the overrides (greeting, voiceToken, threadId, locale)
+      await vapi.start(session.assistantId, session.overrides ?? { variableValues: { voiceToken: session.voiceToken }, metadata: { voiceToken: session.voiceToken } });
     },
     stop: () => vapi.stop(),
     speak: async () => undefined,

@@ -1,12 +1,12 @@
 import "server-only";
 
-export type VapiToolCall = { id: string; transcript: string; confirmed: boolean; voiceToken: string };
+export type VapiToolCall = { id: string; transcript: string; confirmed: boolean; voiceToken: string; callId: string | null; threadId: unknown; locale: "en" | "fr" };
 
 type ToolCallPayload = {
   message?: {
     type?: string;
     toolCallList?: Array<{ id: string; name?: string; function?: { name?: string; arguments?: unknown }; arguments?: unknown }>;
-    call?: { assistantOverrides?: { variableValues?: Record<string, unknown> }; metadata?: Record<string, unknown> };
+    call?: { id?: string; assistantOverrides?: { variableValues?: Record<string, unknown> }; metadata?: Record<string, unknown> };
   };
 };
 
@@ -25,7 +25,8 @@ export function readToolCall(payload: unknown): VapiToolCall | null {
   const voiceToken = typeof vars.voiceToken === "string" ? vars.voiceToken : "";
   const transcript = typeof args.transcript === "string" ? args.transcript : "";
   if (!voiceToken || !transcript) return null;
-  return { id: call.id, transcript, confirmed: args.confirmed === true, voiceToken };
+  const callId = typeof message.call?.id === "string" ? message.call.id : null;
+  return { id: call.id, transcript, confirmed: args.confirmed === true, voiceToken, callId, threadId: vars.threadId, locale: vars.locale === "fr" ? "fr" : "en" };
 }
 
 export const toolResult = (toolCallId: string, result: string) => ({ results: [{ toolCallId, result }] });
