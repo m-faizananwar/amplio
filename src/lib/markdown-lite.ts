@@ -20,8 +20,23 @@ const INLINE_ITEM = /\s\*\s+(?=\S)/;
 // Only same-origin paths: "/brand/…", never "//host", a scheme or "..".
 export const isSafeHref = (href: string) => href.startsWith("/") && !href.startsWith("//") && !href.includes("..") && !/[\s<>"']/.test(href);
 
+// " - " between items on one line: only after a sentence's end (". - ",
+// ": - ") and before a bold name or a capital, so "e-mail", "5 - 3" and a
+// dash inside a sentence stay as written.
+const DASH_RUN = /(?<=[.!?:;)])\s+-\s+(?=\*\*|\p{Lu})/u;
+
+// "- **A** … move. - **B** … move." → one item each; "Lead: - **A**. - **B**." → a lead and items.
+function explodeDashes(line: string): string[] {
+  const parts = line.trim().split(DASH_RUN);
+  if (parts.length < 2) return [line];
+  const [first = "", ...rest] = parts;
+  const leadIsItem = BULLET.test(first);
+  if (!leadIsItem && rest.length < 2) return [line];
+  return [first, ...rest.map((p) => `- ${p}`)];
+}
+
 // "Two need you: * **A** by Zune * **B** by Zune" → a lead line and items.
-function explode(line: string): string[] {
+function explodeStars(line: string): string[] {
   const trimmed = line.trim();
   const lead = trimmed.startsWith("* ");
   const colon = trimmed.search(/:\s+\*\s+\S/);
@@ -35,7 +50,7 @@ function explode(line: string): string[] {
 
 export function parseBlocks(text: string): Block[] {
   const blocks: Block[] = [];
-  const lines = text.replace(/\r\n?/g, "\n").split("\n").flatMap(explode);
+  const lines = text.replace(/\r\n?/g, "\n").split("\n").flatMap(explodeDashes).flatMap(explodeStars);
   for (const raw of lines) {
     const last = blocks.at(-1);
     if (!raw.trim()) {

@@ -8,6 +8,16 @@ describe("parseBlocks", () => {
       { kind: "ul", items: ["**Zune creator brief** by Zune: draft ready", "**Q4 push** by Zune: live"] },
     ]);
   });
+  it("splits a one-line '- ' list after sentence ends into items (owner's case)", () => {
+    expect(parseBlocks("- **Ethyl Kertzmann** for Zune creator brief: your move. - **Esmeralda Bergnaum** for Zune creator brief: your move. - **Tom Bechtelar** for Zune creator brief: your move. - **Althea Altenwerth** for Zune creator brief: your move.")).toEqual([
+      { kind: "ul", items: ["**Ethyl Kertzmann** for Zune creator brief: your move.", "**Esmeralda Bergnaum** for Zune creator brief: your move.", "**Tom Bechtelar** for Zune creator brief: your move.", "**Althea Altenwerth** for Zune creator brief: your move."] },
+    ]);
+    expect(parseBlocks("Four need you: - **A** waits. - **B** waits.")).toEqual([{ kind: "p", lines: ["Four need you:"] }, { kind: "ul", items: ["**A** waits.", "**B** waits."] }]);
+  });
+  it("keeps hyphenated words, arithmetic and a dash inside a sentence", () => {
+    expect(parseBlocks("A follow-up post, 5 - 3 = 2, and one more - maybe.")).toEqual([{ kind: "p", lines: ["A follow-up post, 5 - 3 = 2, and one more - maybe."] }]);
+    expect(parseBlocks("- **A** is live - since Monday.")).toEqual([{ kind: "ul", items: ["**A** is live - since Monday."] }]);
+  });
   it("reads '- ', '* ' and '•' lines as one list, and '1.' lines as a numbered one", () => {
     expect(parseBlocks("Two fit:\n- A\n* B\n• C")).toEqual([{ kind: "p", lines: ["Two fit:"] }, { kind: "ul", items: ["A", "B", "C"] }]);
     expect(parseBlocks("Steps:\n1. Launch\n2) Invite")).toEqual([{ kind: "p", lines: ["Steps:"] }, { kind: "ol", start: 1, items: ["Launch", "Invite"] }]);
