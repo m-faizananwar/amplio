@@ -36,6 +36,9 @@
     transform: scale(0.4);
     transition: transform 450ms var(--ease-spring), opacity var(--duration-fast) var(--ease-ledger);
   }
+  /* every child sits above the filled square (::before); the bot is a canvas
+     in a span, not an svg, and would otherwise paint under it */
+  .nav-icon > * { position: relative; }
   .nav-icon svg { position: relative; width: 16px; height: 16px; }
   [aria-current="page"] > .nav-icon { color: var(--surface); }
   [aria-current="page"] > .nav-icon::before { opacity: 1; transform: scale(1); }
