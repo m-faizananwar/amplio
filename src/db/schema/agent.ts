@@ -15,6 +15,8 @@ export const agentThreads = pgTable(
     summary: text("summary").notNull().default(""),
     // the confirm card a spoken or typed "yes" would answer right now
     pendingConfirm: text("pending_confirm"),
+    // "chat" or "call": how the thread is listed and titled
+    kind: text("kind").$type<"chat" | "call">().notNull().default("chat"),
   },
   (t) => [index("agent_threads_user_id_idx").on(t.userId)],
 );

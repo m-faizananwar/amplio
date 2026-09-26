@@ -1,0 +1,1 @@
+ALTER TABLE "agent_threads" ADD COLUMN "kind" text DEFAULT 'chat' NOT NULL;

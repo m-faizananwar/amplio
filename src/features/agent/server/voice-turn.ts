@@ -4,7 +4,7 @@ import type { AgentEvent } from "../events";
 import { speakable, speechFor } from "../speech";
 import { decideSpoken } from "../voice-rule";
 import type { Turn } from "./loop";
-import { getPending } from "./memory";
+import { appendEvents, getPending } from "./memory";
 import { agentTurn } from "./turn";
 
 // Settling a card runs the app's own actions, which read the user from the
@@ -22,6 +22,8 @@ export async function voiceTurn({ viewer, locale, transcript, threadId, settle, 
   const decision = decideSpoken(transcript, pending);
   if (decision.kind === "nothing") return locale === "fr" ? "Rien n’attend de confirmation pour l’instant. Que voulez-vous faire ?" : "Nothing's waiting on a yes right now. What would you like to do?";
   if (decision.kind !== "turn") {
+    // the caller's own "yes"/"no" belongs in the replay, ahead of what it did
+    if (threadId) await appendEvents(threadId, [{ type: "user", text: transcript }]);
     const said = await settle(decision.id, decision.kind);
     const last = [...said].reverse().find((e) => e.type === "message" && e.final);
     return last && last.type === "message" ? speakable(last.text, locale) : "";

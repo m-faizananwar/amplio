@@ -4,7 +4,7 @@ vi.mock("server-only", () => ({}));
 const getPending = vi.fn();
 const settle = vi.fn();
 const agentTurn = vi.fn();
-vi.mock("./server/memory", () => ({ getPending: (t: string) => getPending(t) }));
+vi.mock("./server/memory", () => ({ getPending: (t: string) => getPending(t), appendEvents: async () => undefined }));
 vi.mock("./server/turn", () => ({ agentTurn: (a: unknown) => agentTurn(a) }));
 
 const { voiceTurn } = await import("./server/voice-turn");

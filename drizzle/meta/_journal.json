@@ -64,6 +64,13 @@
       "when": 1790449857303,
       "tag": "0008_mysterious_sunspot",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1790454112568,
+      "tag": "0009_moaning_harrier",
+      "breakpoints": true
     }
   ]
 }

@@ -26,7 +26,7 @@ export async function GET(request: Request) {
     const [assistantId, voiceToken, thread] = await Promise.all([
       ensureAssistant(serverUrl),
       createHeadlessSession(viewer.userId),
-      agentEnabled() ? openThread(viewer.userId, null, { title: locale === "fr" ? "Appel" : "Call" }) : Promise.resolve(null),
+      agentEnabled() ? openThread(viewer.userId, null, { title: locale === "fr" ? "Appel" : "Call", kind: "call" }) : Promise.resolve(null),
     ]);
     const variableValues = { voiceToken, threadId: thread?.threadId ?? null, locale };
     return NextResponse.json({
