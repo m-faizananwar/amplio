@@ -7,6 +7,7 @@ import type { Ref } from "react";
 import { CSRF_FIELD } from "@/features/auth/constants";
 import { logout } from "@/features/auth/server/actions";
 import { LocaleToggle } from "./topbar/LocaleToggle";
+import { RoleSwitch } from "./topbar/RoleSwitch";
 import { ThemeToggle } from "./topbar/ThemeToggle";
 import type { ShellViewer } from "./viewer";
 
@@ -17,6 +18,7 @@ type Props = { ref: Ref<HTMLDivElement>; id: string; viewer: ShellViewer; open: 
 export function AccountPillMenu({ ref, id, viewer, open, onChoose }: Props) {
   const t = useTranslations("shell.topBar.account");
   const tc = useTranslations("common");
+  const tw = useTranslations("shell.topBar.roleSwitch");
   return (
     <div ref={ref} id={id} role="group" aria-label={t("menu")} className="account-pill-menu" inert={!open || undefined}>
       {viewer.email ? <p className="account-pill-email">{viewer.email}</p> : null}
@@ -26,6 +28,8 @@ export function AccountPillMenu({ ref, id, viewer, open, onChoose }: Props) {
       <Link data-pill-row href={`/${viewer.role}/settings`} className="account-pill-row" onClick={onChoose}>
         <Settings aria-hidden="true" />{t("settings")}
       </Link>
+      {/* the demo workspace switch lives in the top bar from xl up */}
+      {viewer.demo ? <div className="account-pill-row account-pill-setting h-auto py-1 xl:hidden"><span>{tw("label")}</span><RoleSwitch role={viewer.role} /></div> : null}
       <div className="account-pill-row account-pill-setting"><span>{tc("language.label")}</span><LocaleToggle /></div>
       <div className="account-pill-row account-pill-setting"><span>{tc("theme.label")}</span><ThemeToggle /></div>
       {viewer.preview ? null : (

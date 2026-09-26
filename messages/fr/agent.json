@@ -89,7 +89,17 @@
     "newChat": "Nouvelle conversation",
     "company": "Entreprise",
     "handle": "Identifiant",
-    "headline": "Accroche"
+    "headline": "Accroche",
+    "history": "Historique",
+    "today": "Aujourd’hui",
+    "earlier": "Plus tôt",
+    "showAll": "Tout afficher ({n})",
+    "showLess": "Afficher moins",
+    "call": "Appel",
+    "chat": "Conversation",
+    "minutes": "{n} min",
+    "opening": "Ouverture de la conversation…",
+    "callHeader": "Appel"
   },
   "voice": {
     "listening": "Écoute",

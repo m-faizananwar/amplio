@@ -123,7 +123,7 @@
   }
   .call-bar > button:first-child { height: 100%; }
   .call-bar--app { bottom: calc(12px + env(safe-area-inset-bottom)); }
-  .call-bar--agent { bottom: calc(248px + env(safe-area-inset-bottom)); }
+  .call-bar--agent { bottom: calc(168px + env(safe-area-inset-bottom)); }
 }
 
 @media (prefers-reduced-motion: reduce) {

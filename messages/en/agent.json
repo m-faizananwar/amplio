@@ -89,7 +89,17 @@
     "newChat": "New chat",
     "company": "Company",
     "handle": "Handle",
-    "headline": "Headline"
+    "headline": "Headline",
+    "history": "History",
+    "today": "Today",
+    "earlier": "Earlier",
+    "showAll": "Show all ({n})",
+    "showLess": "Show fewer",
+    "call": "Call",
+    "chat": "Chat",
+    "minutes": "{n} min",
+    "opening": "Opening the conversation…",
+    "callHeader": "Call"
   },
   "voice": {
     "listening": "Listening",

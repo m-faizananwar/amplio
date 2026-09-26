@@ -1,13 +1,17 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { Phone } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 import { TrailDots } from "@/features/assistant/components/TrailDots";
 import { AgentComposer } from "./AgentComposer";
 import { useCall } from "./call/callContext";
 import { AgentThread } from "./AgentThread";
-import { KnowRail, type RailThread } from "./KnowRail";
-import { useAgentRun } from "./useAgentRun";
+import { HistoryBar } from "./rail/HistoryBar";
+import { KnowRail, type RailThread } from "./rail/KnowRail";
+import { dayTime, minutesOf, startedAt } from "./rail/threadTime";
+import { type ThreadMeta, useAgentRun } from "./useAgentRun";
 
 type Props = { role: "brand" | "creator"; firstName: string; csrfToken: string; profile: Array<{ label: string; value: string }>; notes: string[]; threads: RailThread[] };
 
@@ -23,12 +27,33 @@ export function AgentView({ role, firstName, csrfToken, profile, notes, threads 
   const call = useCall();
   const run = call && call.status !== "idle" ? call.run : own;
   const live = call?.status === "live" || call?.status === "connecting";
+  const locale = useLocale();
   const [current, setCurrent] = useState<RailThread | null>(null);
+  const [opened, setOpened] = useState<ThreadMeta | null>(null);
+  const [loading, setLoading] = useState(false);
   const end = useRef<HTMLDivElement>(null);
   const lastUser = [...run.items].reverse().find((i) => i.type === "user");
   useEffect(() => { end.current?.scrollIntoView({ block: "end", behavior: "smooth" }); }, [run.items.length]);
 
-  const thread = run.items.length === 0 ? (
+  const newChat = () => { setCurrent(null); setOpened(null); if (call && !live) call.close(); own.reset(); };
+  const resume = (th: RailThread) => {
+    setCurrent(th);
+    setOpened(null);
+    setLoading(true);
+    if (call && !live) call.close();
+    void own.replay(th.id).then((meta) => { setOpened(meta); setLoading(false); });
+  };
+  // an opened call starts with its own line: Call · 4 min · Sep 27, 14:02
+  const callHeader = opened?.kind === "call" ? [t("rail.callHeader"), opened.durationSec ? t("rail.minutes", { n: minutesOf(opened.durationSec) }) : null, dayTime(startedAt(opened.updatedAt, opened.durationSec), locale)].filter(Boolean).join(" · ") : null;
+  const panel = { profile, notes, threads, current: current?.id ?? null, onResume: resume, onNewChat: newChat };
+
+  const thread = loading && run.items.length === 0 ? (
+    <div className="grid gap-3 py-6" role="status" aria-label={t("rail.opening")}>
+      <Skeleton className="h-10 w-2/5 justify-self-end rounded-card" />
+      <Skeleton className="h-16 w-4/5 rounded-card" />
+      <Skeleton className="h-10 w-1/3 justify-self-end rounded-card" />
+    </div>
+  ) : run.items.length === 0 ? (
     <div className="grid justify-items-center gap-5 py-16 text-center">
       <TrailDots state="idle" className="h-5 w-12" />
       <div className="grid gap-2"><h2 className="text-h3">{t(`greeting.${role}`, { name: firstName })}</h2><p className="max-w-md text-body text-ink-muted">{t("greeting.sub")}</p></div>
@@ -41,20 +66,22 @@ export function AgentView({ role, firstName, csrfToken, profile, notes, threads 
   );
 
   return (
-    <div className="flex gap-8">
-      <div className="mx-auto grid w-full max-w-[760px] min-w-0 gap-6">
-        {current && run.items.length === 0 ? <p className="max-w-full justify-self-start truncate rounded-chip bg-well px-3 py-1 text-caption text-ink-muted">{current.title}</p> : null}
+    <div className="flex min-w-0 gap-8">
+      {/* content-start: the rows never stretch to the rail's height */}
+      <div className="mx-auto grid w-full max-w-[760px] min-w-0 content-start gap-6">
+        <HistoryBar {...panel} />
+        {callHeader ? <p className="flex items-center gap-2 text-small text-ink-muted"><Phone className="size-4" aria-hidden="true" />{callHeader}</p> : null}
         {run.sample ? <p className="justify-self-start rounded-chip bg-attention-soft px-3 py-1 text-caption text-attention" title={t("sample.note")}>{t("sample.badge")} · {t("sample.note")}</p> : null}
         <>
             {thread}
             {/* scrolled to with room for the composer and the assistant pill below it */}
-            <div ref={end} className="scroll-mb-64" />
-            <div className="sticky bottom-24 z-10 rounded-card bg-paper pt-2"><AgentComposer busy={run.busy} onSend={(text) => void run.send(text)} onCall={() => call?.start()} /></div>
-            {/* the composer rests 96px up; this lets the thread end above it rather than under it */}
-            <div aria-hidden="true" className="h-20" />
+            <div ref={end} className="scroll-mb-48" />
+            <div className="sticky bottom-4 z-10 rounded-card bg-paper pt-2"><AgentComposer busy={run.busy} onSend={(text) => void run.send(text)} onCall={() => call?.start()} /></div>
+            {/* the composer rests 16px up; this lets the thread end above it rather than under it */}
+            <div aria-hidden="true" className="h-2" />
         </>
       </div>
-      <KnowRail profile={profile} notes={notes} threads={threads} current={current?.id ?? null} onNewChat={() => { setCurrent(null); if (call && !live) call.close(); own.reset(); }} onResume={(th) => { setCurrent(th); if (call && !live) call.close(); void own.replay(th.id); }} />
+      <KnowRail {...panel} />
     </div>
   );
 }

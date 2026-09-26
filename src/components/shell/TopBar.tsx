@@ -15,7 +15,8 @@ export function TopBar({ viewer }: { viewer: ShellViewer }) {
       <div className="mx-auto flex h-16 max-w-content items-center gap-2 px-4 lg:px-8">
         <MobileNav role={viewer.role} setup={viewer.setup && !viewer.setup.finished ? { done: viewer.setup.done, total: viewer.setup.total } : null} />
         <div className="min-w-0 flex-1"><ShellCommandMenu role={viewer.role} /></div>
-        {viewer.demo ? <div className="hidden md:block"><RoleSwitch role={viewer.role} /></div> : null}
+        {/* the demo workspace switch folds into the account menu below xl */}
+        {viewer.demo ? <div className="hidden xl:block"><RoleSwitch role={viewer.role} /></div> : null}
         <WalletChip role={viewer.role} walletCents={viewer.walletCents} />
         <ThemeSwitch />
         <NotificationsButton notifications={viewer.notifications} role={viewer.role} />

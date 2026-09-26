@@ -25,7 +25,7 @@ export function WalletChip({ role, walletCents }: { role: "brand" | "creator"; w
       href={role === "brand" ? "/brand/billing" : "/creator/earnings"}
       className="inline-flex h-9 items-center gap-2 rounded-chip bg-money px-3.5 text-surface shadow-lift outline-none transition-[background-color,translate] duration-(--duration-fast) ease-ledger hover:bg-money/90 active:translate-y-px focus-visible:ring-2 focus-visible:ring-money focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
     >
-      <span className="hidden text-caption leading-none text-surface/80 sm:inline">{t("label")}</span>
+      <span className="hidden text-caption leading-none text-surface/80 xl:inline">{t("label")}</span>
       <span data-bump={bump ? bump % 2 : undefined} className="inline-flex"><RollingNumber value={wallet.walletCents} format={euros} className="text-small font-semibold leading-none text-surface" /></span>
     </Link>
   );

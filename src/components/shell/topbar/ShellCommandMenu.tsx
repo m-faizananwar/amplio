@@ -62,10 +62,12 @@ export function ShellCommandMenu({ role }: Props) {
       <button
         type="button"
         onClick={() => show(true)}
-        className="field-control field-control--sm max-w-sm text-ink-muted"
+        aria-label={t("topBar.search")}
+        className="field-control field-control--sm max-w-sm text-ink-muted max-[419px]:w-9 max-[419px]:justify-center max-[419px]:px-0"
       >
         <Search className="size-4 shrink-0" aria-hidden="true" />
-        <span className="flex-1 truncate">{t("topBar.search")}</span>
+        {/* under 420px the search is an icon button; its label stays for screen readers */}
+        <span className="flex-1 truncate max-[419px]:sr-only">{t("topBar.search")}</span>
         <kbd className="num hidden rounded-[6px] bg-surface px-1.5 py-0.5 text-caption shadow-lift sm:inline">⌘K</kbd>
       </button>
       <CommandMenu open={open} onOpenChange={show} groups={groups} title={t("commandMenu.title")} placeholder={t("commandMenu.placeholder")} emptyText={t("commandMenu.empty")} />

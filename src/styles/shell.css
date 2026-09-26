@@ -115,9 +115,11 @@
   [data-rail-collapsed] .account-pill[data-place="rail"]:not([data-open]) :is(.account-pill-text, .account-pill-chevron) { display: none; }
   [data-rail-collapsed] .account-pill[data-place="rail"]:not([data-open]) .account-pill-header { justify-content: center; padding: 0; }
 
-  @media (max-width: 639px) {
-    .account-pill-text, .account-pill:not([data-open]) .account-pill-chevron { display: none; }
-    .account-pill:not([data-open]) .account-pill-header { width: 52px; justify-content: center; padding: 0; }
+  /* in the top bar (below lg) the closed pill is the avatar alone: the name is
+     one tap away, and the bar keeps room for search, wallet, theme and bell */
+  @media (max-width: 1023px) {
+    .account-pill:not([data-place="rail"]):not([data-open]) :is(.account-pill-text, .account-pill-chevron) { display: none; }
+    .account-pill:not([data-place="rail"]):not([data-open]) .account-pill-header { width: 52px; justify-content: center; padding: 0; }
   }
 }
 

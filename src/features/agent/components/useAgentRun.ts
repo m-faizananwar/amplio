@@ -28,6 +28,7 @@ export type AgentItem = { key: string } & (AgentEvent | { type: "user"; text: st
 // The live agent streams SSE; while its route answers 404 (flag off, or not
 // deployed) a recorded sample plays instead and `sample` says so.
 type Options = { onNavigate?: (event: NavigateEvent) => void };
+export type ThreadMeta = { id: string; title: string; kind: "chat" | "call"; turns: number; updatedAt: string; durationSec?: number };
 
 export function useAgentRun(role: "brand" | "creator", csrfToken: string, options: Options = {}) {
   // both routes check the session's CSRF token, as /api/assistant/chat does
@@ -166,11 +167,11 @@ export function useAgentRun(role: "brand" | "creator", csrfToken: string, option
 
   // Reopen a stored thread as it happened (GET /api/agent/threads/{id}); only
   // the card the server still holds (`pending`) stays answerable.
-  const replay = useCallback(async (threadId: string) => {
+  const replay = useCallback(async (threadId: string): Promise<ThreadMeta | null> => {
     resume(threadId);
     const res = await fetch(`/api/agent/threads/${encodeURIComponent(threadId)}`, { cache: "no-store" }).catch(() => null);
-    if (!res?.ok) return;
-    const body = (await res.json()) as { pending: string | null; items: Array<AgentEvent | CallEvent | { type: "user"; text: string }> };
+    if (!res?.ok) return null;
+    const body = (await res.json()) as { thread: ThreadMeta; pending: string | null; items: Array<AgentEvent | CallEvent | { type: "user"; text: string }> };
     replaying.current = true;
     for (const item of body.items) {
       if (item.type === "user") addUser(item.text);
@@ -182,6 +183,7 @@ export function useAgentRun(role: "brand" | "creator", csrfToken: string, option
       for (const item of body.items) if (item.type === "confirm" && item.id !== body.pending && !next[item.id]) next[item.id] = "expired";
       return next;
     });
+    return body.thread;
   }, [addUser, apply, resume]);
 
   return { items, confirms, busy, sample, send, decide, reset, resume, replay, ingest: apply, addUser, adopt };

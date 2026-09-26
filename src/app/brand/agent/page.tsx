@@ -23,7 +23,7 @@ export default async function BrandAgentPage() {
   return (
     <>
       <PageHeader title={t("title")} description={t("description")} />
-      <AgentView role="brand" firstName={viewer.firstName} csrfToken={viewer.csrfToken} profile={profile} notes={notes} threads={threads.map((th) => ({ id: th.id, title: th.title, kind: th.kind }))} />
+      <AgentView role="brand" firstName={viewer.firstName} csrfToken={viewer.csrfToken} profile={profile} notes={notes} threads={threads.filter((th) => th.turns > 0)} />
     </>
   );
 }

@@ -37,19 +37,20 @@ function blocks(items: AgentItem[]): Block[] {
 export function AgentThread({ items, confirms, sample, onSend, onDecide, onRetry }: Props) {
   const t = useTranslations("agent");
   return (
-    <ol className="grid gap-5" aria-live="polite">
+    <ol className="grid content-start gap-5" aria-live="polite">
       {blocks(items).map((block) => {
         if ("steps" in block) return <li key={block.key}><StepGroup steps={block.steps} /></li>;
         const item = block.item;
         switch (item.type) {
           case "user":
-            return <li key={block.key} className="agent-rise justify-self-end rounded-card rounded-br-md bg-ink px-4 py-2.5 text-body text-paper">{item.text}</li>;
+            return <li key={block.key} className="agent-rise h-fit min-w-12 max-w-[75%] justify-self-end rounded-card rounded-br-md bg-ink px-3.5 py-2.5 text-body break-words whitespace-pre-wrap text-paper">{item.text}</li>;
           case "message":
             return <li key={block.key} className="agent-message text-lead leading-relaxed text-ink">{item.text.split(/(\s+)/).map((w, i) => <span key={i} style={{ animationDelay: `${Math.min(i, 120) * 18}ms` }}>{w}</span>)}</li>;
           case "question":
             return (
-              <li key={block.key} className="agent-rise grid gap-3">
-                <p className="text-lead text-ink">{item.text}</p>
+              <li key={block.key} className={`agent-rise grid ${item.text ? "gap-3" : "-mt-2"}`}>
+                {/* an empty question is next steps after a reply: chips only */}
+                {item.text ? <p className="text-lead text-ink">{item.text}</p> : null}
                 <div className="flex flex-wrap gap-2">{item.chips.map((chip) => <Button key={chip} variant="chip" size="sm" onClick={() => onSend(chip)}>{chip}</Button>)}</div>
               </li>
             );
