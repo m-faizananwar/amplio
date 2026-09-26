@@ -1,8 +1,9 @@
 "use client";
 
 import { useLocale } from "next-intl";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { AgentEvent, ConfirmEvent } from "../events";
+import type { CallEvent, NavigateEvent } from "./call/callTypes";
 import { BRAND_RUN_FIXTURE, CREATOR_RUN_FIXTURE } from "../fixtures";
 
 const RUN_URL = "/api/agent";
@@ -24,7 +25,9 @@ export type AgentItem = { key: string } & (AgentEvent | { type: "user"; text: st
 // replace the earlier row; message chunks with the same id join into one.
 // The live agent streams SSE; while its route answers 404 (flag off, or not
 // deployed) a recorded sample plays instead and `sample` says so.
-export function useAgentRun(role: "brand" | "creator", csrfToken: string) {
+type Options = { onNavigate?: (event: NavigateEvent) => void };
+
+export function useAgentRun(role: "brand" | "creator", csrfToken: string, options: Options = {}) {
   // both routes check the session's CSRF token, as /api/assistant/chat does
   const headers = { "content-type": "application/json", "x-csrf-token": csrfToken };
   const locale = useLocale();
@@ -34,8 +37,19 @@ export function useAgentRun(role: "brand" | "creator", csrfToken: string) {
   const [sample, setSample] = useState(false);
   const seq = useRef(0);
   const thread = useRef<{ id: string | null; history: Array<{ role: "user" | "assistant"; text: string }> }>({ id: null, history: [] });
+  const onNavigate = useRef(options.onNavigate);
+  useEffect(() => {
+    onNavigate.current = options.onNavigate;
+  });
 
-  const apply = useCallback((event: AgentEvent) => {
+  const apply = useCallback((incoming: AgentEvent | CallEvent) => {
+    // a page move and a settled confirm change state, not the thread's rows
+    if (incoming.type === "navigate") return void onNavigate.current?.(incoming);
+    if (incoming.type === "resolved") {
+      setConfirms((c) => ({ ...c, [incoming.id]: incoming.outcome === "failed" ? "open" : incoming.outcome }));
+      return;
+    }
+    const event: AgentEvent = incoming;
     if (event.type === "done") thread.current.id = event.threadId;
     if (event.type === "message" && event.final) thread.current.history.push({ role: "assistant", text: event.text });
     setItems((prev) => {
@@ -67,7 +81,7 @@ export function useAgentRun(role: "brand" | "creator", csrfToken: string) {
         const frame = buffer.slice(0, end);
         buffer = buffer.slice(end + 2);
         const data = frame.split("\n").filter((l) => l.startsWith("data:")).map((l) => l.slice(5).trim()).join("");
-        if (data) apply(JSON.parse(data) as AgentEvent);
+        if (data) apply(JSON.parse(data) as AgentEvent | CallEvent);
       }
     }
   }, [apply]);
@@ -132,5 +146,14 @@ export function useAgentRun(role: "brand" | "creator", csrfToken: string) {
     thread.current.id = threadId;
   }, [reset]);
 
-  return { items, confirms, busy, sample, send, decide, reset, resume };
+  // A call feeds its own events and the words it heard into the same rows.
+  const addUser = useCallback((text: string) => {
+    seq.current += 1;
+    setItems((prev) => [...prev, { key: `user-${seq.current}`, type: "user", text }]);
+  }, []);
+  const adopt = useCallback((threadId: string | null) => {
+    thread.current.id = threadId;
+  }, []);
+
+  return { items, confirms, busy, sample, send, decide, reset, resume, ingest: apply, addUser, adopt };
 }
