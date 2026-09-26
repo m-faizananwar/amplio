@@ -1,6 +1,8 @@
 "use client";
 
+import { AtSign, UserRound } from "lucide-react";
 import { useTranslations } from "next-intl";
+import type { ReactNode } from "react";
 import { type Control, Controller } from "react-hook-form";
 import type { z } from "zod";
 import { Input } from "@/components/ui/input";
@@ -46,10 +48,11 @@ async function saveYourCard(v: YourCardInput) {
 export function CardSection({ defaults }: { defaults: YourCardInput }) {
   const t = useTranslations("settings.creator");
   const { form, onSubmit } = useSectionForm({ schema: yourCardSchema, defaults, save: saveYourCard, saved: t("states.saved") });
+  const icons: Record<keyof CreatorIdentityInput, ReactNode> = { firstName: <UserRound />, lastName: <UserRound />, xHandle: <AtSign /> };
   const text = (name: keyof CreatorIdentityInput, label: string, hint?: string) => (
     <Controller control={form.control} name={name} render={({ field, fieldState }) => (
       <FormField id={name} label={label} hint={hint} error={fieldState.error ? (name === "xHandle" ? fieldState.error.message : t("card.errors.firstNameRequired")) : undefined}>
-        <Input id={name} aria-invalid={fieldState.invalid || undefined} {...field} />
+        <Input id={name} leadingIcon={icons[name]} aria-invalid={fieldState.invalid || undefined} {...field} />
       </FormField>
     )} />
   );

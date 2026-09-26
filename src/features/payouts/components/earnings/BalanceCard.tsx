@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronRight } from "lucide-react";
+import { ArrowUpRight, ChevronRight } from "lucide-react";
 import { useFormatter, useTranslations } from "next-intl";
 import { CoinTrail } from "@/components/graphics/CoinTrail";
 import { Button } from "@/components/ui/button";
@@ -39,7 +39,7 @@ export function BalanceCard({ summary: s, months, coins, onWithdraw, onOpen }: P
           {coins > 0 ? <CoinTrail key={coins} /> : null}
         </div>
         <div className="grid gap-1.5 sm:justify-items-end">
-          <Button type="button" onClick={onWithdraw} disabled={s.availableCents <= 0}>{t("withdraw.button")}</Button>
+          <Button type="button" variant="money" icon={<ArrowUpRight />} onClick={onWithdraw} disabled={s.availableCents <= 0}>{t("withdraw.button")}</Button>
           {s.availableCents <= 0 ? <p className="max-w-xs text-caption text-ink-muted sm:text-right">{t("withdraw.disabledReason")}</p> : null}
         </div>
       </div>

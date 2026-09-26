@@ -1,5 +1,6 @@
 "use client";
 
+import { Landmark, UserRound } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Controller, useWatch } from "react-hook-form";
 import { Input } from "@/components/ui/input";
@@ -33,11 +34,11 @@ export function PayoutForm({ defaults }: Props) {
         {method === "bank" ? (
           <div className="grid gap-5 sm:grid-cols-2">
             <Controller control={form.control} name="accountHolder" render={({ field }) => (
-              <FormField id="accountHolder" label={t("accountHolder.label")}><Input id="accountHolder" autoComplete="name" placeholder={t("accountHolder.placeholder")} {...field} /></FormField>
+              <FormField id="accountHolder" label={t("accountHolder.label")}><Input id="accountHolder" leadingIcon={<UserRound />} autoComplete="name" placeholder={t("accountHolder.placeholder")} {...field} /></FormField>
             )} />
             <Controller control={form.control} name="iban" render={({ field, fieldState }) => (
               <FormField id="iban" label={t("iban.label")} hint={`${defaults.ibanLast4 ? `${t("iban.onFile", { last4: defaults.ibanLast4 })} · ` : ""}${t("iban.help", { count: IBAN_KEPT })}`} error={fieldState.error ? t("errors.ibanShort") : undefined}>
-                <Input id="iban" className="num" autoComplete="off" placeholder={t("iban.placeholder")} aria-invalid={fieldState.invalid || undefined} {...field} />
+                <Input id="iban" leadingIcon={<Landmark />} className="num" autoComplete="off" placeholder={t("iban.placeholder")} aria-invalid={fieldState.invalid || undefined} {...field} />
               </FormField>
             )} />
           </div>

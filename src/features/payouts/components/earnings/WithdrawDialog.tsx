@@ -27,7 +27,7 @@ function AmountField({ cents, setCents, availableCents, error, money }: AmountPr
       <label htmlFor="withdraw-amount" className="text-small font-medium">{t("amount.label")}</label>
       <div className="flex gap-2">
         <div className="flex-1"><MoneyInput id="withdraw-amount" cents={cents} onCents={setCents} invalid={Boolean(error)} /></div>
-        <Button type="button" variant="secondary" onClick={() => setCents(availableCents)} disabled={availableCents <= 0}>{t("amount.withdrawAll")}</Button>
+        <Button type="button" variant="quiet" onClick={() => setCents(availableCents)} disabled={availableCents <= 0}>{t("amount.withdrawAll")}</Button>
       </div>
       <p className={`text-caption ${error ? "text-failure" : "text-ink-muted"}`} role={error ? "alert" : undefined}>{error ?? t("amount.help", { amount: money(availableCents) })}</p>
     </div>
@@ -96,8 +96,8 @@ export function WithdrawDialog({ open, onOpenChange, availableCents, awaitingRel
           <p className="rounded-control bg-tint px-3 py-2 text-caption text-ink-muted">{awaitingReleaseCents > 0 ? t("awaitingNote", { amount: money(awaitingReleaseCents) }) : t("awaitingNone")}</p>
         </div>
         <DialogFooter>
-          <Button type="button" variant="secondary" onClick={() => onOpenChange(false)}>{t("cancel")}</Button>
-          <Button type="button" onClick={() => withdraw(cents, method)} disabled={pending || cents === 0 || Boolean(error)}>{pending ? t("pending") : t("confirm")}</Button>
+          <Button type="button" variant="quiet" onClick={() => onOpenChange(false)}>{t("cancel")}</Button>
+          <Button type="button" variant="money" onClick={() => withdraw(cents, method)} disabled={pending || cents === 0 || Boolean(error)}>{pending ? t("pending") : t("confirm")}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

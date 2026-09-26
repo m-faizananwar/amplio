@@ -1,5 +1,6 @@
 "use client";
 
+import { Building2, Globe } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { type Control, Controller } from "react-hook-form";
 import type { z } from "zod";
@@ -26,12 +27,12 @@ export function CompanySection({ defaults }: { defaults: BrandCompanyInput }) {
         <div className="grid gap-5 sm:grid-cols-2">
           <Controller control={form.control} name="company" render={({ field, fieldState }) => (
             <FormField id="company" label={t("company.companyName.label")} error={fieldError(fieldState.error, { too_small: t("company.errors.companyRequired"), too_big: t("company.errors.companyTooLong", { max: 120 }) })}>
-              <Input id="company" autoComplete="organization" aria-invalid={fieldState.invalid || undefined} {...field} />
+              <Input id="company" leadingIcon={<Building2 />} autoComplete="organization" aria-invalid={fieldState.invalid || undefined} {...field} />
             </FormField>
           )} />
           <Controller control={form.control} name="website" render={({ field, fieldState }) => (
             <FormField id="website" label={t("company.website.label")} error={fieldState.error ? t("company.errors.websiteFormat") : undefined}>
-              <Input id="website" type="url" inputMode="url" placeholder={t("company.website.placeholder")} aria-invalid={fieldState.invalid || undefined} {...field} />
+              <Input id="website" leadingIcon={<Globe />} type="url" inputMode="url" placeholder={t("company.website.placeholder")} aria-invalid={fieldState.invalid || undefined} {...field} />
             </FormField>
           )} />
         </div>
