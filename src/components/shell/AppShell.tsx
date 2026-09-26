@@ -16,6 +16,11 @@ import { WalletProvider } from "./WalletProvider";
 // The signed-in frame: a fixed rail (232px, lg and up), the top bar, and the
 // page in a 1200px column. Client copy for the shell and the role's pages is
 // sent once here, not per page.
+// the rail's Setup item and its badge, only while setup is unfinished
+function railSetup(viewer: ShellViewer) {
+  return viewer.setup && !viewer.setup.finished ? { done: viewer.setup.done, total: viewer.setup.total } : null;
+}
+
 export async function AppShell({ viewer, children }: { viewer: ShellViewer; children: ReactNode }) {
   const t = await getTranslations("shell");
   return (
@@ -24,7 +29,7 @@ export async function AppShell({ viewer, children }: { viewer: ShellViewer; chil
         <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded-control focus:bg-ink focus:px-3 focus:py-2 focus:text-paper">{t("skipToContent")}</a>
         <div className="font-app flex min-h-screen bg-paper">
           <aside className="sticky top-0 hidden h-screen w-60 shrink-0 border-r border-rule bg-paper transition-[width] duration-(--duration-slow) ease-ledger has-[[data-rail-collapsed]]:w-18 lg:block">
-            <Rail role={viewer.role} collapsible account={<AccountPill viewer={viewer} place="rail" />} />
+            <Rail role={viewer.role} collapsible setup={railSetup(viewer)} account={<AccountPill viewer={viewer} place="rail" />} />
           </aside>
           <div className="flex min-w-0 flex-1 flex-col">
             <TopBar viewer={viewer} />

@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { ErrorState } from "@/components/page/ErrorState";
 import { PageHeader } from "@/components/page/PageHeader";
 import { buttonVariants } from "@/components/ui/button";
+import { SetupProgressCard } from "@/components/flow/SetupProgressCard";
 import { RingWidget } from "@/components/ui/ring-widget";
 import { BRAND } from "@/config/brand";
 import { getViewer } from "@/features/auth/server/session";
@@ -48,6 +49,7 @@ export default async function BrandOverviewPage() {
     <>
       {header}
       <div className="grid gap-10">
+        <SetupProgressCard role="brand" />
         {plan.stepsLeft > 0 ? <SetupCard plan={plan} /> : null}
         <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
           <section aria-labelledby="needs-title" className="grid gap-4">

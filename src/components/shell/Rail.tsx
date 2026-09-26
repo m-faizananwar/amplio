@@ -1,6 +1,6 @@
 "use client";
 
-import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
+import { ListChecks, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
@@ -9,7 +9,8 @@ import { BrandLockup } from "@/components/brand/BrandLockup";
 import { isActive, navFor, type NavItem, type Role } from "./nav";
 import { useRailCollapsed } from "./useRailCollapsed";
 
-type Props = { role: Role; onNavigate?: () => void; collapsible?: boolean; account?: ReactNode };
+export type RailSetup = { done: number; total: number } | null;
+type Props = { role: Role; onNavigate?: () => void; collapsible?: boolean; account?: ReactNode; setup?: RailSetup };
 
 const LEAVE_MS = 140;
 const ARRIVE_MS = 520;
@@ -18,7 +19,7 @@ const ARRIVE_MS = 520;
 // destinations, then Settings and the account pill at the foot. Each item's icon sits in a 28px square; the active item is a white
 // pill whose square pops in filled (src/styles/shell.css). On wide screens it
 // folds to icons; the choice is remembered per browser.
-export function Rail({ role, onNavigate, collapsible = false, account }: Props) {
+export function Rail({ role, onNavigate, collapsible = false, account, setup = null }: Props) {
   const pathname = usePathname();
   const t = useTranslations(`shell.nav`);
   const [collapsed, toggle] = useRailCollapsed();
@@ -38,7 +39,7 @@ export function Rail({ role, onNavigate, collapsible = false, account }: Props) 
   };
   const nav = navFor(role);
   const root = `/${role}`;
-  const item = (entry: NavItem) => {
+  const item = (entry: NavItem, badge?: string) => {
     const active = isActive(pathname, entry.href, root);
     const label = t(`${role}.${entry.key}`);
     return (
@@ -46,6 +47,7 @@ export function Rail({ role, onNavigate, collapsible = false, account }: Props) 
         <Link href={entry.href} onClick={onNavigate} aria-current={active ? "page" : undefined} aria-label={folded ? label : undefined} data-tip={folded ? label : undefined} data-tip-side="right" className="nav-item">
           <span className="nav-icon"><entry.icon aria-hidden="true" /></span>
           {folded ? null : <span className="nav-label truncate">{label}</span>}
+          {badge && !folded ? <span className="num ml-auto rounded-chip bg-money-soft px-1.5 py-0.5 text-caption font-semibold text-money">{badge}</span> : null}
         </Link>
       </li>
     );
@@ -64,7 +66,11 @@ export function Rail({ role, onNavigate, collapsible = false, account }: Props) 
       </div>
       <div className="grid gap-1.5">
         {folded ? null : <p className="nav-section">{t("sections.main")}</p>}
-        <ul className="grid gap-0.5">{nav.primary.map(item)}</ul>
+        <ul className="grid gap-0.5">
+          {/* setup sits on top only while it is unfinished, with its progress as a badge */}
+          {setup ? item({ href: `/${role}/setup`, key: "setup", icon: ListChecks }, `${setup.done}/${setup.total}`) : null}
+          {nav.primary.map((e) => item(e))}
+        </ul>
       </div>
       <div className="mt-auto grid gap-1.5 border-t border-rule pt-3">
         {folded ? null : <p className="nav-section">{t("sections.account")}</p>}

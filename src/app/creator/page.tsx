@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SetupProgressCard } from "@/components/flow/SetupProgressCard";
 import { getTranslations } from "next-intl/server";
 import { redirect } from "next/navigation";
 import { ErrorState } from "@/components/page/ErrorState";
@@ -43,5 +44,10 @@ export default async function CreatorOverviewPage() {
   }
   const [collaborations, earnings, ledger, card, links, clicks] = data;
   const clickTotal = links.reduce((sum, l) => sum + l.clicks, 0);
-  return <CreatorOverview collaborations={collaborations} earnings={earnings} ledger={ledger} clicks={clicks} clickTotal={clickTotal} setup={setupGap(card)} />;
+  return (
+    <div className="grid gap-6">
+      <SetupProgressCard role="creator" />
+      <CreatorOverview collaborations={collaborations} earnings={earnings} ledger={ledger} clicks={clicks} clickTotal={clickTotal} setup={setupGap(card)} />
+    </div>
+  );
 }

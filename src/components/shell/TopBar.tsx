@@ -12,7 +12,7 @@ export function TopBar({ viewer }: { viewer: ShellViewer }) {
   return (
     <header className="sticky top-0 z-30 border-b border-rule bg-surface">
       <div className="mx-auto flex h-16 max-w-content items-center gap-2 px-4 lg:px-8">
-        <MobileNav role={viewer.role} />
+        <MobileNav role={viewer.role} setup={viewer.setup && !viewer.setup.finished ? { done: viewer.setup.done, total: viewer.setup.total } : null} />
         <div className="min-w-0 flex-1"><ShellCommandMenu role={viewer.role} /></div>
         {viewer.demo ? <div className="hidden md:block"><RoleSwitch role={viewer.role} /></div> : null}
         <WalletChip role={viewer.role} walletCents={viewer.walletCents} />
