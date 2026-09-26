@@ -1,9 +1,6 @@
 import { redirect } from "next/navigation";
-import { ONBOARDING_ROUTES } from "@/features/brand-onboarding/constants";
-import { requireOnboardingBrand } from "@/features/brand-onboarding/server/require-onboarding-brand";
 
-// /onboarding/brand is only an entry point: step 1 lives at /website.
-export default async function BrandOnboardingIndexPage() {
-  await requireOnboardingBrand(ONBOARDING_ROUTES.index);
-  redirect(ONBOARDING_ROUTES.website);
+// Setup moved inside the app shell; old links land on the same step there.
+export default function Page() {
+  redirect("/brand/setup");
 }

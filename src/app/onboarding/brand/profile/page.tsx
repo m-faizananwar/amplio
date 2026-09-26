@@ -1,7 +1,6 @@
 import { redirect } from "next/navigation";
-import { ONBOARDING_ROUTES } from "@/features/brand-onboarding/constants";
 
-// The draft is reviewed on the website screen now; older links land there.
-export default function BrandOnboardingProfilePage() {
-  redirect(ONBOARDING_ROUTES.website);
+// Setup moved inside the app shell; old links land on the same step there.
+export default function Page() {
+  redirect("/brand/setup?step=profile");
 }

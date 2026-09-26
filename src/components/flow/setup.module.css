@@ -1,0 +1,67 @@
+/* Setup inside the app: the setup's name and progress, the steps as vertical
+   tabs on a dark ink rail with the current step's card open in place, and the
+   live preview on the right. Phones: a step strip above the card, the preview
+   under the fields. */
+.setup {
+  /* the rail stays ink in both themes (the ink token turns light in dark mode) */
+  --rail-bg: #141417; --rail-ink: #f4f4f5;
+  display: grid; gap: 20px; font-family: var(--font-wizard), ui-sans-serif, system-ui, sans-serif;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "head" "strip" "current" "fields" "foot" "card";
+}
+.setup :is(input, textarea, select, button) { font-family: inherit; }
+:global(.dark) .setup { --rail-bg: #26262b; }
+.head { grid-area: head; }
+.eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--color-ink-muted); }
+.eyebrow b { color: var(--color-money); font-weight: 700; }
+.title { margin-top: 8px; font-size: var(--text-h2); line-height: 1.1; font-weight: 600; letter-spacing: -0.02em; }
+.sub { margin-top: 6px; max-width: 36rem; color: var(--color-ink-muted); }
+.strip { grid-area: strip; display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+.chip { display: inline-flex; align-items: center; gap: 6px; flex: none; height: 34px; padding: 0 12px 0 4px; border-radius: 999px; font-size: 13px; font-weight: 600; color: var(--color-ink-muted); background: var(--color-surface); border: 1px solid var(--color-rule); text-decoration: none; }
+.chip[aria-current="step"] { color: var(--rail-ink); background: var(--rail-bg); border-color: var(--rail-bg); }
+.before, .after, .rail { display: none; }
+.num { display: grid; place-items: center; flex: none; width: 26px; height: 26px; border-radius: 50%; font-size: 12px; font-weight: 700; background: color-mix(in oklab, var(--rail-ink) 14%, transparent); color: inherit; }
+.chip .num { background: var(--color-tint); color: var(--color-ink); }
+.chip[aria-current="step"] .num { background: var(--color-money); color: white; }
+.num[data-done] { background: var(--color-money); color: white; }
+.num svg { width: 14px; height: 14px; }
+.current {
+  grid-area: current; display: flex; align-items: center; gap: 12px; padding: 18px 20px 6px;
+  border-radius: 20px 20px 0 0; background: var(--color-surface); color: var(--color-ink); font-weight: 600;
+}
+.current .num { background: var(--rail-bg); color: var(--rail-ink); }
+.setup > [data-area="fields"] { grid-area: fields; min-width: 0; padding: 8px 20px 22px; border-radius: 0 0 20px 20px; background: var(--color-surface); margin-top: -20px; }
+.setup > [data-area="card"] { grid-area: card; min-width: 0; }
+.foot { grid-area: foot; display: grid; gap: 10px; }
+.agent { display: inline-flex; flex-wrap: wrap; gap: 6px; font-size: 14px; color: var(--color-ink-muted); }
+.agent a { font-weight: 600; color: var(--color-money); }
+.skip { justify-self: start; font-size: 13px; font-weight: 600; color: var(--color-ink-muted); text-decoration: underline; text-underline-offset: 3px; }
+.skip:hover { color: var(--color-ink); }
+
+@media (min-width: 1024px) {
+  .setup {
+    column-gap: 48px; row-gap: 0; align-items: start;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas: "head card" "before card" "current card" "fields card" "after card" "foot card";
+    grid-template-rows: auto auto auto auto auto 1fr;
+  }
+  .head { padding-bottom: 20px; }
+  .strip { display: none; }
+  .rail { display: block; align-self: stretch; grid-column: 1; grid-row: 2 / 6; border-radius: 26px; background: var(--rail-bg); box-shadow: 0 1px 2px rgba(16, 24, 40, .06), 0 20px 40px -24px rgba(16, 24, 40, .45); }
+  .before, .after { display: grid; gap: 2px; margin: 0; padding: 10px; list-style: none; position: relative; z-index: 1; }
+  .before { grid-area: before; padding-bottom: 6px; }
+  .after { grid-area: after; padding-top: 6px; }
+  .tab {
+    display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 14px; text-decoration: none;
+    color: color-mix(in oklab, var(--rail-ink) 72%, transparent); font-weight: 600;
+    transition: background-color .2s cubic-bezier(.22, 1, .36, 1), color .2s;
+  }
+  .tab:hover { background: color-mix(in oklab, var(--rail-ink) 8%, transparent); color: var(--rail-ink); }
+  .tab:focus-visible { outline: 2px solid var(--color-money); outline-offset: 2px; }
+  .tab small { margin-left: auto; font-size: 12px; font-weight: 500; opacity: .7; }
+  .current { position: relative; z-index: 1; margin: 0 10px; }
+  .setup > [data-area="fields"] { position: relative; z-index: 1; margin: -1px 10px 0; }
+  .setup > [data-area="card"] { position: sticky; top: 24px; }
+  .foot { padding-top: 16px; }
+}
+@media (prefers-reduced-motion: reduce) { .tab { transition: none; } }

@@ -113,5 +113,58 @@
       "customer": "Client {n}",
       "none": "—"
     }
+  },
+  "setup": {
+    "brandTitle": "Configurez votre marque",
+    "creatorTitle": "Configurez votre profil",
+    "stepOf": "{current} sur {total}",
+    "railLabel": "Étapes de configuration",
+    "done": "Terminé",
+    "current": "Étape en cours",
+    "skip": "Passer pour l’instant",
+    "steps": {
+      "account": {
+        "title": "Compte",
+        "why": "Votre connexion."
+      },
+      "website": {
+        "title": "Votre site",
+        "why": "Nous le lisons pour rédiger ce que les créateurs voient dans chaque brief."
+      },
+      "profile": {
+        "title": "Vos clients",
+        "why": "Les créateurs sont classés pour vous d’après les acheteurs que vous décrivez."
+      },
+      "linkedin": {
+        "title": "LinkedIn",
+        "why": "Votre carte se remplit depuis votre profil public."
+      },
+      "card": {
+        "title": "Votre carte",
+        "why": "C’est la première chose que voient les marques."
+      },
+      "price": {
+        "title": "Votre prix",
+        "why": "Les marques vous réservent à ce prix par post."
+      },
+      "legal": {
+        "title": "Facturation",
+        "why": "Nécessaire avant d’accepter une réservation ou de retirer vos gains."
+      }
+    },
+    "card": {
+      "title": "Terminez la configuration",
+      "next": "Prochaine étape : {step}",
+      "continue": "Continuer",
+      "progress": "{done} étapes sur {total}",
+      "doneTitle": "Tout est prêt",
+      "doneBody": "Tout est en place. Cette carte ne reviendra pas.",
+      "dismiss": "Fermer"
+    },
+    "agent": {
+      "brand": "Besoin d’aide pour trouver des créateurs ?",
+      "creator": "Besoin d’aide pour trouver des campagnes ?",
+      "link": "Demander à l’agent"
+    }
   }
 }

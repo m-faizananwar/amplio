@@ -11,7 +11,8 @@
       "messages": "Messages",
       "billing": "Billing",
       "settings": "Settings",
-      "agent": "Agent"
+      "agent": "Agent",
+      "setup": "Setup"
     },
     "creator": {
       "overview": "Overview",
@@ -22,7 +23,8 @@
       "earnings": "Earnings",
       "messages": "Messages",
       "settings": "Settings",
-      "agent": "Agent"
+      "agent": "Agent",
+      "setup": "Setup"
     },
     "sections": {
       "main": "Workspace",

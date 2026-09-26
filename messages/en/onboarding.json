@@ -113,5 +113,58 @@
       "customer": "Customer {n}",
       "none": "—"
     }
+  },
+  "setup": {
+    "brandTitle": "Set up your brand",
+    "creatorTitle": "Set up your profile",
+    "stepOf": "{current} of {total}",
+    "railLabel": "Setup steps",
+    "done": "Done",
+    "current": "Current step",
+    "skip": "Skip for now",
+    "steps": {
+      "account": {
+        "title": "Account",
+        "why": "Your sign-in."
+      },
+      "website": {
+        "title": "Your website",
+        "why": "We read it to draft what creators see in every brief."
+      },
+      "profile": {
+        "title": "Your customers",
+        "why": "Creators are ranked for you from the buyers you describe."
+      },
+      "linkedin": {
+        "title": "LinkedIn",
+        "why": "Your card fills itself from your public profile."
+      },
+      "card": {
+        "title": "Your card",
+        "why": "It's the first thing brands see."
+      },
+      "price": {
+        "title": "Your price",
+        "why": "Brands book you at this price per post."
+      },
+      "legal": {
+        "title": "Invoicing",
+        "why": "Needed before you accept a booking or withdraw."
+      }
+    },
+    "card": {
+      "title": "Finish setting up",
+      "next": "Next: {step}",
+      "continue": "Continue setup",
+      "progress": "{done} of {total} steps done",
+      "doneTitle": "You're set up",
+      "doneBody": "Everything is in place. This card won’t come back.",
+      "dismiss": "Close"
+    },
+    "agent": {
+      "brand": "Want help finding creators?",
+      "creator": "Want help finding campaigns?",
+      "link": "Ask the agent"
+    }
   }
 }
