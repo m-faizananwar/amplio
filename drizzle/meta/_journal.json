@@ -50,6 +50,13 @@
       "when": 1790429715713,
       "tag": "0006_goofy_skrulls",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1790442756475,
+      "tag": "0007_red_sir_ram",
+      "breakpoints": true
     }
   ]
 }

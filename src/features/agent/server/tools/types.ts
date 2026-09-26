@@ -25,4 +25,5 @@ export const num = (description: string) => ({ type: "number", description });
 export const arr = (description: string, items: Record<string, unknown> = { type: "string" }) => ({ type: "array", description, items });
 export const obj = (properties: Record<string, unknown>, required: string[] = []) => ({ type: "object", properties, required });
 
+export const day = (iso: string | null, locale: "en" | "fr") => (iso ? new Intl.DateTimeFormat(locale === "fr" ? "fr-FR" : "en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" }).format(new Date(iso)) : "—");
 export const euros = (cents: number, locale: "en" | "fr") => new Intl.NumberFormat(locale === "fr" ? "fr-FR" : "en-GB", { style: "currency", currency: "EUR" }).format(cents / 100);

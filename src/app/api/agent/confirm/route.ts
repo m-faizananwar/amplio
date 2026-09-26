@@ -19,5 +19,5 @@ export async function POST(request: Request) {
   const parsed = confirmRequest.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: "Nothing to confirm." }, { status: 400 });
   const locale = request.headers.get("accept-language")?.startsWith("fr") ? "fr" : "en";
-  return eventStream((emit) => runConfirmed({ viewer, locale, id: parsed.data.id, decision: parsed.data.decision, emit }), { userId: viewer.userId });
+  return eventStream((emit) => runConfirmed({ viewer, locale, id: parsed.data.id, decision: parsed.data.decision, emit, threadId: parsed.data.threadId }), { userId: viewer.userId });
 }

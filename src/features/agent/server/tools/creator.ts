@@ -7,7 +7,7 @@ import { getPublicCard } from "@/features/workspace/server/card-queries";
 import { filterFor } from "@/lib/next-step";
 import { DRAFT_PREVIEW_MAX } from "../../constants";
 import { messageTool } from "./brand-write";
-import { type ConfirmTool, euros, obj, type ReadTool, str, type ToolContext } from "./types";
+import { type ConfirmTool, day, euros, obj, type ReadTool, str, type ToolContext } from "./types";
 
 const LIST_LIMIT = 8;
 const creatorId = (ctx: ToolContext) => ctx.viewer.creator?.id ?? "";
@@ -27,14 +27,15 @@ const getMyCard: ReadTool = {
 
 const getOpportunities: ReadTool = {
   name: "listOpportunities", role: "creator", kind: "read", label: "Reading open campaigns",
-  description: "Open campaigns the creator can apply to, best fit first, with brand, fit score, price and deadline. Optional minimum fit.",
-  parameters: obj({ minFit: { type: "number", description: "Minimum fit score 0–100" } }),
+  description: "Open campaigns the creator can apply to, best fit first, with campaignId, brand, industries, fit score, price and deadline. Optional minimum fit and industry.",
+  parameters: obj({ minFit: { type: "number", description: "Minimum fit score 0–100" }, industry: str("Only campaigns targeting this industry, e.g. SaaS") }),
   async run(ctx, a) {
     const rows = await listOpportunities(creatorId(ctx));
     const min = typeof a.minFit === "number" ? a.minFit : 0;
-    const open = rows.filter((o) => !o.existingCollaborationId && o.matchScore >= min).sort((x, y) => y.matchScore - x.matchScore).slice(0, LIST_LIMIT);
+    const industry = typeof a.industry === "string" ? a.industry.toLowerCase() : null;
+    const open = rows.filter((o) => !o.existingCollaborationId && o.matchScore >= min && (!industry || o.industries.some((i) => i.toLowerCase() === industry))).sort((x, y) => y.matchScore - x.matchScore).slice(0, LIST_LIMIT);
     const items = open.map((o) => ({ campaignId: o.campaignId, campaign: o.campaignName, brand: o.brandCompany, fitScore: o.matchScore, priceCents: o.listPriceCents, postDeadline: o.postDeadline }));
-    return { summary: `${rows.length} open · ${items.length} shown`, data: items, result: { type: "result", kind: "opportunities", title: "Open campaigns", items } };
+    return { summary: `${rows.length} open · ${items.length} shown`, data: open.map((o) => ({ campaignId: o.campaignId, campaign: o.campaignName, brand: o.brandCompany, industries: o.industries, fitScore: o.matchScore, priceCents: o.listPriceCents, postDeadline: o.postDeadline })), result: { type: "result", kind: "opportunities", title: "Open campaigns", items } };
   },
 };
 
@@ -69,7 +70,7 @@ const apply: ConfirmTool = {
     const o = (await listOpportunities(creatorId(ctx))).find((x) => x.campaignId === a.campaignId);
     if (!o) return { error: "That campaign isn't open to you." };
     if (o.existingCollaborationId) return { error: "You already have a collaboration on that campaign." };
-    return { title: `Apply to ${o.campaignName}`, facts: [{ label: "Brand", value: o.brandCompany }, { label: "Your price", value: euros(o.listPriceCents, ctx.locale), cents: o.listPriceCents }, { label: "Post deadline", value: o.postDeadline ?? "—" }], confirmLabel: "Apply" };
+    return { title: `Apply to ${o.campaignName}`, facts: [{ label: "Brand", value: o.brandCompany }, { label: "Your price", value: euros(o.listPriceCents, ctx.locale), cents: o.listPriceCents }, { label: "Post deadline", value: day(o.postDeadline, ctx.locale) }], confirmLabel: "Apply" };
   },
   async execute(ctx, a) {
     const r = await applyToCampaign({ campaignId: String(a.campaignId), csrfToken: ctx.viewer.csrfToken });

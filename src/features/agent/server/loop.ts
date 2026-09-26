@@ -8,7 +8,7 @@ import { ID_RADIX, MAX_CHIPS, SUMMARY_MAX } from "../constants";
 import type { AgentEvent } from "../events";
 import { compactForModel } from "./compact";
 import { createPending } from "./pending";
-import { ASK_USER, systemPrompt } from "./prompt";
+import { ASK_USER, type Recall, systemPrompt } from "./prompt";
 import { declarationsFor, findTool } from "./tools";
 import type { ToolContext } from "./tools/types";
 
@@ -22,7 +22,7 @@ const FALLBACK_TURNS = 12;
 
 export type Turn = { role: "user" | "assistant"; text: string };
 type Emit = (event: AgentEvent) => void;
-type TurnInput = { viewer: Viewer; locale: "en" | "fr"; text: string; history: Turn[]; emit: Emit };
+type TurnInput = { viewer: Viewer; locale: "en" | "fr"; text: string; history: Turn[]; emit: Emit; recall?: Recall };
 
 const geminiKey = () => {
   const p = resolveAiProvider({ ...process.env, ANTHROPIC_API_KEY: undefined });
@@ -90,7 +90,7 @@ const toContents = (history: Turn[], text: string): Content[] => [
 
 // One turn: the model plans, calls tools (reads together), and either asks,
 // prepares a confirm, or answers. Capped at 8 tool steps and 45 seconds.
-export async function runTurn({ viewer, locale, text, history, emit }: TurnInput): Promise<string> {
+export async function runTurn({ viewer, locale, text, history, emit, recall }: TurnInput): Promise<string> {
   const apiKey = geminiKey();
   if (!apiKey) {
     // no Gemini key: the existing assistant answers (it has its own grammar tools)
@@ -107,7 +107,7 @@ export async function runTurn({ viewer, locale, text, history, emit }: TurnInput
     const res = await withTimeout(ai.models.generateContent({
       model: GEMINI_MODEL,
       contents,
-      config: { systemInstruction: systemPrompt(viewer, locale), tools: [{ functionDeclarations: [ASK_USER, ...declarationsFor(viewer.brand ? "brand" : "creator")] as never }], thinkingConfig: { thinkingBudget: 0 } },
+      config: { systemInstruction: systemPrompt(viewer, locale, recall), tools: [{ functionDeclarations: [ASK_USER, ...declarationsFor(viewer.brand ? "brand" : "creator")] as never }], thinkingConfig: { thinkingBudget: 0 } },
     }), Math.max(1, deadline - Date.now()));
     const calls = res.functionCalls ?? [];
     const modelParts: Part[] = res.candidates?.[0]?.content?.parts ?? [];
