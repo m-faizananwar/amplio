@@ -29,7 +29,7 @@ export function DemoLoginButtons() {
 
   return (
     <div className="grid gap-3">
-      <div className="grid gap-2 sm:grid-cols-2">
+      <div className="grid gap-2">
         {(["brand", "creator"] as const).map((role) => (
           <Button key={role} type="button" variant="secondary" size="lg" className="h-11" disabled={pending !== null} onClick={() => enter(role)}>
             {pending === role ? t("opening") : t(role === "brand" ? "demoBrand" : "demoCreator")}
