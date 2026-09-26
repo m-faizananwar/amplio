@@ -47,4 +47,18 @@ describe("the Vapi webhook's auth", () => {
     expect(callThreadId("0F8FAD5B-D9CB-469F-A165-70867728950E", "call-1")).toBe("0f8fad5b-d9cb-469f-a165-70867728950e");
     expect(callThreadId("not-a-uuid", "call-1")).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-a[0-9a-f]{3}-[0-9a-f]{12}$/);
   });
+
+  it("reads Vapi's documented shape (name + parameters) and the call's transcript as history", async () => {
+    viewerFromToken.mockResolvedValue(brand);
+    const payload = { message: { type: "tool-calls", call: { id: "call-2", metadata: { voiceToken: "good" } }, artifact: { messages: [{ role: "bot", message: "Hi, what are we working on?" }, { role: "user", message: "find SaaS creators" }, { role: "bot", message: "Here are three." }, { role: "user", message: "book the first" }] }, toolCallList: [{ id: "tc2", name: "command", parameters: { transcript: "book the first" } }] } };
+    await post(payload);
+    expect(voiceTurn).toHaveBeenCalledWith(expect.objectContaining({ transcript: "book the first", history: [{ role: "assistant", text: "Hi, what are we working on?" }, { role: "user", text: "find SaaS creators" }, { role: "assistant", text: "Here are three." }] }));
+  });
+
+  it("a malformed arguments string runs nothing instead of crashing", async () => {
+    viewerFromToken.mockResolvedValue(brand);
+    const res = await post({ message: { type: "tool-calls", call: { metadata: { voiceToken: "good" } }, toolCallList: [{ id: "tc3", function: { name: "command", arguments: "{not json" } }] } });
+    expect(res.status).toBe(200);
+    expect(voiceTurn).not.toHaveBeenCalled();
+  });
 });

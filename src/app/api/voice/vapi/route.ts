@@ -45,7 +45,7 @@ async function agentSpeech(call: VapiToolCall, viewer: Viewer, origin: string): 
   try {
     const threadId = callThreadId(call.threadId, call.callId);
     const settle: SettleCard = (id, decision) => settleAsCall({ origin, token: call.voiceToken, csrf: viewer.csrfToken, locale: call.locale, body: { id, decision, threadId } });
-    const speech = await voiceTurn({ viewer, locale: call.locale, transcript: call.transcript, threadId, settle });
+    const speech = await voiceTurn({ viewer, locale: call.locale, transcript: call.transcript, threadId, settle, history: call.history });
     return speech || (fr ? "C’est fait." : "Done.");
   } catch (error) {
     console.error("[voice] agent turn failed", { userId: viewer.userId, error: error instanceof Error ? error.message : String(error) });
