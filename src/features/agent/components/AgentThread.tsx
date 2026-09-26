@@ -7,7 +7,7 @@ import type { ConfirmEvent, StepEvent } from "../events";
 import { ConfirmCard } from "./ConfirmCard";
 import { ResultCard } from "./ResultCard";
 import { StepGroup } from "./StepGroup";
-import type { AgentItem, ConfirmState } from "./useAgentRun";
+import { type AgentItem, type ConfirmState, STALE } from "./useAgentRun";
 
 type Props = {
   items: AgentItem[];
@@ -60,7 +60,7 @@ export function AgentThread({ items, confirms, sample, onSend, onDecide, onRetry
           case "error":
             return (
               <li key={block.key} className="agent-rise flex flex-wrap items-center gap-3 text-small text-failure">
-                <AlertTriangle className="size-4" aria-hidden="true" />{t("error.line")}
+                <AlertTriangle className="size-4" aria-hidden="true" />{item.message === STALE ? t("error.stale") : t("error.line")}
                 {item.retryable ? <Button variant="ghost" size="sm" onClick={onRetry}>{t("error.retry")}</Button> : null}
               </li>
             );

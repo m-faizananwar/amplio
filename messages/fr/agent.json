@@ -70,7 +70,8 @@
   },
   "error": {
     "line": "Une erreur s’est produite à cette étape. Rien n’a été réservé ni payé.",
-    "retry": "Réessayer"
+    "retry": "Réessayer",
+    "stale": "Cette session a expiré. Rechargez la page."
   },
   "sample": {
     "badge": "Exécution d’exemple",

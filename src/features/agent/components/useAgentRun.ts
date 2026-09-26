@@ -11,6 +11,10 @@ const SAMPLE_GAP_MS = 550;
 const HISTORY_TURNS = 10;
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
+// a 403 means the csrf token no longer matches the session: only a reload fixes it
+const FORBIDDEN = 403;
+export const STALE = "stale";
+
 export type ConfirmState = "open" | "working" | "done" | "cancelled";
 // What the page renders: the stream's events, plus the person's own turns,
 // each with a stable key.
@@ -87,7 +91,8 @@ export function useAgentRun(role: "brand" | "creator", csrfToken: string) {
       if (res.status === 404) {
         setSample(true);
         await play(role === "creator" ? CREATOR_RUN_FIXTURE : BRAND_RUN_FIXTURE);
-      } else if (!res.ok) apply({ type: "error", message: `agent ${res.status}`, retryable: true });
+      } else if (res.status === FORBIDDEN) apply({ type: "error", message: STALE, retryable: false });
+      else if (!res.ok) apply({ type: "error", message: `agent ${res.status}`, retryable: true });
       else await read(res);
     } catch {
       apply({ type: "error", message: "network", retryable: true });
@@ -105,12 +110,12 @@ export function useAgentRun(role: "brand" | "creator", csrfToken: string) {
     }
     try {
       const res = await fetch(CONFIRM_URL, { method: "POST", headers, body: JSON.stringify({ id: event.id, threadId: thread.current.id, decision }) });
-      if (!res.ok) throw new Error(`confirm ${res.status}`);
+      if (!res.ok) throw new Error(res.status === FORBIDDEN ? STALE : `confirm ${res.status}`);
       setConfirms((c) => ({ ...c, [event.id]: decision === "confirm" ? "done" : "cancelled" }));
       await read(res);
-    } catch {
+    } catch (error) {
       setConfirms((c) => ({ ...c, [event.id]: "open" }));
-      apply({ type: "error", message: "confirm", retryable: false });
+      apply({ type: "error", message: error instanceof Error && error.message === STALE ? STALE : "confirm", retryable: false });
     }
   }, [apply, read, sample, csrfToken]); // eslint-disable-line react-hooks/exhaustive-deps -- headers is derived from csrfToken
 

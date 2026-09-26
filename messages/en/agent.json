@@ -70,7 +70,8 @@
   },
   "error": {
     "line": "Something went wrong on that step. Nothing was booked or paid.",
-    "retry": "Try again"
+    "retry": "Try again",
+    "stale": "This session is stale. Reload the page."
   },
   "sample": {
     "badge": "Sample run",
