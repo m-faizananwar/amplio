@@ -239,3 +239,20 @@ html { scroll-behavior: smooth; }
 @keyframes barGrow { from { scale: 1 0; } to { scale: 1 1; } }
 .bar-grow { transform-origin: bottom; animation: barGrow 520ms var(--ease-spring) both; }
 @media (prefers-reduced-motion: reduce) { .bar-grow { animation: none; } }
+
+/* ---- dialog backdrops: the page behind steps back ----
+   Ink at 40% in light (the near-black paper at 60% in dark, where ink turns
+   light), fading in over 200 ms; a 2px blur where the browser supports it
+   and motion isn't reduced. Every dialog and alert dialog gets it. */
+[data-slot="dialog-overlay"], [data-slot="alert-dialog-overlay"] {
+  background-color: color-mix(in srgb, var(--color-ink) 40%, transparent);
+  animation-duration: 200ms;
+}
+.dark :is([data-slot="dialog-overlay"], [data-slot="alert-dialog-overlay"]) {
+  background-color: color-mix(in srgb, var(--color-paper) 60%, transparent);
+}
+@supports (backdrop-filter: blur(2px)) {
+  @media (prefers-reduced-motion: no-preference) {
+    :is([data-slot="dialog-overlay"], [data-slot="alert-dialog-overlay"]) { backdrop-filter: blur(2px); }
+  }
+}
