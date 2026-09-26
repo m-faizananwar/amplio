@@ -47,6 +47,8 @@ export function useAgentRun(role: "brand" | "creator", csrfToken: string, option
   const apply = useCallback((incoming: AgentEvent | CallEvent) => {
     // a page move and a settled confirm change state, not the thread's rows
     if (incoming.type === "navigate") return void onNavigate.current?.(incoming);
+    // money moved (booking, payment, top-up): the shell re-reads the wallet chip
+    if (incoming.type === "refresh") return void router.refresh();
     if (incoming.type === "resolved") {
       setConfirms((c) => ({ ...c, [incoming.id]: incoming.outcome === "failed" ? "open" : incoming.outcome }));
       // a done action may have moved money: the shell's wallet chip re-reads it

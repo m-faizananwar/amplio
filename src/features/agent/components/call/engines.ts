@@ -19,7 +19,7 @@ export type CallEngine = { name: CallEngineName; start: () => Promise<void>; sto
 // language, variableValues, metadata { voiceToken, threadId, locale }).
 export type AgentVoiceSession = { provider: "vapi"; assistantId: string; publicKey: string; voiceToken: string; threadId: string | null; overrides: Record<string, unknown> };
 
-type VapiMessage = { type?: string; role?: string; transcriptType?: string; transcript?: string; input?: string };
+type VapiMessage = { type?: string; role?: string; transcriptType?: string; transcript?: string; toolCallResult?: unknown };
 
 const RESTART_MS = 250;
 const SYNTH_LEVEL_MS = 90;
@@ -33,16 +33,21 @@ const messageOf = (error: unknown) => (error instanceof Error ? error.message : 
 export async function createVapiEngine(session: AgentVoiceSession, h: EngineHandlers): Promise<CallEngine> {
   const { default: Vapi } = await import("@vapi-ai/web");
   const vapi = new Vapi(session.publicKey);
-  // The agent's line: `voice-input` is the text handed to the voice (ours,
-  // spelled right), sentence by sentence; Vapi's transcript of its own speech
-  // is only a fallback if that never arrives. A new user turn starts a new line.
+  // The agent's line is our text, not Vapi's transcript of its own voice
+  // (which misspells names): the greeting we sent as firstMessage, then each
+  // reply our command tool returned (`tool-calls-result`). The transcript is
+  // only the fallback for a turn that brought neither. A user turn resets it.
+  const greeting = typeof session.overrides.firstMessage === "string" ? session.overrides.firstMessage : "";
   let said = "";
-  let sawVoiceInput = false;
+  let greeted = false;
   vapi.on("message", (m: VapiMessage) => {
-    if (m.type === "voice-input" && m.input) {
-      sawVoiceInput = true;
-      said = said ? `${said} ${m.input}` : m.input;
-      return h.onAgent(said, false);
+    if (m.type === "tool-calls-result") {
+      const result = (m.toolCallResult as { result?: unknown } | undefined)?.result;
+      if (typeof result === "string" && result.trim()) {
+        said = result.trim();
+        h.onAgent(said, false);
+      }
+      return;
     }
     if (m.type !== "transcript" || !m.transcript) return;
     const final = m.transcriptType === "final";
@@ -50,7 +55,11 @@ export async function createVapiEngine(session: AgentVoiceSession, h: EngineHand
       if (final) said = "";
       return h.onUser(m.transcript, final);
     }
-    h.onAgent(sawVoiceInput ? said : m.transcript, final);
+    if (!greeted && greeting) {
+      greeted = true;
+      said = greeting;
+    }
+    h.onAgent(said || m.transcript, final);
   });
   vapi.on("speech-start", () => h.onSpeaking(true));
   vapi.on("speech-end", () => h.onSpeaking(false));
