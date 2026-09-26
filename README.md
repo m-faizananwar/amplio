@@ -44,7 +44,7 @@ the `amplio` volume, on port 5432. The local URL is `postgresql://postgres:postg
 | ------------------ | ----------------------------------------------------------------- |
 | `pnpm typecheck`   | `tsc --noEmit`                                                    |
 | `pnpm lint`        | ESLint — the engineering rules in `eslint.config.mjs`             |
-| `pnpm test`        | Vitest, 162 tests in 43 files                                     |
+| `pnpm test`        | Vitest, 164 tests in 44 files                                     |
 | `pnpm build`       | Production build                                                  |
 | `pnpm db:up/down`  | Docker Postgres                                                   |
 | `pnpm db:generate` | Drizzle migration from `src/db/schema/*`                          |
@@ -73,14 +73,13 @@ Vercel sets `VERCEL_GIT_COMMIT_SHA` and `VERCEL_DEPLOYMENT_ID`.
 
 ### Health check
 
-`GET /api/health` → `{ ok, db, dbEnv, ai, voice, commit }`. It returns 503 with `db: "not configured"` until a database
-URL is set. `dbEnv` names the variable it used: `DATABASE_URL`, `POSTGRES_URL`, or one of the project-prefixed names
-Vercel's Neon integration writes (listed in `.env.example`). `ai` is the provider that actually answered a tiny probe
-(cached 10 min): `anthropic`, `gemini` or `template`. `aiResolved` is what the keys resolve to, in the order
-`ANTHROPIC_API_KEY` → `GEMINI_API_KEY` → template. Every call falls through to the next provider on a billing, auth or
-quota error or a network failure, and that provider is set aside for 10 minutes (`aiDemoted`), so a topped-up account
-comes back without a redeploy. `aiEnv` lists key-looking variable names (names only). `voice` is `vapi` or
-`web-speech`, `email` is `resend` or `on-screen`.
+`GET /api/health` → `{ ok, db, ai, voice, email, commit }`. It returns 503 with `db: "not configured"` until a database
+URL is set. `ai` is the provider that actually answered a tiny probe (cached 10 min): `anthropic`, `gemini` or
+`template`. The keys resolve in the order `ANTHROPIC_API_KEY` → `GEMINI_API_KEY` → template. Every call falls through to
+the next provider on a billing, auth or quota error or a network failure, and that provider is set aside for 10 minutes,
+so a topped-up account comes back without a redeploy. `voice` is `vapi` or `web-speech`, `email` is `resend` or
+`on-screen`. The response is public, so it names no env variables and carries no error text: when something is off, the
+server log has the details (which database variable was used, key-looking variable names, demoted providers).
 
 **Without a database** every page still renders: the app shells show an honest "Database not configured" state on every
 tab, the public pages fall back to static content, and `/api/health` is the only thing that reports the reason. The
@@ -161,7 +160,7 @@ state under `prefers-reduced-motion`.
 
 ## Tests
 
-`pnpm test` runs 162 Vitest tests in 43 files. They cover the pure logic: `fitScore`, the collaboration state machine,
+`pnpm test` runs 164 Vitest tests in 44 files. They cover the pure logic: `fitScore`, the collaboration state machine,
 money, the estimator, price recommendation, the database URL resolution, the voice grammar, the
 agent's filters, money check, event stream and confirmation gate, schemas, and a check that no view ships literal copy
 outside the message files. No snapshot tests.

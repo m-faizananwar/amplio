@@ -17,7 +17,7 @@ export function resolveAiProvider(env: Record<string, string | undefined>): AiPr
   return { name: "template", apiKey: null, envName: null };
 }
 
-// Names (only) of env vars that look like an AI key, for /api/health: shows a
+// Names (only) of env vars that look like an AI key, for /api/health's server log: shows a
 // misspelt or prefixed variable without exposing anything.
 export function aiKeyEnvNames(env: Record<string, string | undefined>): string[] {
   return Object.keys(env)
