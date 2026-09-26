@@ -31,7 +31,7 @@ export function Composer({ disabled, onSend }: Props) {
           placeholder={t("placeholder")}
           aria-invalid={Boolean(errors.body)}
           aria-describedby="message-hint"
-          className="min-h-10 resize-none"
+          minRows={1}
           onKeyDown={(e) => {
             if (e.key === "Enter" && !e.shiftKey) {
               e.preventDefault();

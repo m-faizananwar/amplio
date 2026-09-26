@@ -121,5 +121,9 @@
       "middle_east": "Middle East",
       "worldwide": "Worldwide"
     }
+  },
+  "textField": {
+    "brackets": "Replace the [bracketed] parts before saving",
+    "count": "{count} of {max} characters"
   }
 }

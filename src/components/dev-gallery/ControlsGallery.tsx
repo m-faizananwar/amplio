@@ -64,8 +64,17 @@ function FieldsSection() {
         </FormField>
         <FormField id="g-dis" label="Handle" className="w-72"><Input id="g-dis" leadingIcon={<AtSign />} defaultValue="@locked" disabled /></FormField>
       </Row>
-      <Row label="textarea">
-        <FormField id="g-brief" label="Hook" className="w-full max-w-lg"><Textarea id="g-brief" placeholder="What should the post open with?" /></FormField>
+      <Row label="description · empty · filled">
+        <FormField id="g-desc-empty" label="Company description" context="What you sell and who buys it, in two or three sentences." className="w-full max-w-md"><Textarea id="g-desc-empty" maxLength={2000} placeholder="What should creators know about you?" /></FormField>
+        <FormField id="g-desc-filled" label="What customers care about" className="w-full max-w-md"><Textarea id="g-desc-filled" defaultValue={"Shipping a real product fast without hiring a team.\nA fixed price they can plan around, and owning the code at the end."} /></FormField>
+      </Row>
+      <Row label="focused · near limit">
+        <FormField id="g-desc-focus" label="Bio" context="Focus shows the ring, the lift and the beam." className="w-full max-w-md"><Textarea id="g-desc-focus" defaultValue="Founder-turned-advisor writing about B2B go-to-market." /></FormField>
+        <FormField id="g-desc-near" label="Offer note" className="w-full max-w-md"><Textarea id="g-desc-near" maxLength={112} defaultValue="Zune builds a founder's product in weeks, not months: a senior studio, one fixed price, full code handover." /></FormField>
+      </Row>
+      <Row label="bracketed · error">
+        <FormField id="g-desc-bracket" label="Brief" className="w-full max-w-md"><Textarea id="g-desc-bracket" defaultValue="Open with the moment [your customer] realised their roadmap was [a number] weeks behind." /></FormField>
+        <FormField id="g-desc-error" label="Feedback for the creator" error="Say what to change: at least 20 characters." className="w-full max-w-md"><Textarea id="g-desc-error" aria-invalid defaultValue="Too long." aria-describedby="g-desc-error-error" /></FormField>
       </Row>
       <Row label="switch">
         <span className="inline-flex items-center gap-3 text-body"><Switch id="g-sw-draft" checked={on} onCheckedChange={setOn} /><label htmlFor="g-sw-draft">Email me when a draft is ready</label></span>

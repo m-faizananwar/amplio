@@ -23,7 +23,7 @@ export function DraftForm({ initialText, submitLabel, pendingLabel, disabled, on
     <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-3" noValidate>
       <div className="grid gap-1.5">
         <label htmlFor="draftText" className="text-small font-medium">{t("creator.draft.label")}</label>
-        <Textarea id="draftText" rows={ROWS} aria-invalid={Boolean(error)} aria-describedby="draftText-hint" placeholder={t("creator.draft.placeholder")} {...form.register("draftText")} />
+        <Textarea id="draftText" rows={ROWS} maxLength={DRAFT_MAX_CHARS} aria-invalid={Boolean(error)} aria-describedby="draftText-hint" placeholder={t("creator.draft.placeholder")} {...form.register("draftText")} />
         <p id="draftText-hint" className="flex justify-between gap-3 text-caption">
           {error ? <span role="alert" className="text-failure">{error}</span> : <span className="text-ink-muted">{t("creator.draft.help", { min: DRAFT_MIN_CHARS })}</span>}
           <span className="num text-ink-muted">{t("creator.draft.counter", { count: length, max: DRAFT_MAX_CHARS })}</span>

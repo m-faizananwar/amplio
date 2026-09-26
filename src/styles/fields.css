@@ -168,3 +168,82 @@
   .field-control:is(:focus, :focus-visible, [data-popup-open]), .field-shell:focus-within > .field-control { translate: none; }
   .dropdown-check path, .dropdown-check polyline { animation: none; stroke-dashoffset: 0; }
 }
+
+/* The description field (ui/textarea): a white box, radius 22, growing with
+   its text to ~14 rows; on focus the accent ring, a 1px lift and a short arc
+   of light circling the border every ~3s (a masked conic-gradient ring whose
+   start angle is a registered property, so it can be animated). */
+@property --beam-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+@layer components {
+  .desc-field { display: grid; width: 100%; min-width: 0; gap: 6px; }
+  .desc-shell { position: relative; display: block; border-radius: 22px; transition: translate 250ms var(--ease-spring); }
+  .desc-shell:focus-within { translate: 0 -1px; }
+  .desc-box {
+    display: block;
+    width: 100%;
+    min-height: calc(var(--desc-rows, 3) * 1.55em + 30px);
+    max-height: calc(14 * 1.55em + 30px);
+    padding: 14px 16px;
+    overflow-y: auto;
+    border: 1px solid var(--rule);
+    border-radius: 22px;
+    background: var(--surface);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.55;
+    field-sizing: content;
+    resize: none;
+    outline: none;
+    transition: border-color 250ms var(--ease-ledger), box-shadow 250ms var(--ease-ledger);
+  }
+  .desc-shell[data-count] .desc-box { padding-bottom: 32px; }
+  .desc-box::placeholder { color: var(--ink-muted); }
+  .desc-box:hover:not(:focus, :disabled) { border-color: var(--rule-strong); }
+  .desc-box:focus { border-color: var(--money); box-shadow: 0 0 0 4px color-mix(in oklab, var(--money) 16%, transparent); }
+  .desc-box[aria-invalid="true"] { border-color: var(--failure); box-shadow: 0 0 0 4px color-mix(in oklab, var(--failure) 14%, transparent); }
+  .desc-box:disabled { cursor: not-allowed; opacity: 0.6; }
+
+  .desc-shell::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    padding: 1.5px;
+    border-radius: 22px;
+    background: conic-gradient(
+      from var(--beam-angle),
+      transparent 0deg 292deg,
+      color-mix(in oklab, var(--money) 30%, transparent) 318deg,
+      var(--money) 336deg,
+      color-mix(in oklab, #fff 55%, var(--money)) 343deg,
+      var(--money) 349deg,
+      transparent 360deg
+    );
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 250ms var(--ease-ledger);
+    animation: desc-beam 3s linear infinite paused;
+  }
+  .desc-shell:focus-within::before { opacity: 1; animation-play-state: running; }
+  @keyframes desc-beam { to { --beam-angle: 360deg; } }
+
+  .desc-count { position: absolute; right: 16px; bottom: 10px; z-index: 2; font-family: var(--font-mono); font-size: 12px; font-variant-numeric: tabular-nums; color: var(--ink-muted); pointer-events: none; }
+  .desc-count[data-level="near"] { color: var(--attention); }
+  .desc-count[data-level="over"] { color: var(--failure); }
+  .desc-warning { display: flex; align-items: center; gap: 6px; padding: 0 4px; font-size: 12px; line-height: 16px; color: var(--attention); }
+  .desc-warning svg { width: 14px; height: 14px; flex-shrink: 0; }
+  /* the message line and the context sit 4px in from the box edge */
+  [data-slot="field"] > :is(.field-error, .field-context, .field-hint) { padding: 0 4px; }
+  .field-context { margin-top: -2px; font-size: 12px; line-height: 16px; color: var(--ink-muted); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .desc-shell::before { display: none; }
+  .desc-shell, .desc-box { transition: none !important; }
+  .desc-shell:focus-within { translate: none; }
+}

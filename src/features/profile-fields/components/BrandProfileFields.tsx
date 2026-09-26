@@ -19,7 +19,7 @@ export function BrandProfileFields({ control }: { control: Control<ProfileInput>
         const error = fieldError(fieldState.error, { too_small: te("valuePropRequired"), too_big: te("valuePropTooLong", { max: VALUE_PROP_MAX_CHARS }) });
         return (
           <FormField id="valueProp" label={t("label")} hint={t("help")} error={error}>
-            <Textarea id="valueProp" rows={5} placeholder={t("placeholder")} aria-invalid={fieldState.invalid || undefined} aria-describedby={describedBy("valueProp", error, "x")} {...field} />
+            <Textarea id="valueProp" rows={5} maxLength={VALUE_PROP_MAX_CHARS} placeholder={t("placeholder")} aria-invalid={fieldState.invalid || undefined} aria-describedby={describedBy("valueProp", error, "x")} {...field} />
           </FormField>
         );
       }} />

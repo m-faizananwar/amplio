@@ -121,5 +121,9 @@
       "middle_east": "Moyen-Orient",
       "worldwide": "Monde entier"
     }
+  },
+  "textField": {
+    "brackets": "Remplacez les parties [entre crochets] avant d’enregistrer",
+    "count": "{count} sur {max} caractères"
   }
 }

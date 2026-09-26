@@ -11,7 +11,8 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { GEOGRAPHIES, INDUSTRIES } from "../../constants";
-import { type Brief, type BriefFormValues, briefSchema } from "../../schemas";
+import { type Brief, type BriefFormValues, briefSchema, storedBriefSchema } from "../../schemas";
+import { BRIEF_TEXT_MAX_CHARS } from "../../constants";
 import { saveBrief } from "../../server/actions";
 import { AngleFields } from "./AngleFields";
 import { BriefReadView } from "./BriefReadView";
@@ -66,11 +67,11 @@ export function BriefEditor({ campaignId, initial, cancelHref, afterSaveHref, sa
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} noValidate className="grid gap-6">
       {preview ? (
-        <BriefReadView brief={briefSchema.safeParse(form.getValues()).data ?? initial} />
+        <BriefReadView brief={storedBriefSchema.safeParse(form.getValues()).data ?? initial} />
       ) : (
         <div className="grid gap-6 rounded-card border border-rule bg-surface p-5">
           <TextField id="whatToTell" label={t("fields.whatToTell")} error={errors.whatToTell ? t("errors.whatToTell") : undefined}>
-            <Textarea id="whatToTell" rows={6} {...form.register("whatToTell")} />
+            <Textarea id="whatToTell" rows={6} maxLength={BRIEF_TEXT_MAX_CHARS} {...form.register("whatToTell")} />
           </TextField>
           <ChipSelectField control={form.control} name="targetIndustries" label={t("fields.industries")} options={INDUSTRIES} group="industries" />
           <ChipSelectField control={form.control} name="targetGeos" label={t("fields.geos")} options={GEOGRAPHIES} group="regions" />
