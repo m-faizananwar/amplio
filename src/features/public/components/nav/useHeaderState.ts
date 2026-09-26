@@ -48,5 +48,13 @@ export function useHeaderState({ landing, header, burger, pathname }: {
     };
   }, [open, close, header]);
 
-  return { solid: !landing || scrolled, open, toggle, close };
+  const solid = !landing || scrolled;
+  // the landing's hero at the top: the assistant's corner button steps aside (interaction.css)
+  useEffect(() => {
+    const root = document.documentElement;
+    root.toggleAttribute("data-hero-top", !solid);
+    return () => root.removeAttribute("data-hero-top");
+  }, [solid]);
+
+  return { solid, open, toggle, close };
 }

@@ -1,8 +1,8 @@
-/* The glass hero's frame, shared by the hero and the public header so both
+/* The frame: shared by the public header and the glass hero so both
    measure in the same unit: --u is one pixel of the 1280×960 comp, --t the
    floored unit phones use for reading type and controls. Three tiers keyed to
    the frame's shape, not its width alone (docs/design/PAGES.md, "Glass hero"). */
-.glass-frame {
+.frame {
   --u: min(100vw / 1280, 100vh / 960);
   --t: var(--u);
   --pad: 0;
@@ -21,32 +21,32 @@
   text-rendering: geometricPrecision;
 }
 @supports (height: 100dvh) {
-  .glass-frame { --u: min(100vw / 1280, 100dvh / 960); }
+  .frame { --u: min(100vw / 1280, 100dvh / 960); }
 }
 
 /* Tier 2, compact: tall, narrow or short frames. */
 @media (max-aspect-ratio: 87/80), (max-width: 899px), (max-height: 639px) {
-  .glass-frame { --u: min(100vw / 880, 100dvh / 1220); --pad: 52; }
+  .frame { --u: min(100vw / 880, 100dvh / 1220); --pad: 52; }
 }
 /* Compact landscape, and rotated phones inside it. */
 @media (max-aspect-ratio: 87/80) and (min-aspect-ratio: 1/1),
        (max-width: 899px) and (min-aspect-ratio: 1/1),
        (max-height: 639px) and (min-aspect-ratio: 1/1) {
-  .glass-frame { --u: min(100vw / 1240, 100dvh / 820); --pad: 46; }
+  .frame { --u: min(100vw / 1240, 100dvh / 820); --pad: 46; }
 }
 @media (max-height: 520px) and (min-aspect-ratio: 1/1) {
-  .glass-frame { --u: min(100vw / 900, 100dvh / 560); --pad: 30; }
+  .frame { --u: min(100vw / 900, 100dvh / 560); --pad: 30; }
 }
 /* Tier 3, phones: --u composes, --t keeps reading type from shrinking. */
 @media (max-width: 640px) and (max-aspect-ratio: 1/1) {
-  .glass-frame {
+  .frame {
     --u: min(100vw / 600, 100dvh / 940);
     --t: max(var(--u), min(0.85px, 100dvh / 780));
   }
 }
 
-.glass-frame a:focus-visible,
-.glass-frame button:focus-visible {
+.frame a:focus-visible,
+.frame button:focus-visible {
   outline: calc(2 * var(--u)) solid var(--focus);
   outline-offset: calc(3 * var(--u));
 }

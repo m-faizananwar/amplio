@@ -9,9 +9,9 @@ import { TIMELINE_SCRIPT } from "./entrance-script";
 import { HeroPanel } from "./HeroPanel";
 import { HeroPlate } from "./plate/HeroPlate";
 import { HeroStats } from "./HeroStats";
+import f from "./frame.module.css";
 import s from "./hero.module.css";
 import { inter } from "./inter";
-import "./glass-frame.css";
 
 const PCT = 100;
 
@@ -27,7 +27,7 @@ export async function GlassHero({ trail }: { trail: PublicTrail | null }) {
   const figures = trail ? { posts: fmt(trail.posts), links: fmt(trail.links), clicks: fmt(trail.clicks), signups: fmt(trail.signups) } : null;
   const rate = trail && trail.clicks > 0 ? (trail.signups / trail.clicks) * PCT : null;
   return (
-    <section className={cn("glass-frame", inter.variable, s.hero)} aria-labelledby="hero-title">
+    <section className={cn(f.frame, inter.variable, s.hero)} aria-labelledby="hero-title">
       <div className={s.card}>
         <HeroPlate />
         <div className={s.stack}>

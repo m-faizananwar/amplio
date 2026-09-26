@@ -5,7 +5,6 @@ import { PublicFooter } from "@/features/public/components/nav/PublicFooter";
 import { PublicNav } from "@/features/public/components/nav/PublicNav";
 import { ClientMessages } from "@/i18n/ClientMessages";
 import { enterLocale, type LocaleParams } from "@/i18n/segment";
-import "@/features/public/components/motion/public-motion.css";
 
 // The public site's frame: nav, page, footer, the assistant pill. A layout,
 // so a client navigation between public pages keeps the same header.
