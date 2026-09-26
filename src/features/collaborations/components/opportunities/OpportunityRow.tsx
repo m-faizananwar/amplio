@@ -6,6 +6,7 @@ import { useState } from "react";
 import { BrandMark } from "@/components/graphics/BrandMark";
 import type { OpportunityDto } from "../../schemas";
 import { FitRing } from "@/components/graphics/FitRing";
+import { listRowStyle } from "@/components/motion/useListTransition";
 import { StatusGlyph } from "@/components/graphics/StatusGlyph";
 import { FitBreakdown } from "./FitBreakdown";
 import { OpportunityActions } from "./OpportunityActions";
@@ -20,7 +21,7 @@ export function OpportunityRow({ opportunity: o, pending, onApply, onBrief }: Pr
   const [open, setOpen] = useState(false);
   const due = o.daysToDeadline === null ? t("noDeadline") : t("daysLeft", { count: Math.max(0, o.daysToDeadline) });
   return (
-    <li className="grid gap-3 px-5 py-4">
+    <li className="vt-row grid gap-3 bg-surface px-5 py-4" style={listRowStyle(o.campaignId)}>
       <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_6rem_auto_11rem] md:items-center md:gap-x-4">
         <div className="flex min-w-0 items-start gap-3">
           <BrandMark name={o.brandCompany} />

@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { startTransition, useMemo, useOptimistic, useState } from "react";
+import { useListTransition } from "@/components/motion/useListTransition";
 import { toast } from "sonner";
 import { buttonVariants, Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -22,6 +23,7 @@ type Props = { opportunities: OpportunityDto[]; csrfToken: string };
 export function OpportunitiesView({ opportunities, csrfToken }: Props) {
   const t = useTranslations("creator.opportunities");
   const [filters, setFilters] = useState(INITIAL_FILTERS);
+  const listTransition = useListTransition();
   const [confirming, setConfirming] = useState<OpportunityDto | null>(null);
   const [briefFor, setBriefFor] = useState<OpportunityDto | null>(null);
   // The row flips to "Applying…" at once and back on its own if the action fails.
@@ -45,11 +47,11 @@ export function OpportunitiesView({ opportunities, csrfToken }: Props) {
   }
   return (
     <div className="grid gap-4">
-      <OpportunityFilters value={filters} onChange={setFilters} industries={industries} regions={regions} count={visible.length} />
+      <OpportunityFilters value={filters} onChange={(next) => listTransition(() => setFilters(next))} industries={industries} regions={regions} count={visible.length} />
       {visible.length === 0 ? (
         <EmptyState size="compact" title={t("empty.filtered.title")} body={t("empty.filtered.body")} action={<Button variant="secondary" onClick={() => setFilters(INITIAL_FILTERS)}>{t("empty.filtered.action")}</Button>} />
       ) : (
-        <ol key={visible.map((o) => o.campaignId).join(",")} className="list-stagger divide-y divide-rule rounded-card border border-rule bg-surface">
+        <ol className="list-stagger divide-y divide-rule rounded-card border border-rule bg-surface">
           {visible.map((o) => <OpportunityRow key={o.campaignId} opportunity={o} pending={pendingIds.includes(o.campaignId)} onApply={setConfirming} onBrief={setBriefFor} />)}
         </ol>
       )}

@@ -6,7 +6,7 @@ import { TrailDrawer } from "@/components/trail/TrailDrawer";
 import type { TrailRow } from "@/components/trail/types";
 import { StatCard } from "@/components/ui/stat-card";
 
-export type CreatorNumber = { key: string; label: string; hint: string; value: number; money?: boolean; rows: TrailRow[]; drawerTitle: string };
+export type CreatorNumber = { key: string; label: string; hint: string; value: number; money?: boolean; rows: TrailRow[]; drawerTitle: string; spark?: { points: number[]; labels: string[] } };
 type Labels = { region: string; open: string; empty: string };
 
 // Three numbers under Needs you. Each is a receipt: it opens the rows it is made of.
@@ -25,6 +25,8 @@ export function CreatorNumbers({ numbers, labels }: { numbers: CreatorNumber[]; 
           hint={n.hint}
           value={n.value}
           tone={n.money ? "money" : "ink"}
+          spark={n.spark?.points}
+          sparkLabels={n.spark?.labels}
           format={n.money ? money : (v) => format.number(v)}
           onOpen={() => setOpen(n.key)}
           openLabel={labels.open}

@@ -18,6 +18,8 @@ type Props = {
   hint?: ReactNode
   delta?: Delta
   spark?: number[]
+  /** One per spark point (e.g. the day), shown while scrubbing the line. */
+  sparkLabels?: string[]
   /** Money and verified attribution get the accent; everything else is ink. */
   tone?: "ink" | "money"
   /** Opens the trail: the rows this number is made of. Without it the card is static. */
@@ -28,12 +30,12 @@ type Props = {
 
 // Every number is a receipt (DECISIONS.md): a StatCard with `onOpen` is a
 // button that opens the rows behind it. Mono tabular value that rolls on change.
-export function StatCard({ label, value, format, hint, delta, spark, tone = "ink", onOpen, openLabel = "Show rows", unknownLabel = "Not known", className }: Props) {
+export function StatCard({ label, value, format, hint, delta, spark, sparkLabels, tone = "ink", onOpen, openLabel = "Show rows", unknownLabel = "Not known", className }: Props) {
   const body = (
     <>
       <div className="flex items-start justify-between gap-3">
         <p className="text-small text-ink-muted">{label}</p>
-        {spark ? <Sparkline points={spark} tone={tone} /> : null}
+        {spark ? <Sparkline points={spark} tone={tone} labels={sparkLabels} format={format} /> : null}
       </div>
       <p className={cn("mt-2 text-h2 font-semibold tracking-(--tracking-heading)", tone === "money" ? "text-money" : "text-ink")}>
         {value === null ? <span className="num" role="img" aria-label={unknownLabel}>—</span> : <RollingNumber value={value} format={format} />}

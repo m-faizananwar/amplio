@@ -9,7 +9,7 @@ import { countByFilter, NEXT_STEP_FILTERS, type NextStepFilter, needsYou } from 
 import { CreatorNumbers } from "./CreatorNumbers";
 import { NeedsYouList } from "./NeedsYouList";
 import { toNeedsYouRows } from "./needs-you-rows";
-import { clickRows, earnedRows, liveRows } from "./trails";
+import { clickRows, clicksPerDay, earnedPerMonth, earnedRows, liveRows } from "./trails";
 
 type Props = {
   collaborations: CollaborationDto[];
@@ -22,6 +22,9 @@ type Props = {
 
 // Overview = Needs you beside the collaborations ring, then three numbers.
 // Nothing else: everything else is one click away in the rail.
+// the numbers' sparklines: two weeks of clicks, half a year of earnings
+const SPARK_DAYS = 14;
+const SPARK_MONTHS = 6;
 const RING_LABEL: Record<NextStepFilter, string> = { needs_you: "needsYou", waiting: "waitingOnBrand", live: "live", done: "done" };
 export async function CreatorOverview({ collaborations, earnings, ledger, clicks, clickTotal, setup }: Props) {
   const [t, tn, tt, tf, format] = await Promise.all([
@@ -34,6 +37,11 @@ export async function CreatorOverview({ collaborations, earnings, ledger, clicks
   const items = needsYou(collaborations, { availableCents: earnings.availableCents, setupIncomplete: setup !== null });
   const rows = toNeedsYouRows(items, { byId: new Map(collaborations.map((c) => [c.id, c])), t: tn, fmt, setup: setup ?? "detailBoth" });
   const live = liveRows(collaborations);
+  const now = new Date();
+  const perDay = clicksPerDay(clicks, SPARK_DAYS, now);
+  const perMonth = earnedPerMonth(ledger, SPARK_MONTHS, now);
+  const clickSpark = { points: perDay.map((d) => d.count), labels: perDay.map((d) => format.dateTime(new Date(`${d.day}T00:00:00Z`), { day: "numeric", month: "short", timeZone: "UTC" })) };
+  const earnedSpark = { points: perMonth.map((m) => m.cents), labels: perMonth.map((m) => format.dateTime(new Date(`${m.month}-01T00:00:00Z`), { month: "short", timeZone: "UTC" })) };
   const byState = countByFilter(collaborations.map((c) => c.status), "creator");
   const segments = NEXT_STEP_FILTERS.map((key) => ({ key, label: tf(RING_LABEL[key]), count: byState[key], href: `/creator/collaborations?filter=${key}` }));
   const count = (metric: string, n: number) => tt("title", { metric, count: n });
@@ -49,8 +57,8 @@ export async function CreatorOverview({ collaborations, earnings, ledger, clicks
       <CreatorNumbers
         labels={{ region: t("numbers.title"), open: t("numbers.openTrail"), empty: tt("empty.body") }}
         numbers={[
-          { key: "earned", label: t("numbers.earned.label"), hint: t("numbers.earned.hint"), value: earnings.totalEarnedCents, money: true, rows: earnedRows(ledger), drawerTitle: count(t("numbers.earned.label"), earnedRows(ledger).length) },
-          { key: "clicks", label: t("numbers.clicks.label"), hint: t("numbers.clicks.hint"), value: clickTotal, rows: clickRows(clicks, (k) => tt(`values.${k}`)), drawerTitle: count(t("numbers.clicks.label"), clickTotal) },
+          { key: "earned", label: t("numbers.earned.label"), hint: t("numbers.earned.hint"), value: earnings.totalEarnedCents, money: true, spark: earnedSpark, rows: earnedRows(ledger), drawerTitle: count(t("numbers.earned.label"), earnedRows(ledger).length) },
+          { key: "clicks", label: t("numbers.clicks.label"), hint: t("numbers.clicks.hint"), value: clickTotal, spark: clickSpark, rows: clickRows(clicks, (k) => tt(`values.${k}`)), drawerTitle: count(t("numbers.clicks.label"), clickTotal) },
           { key: "live", label: t("numbers.livePosts.label"), hint: t("numbers.livePosts.hint"), value: live.length, rows: live, drawerTitle: count(t("numbers.livePosts.label"), live.length) },
         ]}
       />

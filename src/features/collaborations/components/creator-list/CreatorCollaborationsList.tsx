@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
+import { useListTransition } from "@/components/motion/useListTransition";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -25,8 +26,9 @@ export function CreatorCollaborationsList({ rows, initialFilter }: { rows: Colla
   const [filter, setFilter] = useState<ListFilter>(initialFilter);
   const counts = useMemo(() => countByFilter(rows.map((r) => r.status), "creator"), [rows]);
   const visible = useMemo(() => (filter === "all" ? rows : rows.filter((r) => filterFor(r.status, "creator") === filter)), [rows, filter]);
+  const listTransition = useListTransition();
   const choose = (next: ListFilter) => {
-    setFilter(next);
+    listTransition(() => setFilter(next));
     router.replace(next === "needs_you" ? pathname : `${pathname}?filter=${next}`, { scroll: false });
   };
 
@@ -48,7 +50,7 @@ export function CreatorCollaborationsList({ rows, initialFilter }: { rows: Colla
       {visible.length === 0 ? (
         <EmptyState size="compact" title={t(`empty.${emptyKey}.title`)} body={t(`empty.${emptyKey}.body`)} action={<Button variant="secondary" onClick={() => choose("all")}>{t(`empty.${emptyKey}.action`)}</Button>} />
       ) : (
-        <ol key={filter} className="tab-swap list-stagger divide-y divide-rule overflow-hidden rounded-card border border-rule bg-surface">
+        <ol className="list-stagger divide-y divide-rule overflow-hidden rounded-card border border-rule bg-surface">
           {visible.map((c) => <CreatorCollaborationRow key={c.id} c={c} />)}
         </ol>
       )}

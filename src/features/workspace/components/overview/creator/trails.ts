@@ -32,3 +32,30 @@ export function liveRows(collaborations: CollaborationDto[]): TrailRow[] {
     .map((c) => ({ id: c.id, at: c.publishedAt ?? c.updatedAt, title: `${c.campaignName} · ${c.brandCompany}`, detail: c.postUrl ?? undefined, href: `/creator/collaborations/${c.id}` }))
     .sort((a, b) => (a.at < b.at ? 1 : -1));
 }
+
+const DAY_MS = 86_400_000;
+const DAY_KEY = 10;
+const MONTH_KEY = 7;
+
+// The sparkline behind "Clicks on your links": clicks per day for the last
+// `days` days, quiet days at zero, oldest first.
+export function clicksPerDay(clicks: CreatorClickRow[], days: number, now: Date): { day: string; count: number }[] {
+  const counts = new Map<string, number>();
+  for (const c of clicks) counts.set(c.at.slice(0, DAY_KEY), (counts.get(c.at.slice(0, DAY_KEY)) ?? 0) + 1);
+  return Array.from({ length: days }, (_, i) => {
+    const day = new Date(now.getTime() - (days - 1 - i) * DAY_MS).toISOString().slice(0, DAY_KEY);
+    return { day, count: counts.get(day) ?? 0 };
+  });
+}
+
+// The sparkline behind "Earned to date": released payouts per month for the
+// last `months` months, oldest first.
+export function earnedPerMonth(ledger: LedgerRowDto[], months: number, now: Date): { month: string; cents: number }[] {
+  const sums = new Map<string, number>();
+  for (const r of ledger) if (r.type === "payout" && r.status === "completed") sums.set(r.date.slice(0, MONTH_KEY), (sums.get(r.date.slice(0, MONTH_KEY)) ?? 0) + r.amountCents);
+  return Array.from({ length: months }, (_, i) => {
+    const d = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - (months - 1 - i), 1));
+    const month = d.toISOString().slice(0, MONTH_KEY);
+    return { month, cents: sums.get(month) ?? 0 };
+  });
+}

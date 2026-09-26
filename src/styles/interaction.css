@@ -226,3 +226,16 @@ html { scroll-behavior: smooth; }
   [data-slot="dialog-content"].action-dialog[data-open],
   [data-slot="dialog-content"].action-dialog[data-closed] { animation: none; }
 }
+
+/* ---- filtered lists (useListTransition): leavers fade, the rest slide up ----
+   Each row is its own view-transition group; the move rides the spring, a
+   row that leaves fades out, one that arrives fades in. */
+.vt-row { view-transition-class: list-row; }
+::view-transition-group(*.list-row) { animation-duration: 280ms; animation-timing-function: var(--ease-spring); }
+::view-transition-old(*.list-row):only-child { animation: vtFadeOut var(--duration-base) var(--ease-ledger) both; }
+::view-transition-new(*.list-row):only-child { animation: vtFadeIn var(--duration-slow) var(--ease-ledger) both; }
+
+/* ---- bar charts: bars grow from the baseline and settle on the spring ---- */
+@keyframes barGrow { from { scale: 1 0; } to { scale: 1 1; } }
+.bar-grow { transform-origin: bottom; animation: barGrow 520ms var(--ease-spring) both; }
+@media (prefers-reduced-motion: reduce) { .bar-grow { animation: none; } }
