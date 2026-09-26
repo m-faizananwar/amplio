@@ -39,6 +39,14 @@ function withTimeout<T>(work: Promise<T>, ms: number): Promise<T> {
   return Promise.race([work, new Promise<T>((_, reject) => setTimeout(() => reject(new Error("timed out")), ms))]);
 }
 
+// When the model returns no words: after only saving a preference, say so;
+// otherwise point at what the steps and cards show.
+function emptyReply(notes: Notes, locale: "en" | "fr"): string {
+  const onlyRemembered = notes.size > 0 && [...notes.keys()].every((t) => t === "rememberPreference");
+  if (onlyRemembered) return locale === "fr" ? "C’est noté, je m’en souviendrai." : "Got it, I'll remember that.";
+  return locale === "fr" ? "Voici ce que j’ai trouvé." : "Here's what I found.";
+}
+
 // Assistant text goes out in small chunks of one message id.
 function say(emit: Emit, text: string) {
   const id = `m${Date.now().toString(ID_RADIX)}`;
@@ -146,7 +154,7 @@ export async function runTurn({ viewer, locale, text, history, emit, recall, sco
       const widen = locale === "fr" ? "Voulez-vous élargir la recherche ?" : "Want to widen it?";
       const reply = blockers.length
         ? `${blockers.join(" ")}${[...next.values()].some((n) => n.steps.length) ? ` ${widen}` : ""}`
-        : dropRestatement(checked.text, shown) || (locale === "fr" ? "Voici ce que j’ai trouvé." : "Here's what I found.");
+        : dropRestatement(checked.text, shown) || emptyReply(next, locale);
       say(emit, reply);
       // a blocker never ends the turn cold: the tools' own next steps as chips
       const all = [...next.values()].flatMap((n) => n.steps);

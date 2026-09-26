@@ -7,6 +7,7 @@ describe("reading a stated budget", () => {
     expect(parseBudget("budget €2,000 per month")).toEqual({ cents: 200_000, period: "month" });
     expect(parseBudget("notre budget est de 2 000 € par mois")).toEqual({ cents: 200_000, period: "month" });
     expect(parseBudget("total budget 1500 euros")).toEqual({ cents: 150_000, period: "total" });
+    expect(parseBudget("budget 2k per month")).toEqual({ cents: 200_000, period: "month" });
   });
 
   it("a price with no budget word is not a budget", () => {

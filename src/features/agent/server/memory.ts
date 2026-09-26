@@ -4,6 +4,7 @@ import { getDb } from "@/db";
 import { agentEvents, agentMessages, agentNotes, agentThreads } from "@/db/schema";
 import { generateText } from "@/features/ai/server/llm";
 import type { AgentEvent } from "../events";
+import { planNote } from "../note-plan";
 import { type HistoryItem, historyItems, listItem, type ThreadListItem } from "../thread-view";
 import type { Turn } from "./loop";
 
@@ -110,11 +111,16 @@ export async function listNotes(userId: string): Promise<string[]> {
   return safe("notes", async () => (await getDb().select({ text: agentNotes.text }).from(agentNotes).where(eq(agentNotes.userId, userId)).orderBy(desc(agentNotes.createdAt)).limit(NOTES_LIMIT)).map((n) => n.text), []);
 }
 
+// One of each: the same preference said again is skipped, and a new budget
+// replaces the older budget of the same kind (note-plan.ts).
 export async function addNote(userId: string, text: string): Promise<boolean> {
   return safe("note", async () => {
     const db = getDb();
-    const [same] = await db.select({ id: agentNotes.id }).from(agentNotes).where(and(eq(agentNotes.userId, userId), eq(agentNotes.text, text))).limit(1);
-    if (!same) await db.insert(agentNotes).values({ userId, text });
+    const existing = await db.select({ id: agentNotes.id, text: agentNotes.text }).from(agentNotes).where(eq(agentNotes.userId, userId));
+    const plan = planNote(text, existing);
+    if (plan.action === "skip") return true;
+    if (plan.replace.length) await db.delete(agentNotes).where(and(eq(agentNotes.userId, userId), inArray(agentNotes.id, plan.replace)));
+    await db.insert(agentNotes).values({ userId, text });
     return true;
   }, false);
 }

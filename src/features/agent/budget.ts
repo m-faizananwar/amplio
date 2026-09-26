@@ -8,7 +8,8 @@ export type Budget = { cents: number; period: "month" | "total" };
 
 const CENTS = 100;
 const THOUSAND = 1000;
-const AMOUNT = /(?:€\s?(\d[\d\s.,  ]*)(k)?|(\d[\d\s.,  ]*)(k)?\s?(?:€|euros?\b|eur\b))/i;
+// €2k · 2 000 € · 2000 euros · and, next to "budget", a bare 2k
+const AMOUNT = /(?:€\s?(\d[\d\s.,  ]*)(k)?|(\d[\d\s.,  ]*)(k)?\s?(?:€|euros?\b|eur\b)|(\d[\d.,]*)(k)\b)/i;
 const MONTH = /\b(a|per|each|every|this)\s+month\b|\bmonthly\b|\bmois\b|\bmensuel/i;
 const BUDGET = /\bbudget\b/i;
 const PER_CREATOR = /\b(per|each|a|par|chaque)\s+(creator|post|créateur|créatrice|publication|influenceur|influencer)s?\b/i;
@@ -16,8 +17,8 @@ const PER_CREATOR = /\b(per|each|a|par|chaque)\s+(creator|post|créateur|créatr
 function amountCents(text: string): number | null {
   const m = AMOUNT.exec(text);
   if (!m) return null;
-  const raw = (m[1] ?? m[3] ?? "").replace(/[\s  ]/g, "");
-  const k = Boolean(m[2] ?? m[4]);
+  const raw = (m[1] ?? m[3] ?? m[5] ?? "").replace(/[\s  ]/g, "");
+  const k = Boolean(m[2] ?? m[4] ?? m[6]);
   // "2,000" / "2.000" are thousands; "2,5" / "2.5" are decimals
   const n = /^\d{1,3}([.,]\d{3})+$/.test(raw) ? Number(raw.replace(/[.,]/g, "")) : Number(raw.replace(",", "."));
   if (!Number.isFinite(n) || n <= 0) return null;
