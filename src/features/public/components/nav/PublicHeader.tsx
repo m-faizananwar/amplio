@@ -3,13 +3,19 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { type CSSProperties, useRef } from "react";
+import { LOCALES } from "@/i18n/config";
 import { cn } from "@/lib/cn";
 import { inter } from "../hero/inter";
 import { AmplioMark } from "./AmplioMark";
 import { type HeaderLabels, HeaderMenu, NAV_ITEMS } from "./HeaderMenu";
+import f from "../hero/frame.module.css";
 import s from "./header.module.css";
 import { useHeaderState } from "./useHeaderState";
-import "../hero/glass-frame.css";
+
+// The public pages are prerendered per locale and reached through the proxy's
+// rewrite, so the router can report /en/pricing for what the browser shows as
+// /pricing. The header only cares about the latter.
+const LOCALE_PREFIX = new RegExp(`^/(${LOCALES.join("|")})(?=/|$)`);
 
 const at = (x: number, y: number, sx?: number) => ({ "--x": x, "--y": y, ...(sx ? { "--sx": sx } : {}) }) as CSSProperties;
 
@@ -17,7 +23,7 @@ const at = (x: number, y: number, sx?: number) => ({ "--x": x, "--y": y, ...(sx 
 // the hero's units, transparent over the landing's plate and frosted
 // everywhere else. `data-hx` marks what the landing's entrance animates.
 export function PublicHeader({ labels }: { labels: HeaderLabels }) {
-  const pathname = usePathname();
+  const pathname = usePathname().replace(LOCALE_PREFIX, "") || "/";
   const landing = pathname === "/";
   const header = useRef<HTMLElement>(null);
   const burger = useRef<HTMLButtonElement>(null);
@@ -26,7 +32,7 @@ export function PublicHeader({ labels }: { labels: HeaderLabels }) {
 
   return (
     <>
-      <header ref={header} className={cn("glass-frame", inter.variable, s.header)} data-solid={solid ? "" : undefined}>
+      <header ref={header} className={cn(f.frame, inter.variable, s.header)} data-solid={solid ? "" : undefined}>
         <Link href="/" aria-label={labels.home} className={cn(s.brand, s.l, s.t)} style={at(68, 47)} data-hx="brand">
           <AmplioMark ring className={s.mark} />
           <b className={s.sx} style={{ "--sx": 0.894 } as CSSProperties}>Amplio</b>
@@ -46,7 +52,7 @@ export function PublicHeader({ labels }: { labels: HeaderLabels }) {
         </button>
         <HeaderMenu labels={labels} open={open} current={current} close={close} />
       </header>
-      {landing ? null : <div className={cn("glass-frame", s.spacer)} aria-hidden="true" />}
+      {landing ? null : <div className={cn(f.frame, s.spacer)} aria-hidden="true" />}
     </>
   );
 }
