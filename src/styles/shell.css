@@ -100,6 +100,18 @@
   :is(a, button).account-pill-row:is(:hover, :focus-visible) { background: var(--well); }
   .account-pill-setting { justify-content: space-between; color: var(--ink-muted); }
 
+  /* at the foot of the sidebar: full width, anchored bottom-left, growing up */
+  .account-pill-slot[data-place="rail"] { width: 100%; }
+  .account-pill[data-place="rail"] { top: auto; bottom: 0; left: 0; right: auto; display: flex; flex-direction: column-reverse; }
+  .account-pill[data-place="rail"]:not([data-open]) { width: 100%; }
+  .account-pill[data-place="rail"] .account-pill-header { width: 100%; max-width: none; flex-shrink: 0; }
+  .account-pill[data-place="rail"] .account-pill-menu { padding: 8px 8px 0; }
+  /* it opens upward here, so the chevron points up at rest and down when open */
+  .account-pill[data-place="rail"] .account-pill-chevron { transform: rotate(180deg); }
+  .account-pill[data-place="rail"][data-open] .account-pill-chevron { transform: none; }
+  [data-rail-collapsed] .account-pill[data-place="rail"]:not([data-open]) :is(.account-pill-text, .account-pill-chevron) { display: none; }
+  [data-rail-collapsed] .account-pill[data-place="rail"]:not([data-open]) .account-pill-header { justify-content: center; padding: 0; }
+
   @media (max-width: 639px) {
     .account-pill-text, .account-pill:not([data-open]) .account-pill-chevron { display: none; }
     .account-pill:not([data-open]) .account-pill-header { width: 52px; justify-content: center; padding: 0; }

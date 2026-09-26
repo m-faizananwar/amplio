@@ -14,7 +14,9 @@ const HEADER = 52;
 // and to 268px, pinned to its right edge so it grows inward, and becomes the
 // menu. Its closed box is reserved, so the bar never reflows. Esc, an outside
 // click and choosing a row close it; focus goes back to the pill.
-export function AccountPill({ viewer }: { viewer: ShellViewer }) {
+// place="rail": at the foot of the sidebar, under Settings; it anchors to
+// the bottom-left and grows upward into the menu instead.
+export function AccountPill({ viewer, place = "bar" }: { viewer: ShellViewer; place?: "bar" | "rail" }) {
   const t = useTranslations("shell.topBar.account");
   const [open, setOpen] = useState(false);
   const [closedWidth, setClosedWidth] = useState<number | null>(null);
@@ -53,10 +55,11 @@ export function AccountPill({ viewer }: { viewer: ShellViewer }) {
     };
   }, [open]);
 
-  const width = open ? `min(${OPEN_WIDTH}px, calc(100vw - 32px))` : closedWidth ? `${closedWidth}px` : undefined;
+  const rail = place === "rail";
+  const width = open ? `min(${OPEN_WIDTH}px, calc(100vw - 32px))` : rail ? undefined : closedWidth ? `${closedWidth}px` : undefined;
   return (
-    <div ref={root} className="account-pill-slot" style={{ width: closedWidth ?? undefined }}>
-      <div className="account-pill" data-open={open || undefined} style={{ width, height: open ? HEADER + menuHeight : HEADER }}>
+    <div ref={root} className="account-pill-slot" data-place={place} style={{ width: rail ? undefined : closedWidth ?? undefined }}>
+      <div className="account-pill" data-place={place} data-open={open || undefined} style={{ width, height: open ? HEADER + menuHeight : HEADER }}>
         <button
           ref={header}
           type="button"

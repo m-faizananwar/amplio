@@ -17,7 +17,8 @@ export function TopBar({ viewer }: { viewer: ShellViewer }) {
         {viewer.demo ? <div className="hidden md:block"><RoleSwitch role={viewer.role} /></div> : null}
         <WalletChip role={viewer.role} walletCents={viewer.walletCents} />
         <NotificationsButton notifications={viewer.notifications} role={viewer.role} />
-        <AccountPill viewer={viewer} />
+        {/* from lg up the pill lives at the foot of the sidebar */}
+        <div className="lg:hidden"><AccountPill viewer={viewer} /></div>
       </div>
     </header>
   );

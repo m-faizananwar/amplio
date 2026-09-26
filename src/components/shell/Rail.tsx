@@ -4,21 +4,21 @@ import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { type ReactNode, useState } from "react";
 import { BrandLockup } from "@/components/brand/BrandLockup";
 import { isActive, navFor, type NavItem, type Role } from "./nav";
 import { useRailCollapsed } from "./useRailCollapsed";
 
-type Props = { role: Role; onNavigate?: () => void; collapsible?: boolean };
+type Props = { role: Role; onNavigate?: () => void; collapsible?: boolean; account?: ReactNode };
 
 const LEAVE_MS = 140;
 const ARRIVE_MS = 520;
 
-// The left rail on zinc-50: the mark, the seven destinations, Settings at the
-// foot. Each item's icon sits in a 28px square; the active item is a white
+// The left rail on zinc-50: the mark with the fold button beside it, the
+// destinations, then Settings and the account pill at the foot. Each item's icon sits in a 28px square; the active item is a white
 // pill whose square pops in filled (src/styles/shell.css). On wide screens it
 // folds to icons; the choice is remembered per browser.
-export function Rail({ role, onNavigate, collapsible = false }: Props) {
+export function Rail({ role, onNavigate, collapsible = false, account }: Props) {
   const pathname = usePathname();
   const t = useTranslations(`shell.nav`);
   const [collapsed, toggle] = useRailCollapsed();
@@ -52,9 +52,16 @@ export function Rail({ role, onNavigate, collapsible = false }: Props) {
   };
   return (
     <nav aria-label={t("sectionLabel")} data-rail-collapsed={folded || undefined} data-rail-phase={phase ?? undefined} className="flex h-full flex-col gap-5 px-3 py-4">
-      <Link href={root} onClick={onNavigate} className="flex h-10 items-center rounded-control px-2 outline-none focus-visible:ring-2 focus-visible:ring-money" aria-label={t(`${role}.overview`)}>
-        <BrandLockup size="sm" wordClassName={folded ? "hidden" : undefined} />
-      </Link>
+      <div className={folded ? "grid justify-items-center gap-2" : "flex items-center justify-between gap-2"}>
+        <Link href={root} onClick={onNavigate} className="flex h-10 items-center rounded-control px-2 outline-none focus-visible:ring-2 focus-visible:ring-money" aria-label={t(`${role}.overview`)}>
+          <BrandLockup size="sm" wordClassName={folded ? "hidden" : undefined} />
+        </Link>
+        {collapsible ? (
+          <button type="button" onClick={fold} className="grid size-8 shrink-0 place-items-center rounded-control text-ink-muted outline-none transition-colors duration-(--duration-fast) hover:bg-well hover:text-ink focus-visible:ring-2 focus-visible:ring-money" aria-label={folded ? t("expand") : t("collapse")} data-tip={folded ? t("expand") : t("collapse")} data-tip-side="right">
+            {folded ? <PanelLeftOpen className="size-4" aria-hidden="true" /> : <PanelLeftClose className="size-4" aria-hidden="true" />}
+          </button>
+        ) : null}
+      </div>
       <div className="grid gap-1.5">
         {folded ? null : <p className="nav-section">{t("sections.main")}</p>}
         <ul className="grid gap-0.5">{nav.primary.map(item)}</ul>
@@ -62,12 +69,7 @@ export function Rail({ role, onNavigate, collapsible = false }: Props) {
       <div className="mt-auto grid gap-1.5 border-t border-rule pt-3">
         {folded ? null : <p className="nav-section">{t("sections.account")}</p>}
         <ul className="grid gap-0.5" aria-label={t("accountLabel")}>{item(nav.settings)}</ul>
-        {collapsible ? (
-          <button type="button" onClick={fold} className="nav-item" aria-label={folded ? t("expand") : t("collapse")} data-tip={folded ? t("expand") : undefined} data-tip-side="right">
-            <span className="nav-icon">{folded ? <PanelLeftOpen aria-hidden="true" /> : <PanelLeftClose aria-hidden="true" />}</span>
-            {folded ? null : <span className="nav-label truncate">{t("collapse")}</span>}
-          </button>
-        ) : null}
+        {account ? <div className="pt-2">{account}</div> : null}
       </div>
     </nav>
   );
