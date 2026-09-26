@@ -120,5 +120,12 @@ export function useAgentRun(role: "brand" | "creator", csrfToken: string) {
     thread.current = { id: null, history: [] };
   }, []);
 
-  return { items, confirms, busy, sample, send, decide, reset };
+  // Continue a stored thread: the server keeps its turns, so the next message
+  // carries only its id.
+  const resume = useCallback((threadId: string) => {
+    reset();
+    thread.current.id = threadId;
+  }, [reset]);
+
+  return { items, confirms, busy, sample, send, decide, reset, resume };
 }
