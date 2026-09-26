@@ -32,7 +32,11 @@
     "cancel": "Annuler",
     "submit": "Ajouter {amount}",
     "crediting": "Rechargement · crédit en cours…",
-    "done": "Rechargement de {amount} crédité · solde {balance}"
+    "done": "Rechargement de {amount} crédité · solde {balance}",
+    "facts": {
+      "balance": "Portefeuille actuel",
+      "after": "Après ce rechargement"
+    }
   },
   "ledger": {
     "title": "Registre",

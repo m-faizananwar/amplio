@@ -32,7 +32,11 @@
     "cancel": "Cancel",
     "submit": "Add {amount}",
     "crediting": "Top-up · crediting…",
-    "done": "{amount} added · balance {balance}"
+    "done": "{amount} added · balance {balance}",
+    "facts": {
+      "balance": "Wallet now",
+      "after": "After this top-up"
+    }
   },
   "ledger": {
     "title": "Ledger",

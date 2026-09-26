@@ -1,9 +1,9 @@
 "use client";
 
+import { HandCoins } from "lucide-react";
 import { useFormatter, useTranslations } from "next-intl";
-import { PersonAvatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { ActionDialog } from "@/components/dialog/ActionDialog";
 import { useMarketplace } from "../useMarketplace";
 import { OfferForm } from "./OfferForm";
 
@@ -13,26 +13,32 @@ const CENTS = 100;
 // whether the draft needs approval. Sent as a funded invitation like any other.
 export function OfferDialog() {
   const t = useTranslations("brand.creators.booking.offer");
+  const tb = useTranslations("brand.creators.booking");
   const format = useFormatter();
-  const { booking, closeBooking, setBookingStep } = useMarketplace();
+  const { booking, closeBooking, setBookingStep, ctx } = useMarketplace();
   const creator = booking?.creator;
+  const euros = (c: number) => format.number(c / CENTS, { style: "currency", currency: "EUR" });
   return (
-    <Dialog open={booking?.step === "offer"} onOpenChange={(next) => (next ? undefined : closeBooking())}>
-      <DialogContent className="max-h-[92vh] overflow-y-auto sm:max-w-lg">
-        {creator ? (
-          <>
-            <DialogHeader className="flex-row items-center gap-3 text-left">
-              <PersonAvatar name={creator.name} src={creator.avatarUrl} size="lg" />
-              <div className="min-w-0">
-                <DialogTitle>{t("title")}</DialogTitle>
-                <DialogDescription className="truncate">{t("subtitle", { name: creator.name, price: format.number(creator.priceCents / CENTS, { style: "currency", currency: "EUR" }) })}</DialogDescription>
-              </div>
-            </DialogHeader>
-            <OfferForm key={creator.id} creator={creator} />
-            <Button type="button" variant="ghost" onClick={() => setBookingStep("selection")} className="justify-self-start">{t("back")}</Button>
-          </>
-        ) : null}
-      </DialogContent>
-    </Dialog>
+    <ActionDialog
+      open={booking?.step === "offer"}
+      onOpenChange={(next) => (next ? undefined : closeBooking())}
+      size="lg"
+      icon={<HandCoins />}
+      title={t("title")}
+      sub={creator ? t("subtitle", { name: creator.name, price: euros(creator.priceCents) }) : ""}
+      facts={creator ? [
+        { label: tb("facts.creator"), value: creator.name },
+        { label: t("facts.listed"), value: euros(creator.priceCents), mono: true },
+        { label: tb("facts.wallet"), value: euros(ctx.walletCents), mono: true, tone: "money" },
+      ] : []}
+      cancelLabel={tb("cancel")}
+    >
+      {creator ? (
+        <>
+          <OfferForm key={creator.id} creator={creator} />
+          <Button type="button" variant="ghost" onClick={() => setBookingStep("selection")} className="justify-self-start">{t("back")}</Button>
+        </>
+      ) : null}
+    </ActionDialog>
   );
 }

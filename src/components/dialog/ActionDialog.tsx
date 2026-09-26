@@ -21,9 +21,11 @@ type Props = {
   facts?: Fact[];
   /** Anything else the decision needs (a form, the draft). */
   children?: ReactNode;
-  /** The primary action (a blob Button or a ConfirmButton for money / destructive moves). */
-  action: ReactNode;
+  /** The primary action (a blob Button or a ConfirmButton for money / destructive moves); none when the body carries its own. */
+  action?: ReactNode;
   cancelLabel: string;
+  /** A finished state (e.g. "sent") keeps only its own action. */
+  hideCancel?: boolean;
   size?: "md" | "lg";
 };
 
@@ -39,7 +41,7 @@ const DISC: Record<Tone, string> = {
 // panel grows from the control that opened it (scale .96 → 1 on the spring,
 // 300 ms); Esc and the backdrop close it, focus is trapped and returned, and
 // the title and line label it (all from the Dialog primitive).
-export function ActionDialog({ open, onOpenChange, icon, tone = "ink", title, sub, facts = [], children, action, cancelLabel, size = "md" }: Props) {
+export function ActionDialog({ open, onOpenChange, icon, tone = "ink", title, sub, facts = [], children, action, cancelLabel, hideCancel = false, size = "md" }: Props) {
   useEffect(() => listenForTriggers(), []);
   // read once per opening, while the trigger is still where it was pressed
   const [origin, setOrigin] = useState<{ x: number; y: number } | null>(null);
@@ -59,12 +61,12 @@ export function ActionDialog({ open, onOpenChange, icon, tone = "ink", title, su
             <DialogDescription className="text-small text-ink-muted">{sub}</DialogDescription>
           </div>
         </div>
-        <div className="grid max-h-[60vh] grid-cols-[minmax(0,1fr)] gap-4 overflow-y-auto px-5 py-5">
+        <div className="grid max-h-[calc(100dvh-14rem)] grid-cols-[minmax(0,1fr)] gap-4 overflow-y-auto px-5 py-5">
           <DialogFacts facts={facts} />
           {children}
         </div>
         <div className="flex flex-col-reverse gap-2 border-t border-rule bg-paper px-5 py-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-end">
-          <Button type="button" variant="quiet" onClick={() => onOpenChange(false)}>{cancelLabel}</Button>
+          {hideCancel ? null : <Button type="button" variant="quiet" onClick={() => onOpenChange(false)}>{cancelLabel}</Button>}
           {action}
         </div>
       </DialogContent>

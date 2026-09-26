@@ -1,16 +1,16 @@
 "use client";
 
-import { ArrowLeftRight } from "lucide-react";
+import { ArrowLeftRight, UserPlus } from "lucide-react";
 import { useFormatter, useTranslations } from "next-intl";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { ActionDialog } from "@/components/dialog/ActionDialog";
 import { MIN_TOPUP_CENTS, TOPUP_STEP_CENTS } from "../../constants";
 import type { CreatorDto } from "../../schemas";
 import { bookCreator } from "../../server/actions";
 import { useMarketplace } from "../useMarketplace";
-import { BookingSent } from "./BookingSent";
+import { BookingSentDialog } from "./BookingSentDialog";
 import { InsufficientFundsCta } from "./InsufficientFundsCta";
 
 type Option = "single" | "bundle";
@@ -56,6 +56,8 @@ export function SelectionDialog() {
   const [error, setError] = useState<string | null>(null);
   const open = booking !== null && booking.step !== "offer";
   const creator = booking?.creator;
+  const format = useFormatter();
+  const euros = (c: number) => format.number(c / CENTS, { style: "currency", currency: "EUR" });
 
   async function book(option: Option) {
     if (!creator || !ctx.selectedCampaign) return;
@@ -73,26 +75,29 @@ export function SelectionDialog() {
     toast.success(t("sentToast", { name: creator.name }));
   }
 
+  if (creator && booking?.step === "sent") return <BookingSentDialog open={open} creatorName={creator.name} acceptBy={booking.acceptBy} onClose={closeBooking} />;
   return (
-    <Dialog open={open} onOpenChange={(next) => (next ? undefined : closeBooking())}>
-      <DialogContent className="sm:max-w-md">
-        {creator && booking?.step === "sent" ? <BookingSent creatorName={creator.name} acceptBy={booking.acceptBy} onClose={closeBooking} /> : null}
-        {creator && booking?.step === "selection" ? (
-          <>
-            <DialogHeader>
-              <DialogTitle>{t("title", { name: creator.name })}</DialogTitle>
-              <DialogDescription>{ctx.selectedCampaign ? t("forCampaign", { campaign: ctx.selectedCampaign.name }) : t("noCampaign")}</DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-3">
-              <RateRow creator={creator} option="single" walletCents={ctx.walletCents} pending={pending === "single"} onBook={() => book("single")} onNegotiate={() => setBookingStep("offer")} />
-              {creator.bundle ? <RateRow creator={creator} option="bundle" walletCents={ctx.walletCents} pending={pending === "bundle"} onBook={() => book("bundle")} /> : null}
-            </div>
-            <p className="text-caption text-ink-muted">{t("held")}</p>
-            {error ? <p role="alert" className="rounded-control border border-failure/30 bg-failure-soft px-3 py-2 text-small text-failure">{error}</p> : null}
-            <DialogFooter><Button type="button" variant="ghost" onClick={closeBooking}>{t("cancel")}</Button></DialogFooter>
-          </>
-        ) : null}
-      </DialogContent>
-    </Dialog>
+    <ActionDialog
+      open={open}
+      onOpenChange={(next) => (next ? undefined : closeBooking())}
+      icon={<UserPlus />}
+      title={creator ? t("title", { name: creator.name }) : ""}
+      sub={ctx.selectedCampaign ? t("forCampaign", { campaign: ctx.selectedCampaign.name }) : t("noCampaign")}
+      facts={creator ? [
+        { label: t("facts.creator"), value: creator.name },
+        { label: t("facts.campaign"), value: ctx.selectedCampaign?.name ?? "—" },
+        { label: t("facts.wallet"), value: euros(ctx.walletCents), mono: true, tone: "money" },
+      ] : []}
+      cancelLabel={t("cancel")}
+    >
+      {creator ? (
+        <>
+          <RateRow creator={creator} option="single" walletCents={ctx.walletCents} pending={pending === "single"} onBook={() => book("single")} onNegotiate={() => setBookingStep("offer")} />
+          {creator.bundle ? <RateRow creator={creator} option="bundle" walletCents={ctx.walletCents} pending={pending === "bundle"} onBook={() => book("bundle")} /> : null}
+          <p className="text-caption text-ink-muted">{t("held")}</p>
+          {error ? <p role="alert" className="rounded-control border border-failure/30 bg-failure-soft px-3 py-2 text-small text-failure">{error}</p> : null}
+        </>
+      ) : null}
+    </ActionDialog>
   );
 }
