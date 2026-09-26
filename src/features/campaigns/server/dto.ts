@@ -1,6 +1,6 @@
 import "server-only";
 import type { campaigns, collaborations, creators } from "@/db/schema";
-import { briefSchema, type Brief, type CampaignDto, type CollaborationRowDto } from "../schemas";
+import { storedBriefSchema, type Brief, type CampaignDto, type CollaborationRowDto } from "../schemas";
 
 type CampaignRow = typeof campaigns.$inferSelect;
 type CollabRow = typeof collaborations.$inferSelect;
@@ -8,7 +8,7 @@ type CreatorRow = typeof creators.$inferSelect;
 
 // Older rows may predate a field; parse so the view always gets the full shape.
 function briefOf(row: CampaignRow): Brief {
-  const parsed = briefSchema.safeParse(row.brief);
+  const parsed = storedBriefSchema.safeParse(row.brief);
   return parsed.success
     ? parsed.data
     : { whatToTell: "", targetIndustries: [], targetGeos: [], tone: "", do: [], avoid: [], links: [], angles: [] };

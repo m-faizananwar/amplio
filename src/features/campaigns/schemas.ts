@@ -1,5 +1,6 @@
 import { z } from "zod";
 import type { Estimate } from "@/lib/estimator";
+import { hasBracketedExample } from "@/lib/placeholders";
 import {
   BRIEF_ANGLES_MAX, BRIEF_LIST_MAX_ITEMS, BRIEF_PROMPT_MAX_CHARS, BRIEF_TEXT_MAX_CHARS, CAMPAIGN_DESCRIPTION_MAX_CHARS,
   CAMPAIGN_NAME_MAX_CHARS, LINK_URL_MAX_CHARS, MAX_FEE_CENTS,
@@ -18,7 +19,9 @@ export const briefAngleSchema = z.object({
 });
 export type BriefAngle = z.infer<typeof briefAngleSchema>;
 
-export const briefSchema = z.object({
+// The stored shape: what a brief row is read as (a draft may still hold
+// [bracketed] examples — reading it must not lose it).
+export const storedBriefSchema = z.object({
   whatToTell: z.string().trim().min(1, "Tell creators what to say").max(BRIEF_TEXT_MAX_CHARS),
   targetIndustries: z.array(z.string()).max(BRIEF_LIST_MAX_ITEMS),
   targetGeos: z.array(z.string()).max(BRIEF_LIST_MAX_ITEMS),
@@ -27,6 +30,21 @@ export const briefSchema = z.object({
   avoid: lineList,
   links: lineList,
   angles: z.array(briefAngleSchema).max(BRIEF_ANGLES_MAX),
+});
+
+// What can be saved: the same shape, with no [bracketed] example left in
+// any text a creator will read.
+export const briefSchema = storedBriefSchema.superRefine((brief, ctx) => {
+  const texts: Array<[string, (string | number)[]]> = [
+    [brief.whatToTell, ["whatToTell"]],
+    [brief.tone, ["tone"]],
+    ...brief.do.map((v, i): [string, (string | number)[]] => [v, ["do", i]]),
+    ...brief.avoid.map((v, i): [string, (string | number)[]] => [v, ["avoid", i]]),
+    ...brief.angles.flatMap((a, i): Array<[string, (string | number)[]]> => [[a.hook, ["angles", i, "hook"]], [a.direction, ["angles", i, "direction"]], [a.example, ["angles", i, "example"]]]),
+  ];
+  for (const [text, path] of texts) {
+    if (hasBracketedExample(text)) ctx.addIssue({ code: "custom", message: "Replace the [bracketed] parts before saving.", path });
+  }
 });
 export type Brief = z.infer<typeof briefSchema>;
 // What the editor form holds before zod's transforms run (empty lines allowed).

@@ -1,10 +1,12 @@
 import { z } from "zod";
+import { hasBracketedExample } from "@/lib/placeholders";
 import { INDUSTRIES, REGIONS } from "./constants";
 
 export const brandProfileSchema = z.object({
   company: z.string().trim().min(1, "Company name is required").max(120),
   website: z.string().trim().url("Enter a full URL, including https://").max(200).or(z.literal("")),
-  valueProp: z.string().trim().max(2000),
+  // a drafted description with [bracketed] examples left in isn't saved
+  valueProp: z.string().trim().max(2000).refine((v) => !hasBracketedExample(v), "Replace the [bracketed] parts before saving."),
 });
 export type BrandProfileInput = z.infer<typeof brandProfileSchema>;
 
