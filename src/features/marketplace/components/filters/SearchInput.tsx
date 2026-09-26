@@ -21,10 +21,9 @@ export function SearchInput({ initial }: { initial: string }) {
   }, [value, initial, update]);
 
   return (
-    <div className="relative w-full sm:max-w-xs">
+    <div className="w-full sm:max-w-xs">
       <label htmlFor="creator-search" className="sr-only">{t("search")}</label>
-      <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-ink-muted" aria-hidden="true" />
-      <Input id="creator-search" type="search" placeholder={t("searchPlaceholder")} value={value} onChange={(e) => setValue(e.target.value)} className="pl-9" />
+      <Input id="creator-search" type="search" leadingIcon={<Search />} placeholder={t("searchPlaceholder")} value={value} onChange={(e) => setValue(e.target.value)} />
     </div>
   );
 }
