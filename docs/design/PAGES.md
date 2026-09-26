@@ -362,6 +362,13 @@ card → price → legal) — onboarding carries on the same rail. The fake
 Forgot-password always shows the reset link on screen, labelled by whether
 it was also emailed. Validation messages are translated; server messages
 (wrong password, email taken) are the server's own English for now.
+Every field has an example in it (Ada, Lovelace, you@company.com, Create a
+password…), with the help line kept under the password. Password fields
+(PasswordInput, `src/components/forms`) carry an eye inside the field whose
+upper lid folds shut while the password is hidden and opens when it's shown
+(200 ms), and a keycap chip, "Caps Lock is on", that slides in under the
+field while caps is on and the field has focus. The two demo buttons stack:
+the pill labels don't fit two to a row.
 
 ## Brand
 
@@ -400,6 +407,18 @@ brand page its error state. The fields are the shared ones Settings uses
 (`src/features/profile-fields`), untouched, so they carry the new primitives'
 icons and focus states exactly as Settings does.
 
+The wizard is set in Plus Jakarta Sans (400–800, next/font, scoped to the
+wizard). Step one of both roles opens with a **picture**: a round 112px disc
+that is the button, a Choose / Change chip under it and a small remove, a
+drawn silhouette in the accent tint while empty (a person, or an image
+placeholder for a logo). The browser crops the file to a square around its
+middle, draws it at 256px and encodes WebP (JPEG where it can't), about
+20 KB, refusing files over 20 MB or that won't decode; the server checks it
+again (WebP/JPEG data URL, ≤ 300 KB) and saves it to `creators.avatar_url` or
+`brand_logos`. The preview card shows the pick at once; the save is
+optimistic with rollback. The same field sits in Settings > Profile, and
+every avatar falls back to the silhouette (brands to their trail mark).
+
 ### Brand — `/onboarding/brand/website` (`/profile` redirects here)
 One screen: paste the website, and while the site is read its words drop into two
 trays — value proposition and ideal customers — then the AI draft appears under
@@ -409,6 +428,13 @@ it in every brief: the company, the value proposition and the ideal customers,
 filling in live as the draft is edited, and it turns over to the same facts
 row by row once the draft lands. If the site can't be read, the draft says it
 starts from the company name.
+The three ideal customers are summary cards (number, who they are on two
+lines, what they care about on three, Edit), one column on phones. A card
+opens a dialog that grows out of its own box into a centred 640px panel on
+the spring while the page dims, and folds back on close: "Customer 2 of 3",
+the two fields full width with a live count, arrows to the other two, Save
+and Cancel. A native modal dialog: focus stays in, Esc and the dimmed page
+close it, focus returns to the card, and unsaved edits ask before they go.
 
 ### Creator — `/onboarding/creator/{linkedin,card,price,professional}`
 The same rail sign-up started (Account → LinkedIn → Card → Price → Legal), one
