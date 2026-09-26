@@ -377,26 +377,42 @@ collaboration is described and waits for "yes".
 
 ## Onboarding
 
+Both onboardings are the **wizard card** (components spec, "Onboarding"; screens in
+`screens/onboarding/wizard-*`): the rail on top, then an aside — an UPPERCASE
+eyebrow, the title, one line — above the step's fields on the left, and on the
+right a large preview card that is the thing being made (`src/components/flow/`:
+WizardShell, PreviewCard, WizardActions, WizardSkeleton). Phones stack the card
+above the fields. The card has a tinted band, the name at 28px (placeholder style
+until there is one), a 6px track that fills with an accent gradient as the
+fields complete, the step's own content and a stats strip. It tilts toward the
+pointer (fine pointers only) and turns over (rotateY 180°, 320 ms) to the entered
+facts as rows when a step adds details; a button turns it back. On phones it
+stays on its shorter front and turns on tap. Forward and back are blob buttons
+side by side. Loading is the wizard's outline; each form keeps its alert, the
+brand page its error state. The fields are the shared ones Settings uses
+(`src/features/profile-fields`), untouched, so they carry the new primitives'
+icons and focus states exactly as Settings does.
+
 ### Brand — `/onboarding/brand/website` (`/profile` redirects here)
-One screen, in the auth column (wider, for the ideal-customer cards): paste
-the website, and while the site is read its words drop into two trays —
-value proposition and ideal customers — then the AI draft appears right
-under the field, editable, before anything is used; the rail moves from
-Website to Profile when it lands. Two screens for "type a URL" and "check
-what we made of it" was a page turn for no reason, and the old 20-second
-minimum progress bar made the wait feel longer than the read. If the site
-can't be read, the draft says it starts from the company name. The fields
-are the shared ones Settings uses (WebsiteFields, BrandProfileFields).
+One screen: paste the website, and while the site is read its words drop into two
+trays — value proposition and ideal customers — then the AI draft appears under
+the field, editable, before anything is used; the rail moves from Website to
+Profile when it lands. The preview card is the brand's profile as creators see
+it in every brief: the company, the value proposition and the ideal customers,
+filling in live as the draft is edited, and it turns over to the same facts
+row by row once the draft lands. If the site can't be read, the draft says it
+starts from the company name.
 
 ### Creator — `/onboarding/creator/{linkedin,card,price,professional}`
-The same column and the same rail sign-up started (Account → LinkedIn →
-Card → Price → Legal), one step per screen because each is a different
-decision. LinkedIn is read for real (Apify) and fills the card; when it
-can't be read the screen says so and the card is typed by hand, with
-nothing guessed. The card step shows the card brands will see building
-under the fields, labelled "from your public LinkedIn" or "entered by you".
-Price starts from the suggestion; the legal step can wait for Settings
-("Do this later"). Every field is the shared one Settings uses.
+The same rail sign-up started (Account → LinkedIn → Card → Price → Legal), one
+step per screen because each is a different decision. The preview card is the
+creator's card as brands see it (photo, name, headline, industries; followers,
+country, price). LinkedIn is read for real (Apify) and fills it; when it can't
+be read the screen says so and the card is typed by hand, with nothing guessed.
+On the card step each value flies from its field into the card as you type. On
+price and legal the card turns over to the facts, the price and the legal
+details among them, live. The legal step can wait for Settings ("Do this
+later").
 
 ## Graphics and motion kit (`src/components/graphics`)
 One motif, the trail, drawn by hand in SVG on currentColor: DrawOnPath (a stroke draws in),
