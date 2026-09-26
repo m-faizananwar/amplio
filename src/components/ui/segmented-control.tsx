@@ -21,11 +21,16 @@ type Props<T extends string> = {
 // buttons: arrow keys move the choice, and a screen reader hears "1 of 3".
 export function SegmentedControl<T extends string>({ options, value, onValueChange, label, size = "default", className }: Props<T>) {
   const root = useRef<HTMLDivElement>(null)
-  const [thumb, setThumb] = useState<{ left: number; width: number } | null>(null)
+  // the thumb as two edges, so they can move one after the other (inchworm)
+  const [thumb, setThumb] = useState<{ left: number; right: number; dir: "left" | "right" | undefined } | null>(null)
 
   useLayoutEffect(() => {
-    const el = root.current?.querySelector<HTMLElement>("[data-checked]")
-    if (el) setThumb({ left: el.offsetLeft, width: el.offsetWidth })
+    const box = root.current
+    const el = box?.querySelector<HTMLElement>("[data-checked]")
+    if (!box || !el) return
+    const left = el.offsetLeft
+    const right = box.clientWidth - el.offsetLeft - el.offsetWidth
+    setThumb((prev) => ({ left, right, dir: prev ? (left > prev.left ? "right" : left < prev.left ? "left" : prev.dir) : undefined }))
   }, [value, options])
 
   return (
@@ -39,8 +44,9 @@ export function SegmentedControl<T extends string>({ options, value, onValueChan
       {thumb ? (
         <span
           aria-hidden="true"
-          className="absolute top-0.5 bottom-0.5 rounded-[calc(var(--radius-control)-2px)] bg-surface shadow-[0_1px_2px_rgb(17_17_17/0.08)] transition-[translate,width] duration-(--duration-base) ease-ledger motion-reduce:transition-none"
-          style={{ translate: `${thumb.left - 2}px 0`, width: thumb.width, left: 2 }}
+          data-activation-direction={thumb.dir}
+          className="inchworm absolute top-0.5 bottom-0.5 rounded-[calc(var(--radius-control)-2px)] bg-surface shadow-lift"
+          style={{ "--iw-l": `${thumb.left}px`, "--iw-r": `${thumb.right}px` } as React.CSSProperties}
         />
       ) : null}
       {options.map((option) => (
@@ -48,7 +54,7 @@ export function SegmentedControl<T extends string>({ options, value, onValueChan
           key={option.value}
           value={option.value}
           className={cn(
-            "relative z-10 inline-flex items-center justify-center rounded-[calc(var(--radius-control)-2px)] font-medium text-ink-muted outline-none transition-colors duration-(--duration-fast) ease-ledger hover:text-ink focus-visible:ring-2 focus-visible:ring-money data-checked:text-ink",
+            "inchworm-label relative z-10 inline-flex items-center justify-center rounded-[calc(var(--radius-control)-2px)] font-medium text-ink-muted outline-none hover:text-ink focus-visible:ring-2 focus-visible:ring-money data-checked:text-ink",
             size === "sm" ? "h-7 px-2.5 text-small" : "h-8 px-3.5 text-body"
           )}
         >

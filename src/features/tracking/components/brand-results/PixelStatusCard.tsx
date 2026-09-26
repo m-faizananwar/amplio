@@ -1,9 +1,10 @@
 "use client";
 
-import { Copy } from "lucide-react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
+import { CopyGlyph } from "@/components/graphics/CopyGlyph";
+import { useCopied } from "@/components/motion/useCopied";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { BRAND } from "@/config/brand";
@@ -16,9 +17,11 @@ import { pixelSnippet } from "./pixel-snippet";
 export function PixelStatusCard({ pixel, origin, inline = false }: { pixel: PixelStatus; origin: string; inline?: boolean }) {
   const t = useTranslations("brand.results.pixel");
   const snippet = pixelSnippet(origin, pixel.siteKey);
+  const [copiedKey, markCopied] = useCopied();
   async function copy() {
     try {
       await navigator.clipboard.writeText(snippet);
+      markCopied();
       toast.success(t("copied"));
     } catch {
       toast.error(t("copyFailed"));
@@ -41,7 +44,7 @@ export function PixelStatusCard({ pixel, origin, inline = false }: { pixel: Pixe
           <pre className="num overflow-x-auto rounded-control border border-rule bg-paper p-3 text-caption">{snippet}</pre>
           <pre className="num overflow-x-auto rounded-control border border-rule bg-paper p-3 text-caption">{`${BRAND.pixelGlobal}('track', 'signup', { email });\n${BRAND.pixelGlobal}('track', 'purchase', { value: 49, order_id });`}</pre>
           <div className="flex flex-wrap items-center gap-2">
-            <Button type="button" onClick={copy}><Copy aria-hidden="true" />{t("dialog.copy")}</Button>
+            <Button type="button" onClick={copy}><CopyGlyph copied={copiedKey} />{t("dialog.copy")}</Button>
             <Link href={`/demo/landing?site=${pixel.siteKey}`} className={buttonVariants({ variant: "secondary" })} target="_blank">{t("dialog.demo")}</Link>
           </div>
           <p className="text-caption text-ink-muted">{t("dialog.siteKey")} <code className="num rounded-[4px] bg-tint px-1">{pixel.siteKey}</code></p>

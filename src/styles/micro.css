@@ -1,0 +1,83 @@
+/* Micro-interactions (DIRECTION.md, "Motion"): small, ours, only where the
+   thing already exists. Every one shows its final state under reduced motion. */
+@layer components {
+  /* Tabs and segmented controls: the pill moves like an inchworm. Its leading
+     edge sets off first, the trailing edge catches up; labels recolour a beat
+     later, as the edge reaches them. Edges come from Base UI's --active-tab-*
+     (tabs) or --iw-l / --iw-r (SegmentedControl); the direction attribute
+     says which edge leads. */
+  .inchworm {
+    left: var(--iw-l, var(--active-tab-left));
+    right: var(--iw-r, var(--active-tab-right));
+    transition: left 240ms var(--ease-ledger), right 240ms var(--ease-ledger);
+  }
+  .inchworm[data-activation-direction="right"] { transition: right 200ms var(--ease-ledger), left 280ms var(--ease-ledger) 90ms; }
+  .inchworm[data-activation-direction="left"] { transition: left 200ms var(--ease-ledger), right 280ms var(--ease-ledger) 90ms; }
+  .inchworm-label { transition: color 160ms var(--ease-ledger) 70ms; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .inchworm, .inchworm-label { transition: none !important; }
+}
+
+/* Toasts stack with depth and fan out on hover (Sonner's own behaviour); each
+   one's bottom edge drains as its timer runs and holds while the stack is
+   hovered, when Sonner pauses the timers too. --toast-ms matches the
+   Toaster's duration (root layout). */
+@layer components {
+  [data-sonner-toast] { overflow: hidden; }
+  [data-sonner-toast]::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background: currentColor;
+    opacity: 0.18;
+    transform-origin: left;
+    animation: toast-drain var(--toast-ms, 3000ms) linear forwards;
+  }
+  [data-sonner-toast][data-type="loading"]::after, [data-sonner-toast][data-promise="true"]::after { display: none; }
+  [data-sonner-toaster]:hover [data-sonner-toast]::after { animation-play-state: paused; }
+  @keyframes toast-drain { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-sonner-toast]::after { animation: none; transform: scaleX(0); }
+}
+
+/* Counters: the badge bumps when its count changes; the bell swings on its
+   hook when something new arrives (keyed replays, see useBump). */
+@layer components {
+  .badge-bump { animation: badge-bump 420ms var(--ease-spring); }
+  @keyframes badge-bump { 0% { scale: 1; } 40% { scale: 1.3; } 100% { scale: 1; } }
+  /* without remounting (a rolling number must keep rolling): alternate two
+     identical keyframes, which restarts the animation */
+  [data-bump="0"] { animation: soft-bump-a 420ms var(--ease-spring); }
+  [data-bump="1"] { animation: soft-bump-b 420ms var(--ease-spring); }
+  @keyframes soft-bump-a { 0% { scale: 1; } 40% { scale: 1.08; } 100% { scale: 1; } }
+  @keyframes soft-bump-b { 0% { scale: 1; } 40% { scale: 1.08; } 100% { scale: 1; } }
+  .bell-swing { transform-origin: 50% 2px; animation: bell-swing 900ms var(--ease-ledger); }
+  @keyframes bell-swing {
+    0% { rotate: 0deg; } 15% { rotate: 14deg; } 30% { rotate: -12deg; } 45% { rotate: 8deg; }
+    60% { rotate: -5deg; } 75% { rotate: 2deg; } 100% { rotate: 0deg; }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .badge-bump, .bell-swing, [data-bump] { animation: none !important; }
+}
+
+/* Copy: the back page slides onto the front one, then a check draws in. */
+@layer components {
+  .g-copy { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .g-copy-front { fill: var(--surface); }
+  .g-copy-check { stroke-dasharray: 12; stroke-dashoffset: 12; }
+  .g-copy[data-copied] .g-copy-back { animation: copy-merge 320ms var(--ease-ledger) forwards; }
+  .g-copy[data-copied] .g-copy-check { animation: copy-check 280ms var(--ease-ledger) 260ms forwards; }
+  @keyframes copy-merge { to { transform: translate(5px, 5px); } }
+  @keyframes copy-check { to { stroke-dashoffset: 0; } }
+}
+@media (prefers-reduced-motion: reduce) {
+  .g-copy[data-copied] .g-copy-back { animation: none; transform: translate(5px, 5px); }
+  .g-copy[data-copied] .g-copy-check { animation: none; stroke-dashoffset: 0; }
+}

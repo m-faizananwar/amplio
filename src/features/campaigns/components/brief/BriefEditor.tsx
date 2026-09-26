@@ -59,7 +59,7 @@ export function BriefEditor({ campaignId, initial, cancelHref, afterSaveHref, sa
     <div className="flex flex-wrap items-center gap-2">
       <Button type="button" variant="secondary" onClick={() => setPreview((p) => !p)} aria-pressed={preview}>{preview ? t("actions.backToEdit") : t("actions.preview")}</Button>
       <Link href={cancelHref} className={buttonVariants({ variant: "ghost" })}>{t("actions.cancel")}</Link>
-      <Button type="submit" disabled={isSubmitting}>{isSubmitting ? t("actions.saving") : saveLabel ?? t("actions.save")}</Button>
+      <Button type="submit" status={isSubmitting ? "saving" : undefined} disabled={isSubmitting}>{isSubmitting ? t("actions.saving") : saveLabel ?? t("actions.save")}</Button>
     </div>
   );
 

@@ -16,6 +16,7 @@ import "@/styles/blob-button.css";
 import "@/styles/fields.css";
 import "@/styles/shell.css";
 import "@/styles/dropdown.css";
+import "@/styles/micro.css";
 
 import { BRAND } from "@/config/brand";
 

@@ -2,6 +2,7 @@
 
 import { useFormatter, useTranslations } from "next-intl";
 import Link from "next/link";
+import { useBump } from "@/components/motion/useBump";
 import { RollingNumber } from "@/components/ui/rolling-number";
 import { useWallet } from "../WalletProvider";
 
@@ -15,6 +16,7 @@ export function WalletChip({ role, walletCents }: { role: "brand" | "creator"; w
   const t = useTranslations("shell.topBar.wallet");
   const wallet = useWallet(walletCents);
   const format = useFormatter();
+  const bump = useBump(wallet.walletCents);
   // in the reader's locale, like every other amount (5 510,00 € in French)
   const euros = (cents: number) => format.number(cents / CENTS, { style: "currency", currency: "EUR" });
   return (
@@ -23,7 +25,7 @@ export function WalletChip({ role, walletCents }: { role: "brand" | "creator"; w
       className="inline-flex h-9 items-center gap-2 rounded-chip border border-money/25 bg-money-soft px-3.5 outline-none transition-colors duration-(--duration-fast) ease-ledger hover:border-money/50 focus-visible:ring-2 focus-visible:ring-money"
     >
       <span className="hidden text-caption text-ink-muted sm:inline">{t("label")}</span>
-      <RollingNumber value={wallet.walletCents} format={euros} className="text-small font-medium text-money" />
+      <span data-bump={bump ? bump % 2 : undefined} className="inline-flex"><RollingNumber value={wallet.walletCents} format={euros} className="text-small font-medium text-money" /></span>
     </Link>
   );
 }

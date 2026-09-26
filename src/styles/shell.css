@@ -109,3 +109,15 @@
 @media (prefers-reduced-motion: reduce) {
   .account-pill, .account-pill-chevron, .account-pill-menu { transition: none !important; }
 }
+
+/* The rail folding: labels (and section titles) step aside before it narrows,
+   and slide back in once it has widened again. */
+@layer components {
+  .nav-label, .nav-section { transition: opacity 140ms var(--ease-ledger), translate 140ms var(--ease-ledger); }
+  [data-rail-phase="leaving"] :is(.nav-label, .nav-section) { opacity: 0; translate: -8px 0; }
+  [data-rail-phase="arriving"] :is(.nav-label, .nav-section) { animation: nav-label-in 220ms var(--ease-ledger) 260ms both; }
+  @keyframes nav-label-in { from { opacity: 0; translate: -8px 0; } to { opacity: 1; translate: 0 0; } }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-label, .nav-section { transition: none !important; animation: none !important; }
+}

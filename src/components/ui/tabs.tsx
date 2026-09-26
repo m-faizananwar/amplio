@@ -50,7 +50,7 @@ function TabsList({
       <TabsPrimitive.Indicator
         data-slot="tabs-indicator"
         className={cn(
-          "absolute left-0 translate-x-(--active-tab-left) w-(--active-tab-width) transition-[translate,width] duration-(--duration-base) ease-ledger motion-reduce:transition-none",
+          "inchworm absolute",
           line
             ? "-bottom-px h-0.5 bg-ink"
             : "top-0.5 z-0 h-(--active-tab-height) rounded-[calc(var(--radius-control)-2px)] bg-surface shadow-[0_1px_2px_rgb(17_17_17/0.08)]"
@@ -65,7 +65,7 @@ function TabsTrigger({ className, ...props }: TabsPrimitive.Tab.Props) {
     <TabsPrimitive.Tab
       data-slot="tabs-trigger"
       className={cn(
-        "relative z-10 inline-flex items-center justify-center gap-1.5 whitespace-nowrap text-body font-medium outline-none transition-colors duration-(--duration-fast) ease-ledger hover:text-ink focus-visible:ring-2 focus-visible:ring-money disabled:pointer-events-none disabled:opacity-45 data-active:text-ink [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "inchworm-label relative z-10 inline-flex items-center justify-center gap-1.5 whitespace-nowrap text-body font-medium outline-none hover:text-ink focus-visible:ring-2 focus-visible:ring-money disabled:pointer-events-none disabled:opacity-45 data-active:text-ink [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         "group-data-[variant=line]/tabs-list:h-9 group-data-[variant=line]/tabs-list:px-0",
         "group-data-[variant=pill]/tabs-list:h-8 group-data-[variant=pill]/tabs-list:rounded-[calc(var(--radius-control)-2px)] group-data-[variant=pill]/tabs-list:px-3",
         "group-data-[variant=default]/tabs-list:h-8 group-data-[variant=default]/tabs-list:rounded-[calc(var(--radius-control)-2px)] group-data-[variant=default]/tabs-list:px-3",

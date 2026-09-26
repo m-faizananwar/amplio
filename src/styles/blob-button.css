@@ -141,7 +141,7 @@
     .blob-btn:is(:hover, :focus-visible, [data-armed]) .blob-btn__blob { transform: translateZ(0) scale(1.7); }
   }
 
-  .blob-btn:disabled, .blob-btn[aria-disabled="true"] {
+  .blob-btn:disabled:not([data-state]), .blob-btn[aria-disabled="true"]:not([data-state]) {
     --blob-border: var(--rule-strong);
     color: var(--ink-muted);
     cursor: not-allowed;
@@ -155,4 +155,27 @@
     .blob-btn__blob { transition-delay: 0ms !important; }
     .blob-btn .blob-btn__label { animation: none !important; }
   }
+}
+
+/* Save states: the pill shrinks into a circle (clip-path, nothing reflows)
+   around a spinner, then a check draws in; an error shakes it once. */
+@layer components {
+  .blob-btn { clip-path: inset(-6px -6px -6px -6px round 34px); transition: color 500ms var(--ease-ledger), clip-path 360ms var(--ease-ledger); }
+  .blob-btn:is([data-state="saving"], [data-state="saved"]) { clip-path: inset(0 calc(50% - 21px) round 999px); color: transparent; }
+  .blob-btn--sm:is([data-state="saving"], [data-state="saved"]) { clip-path: inset(0 calc(50% - 15px) round 999px); }
+  .blob-btn:is([data-state="saving"], [data-state="saved"]) .blob-btn__label { opacity: 0; }
+  .blob-btn__status { position: absolute; inset: 0; z-index: 2; display: grid; place-items: center; pointer-events: none; color: var(--blob-label); }
+  .blob-btn__status svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  .blob-btn__spinner circle { stroke-dasharray: 40 60; transform-origin: center; animation: blob-spin 800ms linear infinite; }
+  .blob-btn__check path { stroke-dasharray: 22; stroke-dashoffset: 22; animation: blob-check 360ms var(--ease-ledger) 120ms forwards; }
+  .blob-btn[data-state="error"] { animation: blob-shake 420ms var(--ease-ledger); }
+  @keyframes blob-spin { to { transform: rotate(360deg); } }
+  @keyframes blob-check { to { stroke-dashoffset: 0; } }
+  @keyframes blob-shake { 0%, 100% { translate: 0; } 20% { translate: -6px; } 40% { translate: 5px; } 60% { translate: -3px; } 80% { translate: 2px; } }
+}
+@media (prefers-reduced-motion: reduce) {
+  .blob-btn { transition: none !important; }
+  .blob-btn__spinner circle { animation-duration: 1600ms; }
+  .blob-btn__check path { animation: none; stroke-dashoffset: 0; }
+  .blob-btn[data-state="error"] { animation: none; }
 }

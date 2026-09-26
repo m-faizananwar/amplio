@@ -79,23 +79,40 @@ type ButtonProps = Omit<ButtonPrimitive.Props, "className"> & {
   size?: Size
   /** A round filled disc at the start that turns 90° on hover. */
   icon?: ReactNode
+  /** A save in flight: the pill shrinks into a spinner, then shows a check or shakes. */
+  status?: "saving" | "saved" | "error"
 }
 
-function Button({ className, variant = "primary", size = "default", icon, children, ...props }: ButtonProps) {
+function Button({ className, variant = "primary", size = "default", icon, status, children, ...props }: ButtonProps) {
   const tone = blobTone(variant, size)
   if (!tone) {
     return <ButtonPrimitive data-slot="button" className={buttonVariants({ variant, size, className })} {...props}>{children}</ButtonPrimitive>
   }
   return (
-    <ButtonPrimitive data-slot="button" data-variant={tone} className={buttonVariants({ variant, size, className })} {...props}>
+    <ButtonPrimitive data-slot="button" data-variant={tone} data-state={status} aria-busy={status === "saving" || undefined} className={buttonVariants({ variant, size, className })} {...props}>
       {icon ? <span className="blob-btn__icon" aria-hidden="true">{icon}</span> : null}
       <span className="blob-btn__label">{children}</span>
+      {status ? <SaveStatus status={status} /> : null}
       <span className="blob-btn__inner" aria-hidden="true">
         <span className="blob-btn__blobs">
           <span className="blob-btn__blob" /><span className="blob-btn__blob" /><span className="blob-btn__blob" /><span className="blob-btn__blob" />
         </span>
       </span>
     </ButtonPrimitive>
+  )
+}
+
+// Drawn over the label while saving: a turning arc, then a check that draws in.
+function SaveStatus({ status }: { status: "saving" | "saved" | "error" }) {
+  if (status === "error") return null
+  return (
+    <span className="blob-btn__status" aria-hidden="true">
+      {status === "saving" ? (
+        <svg viewBox="0 0 24 24" className="blob-btn__spinner"><circle cx="12" cy="12" r="9" /></svg>
+      ) : (
+        <svg viewBox="0 0 24 24" className="blob-btn__check"><path d="M6 12.5l4 4 8-9" /></svg>
+      )}
+    </span>
   )
 }
 

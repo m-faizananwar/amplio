@@ -4,6 +4,7 @@ import { Bell } from "lucide-react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useRef, useState, useSyncExternalStore } from "react";
+import { useBump } from "@/components/motion/useBump";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import type { ShellNotification } from "../viewer";
@@ -29,6 +30,8 @@ export function NotificationsButton({ notifications, role }: { notifications: Sh
   const [open, setOpen] = useState(false);
   const now = useClientNow();
   const count = notifications.length;
+  const swing = useBump(count, { onlyUp: true });
+  const bump = useBump(count);
   // Worded here, from the row's facts, so the bell reads in the viewer's language.
   const words = (n: ShellNotification) => {
     const vars = { name: n.counterpart, campaign: n.campaign };
@@ -47,8 +50,8 @@ export function NotificationsButton({ notifications, role }: { notifications: Sh
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger render={<Button variant="ghost" size="icon-sm" aria-label={`${t("label")} · ${t("unreadCount", { count })}`} className="relative" />}>
-        <Bell aria-hidden="true" />
-        {count > 0 ? <span className="absolute top-1.5 right-1.5 size-2 rounded-full bg-attention ring-2 ring-paper" aria-hidden="true" /> : null}
+        <Bell key={`bell-${swing}`} className={swing ? "bell-swing" : undefined} aria-hidden="true" />
+        {count > 0 ? <span key={`dot-${bump}`} className={`absolute top-1.5 right-1.5 size-2 rounded-full bg-attention ring-2 ring-surface ${bump ? "badge-bump" : ""}`} aria-hidden="true" /> : null}
       </PopoverTrigger>
       <PopoverContent align="end" className="w-[22rem] max-w-[calc(100vw-2rem)] gap-0 p-0">
         <p className="border-b border-rule px-4 py-3 text-body font-medium">{t("label")}</p>
