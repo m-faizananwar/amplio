@@ -19,7 +19,7 @@ const REASON: Record<string, { en: string; fr: string }> = {
 // role's registry. Then the agent continues from the result.
 export async function runConfirmed({ viewer, locale, id, decision, emit, threadId }: Input): Promise<string | null> {
   const check = readPending(id, { userId: viewer.userId, session: viewer.csrfToken });
-  const msg = (text: string) => { const mid = `m${Date.now().toString(ID_RADIX)}`; emit({ type: "message", id: mid, text, final: false }); emit({ type: "message", id: mid, text: "", final: true }); return threadId ?? null; };
+  const msg = (text: string) => { const mid = `m${Date.now().toString(ID_RADIX)}`; emit({ type: "message", id: mid, text, final: false }); emit({ type: "message", id: mid, text, final: true }); return threadId ?? null; };
   if (!check.ok) return msg((REASON[check.reason] ?? REASON.default)[locale]);
   const tool = findTool(viewer.brand ? "brand" : "creator", check.action.tool);
   if (!tool || tool.kind !== "confirm") return msg(REASON.default[locale]);

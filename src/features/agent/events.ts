@@ -69,7 +69,8 @@ export const confirmEvent = z.object({
   expiresAt: z.string(),
 });
 
-// Assistant text, streamed: chunks of one message share an id; `final` closes it.
+// Assistant text, streamed: chunks of one message share an id and append;
+// the `final` event closes it and carries the WHOLE text (replace, don't append).
 export const messageEvent = z.object({ type: z.literal("message"), id: z.string(), text: z.string(), final: z.boolean().default(false) });
 export const doneEvent = z.object({ type: z.literal("done"), threadId: z.string().nullable() });
 export const errorEvent = z.object({ type: z.literal("error"), message: z.string(), retryable: z.boolean().default(false) });

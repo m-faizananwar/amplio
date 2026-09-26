@@ -38,7 +38,7 @@ function say(emit: Emit, text: string) {
   const id = `m${Date.now().toString(ID_RADIX)}`;
   const words = text.split(/(\s+)/);
   for (let i = 0; i < words.length; i += CHUNK_WORDS * 2) emit({ type: "message", id, text: words.slice(i, i + CHUNK_WORDS * 2).join(""), final: false });
-  emit({ type: "message", id, text: "", final: true });
+  emit({ type: "message", id, text, final: true });
 }
 
 // One call the model asked for: a question ends the turn, a read runs (with
