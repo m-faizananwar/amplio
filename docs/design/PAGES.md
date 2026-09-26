@@ -9,6 +9,10 @@ at 1440 and 375 live in `docs/design/screens/`. Each builder appends their own p
 A single column: **Needs you** (ruled rows, most urgent first, one button each), then
 three numbers. People open the app to act; the list answers "what do I do now" before
 any total, and each number leads to the rows it is made of.
+**Merged (components round):** the ring widget sits beside Needs you: every collaboration by
+state (needs you, waiting on the brand, live, done), each arc opening that filter. It
+replaces nothing on screen but answers "where does everything stand" that the list alone
+couldn't, so the page stays two blocks (what needs you + where things stand) above three numbers.
 
 ### My card — `/creator/card` (+ public `/c/[handle]`)
 Two columns: the card exactly as brands see it on the left, "Your links" on the right

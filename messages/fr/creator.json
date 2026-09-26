@@ -72,6 +72,10 @@
         "label": "Posts en ligne",
         "hint": "Publiés pour des marques"
       }
+    },
+    "ring": {
+      "label": "Vos collaborations",
+      "total": "collaborations"
     }
   },
   "card": {

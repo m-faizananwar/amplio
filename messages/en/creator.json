@@ -72,6 +72,10 @@
         "label": "Live posts",
         "hint": "Published for brands"
       }
+    },
+    "ring": {
+      "label": "Your collaborations",
+      "total": "collaborations"
     }
   },
   "card": {
