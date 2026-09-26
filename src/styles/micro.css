@@ -92,3 +92,37 @@
 @media (prefers-reduced-motion: reduce) {
   .agent-rise, .agent-message > span { animation: none !important; }
 }
+
+/* FirstRun: example cards drift slowly behind a raised card, fading at the
+   edges (a mask); the track is doubled so the loop is seamless. */
+@layer components {
+  .first-run-stage {
+    position: relative;
+    width: 100%;
+    max-width: 560px;
+    height: 150px;
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+  }
+  .first-run-track { display: flex; width: max-content; gap: 12px; padding-top: 38px; animation: first-run-drift 36s linear infinite; }
+  .first-run-example { display: grid; width: 150px; flex-shrink: 0; justify-items: start; gap: 8px; padding: 14px; border: 1px solid var(--rule); border-radius: 16px; background: var(--paper); opacity: 0.7; }
+  .first-run-raised {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: flex;
+    width: min(320px, 86%);
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    border: 1px solid var(--rule);
+    border-radius: 18px;
+    background: var(--surface);
+    box-shadow: var(--panel-shadow);
+    translate: -50% -50%;
+  }
+  @keyframes first-run-drift { to { transform: translateX(-50%); } }
+}
+@media (prefers-reduced-motion: reduce) {
+  .first-run-track { animation: none; }
+}

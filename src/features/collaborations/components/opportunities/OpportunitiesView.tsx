@@ -6,6 +6,7 @@ import { startTransition, useMemo, useOptimistic, useState } from "react";
 import { useListTransition } from "@/components/motion/useListTransition";
 import { toast } from "sonner";
 import { buttonVariants, Button } from "@/components/ui/button";
+import { FirstRun } from "@/components/page/FirstRun";
 import { EmptyState } from "@/components/ui/empty-state";
 import type { OpportunityDto } from "../../schemas";
 import { applyToCampaign } from "../../server/actions";
@@ -14,7 +15,6 @@ import { ApplyDialog } from "./ApplyDialog";
 import { distinctValues, filterOpportunities } from "./filterOpportunities";
 import { INITIAL_FILTERS, OpportunityFilters } from "./OpportunityFilters";
 import { OpportunityRow } from "./OpportunityRow";
-import { RadarScene } from "@/components/graphics/scenes";
 
 type Props = { opportunities: OpportunityDto[]; csrfToken: string };
 
@@ -43,7 +43,7 @@ export function OpportunitiesView({ opportunities, csrfToken }: Props) {
   }
 
   if (opportunities.length === 0) {
-    return <EmptyState illustration={<RadarScene />} title={t("empty.none.title")} body={t("empty.none.body")} action={<Link href="/creator/card" className={buttonVariants()}>{t("empty.none.action")}</Link>} />;
+    return <FirstRun title={t("empty.none.title")} body={t("empty.none.body")} action={<Link href="/creator/card" className={buttonVariants()}>{t("empty.none.action")}</Link>} />;
   }
   return (
     <div className="grid gap-4">

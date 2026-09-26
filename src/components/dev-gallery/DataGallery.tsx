@@ -5,6 +5,7 @@ import { useMemo, useState } from "react"
 import { TrailDrawer } from "@/components/trail/TrailDrawer"
 import { Button } from "@/components/ui/button"
 import { PersonAvatar } from "@/components/ui/avatar"
+import { FirstRun } from "@/components/page/FirstRun"
 import { EmptyState } from "@/components/ui/empty-state"
 import { Skeleton } from "@/components/ui/skeleton"
 import { RingWidget } from "@/components/ui/ring-widget"
@@ -34,6 +35,7 @@ export function DataGallery() {
       </Section>
       <TableSection />
       <Section id="empty" title="EmptyState · Skeleton">
+        <Row label="first run"><div className="w-full max-w-xl"><FirstRun title="No campaigns yet" body="A campaign is the brief creators write from. Start one and the ranked creators appear here." action={<Button>New campaign</Button>} /></div></Row>
         <Row label="empty"><EmptyState className="w-full max-w-xl" icon={Inbox} title="No drafts to review" body="When a creator sends a draft it lands here, with the post and the brief side by side." action={<Button variant="secondary">Invite creators</Button>} /></Row>
         <Row label="skeleton"><div className="grid w-72 gap-2"><Skeleton className="h-4 w-40" /><Skeleton className="h-8 w-28" /><Skeleton className="h-3 w-56" /></div></Row>
       </Section>
