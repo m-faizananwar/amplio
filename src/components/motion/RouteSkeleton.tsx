@@ -4,7 +4,7 @@ import { StatTilesSkeleton, TableSkeleton } from "@/components/skeleton/Skeleton
 
 // The skeleton for a route, shown on a cold load (the layout's Suspense
 // fallback) and when a client navigation runs long enough to look stuck.
-// The brand pages get their own shape — the same cards in the same places —
+// The brand and creator pages get their own shape — the same cards in the same places —
 // so the real page lands on top of it without anything jumping; any other
 // route gets the header / tiles / rows rhythm most pages open with.
 function Body({ pathname }: { pathname: string }) {
@@ -15,6 +15,14 @@ function Body({ pathname }: { pathname: string }) {
     case "/brand/creators": return <ListCardSkeleton toolbar />;
     case "/brand/campaigns":
     case "/brand/collaborations": return <ListCardSkeleton />;
+    // creator pages share the brand shapes: Overview (Needs you + ring + three
+    // numbers), Earnings (one balance card + ledger rows, like Billing),
+    // Analytics (a chart card + the links table), the filtered lists
+    case "/creator": return <OverviewSkeleton />;
+    case "/creator/earnings": return <BillingSkeleton />;
+    case "/creator/analytics": return <ResultsSkeleton />;
+    case "/creator/opportunities": return <ListCardSkeleton toolbar />;
+    case "/creator/collaborations": return <ListCardSkeleton />;
     default:
       return (
         <>
