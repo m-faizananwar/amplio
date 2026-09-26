@@ -15,6 +15,8 @@ export type ShellViewer = {
   demo: boolean;
   notifications: ShellNotification[];
   launchPlan: { explored: boolean; briefed: boolean; invited: boolean; stepsLeft: number } | null;
+  /** The in-app setup checklist (sidebar badge, Overview card); null in preview. */
+  setup: import("@/lib/setup-steps").SetupProgress | null;
 };
 
 export type ShellNotification = {

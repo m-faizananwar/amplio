@@ -80,7 +80,7 @@ export async function analyzeWebsite(input: WebsiteInput): Promise<ActionResult<
     if (!row) return { ok: false, error: NOT_SIGNED_IN };
     const data = await analyze(row, parsed.data.url);
     dropCaches(row);
-    revalidatePath("/onboarding/brand", "layout");
+    revalidatePath("/brand/setup");
     return { ok: true, data };
   } catch (error) {
     console.error("[brand-onboarding] analyzeWebsite failed", { url: input.url, error });

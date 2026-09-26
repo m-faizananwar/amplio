@@ -1,9 +1,10 @@
-export const ONBOARDING_ROOT = "/onboarding/creator";
+// Setup lives inside the app shell; each step is a ?step= of /creator/setup.
+export const ONBOARDING_ROOT = "/creator/setup";
 export const ONBOARDING_STEPS = {
-  linkedin: { path: `${ONBOARDING_ROOT}/linkedin`, step: 2, title: "Add your public LinkedIn profile" },
-  card: { path: `${ONBOARDING_ROOT}/card`, step: 3, title: "Complete your creator card" },
-  price: { path: `${ONBOARDING_ROOT}/price`, step: 4, title: "Complete your creator card" },
-  professional: { path: `${ONBOARDING_ROOT}/professional`, step: 4, title: "Complete your professional information now?" },
+  linkedin: { path: `${ONBOARDING_ROOT}?step=linkedin`, step: 2, title: "Add your public LinkedIn profile" },
+  card: { path: `${ONBOARDING_ROOT}?step=card`, step: 3, title: "Complete your creator card" },
+  price: { path: `${ONBOARDING_ROOT}?step=price`, step: 4, title: "Complete your creator card" },
+  professional: { path: `${ONBOARDING_ROOT}?step=legal`, step: 4, title: "Complete your professional information now?" },
 } as const;
 export const WORKSPACE_AFTER_ONBOARDING = "/creator";
 

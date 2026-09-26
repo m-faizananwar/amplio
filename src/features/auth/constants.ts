@@ -13,7 +13,7 @@ export const DEMO_DOMAINS = [BRAND.demoDomain, BRAND.legacyDemoDomain] as const;
 export const isDemoEmail = (email: string) => DEMO_DOMAINS.some((d) => email.endsWith(`@${d}`));
 
 export const ROLE_HOME = { brand: "/brand", creator: "/creator" } as const;
-export const ROLE_ONBOARDING = { brand: "/onboarding/brand", creator: "/onboarding/creator" } as const;
+export const ROLE_ONBOARDING = { brand: "/brand/setup", creator: "/creator/setup" } as const;
 
 // Older /register?role=… values (and plain role names) → the role's sign-up.
 export const REGISTER_ROLE_PARAM: Record<string, string> = { saas: "/register/brand", brand: "/register/brand", influencer: "/register/creator", creator: "/register/creator" };

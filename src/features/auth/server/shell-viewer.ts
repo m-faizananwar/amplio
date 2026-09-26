@@ -1,17 +1,19 @@
 import "server-only";
 import { getBrandLogo } from "@/features/brand-onboarding/server/queries";
+import { getBrandSetupProgress } from "@/features/brand-onboarding/server/setup-progress";
+import { getCreatorSetupProgress } from "@/features/creator-onboarding/server/setup-progress";
 import { redirect } from "next/navigation";
 import { isDbConfigured } from "@/db";
 import type { ShellViewer } from "@/components/shell/viewer";
-import { isDemoEmail, ROLE_HOME, ROLE_ONBOARDING } from "../constants";
+import { isDemoEmail, ROLE_HOME } from "../constants";
 import type { Role } from "../schemas";
 import { getLaunchPlan } from "@/features/campaigns/server/queries";
 import { getBrandNotifications, getCreatorNotifications } from "@/features/workspace/server/notifications";
 import { getViewer, type Viewer } from "./session";
 
 const PREVIEW: Record<Role, ShellViewer> = {
-  brand: { role: "brand", firstName: "Demo", lastName: "Brand", workspace: "Preview workspace", email: "", avatarUrl: null, walletCents: 0, csrfToken: "", preview: true, demo: false, notifications: [], launchPlan: null },
-  creator: { role: "creator", firstName: "Demo", lastName: "Creator", workspace: "Preview workspace", email: "", avatarUrl: null, walletCents: 0, csrfToken: "", preview: true, demo: false, notifications: [], launchPlan: null },
+  brand: { role: "brand", firstName: "Demo", lastName: "Brand", workspace: "Preview workspace", email: "", avatarUrl: null, walletCents: 0, csrfToken: "", preview: true, demo: false, notifications: [], launchPlan: null, setup: null },
+  creator: { role: "creator", firstName: "Demo", lastName: "Creator", workspace: "Preview workspace", email: "", avatarUrl: null, walletCents: 0, csrfToken: "", preview: true, demo: false, notifications: [], launchPlan: null, setup: null },
 };
 
 export async function toShellViewer(viewer: Viewer): Promise<ShellViewer> {
@@ -21,9 +23,13 @@ export async function toShellViewer(viewer: Viewer): Promise<ShellViewer> {
       ? await getCreatorNotifications(viewer.creator.id, viewer.userId)
       : [];
   const launchPlan = viewer.brand ? await getLaunchPlan(viewer.brand.id) : null;
+  const setup = viewer.brand
+    ? await getBrandSetupProgress(viewer.brand.id, viewer.brand.completedAt)
+    : viewer.creator ? await getCreatorSetupProgress(viewer.creator.id, viewer.creator.completedAt) : null;
   return {
     notifications,
     launchPlan,
+    setup,
     role: viewer.role,
     firstName: viewer.firstName,
     lastName: viewer.lastName,
@@ -47,7 +53,6 @@ export async function resolveShellViewer(role: Role, pathname: string) {
   // No viewer with a cookie present = the row is gone or expired: clear the cookie on the way to /login.
   if (!viewer) redirect(`/api/auth/expired?next=${encodeURIComponent(pathname)}`);
   if (viewer.role !== role) redirect(ROLE_HOME[viewer.role]);
-  const onboarded = role === "brand" ? viewer.brand?.onboarded : viewer.creator?.onboarded;
-  if (!onboarded) redirect(ROLE_ONBOARDING[role]);
+  // setup is non-blocking: an unfinished account uses the app, with Setup in the rail
   return { mode: "ok" as const, shell: await toShellViewer(viewer), viewer };
 }

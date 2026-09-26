@@ -27,8 +27,8 @@ export type Viewer = {
   lastName: string;
   role: Role;
   csrfToken: string;
-  brand: { id: string; slug: string; company: string; walletCents: number; onboarded: boolean } | null;
-  creator: { id: string; handle: string; avatarUrl: string; headline: string; availableCents: number; onboarded: boolean } | null;
+  brand: { id: string; slug: string; company: string; walletCents: number; onboarded: boolean; completedAt: string | null } | null;
+  creator: { id: string; handle: string; avatarUrl: string; headline: string; availableCents: number; onboarded: boolean; completedAt: string | null } | null;
 };
 
 function hashToken(token: string) {
@@ -124,9 +124,9 @@ async function loadViewerProfile(userId: string) {
     firstName: user.firstName,
     lastName: user.lastName,
     role: user.role,
-    brand: brand ? { id: brand.id, slug: brand.slug, company: brand.company, walletCents: brand.walletCents, onboarded: Boolean(brand.onboardingCompletedAt) } : null,
+    brand: brand ? { id: brand.id, slug: brand.slug, company: brand.company, walletCents: brand.walletCents, onboarded: Boolean(brand.onboardingCompletedAt), completedAt: brand.onboardingCompletedAt?.toISOString() ?? null } : null,
     creator: creator
-      ? { id: creator.id, handle: creator.handle, avatarUrl: creator.avatarUrl, headline: creator.headline, availableCents, onboarded: Boolean(creator.onboardingCompletedAt) }
+      ? { id: creator.id, handle: creator.handle, avatarUrl: creator.avatarUrl, headline: creator.headline, availableCents, onboarded: Boolean(creator.onboardingCompletedAt), completedAt: creator.onboardingCompletedAt?.toISOString() ?? null }
       : null,
   };
 }

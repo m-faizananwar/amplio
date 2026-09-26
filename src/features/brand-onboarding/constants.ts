@@ -2,9 +2,9 @@
 // "Brand onboarding after email + 6-digit code").
 
 export const ONBOARDING_ROUTES = {
-  index: "/onboarding/brand",
-  website: "/onboarding/brand/website",
-  profile: "/onboarding/brand/profile",
+  index: "/brand/setup",
+  website: "/brand/setup",
+  profile: "/brand/setup",
 } as const;
 
 
