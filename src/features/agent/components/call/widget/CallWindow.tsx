@@ -3,6 +3,7 @@
 import { GripHorizontal, Maximize2, Minus } from "lucide-react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import type { RefObject } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import type { AgentCall } from "../useAgentCall";
 import { CallBody } from "./CallBody";
@@ -11,22 +12,26 @@ import { CallBeam } from "./CallBeam";
 import { CallGlow } from "./CallGlow";
 import { CallTimer } from "./CallTimer";
 import { useCallCorner } from "./useCallCorner";
+import { useCallMorph } from "./useCallMorph";
 
 const WINDOW = { w: 340, h: 460 };
 const BUBBLE = { w: 64, h: 64 };
 
 // Desktop: a small window over the app, dragged by its header and snapped to
 // a corner, or folded to a round bubble that pulses with the voice. The page
-// underneath keeps working and moves when the agent opens something.
+// underneath keeps working and moves when the agent opens something. It grows
+// out of the rail's phone and folds back into it (useCallMorph).
 export function CallWindow({ call }: { call: AgentCall }) {
   const t = useTranslations("agent.call");
   const place = useCallCorner(call.minimised ? BUBBLE : WINDOW);
+  const frame = useCallMorph<HTMLElement>();
   const live = call.status === "live" || call.status === "connecting";
   // the agent is working: tool steps running, or it is speaking
   const working = live && (call.run.busy || call.mode === "speaking" || call.mode === "thinking");
   if (call.minimised) {
     return (
       <button
+        ref={frame as RefObject<HTMLButtonElement | null>}
         type="button"
         className="call-float call-bubble" data-moving={place.moving || undefined}
         style={place.style}
@@ -40,7 +45,7 @@ export function CallWindow({ call }: { call: AgentCall }) {
     );
   }
   return (
-    <section aria-label={t("start")} className="call-float call-window" data-moving={place.moving || undefined} style={{ ...place.style, width: WINDOW.w, height: WINDOW.h }}>
+    <section ref={frame} aria-label={t("start")} className="call-float call-window" data-moving={place.moving || undefined} style={{ ...place.style, width: WINDOW.w, height: WINDOW.h }}>
       <CallBeam working={live && call.run.busy} radius={20} className="flex h-full min-h-0 flex-col">
       <header className="flex items-center gap-1 border-b border-rule px-2 py-1.5">
         <button type="button" className="call-handle" aria-label={t("handle")} {...place.handleProps}>

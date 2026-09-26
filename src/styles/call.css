@@ -19,6 +19,9 @@
     background: var(--surface);
     box-shadow: 0 2px 6px rgb(16 24 40 / 0.06), 0 24px 56px -12px rgb(16 24 40 / 0.28);
   }
+  /* the content arrives once the window has grown (useCallMorph) */
+  .call-window[data-growing] > * { animation: call-reveal 220ms var(--ease-ledger) 200ms backwards; }
+  @keyframes call-reveal { from { opacity: 0; } }
   .dark .call-window { box-shadow: 0 2px 6px rgb(0 0 0 / 0.5), 0 24px 56px -12px rgb(0 0 0 / 0.7); }
   .call-handle {
     display: flex;
@@ -123,5 +126,5 @@
 
 @media (prefers-reduced-motion: reduce) {
   .call-float, .call-sheet { transition: none !important; animation: none !important; }
-  .call-live-dot, .call-controls > *, .call-hangup, .call-hangup svg { animation: none !important; }
+  .call-live-dot, .call-window > *, .call-controls > *, .call-hangup, .call-hangup svg { animation: none !important; }
 }
