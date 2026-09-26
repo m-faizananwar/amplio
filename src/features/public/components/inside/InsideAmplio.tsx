@@ -8,7 +8,7 @@ import { InsideReveal } from "./InsideReveal";
 import s from "./inside.module.css";
 
 // Right after the hero: the product itself. A two-line headline wiping in, one
-// line and the way into the demo, then the green band with the trail drifting
+// line and the way into the demo, then the blue band with the trail drifting
 // across it and a collaboration review from the demo workspace on its edge.
 export async function InsideAmplio({ trail, creators }: { trail: PublicTrail | null; creators: PublicCreator[] }) {
   const t = await getTranslations("landing.inside");

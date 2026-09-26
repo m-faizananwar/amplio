@@ -44,8 +44,8 @@ zinc scale; reading ink stays near-black.
   500 `#71717A` (muted) · 400 `#A1A1AA` · 300 `#D4D4D8` (strong rule) · 200 `#E4E4E7` (rule) ·
   150 `#ECECEE` · well `#EDEDF0` (hover under options, rows, nav) · press `#F0F0F2` (a field
   on hover) · 100 `#F4F4F5` (tint) · 50 `#FAFAFA` (page, and a field at rest). Cards `#FFFFFF`.
-- one accent for action, money and verified attribution: Amplio green `#0F7B4A` (dark
-  `#34C77B`), with a soft tint of it for fills
+- one accent for action, money and verified attribution: electric blue `#2563EB` (dark
+  `#60A5FA`), with a soft tint of it for fills; status green (`#067647`, dark `#52B788`) is kept only for paid and live ticks
 - status tones: good `#067647` · owed `#B54708` · info `#175CD3` (links) · lost `#C01F14`
 - dark: page `#09090B`, cards `#18181B`, ink `#FAFAFA`, rules `#27272A` / `#3F3F46`
 In the app and on every page below the landing's first screen: no gradients, no glass,

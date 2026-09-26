@@ -16,7 +16,7 @@
    - shadcn names (background, foreground, muted, border, primary, …) mapped
      onto the same values, so the generated primitives and older screens pick
      up the new system without being rewritten first.
-   `accent` stays shadcn's hover tint; the money green is `money`.
+   `accent` stays shadcn's hover tint; the blue accent is `money`.
 --------------------------------------------------------------------------- */
 @theme inline {
   /* ledger */
@@ -150,9 +150,9 @@
   --press: #f0f0f2;
   --field: #fafafa;
   --label: #3f3f46;
-  /* one accent for action, money and verified attribution */
-  --money: #0f7b4a;
-  --money-soft: #e7f3ec;
+  /* one accent for action, money and verified attribution: electric blue */
+  --money: #2563eb;
+  --money-soft: #e8efff;
   --good: #067647;
   --attention: #b54708;
   --attention-soft: #fef0e4;
@@ -223,9 +223,9 @@
   --press: #232326;
   --field: #1c1c1f;
   --label: #d4d4d8;
-  --money: #34c77b;
-  --money-soft: #12291c;
-  --good: #34c77b;
+  --money: #60a5fa;
+  --money-soft: #122036;
+  --good: #52b788;
   --attention: #f0a24a;
   --attention-soft: #2e2012;
   --failure: #f07266;

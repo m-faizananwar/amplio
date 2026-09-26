@@ -183,8 +183,8 @@ html { scroll-behavior: smooth; }
   box-shadow: 0 22px 48px rgb(13 12 11 / .28);
 }
 .card-invert:hover .text-ink-muted { color: color-mix(in oklab, var(--color-paper) 72%, transparent); }
-.card-invert:hover .text-money { color: #34c77b; }
-.dark .card-invert:hover .text-money { color: #0f7b4a; }
+.card-invert:hover .text-money { color: #60a5fa; }
+.dark .card-invert:hover .text-money { color: #2563eb; }
 .card-invert:hover :is(.border-rule, .divide-rule > *) { border-color: color-mix(in oklab, var(--color-paper) 20%, transparent); }
 .card-invert:hover .group\/button.bg-ink { background-color: var(--color-paper); color: var(--color-ink); }
 .card-invert:hover .group\/button.bg-surface:not(:disabled):hover { background-color: var(--color-paper); color: var(--color-ink); border-color: var(--color-paper); }

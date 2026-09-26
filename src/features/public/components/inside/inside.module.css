@@ -1,4 +1,4 @@
-/* "Inside Amplio": a centred heading, a full-bleed green band with the trail
+/* "Inside Amplio": a centred heading, a full-bleed blue band with the trail
    drifting across it, and the product card sitting on the band's top edge.
    The card is drawn in design pixels (--dp = --u / 548) so it scales whole.
    Entrance on `translate` / clip-path / opacity only, behind [data-on]. */
@@ -12,7 +12,7 @@
 .cta:focus-visible { outline: 2px solid var(--color-money); outline-offset: 3px; }
 
 .stage { position: relative; margin-top: 64px; padding-top: calc(150 * var(--dp)); --u: 548px; --dp: calc(var(--u) / 548); -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
-.band { position: relative; height: 55vh; min-height: 360px; background: #0f7b4a; overflow: hidden; }
+.band { position: relative; height: 55vh; min-height: 360px; background: #1e40af; overflow: hidden; }
 .trail { position: absolute; inset: 0; width: 100%; height: 100%; }
 .cardWrap { position: absolute; left: 50%; top: 0; z-index: 1; translate: -50% 0; }
 
@@ -21,7 +21,7 @@
   /* 548 × 340 design pixels; min-height because browsers floor tiny text on phones */
   width: calc(548 * var(--dp)); min-height: calc(340 * var(--dp)); padding: calc(18 * var(--dp)) calc(20 * var(--dp));
   border-radius: calc(16 * var(--dp)); background: #f2f2f2; color: #111;
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, .9), 0 0 calc(40 * var(--dp)) rgba(255, 255, 255, .45), 0 calc(30 * var(--dp)) calc(60 * var(--dp)) calc(-10 * var(--dp)) rgba(4, 30, 18, .45);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .9), 0 0 calc(40 * var(--dp)) rgba(255, 255, 255, .45), 0 calc(30 * var(--dp)) calc(60 * var(--dp)) calc(-10 * var(--dp)) rgba(8, 20, 64, .45);
   font-size: calc(11 * var(--dp)); letter-spacing: -0.02em;
 }
 .eyebrow { font-size: calc(10 * var(--dp)); color: #7a7a7a; letter-spacing: 0; }
@@ -34,13 +34,13 @@
 .clock { width: calc(12 * var(--dp)); height: calc(12 * var(--dp)); }
 .tabs { display: flex; gap: calc(4 * var(--dp)); margin-top: calc(14 * var(--dp)); }
 .tab { padding: calc(6 * var(--dp)) calc(10 * var(--dp)); border-radius: calc(6 * var(--dp)); color: #6b6b6b; }
-.tab[data-active] { background: #fff; color: #111; box-shadow: inset 0 calc(-2 * var(--dp)) 0 #0f7b4a; }
+.tab[data-active] { background: #fff; color: #111; box-shadow: inset 0 calc(-2 * var(--dp)) 0 #2563eb; }
 .panel { margin-top: calc(10 * var(--dp)); padding: calc(12 * var(--dp)); border-radius: calc(10 * var(--dp)); background: #fff; }
 .panelTitle { font-size: calc(11 * var(--dp)); font-weight: 600; color: #333; }
 .row { display: flex; align-items: center; gap: calc(10 * var(--dp)); height: calc(46 * var(--dp)); margin-top: calc(8 * var(--dp)); padding: 0 calc(12 * var(--dp)); border-radius: calc(8 * var(--dp)); border: 1px solid #e7e7e7; }
 .row b { font-weight: 500; color: #111; }
 .row span:last-child { margin-left: auto; color: #8a8a8a; white-space: nowrap; }
-.check { display: grid; place-items: center; flex: none; width: calc(18 * var(--dp)); height: calc(18 * var(--dp)); border-radius: 50%; background: #0f7b4a; color: #fff; }
+.check { display: grid; place-items: center; flex: none; width: calc(18 * var(--dp)); height: calc(18 * var(--dp)); border-radius: 50%; background: #2563eb; color: #fff; }
 .check svg { width: calc(11 * var(--dp)); height: calc(11 * var(--dp)); }
 .amber { flex: none; width: calc(10 * var(--dp)); height: calc(10 * var(--dp)); margin: 0 calc(4 * var(--dp)); border-radius: 50%; background: #d97706; }
 .note { margin-top: calc(8 * var(--dp)); font-size: calc(9 * var(--dp)); color: #9a9a9a; text-align: right; }
