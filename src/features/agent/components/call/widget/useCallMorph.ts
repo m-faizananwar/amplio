@@ -11,10 +11,11 @@ const EASE_IN = "cubic-bezier(0.5, 0, 0.75, 0)";
 const still = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const origin = () => document.querySelector<HTMLElement>("[data-call-origin]")?.getBoundingClientRect() ?? null;
 
-// .call-float is fixed at 0,0 and placed by its transform, so a frame that sits
-// exactly on another rect is a translate to its corner and a scale to its size.
+// A frame laid over another rect: shift its box's corner onto the rect's
+// (on top of wherever its own transform put it) and scale it to the rect.
 function onto(rect: DOMRect, el: HTMLElement) {
-  return `translate3d(${rect.left}px, ${rect.top}px, 0) scale(${rect.width / el.offsetWidth}, ${rect.height / el.offsetHeight})`;
+  const at = el.getBoundingClientRect();
+  return `translate3d(${rect.left - at.left}px, ${rect.top - at.top}px, 0) ${el.style.transform} scale(${rect.width / at.width}, ${rect.height / at.height})`;
 }
 
 function grow(el: HTMLElement) {

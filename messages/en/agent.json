@@ -191,7 +191,7 @@
     "minimise": "Minimise",
     "expand": "Expand",
     "fullPage": "Open full page",
-    "handle": "Move the call. Arrow keys move it, Enter snaps it to the nearest corner.",
+    "handle": "Move the call. Arrow keys move it (Shift for bigger steps); double-click puts it back in the bottom-right corner.",
     "you": "You",
     "agent": "Agent",
     "feedEmpty": "Steps show here as agentic mode works.",

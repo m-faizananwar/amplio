@@ -6,7 +6,9 @@
     left: 0;
     z-index: 70;
     --call-spring: linear(0, 0.2 6%, 0.56 14%, 0.86 23%, 1.02 31%, 1.06 38%, 1.04 46%, 1.01 56%, 0.998 68%, 1);
-    transition: transform 520ms var(--call-spring), width 320ms var(--ease-ledger), height 320ms var(--ease-ledger);
+    /* the height rides the same spring, auto included (interpolate-size) */
+    interpolate-size: allow-keywords;
+    transition: transform 520ms var(--call-spring), width 320ms var(--ease-ledger), height 520ms var(--call-spring);
     will-change: transform;
   }
   .call-float[data-moving] { transition: none; }

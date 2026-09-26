@@ -191,7 +191,7 @@
     "minimise": "Réduire",
     "expand": "Agrandir",
     "fullPage": "Ouvrir en pleine page",
-    "handle": "Déplacer l’appel. Les flèches le déplacent, Entrée le place dans le coin le plus proche.",
+    "handle": "Déplacer l’appel. Les flèches le déplacent (Maj pour de plus grands pas) ; un double-clic le remet en bas à droite.",
     "you": "Vous",
     "agent": "Agent",
     "feedEmpty": "Les étapes s’affichent ici pendant que le mode agent travaille.",

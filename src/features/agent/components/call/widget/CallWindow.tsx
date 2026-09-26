@@ -11,19 +11,20 @@ import { AgentAvatar } from "../../identity/AgentAvatar";
 import { CallBeam } from "./CallBeam";
 import { CallGlow } from "./CallGlow";
 import { CallTimer } from "./CallTimer";
-import { useCallCorner } from "./useCallCorner";
+import { useCallPosition } from "./useCallPosition";
 import { useCallMorph } from "./useCallMorph";
 
 const WINDOW = { w: 340, h: 460 };
 const BUBBLE = { w: 64, h: 64 };
 
-// Desktop: a small window over the app, dragged by its header and snapped to
-// a corner, or folded to a round bubble that pulses with the voice. The page
+// Desktop: a small window over the app, dragged by its header and left where
+// it is dropped, or folded to a round bubble that pulses with the voice. Live,
+// it holds a fixed 460px; after the call it is as tall as its content. The page
 // underneath keeps working and moves when the agent opens something. It grows
 // out of the rail's phone and folds back into it (useCallMorph).
 export function CallWindow({ call }: { call: AgentCall }) {
   const t = useTranslations("agent.call");
-  const place = useCallCorner(call.minimised ? BUBBLE : WINDOW);
+  const place = useCallPosition(call.minimised ? BUBBLE : WINDOW, WINDOW);
   const frame = useCallMorph<HTMLElement>();
   const live = call.status === "live" || call.status === "connecting";
   // the agent is working: tool steps running, or it is speaking
@@ -45,7 +46,7 @@ export function CallWindow({ call }: { call: AgentCall }) {
     );
   }
   return (
-    <section ref={frame} aria-label={t("start")} className="call-float call-window" data-moving={place.moving || undefined} style={{ ...place.style, width: WINDOW.w, height: WINDOW.h }}>
+    <section ref={frame} aria-label={t("start")} className="call-float call-window" data-moving={place.moving || undefined} style={{ ...place.style, width: WINDOW.w, height: live ? WINDOW.h : "auto", maxHeight: WINDOW.h }}>
       <CallBeam working={live && call.run.busy} radius={20} className="flex h-full min-h-0 flex-col">
       <header className="flex items-center gap-1 border-b border-rule px-2 py-1.5">
         <button type="button" className="call-handle" aria-label={t("handle")} {...place.handleProps}>
@@ -57,7 +58,7 @@ export function CallWindow({ call }: { call: AgentCall }) {
         <Link href={`/${call.role}/agent`} aria-label={t("fullPage")} data-tip={t("fullPage")} className={buttonVariants({ variant: "ghost", size: "icon-sm" })}><Maximize2 className="size-4" /></Link>
         {live ? <Button variant="ghost" size="icon-sm" aria-label={t("minimise")} onClick={() => call.setMinimised(true)}><Minus /></Button> : null}
       </header>
-      <div className="flex min-h-0 flex-1 flex-col p-4"><CallBody call={call} /></div>
+      <div className="flex min-h-0 flex-1 flex-col overflow-y-auto p-4"><CallBody call={call} /></div>
       </CallBeam>
     </section>
   );
