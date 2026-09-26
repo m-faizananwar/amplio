@@ -54,3 +54,18 @@ describe("needsYou", () => {
     expect(needsYou([], { availableCents: 4200, setupIncomplete: true }).map((i) => i.kind)).toEqual(["withdraw", "setup"]);
   });
 });
+
+// The Overview puts the ring beside the Needs-you list and the Collaborations
+// tabs count the same groups: all three must agree on which collaborations
+// need the creator, whatever mix of states they are in.
+describe("the ring, the Needs-you list and the tabs agree", () => {
+  it("counts the same collaborations as needing the creator", () => {
+    const rows = COLLABORATION_STATUSES.map((status, i) => ({ id: `c${i}`, status, dueDate: null }));
+    const listed = needsYou(rows, { availableCents: 0, setupIncomplete: false }).filter((item) => item.kind === "collaboration");
+    const counted = countByFilter(rows.map((r) => r.status), "creator").needs_you;
+    expect(listed.length).toBe(counted);
+    expect(new Set(listed.map((item) => (item.kind === "collaboration" ? item.status : null)))).toEqual(
+      new Set(COLLABORATION_STATUSES.filter((s) => filterFor(s, "creator") === "needs_you")),
+    );
+  });
+});
