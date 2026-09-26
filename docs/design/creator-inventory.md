@@ -1,7 +1,7 @@
 # Creator side + Settings — inventory
 
 What each creator page and each settings panel reads, what it lets you do, and which states
-it has, taken from the code on `main` at `cd2cd40`. This is the checklist for the rebuild:
+it has, taken from the code on `main` at `cd2cd40`. This is the checklist for the redesign:
 the new pages keep **the same data and the same actions** (frontend only) and are laid out
 per `DIRECTION.md` / `DECISIONS.md`. Copy for everything below is drafted separately into
 next-intl message files (`messages/{en,fr}/creator.json`, `settings.json`).
@@ -72,9 +72,8 @@ Public `/c/[handle]`: same `getPublicCard`; 404 via `notFound()`; CTA "Book {fir
 → `/register/brand` (keep `?ref`/creator preselect behaviour). Public page, demo data
 labelled if the handle is a seeded demo creator.
 
-Honesty: the affiliate footnote currently says the platform commission is assumed
-("naano … does not publish its take rate") — rewrite as our own stated rate, no reference
-to naano.
+Honesty: the affiliate footnote currently says the platform commission is assumed —
+decision: we state our own take rate and the footnote says it plainly.
 
 ---
 
@@ -246,8 +245,8 @@ route map (`features/voice/constants.ts`) must drop the cut routes.
 | Payout method Stripe (`PayoutMethodRadio`) | "Not connected" | allowed stub (ledger stands in) — label |
 | `/creator/affiliate` "Invite creators" tab | "not part of this build" | cut (merged into My card) |
 | `/creator/community` Slack button | disabled, "not part of this build" | cut with the page |
-| Affiliate footnote | "naano … does not publish its take rate" | rewrite as our own rate |
-| `CreatorProfileForm` | grep hit — check copy for "simulated" wording | review when rebuilding Settings |
+| Affiliate footnote | says the platform commission is assumed | state our own take rate |
+| `CreatorProfileForm` | grep hit — check copy for "simulated" wording | review when redesigning Settings |
 | Team invite (`TeamAccessPanel`) | to verify: does it write a row / send email? | verify, then real / cut / label |
 
 ## Open questions
@@ -255,5 +254,5 @@ route map (`features/voice/constants.ts`) must drop the cut routes.
 - **Trail rows for clicks** — no row-level click query exists for creators (only the
   aggregate `getTrackedLinkPerformance`). Needs `listCreatorClicks(creatorId, range)`
   (clicks ⨝ tracking_links ⨝ collaborations: time, campaign, brand, referrer, device).
-  Ask builder clone whether a shared trail query is coming for the brand side first.
+  Ask the builder whether a shared trail query is coming for the brand side first.
 - **Settings fields** — waiting on the fork's onboarding field components.

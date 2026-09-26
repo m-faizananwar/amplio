@@ -1,7 +1,5 @@
 # Plan — recon before code (2026-09-12)
 
-Sources: `docs/reference/naano-product-map.md` (wins on conflict), `naano-market-notes.md`, `screens/`.
-
 ## 1. Data model
 
 All tables: `id, created_at, updated_at`; money in integer cents (EUR).
@@ -26,7 +24,7 @@ Relations: brand 1‑n campaigns 1‑n collaborations n‑1 creators; collaborat
 point at collaborations. `fitScore(creator, campaign)` is computed, never stored: audience overlap (job titles vs ICP),
 category match (industries), engagement quality, posting consistency — each a signal with a one‑line reason.
 
-### Collaboration state machine (only what the map shows)
+### Collaboration state machine (only what the first build needs)
 
 | from | to | who |
 | --- | --- | --- |
@@ -40,19 +38,19 @@ category match (industries), engagement quality, posting consistency — each a 
 | `changes_requested` | `draft_submitted` | creator (round + 1) |
 | `approved` | `scheduled` | creator (sets publish date) |
 | `scheduled` | `live` | creator (submits post URL — no LinkedIn API, so self‑reported) |
-| `live` | `paid` | system when the wallet covers the fee ("Payment scheduled · Handled by Naano"); brand "Pay" if it was short |
+| `live` | `paid` | system when the wallet covers the fee ("Payment scheduled · Handled by Amplio"); brand "Pay" if it was short |
 
 `declined` and `paid` are terminal. Tab mapping — brand: Invitations sent = `invited`, Invitations received = `applied`,
 To do = `draft_submitted`, Completed = `paid`; creator: Needs action = `invited ∪ changes_requested ∪ approved`,
-Applications sent = `applied`. Not modelled because not in the map: withdraw/cancel after acceptance, disputes, refunds.
+Applications sent = `applied`. Not modelled in the first build: withdraw/cancel after acceptance, disputes, refunds.
 
-## 2. Build order (sorted by what a grader clicks first)
+## 2. Build order (sorted by what a first-time visitor clicks first)
 
 1. Docker Postgres, schema, seed — demo brand mid‑campaign with a collaboration in every state, ~40 creators with
    audience snapshots, click history. Every screen shows real rows from hour 2; empty states are the bug here.
-2. Own auth + both app shells with every sidebar tab routed (thin, but real loading/empty/error states) — the grader
+2. Own auth + both app shells with every sidebar tab routed (thin, but real loading/empty/error states) — a visitor
    clicks every tab; nothing may 404.
-3. Login page with "Enter as demo brand / demo creator" — graders won't sign up.
+3. Login page with "Enter as demo brand / demo creator" — visitors won't sign up.
 4. Landing page, one pass — it's the first paint; hero, how‑it‑works, results, pricing, FAQ.
 5. Brand › Creators: cards (fit %, CPM, median views, filters/sort) + profile modal (audience snapshot, Book) + shortlist —
    the product's thumbnail.
@@ -61,24 +59,24 @@ Applications sent = `applied`. Not modelled because not in the map: withdraw/can
 8. Brand › Collaborations + review‑draft modal (approve / request changes) + pay ⇒ ledger. Creator: schedule → live.
    The loop closes here; everything after is leverage.
 9. Tracking link per collaboration, `/r/[code]` (one insert, one 302), Results (clicks by creator), creator Analytics
-   from the same table — numbers move when the grader clicks.
+   from the same table — numbers move when a visitor clicks.
 10. Billing (top‑up, ledger table) + Earnings (from ledger, withdraw) — money shows up on both sides.
 11. Creator onboarding with the live card + `recommendPrice` + bundles; brand onboarding (site → value prop → ICPs →
     starter brief). Showy and cheap, but after the loop.
-12. Attribution layer (market notes): click log + CSV export per creator · `/n.js` with naano's API on a demo landing
-    page · fit % broken into signals + reason · pre‑spend estimator from tier CTR × vertical CPL with a confidence label.
+12. Attribution layer: click log + CSV export per creator · `/n.js` pixel on a demo landing page
+    · fit % broken into signals + reason · pre‑spend estimator from tier CTR × vertical CPL with a confidence label.
 13. Thin tabs filled: Messages (real thread per accepted collab), Community (leaderboard from seed), Affiliate (link +
     zeros), Settings, Integrations (static), notifications.
-14. Nao matching chat over the fit‑scored top‑N, with fallback — last.
+14. Amp matching chat over the fit‑scored top‑N, with fallback — last.
 
 Deliberately out: Stripe, email + 6‑digit codes, LinkedIn/Apify import, X/YouTube, FR, agency mode, MCP endpoint,
 calendar booking, invoice PDFs, team invites, cookie banner, the floating AI pill (static decoration at most).
 
 ## 3. The trap
 
-The screenshots are of an empty account. Cloning them faithfully yields a product made of empty states, and the reflex
-is to fill the dashboards with hardcoded numbers — which reproduces naano's own public weakness (attribution nobody can
-audit) instead of beating it. Two halves: (a) the loop is two‑sided, so every brand action needs a creator counterpart
-screen — brand‑only progress is "100% of a landing page"; (b) any number on a dashboard must come from a row the grader
+A new account is empty. Designing screen by screen from that state yields a product made of empty states, and the reflex
+is to fill the dashboards with hardcoded numbers — which reproduces the common weakness of tools in this space
+(attribution nobody can audit) instead of beating it. Two halves: (a) the loop is two‑sided, so every brand action needs a creator counterpart
+screen — brand‑only progress is "100% of a landing page"; (b) any number on a dashboard must come from a row a visitor
 can create by clicking a tracking link. Seed + state machine + one click table are the product; the AI brief and the
 marketplace gloss are the paint.

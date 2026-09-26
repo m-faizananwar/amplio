@@ -4,13 +4,13 @@ One take at 1440 wide, English, light theme. Two tabs ready: https://amplio-mvp.
 (signed out) and the repo on GitHub open at `docs/design/DECISIONS.md`. Talk like you're
 showing a colleague what you decided and why. One decision per scene.
 
-**Don't click Review, Decide or Release on camera** — the reviewers use the same demo
+**Don't click Review, Decide or Release on camera** — other people use the same demo
 accounts, and those buttons change their data. Open things, read them, move on.
 
 ## 0:00 – 0:25 · the one idea
-"Amplio is a marketplace where B2B brands pay LinkedIn creators for posts. I used naano as
-the reference product, not the blueprint. What I thought was wrong with it: brands are
-shown estimated reach and asked to trust it. So the one idea behind every screen here is
+"Amplio is a marketplace where B2B brands pay LinkedIn creators for posts. What I think is
+wrong with most tools in this space: brands are shown estimated reach and asked to trust
+it. So the one idea behind every screen here is
 that **every number is a receipt** — a click, a sign-up, a payout is a row you can open."
 
 ## 0:25 – 1:10 · landing
@@ -25,8 +25,8 @@ clicks fly into the tracked link, sign-ups drop into a ledger with names on the 
 the bill locks next to the proof." At the pricing block: "the coin goes whole to the
 creator and the fee reads €0 — because that's what the ledger does, so that's what the
 page says." Point at the round button bottom-right: "the assistant waits in the corner on
-public pages, so it never sits on the content." Then: "What I cut from the reference —
-their benchmark figures, customer logos, testimonials — none of that was ours."
+public pages, so it never sits on the content." Then: "What's deliberately not here —
+borrowed benchmark figures, customer logos, testimonials — none of that would be ours."
 
 ## 1:10 – 1:35 · sign-up, honestly
 Open Sign up → flip the Brand / Creator switch → back. Sign in → **Open the demo brand**.
@@ -36,7 +36,7 @@ editable. For creators the LinkedIn import is a real read of the public profile 
 can't read it, it says so and you type it in. It never invents a number."
 
 ## 1:35 – 2:35 · brand side: what changed
-- **Overview:** "The reference opens on a dashboard of totals. People open the app to
+- **Overview:** "Most dashboards open on a wall of totals. People open the app to
   act, so the first thing is *Needs you* — Esmeralda's draft to review, Ethyl's
   application to decide, Althea's and Tom's payments to release — then the numbers."
 - Click **Show rows** under *Clicks on tracked links*: the drawer lists every click. "This

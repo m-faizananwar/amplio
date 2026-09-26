@@ -1,13 +1,16 @@
 # Amplio — our own interface
 
-8x changed the brief: keep the idea and the backend, rebuild the frontend with our own
-layout and visual design. The first version's landing effects (video-scrub hero, frosted
-cards, splash screen, animated footers, compressing nav, the auth-page media panel, the
-metric stage, the globe) are removed, not restyled. On 26 September the landing's first
-screen and the public header came back as glass, built new from a measured spec (see "The
-landing is the launch"); nothing of the first version's code returned with them. The backend (Postgres, Drizzle, server actions, tracking, ledger, assistant) stays.
+Amplio's interface aims to make a creator deal as easy to check as a bank statement.
+People open the app to act and to verify, so the app is calm, dense and exact, and every
+number can be opened; the landing is the one place that performs. The first version's
+landing effects (video-scrub hero, frosted cards, splash screen, animated footers,
+compressing nav, the auth-page media panel, the metric stage, the globe) are removed, not
+restyled. On 26 September the landing's first screen and the public header came back as
+glass, built new from a measured spec (see "The landing is the launch"); nothing of the
+first version's code returned with them. The backend (Postgres, Drizzle, server actions,
+tracking, ledger, assistant) is unchanged by this direction.
 
-Deadline: resubmit by end of Saturday 26 September. Freeze: Saturday 19:00 UTC.
+Deadline: ship by end of Saturday 26 September. Freeze: Saturday 19:00 UTC.
 
 ## The idea the design carries
 
@@ -190,8 +193,8 @@ one thing, it merges them (PAGES.md says what merged and why).
 
 - **Landing:** the glass hero with the live counts, the story in five scenes, how to
   start, pricing (only what is true), FAQ, sign-up call to action, footer.
-- **Removed pages:** /benchmarks, /case-study, /about, /for-agencies, /book-a-call — their
-  figures, testimonials, customer logos and team belong to naano, not us.
+- **Removed pages:** /benchmarks, /case-study, /about, /for-agencies, /book-a-call — we show
+  no invented figures, testimonials, customer logos or team, and those pages had nothing else.
 - **Auth + onboarding:** our own layout (not two-pane): one centred column, role chosen
   with a segmented control, progress as a step rail on top.
 - **App:** left rail + top bar (role switch, wallet, ⌘K, notifications). Brand: Overview,
@@ -215,4 +218,4 @@ Drafted by a writing-focused agent, not written inline by the builder.
 
 No file over 500 lines. Small conventional commits, `.agent-logs` riding along. Check
 every page in a real browser at 1440 and 375 with empty, loading, error and populated
-states before calling it done. Compare against this document, not against another site.
+states before calling it done. Compare against this document.
