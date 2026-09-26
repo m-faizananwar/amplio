@@ -44,7 +44,9 @@ export function cardData(state: OnboardingState): CreatorCardData {
     name: state.name,
     avatarUrl: state.avatarUrl,
     headline: state.headline,
-    country: state.country.toUpperCase(),
+    // registration seeds a country as a placeholder: it is a fact only once the
+    // creator confirmed it on the card step or their profile was read
+    country: state.cardCompleted || state.profileRead ? state.country.toUpperCase() : "",
     industries: state.industries,
     followers: state.followers,
     fromLinkedin: state.profileRead && state.followers > 0,
