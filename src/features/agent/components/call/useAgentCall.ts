@@ -135,6 +135,7 @@ export function useAgentCall(role: "brand" | "creator", csrfToken: string) {
         next = null;
       }
     }
+    if (gen !== generation.current) return got.mic.close();
     if (!next) {
       try {
         next = createBrowserEngine(handlers(), speechLang(locale));
@@ -195,7 +196,12 @@ export function useAgentCall(role: "brand" | "creator", csrfToken: string) {
     readInput,
     readOutput,
     start,
-    end: () => finish(),
+    // hanging up before it connected isn't a call: nothing to summarise
+    end: () => {
+      if (status !== "connecting") return finish();
+      release();
+      setStatus("idle");
+    },
     toggleMute: () => {
       engine.current?.setMuted(!muted);
       setMuted(!muted);

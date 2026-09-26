@@ -18,6 +18,7 @@ export function CallBody({ call }: { call: AgentCall }) {
       <div className="grid flex-1 content-center justify-items-center gap-4 py-6" role="status">
         <div className="call-ring grid size-24 place-items-center rounded-full"><CallDots mode="thinking" readInput={call.readInput} readOutput={call.readOutput} className="h-6 w-14" /></div>
         <p className="text-small text-ink-muted">{t("connecting")}</p>
+        <Button size="icon-lg" variant="ghost" aria-label={t("end")} onClick={call.end} className="bg-failure text-surface hover:bg-failure/90"><PhoneOff /></Button>
       </div>
     );
   }

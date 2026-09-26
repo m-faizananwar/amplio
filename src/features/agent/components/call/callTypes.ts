@@ -18,4 +18,6 @@ export const isAppPath = (href: string) => APP_PATH.test(href) && !href.includes
 export const SPOKEN_YES = /^(yes|yeah|yep|confirm|go ahead|oui|d'accord|d’accord|vas-y|allez-y|ok)\b/i;
 
 export const FEED_POLL_MS = 1000;
+// a Vapi start that hasn't connected by then falls back to the browser line
+export const VAPI_START_TIMEOUT_MS = 15000;
 export const SECOND_MS = 1000;

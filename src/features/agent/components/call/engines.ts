@@ -1,5 +1,5 @@
 import { recognitionCtor, type Recognition } from "@/features/voice/providers/web-speech";
-import type { CallEngineName } from "./callTypes";
+import { type CallEngineName, VAPI_START_TIMEOUT_MS } from "./callTypes";
 
 // A call engine owns the audio: the words it hears, the voice it speaks with,
 // the output level. The provider owns the state; engines stay thin.
@@ -46,8 +46,14 @@ export async function createVapiEngine(session: AgentVoiceSession, h: EngineHand
   return {
     name: "vapi",
     start: async () => {
-      const call = await vapi.start(session.assistantId, session.overrides as Parameters<typeof vapi.start>[1]);
-      if (!call) throw new Error("vapi did not start");
+      let timer = 0;
+      const timeout = new Promise<null>((resolve) => { timer = window.setTimeout(() => resolve(null), VAPI_START_TIMEOUT_MS); });
+      const call = await Promise.race([vapi.start(session.assistantId, session.overrides as Parameters<typeof vapi.start>[1]), timeout]);
+      window.clearTimeout(timer);
+      if (!call) {
+        void vapi.stop();
+        throw new Error("vapi did not start");
+      }
     },
     stop: () => void vapi.stop(),
     setMuted: (muted) => vapi.setMuted(muted),
