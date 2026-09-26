@@ -1,10 +1,10 @@
 import "server-only";
 import { getBrandProfile, listCampaignSummaries } from "@/features/campaigns/server/read-campaigns";
-import { listBrandCollaborations } from "@/features/collaborations/server/queries";
+import { creatorsOnCampaign, listBrandCollaborations } from "@/features/collaborations/server/queries";
 import { getMarketplaceContext, listCreators } from "@/features/marketplace/server/queries";
 import { marketplaceQuerySchema } from "@/features/marketplace/schemas";
 import type { CreatorDto } from "@/features/marketplace/schemas";
-import { getBillingBuckets } from "@/features/payouts/server/queries";
+import { billingBucketsNow, walletCentsNow } from "@/features/payouts/server/queries";
 import { filterFor } from "@/lib/next-step";
 import type { CreatorCard } from "../../events";
 import { describeFilters, searchLimit } from "../../filters";
@@ -63,14 +63,17 @@ const searchCreators: ReadTool = {
     });
     const list = await listCreators(mctx, q);
     const minFollowers = typeof a.minFollowers === "number" ? a.minFollowers : 0;
-    // creators already invited to or working on this campaign can't be booked again
-    const already = list.items.filter((c) => c.collaborationStatus).length;
-    const top = list.items.filter((c) => c.followers >= minFollowers && !c.collaborationStatus).slice(0, searchLimit(a));
+    // creators already invited to or working on this campaign can't be booked
+    // again; the list is cached, so the campaign's current rows are read fresh
+    const onIt = mctx.selectedCampaign ? await creatorsOnCampaign(mctx.selectedCampaign.id, list.items.map((c) => c.id)) : new Set<string>();
+    const isOn = (c: CreatorDto) => Boolean(c.collaborationStatus) || onIt.has(c.id);
+    const already = list.items.filter(isOn).length;
+    const top = list.items.filter((c) => c.followers >= minFollowers && !isOn(c)).slice(0, searchLimit(a));
     const applied = describeFilters(a);
     const cards = top.map(toCreatorCard);
     return {
       summary: `${applied.length ? `${applied.join(" · ")} → ` : "no filters → "}${list.total} match · ${cards.length} best by fit${mctx.selectedCampaign ? ` for ${mctx.selectedCampaign.name}` : ""}${already ? ` · ${already} already on it` : ""}`,
-      data: { appliedFilters: applied.length ? applied : ["none"], campaign: mctx.selectedCampaign, walletCents: mctx.walletCents, alreadyOnCampaign: already, creators: top.map((c) => ({ id: c.id, name: c.name, country: c.country, industries: c.industries, followers: c.followers, priceCents: c.priceCents, fitScore: c.fit.score, fitReason: c.fit.reason })) },
+      data: { appliedFilters: applied.length ? applied : ["none"], campaign: mctx.selectedCampaign, alreadyOnCampaign: already, creators: top.map((c) => ({ id: c.id, name: c.name, country: c.country, industries: c.industries, followers: c.followers, priceCents: c.priceCents, fitScore: c.fit.score, fitReason: c.fit.reason })) },
       result: { type: "result", kind: "creators", title: mctx.selectedCampaign ? mctx.selectedCampaign.name : "Creators", items: cards },
     };
   },
@@ -94,8 +97,9 @@ const getWallet: ReadTool = {
   description: "The wallet balance available for new invitations and what is held for pending ones, in cents.",
   parameters: obj({}),
   async run(ctx) {
-    const buckets = await getBillingBuckets(brandId(ctx));
-    const availableCents = ctx.viewer.brand?.walletCents ?? 0;
+    // both fresh: the agent may quote them right after it moved money
+    const buckets = await billingBucketsNow(brandId(ctx));
+    const availableCents = await walletCentsNow(brandId(ctx));
     return { summary: `${euros(availableCents, ctx.locale)} available`, data: { availableCents, heldCents: buckets.heldCents }, result: { type: "result", kind: "wallet", title: "Wallet", item: { availableCents, heldCents: buckets.heldCents } } };
   },
 };

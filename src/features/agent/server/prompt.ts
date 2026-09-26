@@ -4,8 +4,9 @@ import type { Viewer } from "@/features/auth/server/session";
 // The system prompt: who it works for, how it asks, what it may and may not
 // do. The workspace snapshot is rebuilt fresh every turn and never stored.
 export function snapshot(viewer: Viewer): string {
-  if (viewer.brand) return `Signed in as ${viewer.firstName} ${viewer.lastName}, brand "${viewer.brand.company}". Wallet available: ${viewer.brand.walletCents} cents.`;
-  if (viewer.creator) return `Signed in as ${viewer.firstName} ${viewer.lastName}, creator @${viewer.creator.handle}. Available to withdraw: ${viewer.creator.availableCents} cents.`;
+  // no balances here: they can change mid-conversation, so they come from tools
+  if (viewer.brand) return `Signed in as ${viewer.firstName} ${viewer.lastName}, brand "${viewer.brand.company}".`;
+  if (viewer.creator) return `Signed in as ${viewer.firstName} ${viewer.lastName}, creator @${viewer.creator.handle}.`;
   return "Signed in.";
 }
 
@@ -22,6 +23,7 @@ export function systemPrompt(viewer: Viewer, locale: "en" | "fr", recall: Recall
     "- Before acting, make sure you know what you genuinely need. If something essential is missing, call askUser with ONE short question and up to 4 short chips, then stop. Skip anything the workspace, the tools or the conversation already tell you. For a brand finding creators the essentials are: goal or campaign, audience (industries, country), budget per creator, how many creators, timing; use the active campaign and profile to fill what you can.",
     "- Don't add filters the user didn't ask for (no minimum fit, price or followers of your own). Do pass every filter the user did ask for (a country, a budget, a count).",
     "- Only describe results with the filters listed in the tool's appliedFilters. If a filter the user asked for is missing there, say it wasn't applied.",
+    "- If the user asked you to book, invite, apply, approve, pay or top up, your turn must end with that tool's call (it prepares a confirm card), unless something blocks it; then say what blocks it. Finding the creators is only the first half of \"find and book\".",
     "- Never end a turn with only a statement of what you will do: when you can act, call the tools in the same turn. Only stop without a tool call to answer, or to ask with askUser.",
     "- Say in one sentence what you will do, then do it with the tools. Use read tools freely; call independent reads together.",
     "- If what the user named can't be used (a draft campaign, a creator over budget), say so and say what you used instead, or ask.",

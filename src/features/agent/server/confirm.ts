@@ -7,6 +7,9 @@ import { appendEvents, getPending, openThread, ownsThread, saveTurn, setPending 
 import { claimPending, type PendingCheck, readPending } from "./pending";
 import { findTool } from "./tools";
 
+// Actions after which the top-bar wallet is out of date.
+const MOVES_WALLET = new Set(["bookCreators", "releasePayment", "topUp"]);
+
 type Input = { viewer: Viewer; locale: "en" | "fr"; id: string; decision: "confirm" | "cancel"; emit: (e: AgentEvent) => void; threadId?: string | null };
 
 const REASON: Record<string, { en: string; fr: string }> = {
@@ -56,5 +59,6 @@ async function settle(input: Input, say: (text: string) => string): Promise<stri
   const outcome = await tool.execute({ viewer, locale }, valid.action.args);
   emit({ type: "step", id: "c1", label, status: outcome.ok ? "done" : "failed", tool: tool.name, output: outcome.summary });
   emit({ type: "resolved", id, outcome: outcome.ok ? "done" : "failed" });
+  if (outcome.ok && MOVES_WALLET.has(tool.name)) emit({ type: "refresh", what: "wallet" });
   return say(outcome.ok ? outcome.summary : `${locale === "fr" ? "Ça n’a pas marché" : "That didn't go through"}: ${outcome.summary}`);
 }

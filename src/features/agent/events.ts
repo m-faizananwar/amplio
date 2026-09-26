@@ -76,10 +76,13 @@ export const messageEvent = z.object({ type: z.literal("message"), id: z.string(
 export const navigateEvent = z.object({ type: z.literal("navigate"), href: z.string().regex(/^\/(brand|creator)(\/[\w\-/?=&.%]*)?$/), label: z.string().optional() });
 // A confirm card was answered (by a tap, or by a spoken yes on a call).
 export const resolvedEvent = z.object({ type: z.literal("resolved"), id: z.string(), outcome: z.enum(["done", "cancelled", "failed"]) });
+// Something the page shows changed on the server (the wallet after a booking,
+// payment or top-up): the client refreshes it (router.refresh()).
+export const refreshEvent = z.object({ type: z.literal("refresh"), what: z.enum(["wallet"]) });
 export const doneEvent = z.object({ type: z.literal("done"), threadId: z.string().nullable() });
 export const errorEvent = z.object({ type: z.literal("error"), message: z.string(), retryable: z.boolean().default(false) });
 
-export const agentEvent = z.union([stepEvent, questionEvent, resultEvent, confirmEvent, messageEvent, navigateEvent, resolvedEvent, doneEvent, errorEvent]);
+export const agentEvent = z.union([stepEvent, questionEvent, resultEvent, confirmEvent, messageEvent, navigateEvent, resolvedEvent, refreshEvent, doneEvent, errorEvent]);
 export type AgentEvent = z.infer<typeof agentEvent>;
 export type StepEvent = z.infer<typeof stepEvent>;
 export type ResultEvent = z.infer<typeof resultEvent>;

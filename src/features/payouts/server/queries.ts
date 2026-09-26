@@ -1,7 +1,7 @@
 import "server-only";
 import { and, count, desc, eq, gte, sql } from "drizzle-orm";
 import { getDb } from "@/db";
-import { campaigns, collaborations, creators, ledgerEntries, users } from "@/db/schema";
+import { brands, campaigns, collaborations, creators, ledgerEntries, users } from "@/db/schema";
 import { EARNINGS_MONTHS } from "../constants";
 import type { LedgerRowDto } from "../schemas";
 import { cachedRead } from "@/db/cache";
@@ -167,4 +167,14 @@ async function loadBillingBuckets(brandId: string): Promise<BillingBuckets> {
 
 export function getBillingBuckets(brandId: string) {
   return cachedRead(loadBillingBuckets, ["billing-buckets"], { tags: [tag.brandBilling(brandId)] })(brandId);
+}
+
+// The same buckets uncached, for the agent quoting them right after a booking.
+export const billingBucketsNow = (brandId: string) => loadBillingBuckets(brandId);
+
+// The brand's wallet balance as the database has it right now, never cached:
+// what the agent quotes before and after it moves money.
+export async function walletCentsNow(brandId: string): Promise<number> {
+  const [row] = await getDb().select({ cents: brands.walletCents }).from(brands).where(eq(brands.id, brandId)).limit(1);
+  return row?.cents ?? 0;
 }

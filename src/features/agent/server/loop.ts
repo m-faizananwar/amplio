@@ -111,8 +111,9 @@ export async function runTurn({ viewer, locale, text, history, emit, recall, sco
   const ctx: ToolContext = { viewer, locale, scope };
   const contents = toContents(history, text);
   const deadline = Date.now() + (voice ? VOICE_BUDGET_MS : TURN_BUDGET_MS);
-  // every amount a tool returned this turn; the reply may only use these
-  const seen = amountsFrom({ walletCents: viewer.brand?.walletCents ?? 0, availableCents: viewer.creator?.availableCents ?? 0 });
+  // every amount a tool returned this turn; the reply may only use these (no
+  // balance from the session: it can be stale, so the model asks a tool)
+  const seen = new Set<number>();
   let steps = 0;
   while (Date.now() < deadline) {
     const res = await withTimeout(ai.models.generateContent({

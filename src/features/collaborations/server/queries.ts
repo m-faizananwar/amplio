@@ -1,5 +1,5 @@
 import "server-only";
-import { and, asc, desc, eq } from "drizzle-orm";
+import { and, asc, desc, eq, inArray } from "drizzle-orm";
 import { getDb } from "@/db";
 import { brands, campaigns, collaborationEvents, collaborations } from "@/db/schema";
 import type { CampaignOption, CollaborationDetailDto, CollaborationDto, ViewerRole } from "../schemas";
@@ -86,4 +86,17 @@ export function listBrandCampaignOptions(brandId: string) {
 export async function getCollaborationDetail(scope: DetailScope) {
   const origin = await appOrigin();
   return cachedRead(loadCollaborationDetail, ["collaboration-detail"], { tags: [scope.role === "creator" ? tag.creatorCollaborations(scope.ownerId) : tag.brandCollaborations(scope.ownerId)] })({ ...scope, origin });
+}
+
+// Which of these creators already have a collaboration on this campaign, in
+// any state (the table allows one per campaign and creator). Read straight
+// from the database, never cached: it decides whether a booking can go
+// through, right after another one may have.
+export async function creatorsOnCampaign(campaignId: string, creatorIds: string[]): Promise<Set<string>> {
+  if (!isUuid(campaignId) || creatorIds.length === 0) return new Set();
+  const rows = await getDb()
+    .select({ creatorId: collaborations.creatorId })
+    .from(collaborations)
+    .where(and(eq(collaborations.campaignId, campaignId), inArray(collaborations.creatorId, creatorIds.filter(isUuid))));
+  return new Set(rows.map((r) => r.creatorId));
 }

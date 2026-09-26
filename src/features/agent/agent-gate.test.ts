@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 vi.mock("server-only", () => ({}));
 const topUpWallet = vi.fn();
 vi.mock("@/features/payouts/server/actions", () => ({ topUpWallet: (...a: unknown[]) => topUpWallet(...a), withdrawEarnings: vi.fn() }));
+vi.mock("@/features/payouts/server/queries", () => ({ walletCentsNow: async () => 500_000, billingBucketsNow: async () => ({ heldCents: 0 }), getEarningsSummary: async () => ({}) }));
 
 const { toolsFor, findTool } = await import("./server/tools");
 const { runCall } = await import("./server/loop");

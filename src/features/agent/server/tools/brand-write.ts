@@ -3,9 +3,11 @@ import { getBrandProfile, getCampaign } from "@/features/campaigns/server/read-c
 import { getCreatorPicks } from "@/features/campaigns/server/read-creators";
 import { payCollaboration, reviewDraft } from "@/features/collaborations/server/actions";
 import { sendMessage } from "@/features/collaborations/server/messages-actions";
-import { listBrandCollaborations } from "@/features/collaborations/server/queries";
+import { creatorsOnCampaign, listBrandCollaborations } from "@/features/collaborations/server/queries";
 import { bookCreator } from "@/features/marketplace/server/actions";
 import { topUpWallet } from "@/features/payouts/server/actions";
+import { walletCentsNow } from "@/features/payouts/server/queries";
+import { alreadyLine, splitOnCampaign } from "../../on-campaign";
 import { arr, type ConfirmTool, euros, L, num, obj, str, type ToolContext } from "./types";
 
 const MAX_BOOK = 5;
@@ -24,15 +26,19 @@ const bookCreators: ConfirmTool = {
     // the booking action refuses anything but an active campaign; say so before the card, not after
     if (campaign.status !== "active") return { error: `${campaign.name} is a ${campaign.status} campaign; only an active one can take bookings. Launch it first, or pick an active campaign.` };
     if (creatorIds.length === 0) return { error: "No creators to book." };
-    const picks = await getCreatorPicks(creatorIds, campaign, brand);
-    if (picks.length === 0) return { error: "Those creators weren't found." };
+    const found = await getCreatorPicks(creatorIds, campaign, brand);
+    if (found.length === 0) return { error: "Those creators weren't found." };
+    // refuse up front, naming who is already on the campaign (any state)
+    const { bookable: picks, already } = splitOnCampaign(found, await creatorsOnCampaign(campaign.id, found.map((p) => p.id)));
+    if (picks.length === 0) return { error: `${alreadyLine(already, campaign.name, ctx.locale)} ${L(ctx, "Search again for others.", "Cherchez-en d’autres.")}` };
     const total = picks.reduce((s, p) => s + p.priceCents, 0);
-    const wallet = ctx.viewer.brand?.walletCents ?? 0;
+    const wallet = await walletCentsNow(brandId(ctx));
     if (total > wallet) return { error: `The fees total ${euros(total, ctx.locale)} and the wallet has ${euros(wallet, ctx.locale)}. Top up first.` };
     return {
       title: L(ctx, `Book ${picks.length} creator${picks.length > 1 ? "s" : ""} for ${campaign.name}`, `Réserver ${picks.length} créateur${picks.length > 1 ? "s" : ""} pour ${campaign.name}`),
       facts: [
         { label: "Creators", value: picks.map((p) => `${p.name} (${euros(p.priceCents, ctx.locale)})`).join(", ") },
+        ...(already.length ? [{ label: "Already on it", value: already.map((p) => p.name).join(", ") }] : []),
         { label: "Held from your wallet", value: euros(total, ctx.locale), cents: total },
         { label: "Wallet after", value: euros(wallet - total, ctx.locale), cents: wallet - total },
       ],
@@ -41,7 +47,8 @@ const bookCreators: ConfirmTool = {
   },
   async execute(ctx, a) {
     const [campaign, brand] = await Promise.all([getCampaign(brandId(ctx), String(a.campaignId ?? "")), getBrandProfile(brandId(ctx))]);
-    const picks = campaign && brand ? await getCreatorPicks(ids(a.creatorIds), campaign, brand) : [];
+    const found = campaign && brand ? await getCreatorPicks(ids(a.creatorIds), campaign, brand) : [];
+    const picks = campaign ? splitOnCampaign(found, await creatorsOnCampaign(campaign.id, found.map((p) => p.id))).bookable : [];
     const booked: typeof picks = [];
     let error = "";
     for (const p of picks) {
@@ -49,7 +56,8 @@ const bookCreators: ConfirmTool = {
       if (r.ok) booked.push(p); else error = r.error;
     }
     const held = booked.reduce((s, p) => s + p.priceCents, 0);
-    const wallet = (ctx.viewer.brand?.walletCents ?? 0) - held;
+    // the balance after the bookings, as the database now has it
+    const wallet = await walletCentsNow(brandId(ctx));
     const who = booked.map((p) => `${p.name} (${euros(p.priceCents, ctx.locale)})`).join(", ");
     if (booked.length === 0) return { ok: false, summary: error || L(ctx, "no invitation went out", "aucune invitation n’est partie") };
     return { ok: true, summary: L(ctx, `Invited ${who}. ${euros(held, ctx.locale)} is held from your wallet, which now has ${euros(wallet, ctx.locale)}.`, `Invitations envoyées à ${who}. ${euros(held, ctx.locale)} est bloqué sur votre portefeuille, qui affiche maintenant ${euros(wallet, ctx.locale)}.`) + (booked.length < picks.length ? ` ${error}` : "") };
@@ -97,7 +105,7 @@ const topUp: ConfirmTool = {
   async prepare(ctx, a) {
     const cents = Math.round(Number(a.amountEuros) * 100);
     if (!Number.isFinite(cents) || cents <= 0) return { error: "How much should I add?" };
-    const wallet = ctx.viewer.brand?.walletCents ?? 0;
+    const wallet = await walletCentsNow(brandId(ctx));
     return { title: L(ctx, "Top up the wallet", "Recharger le portefeuille"), facts: [{ label: "Amount", value: euros(cents, ctx.locale), cents }, { label: "Wallet after", value: euros(wallet + cents, ctx.locale), cents: wallet + cents }, { label: "Card", value: "None charged: demo top-up" }], confirmLabel: `Add ${euros(cents, ctx.locale)}` };
   },
   async execute(ctx, a) {
