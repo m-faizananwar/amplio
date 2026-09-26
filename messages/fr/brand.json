@@ -46,7 +46,7 @@
       }
     },
     "setup": {
-      "title": "Terminez la configuration",
+      "title": "Premiers pas",
       "progress": "{done, plural, one {# étape sur {total} terminée} other {# étapes sur {total} terminées}}",
       "steps": {
         "explore": {

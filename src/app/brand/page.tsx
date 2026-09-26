@@ -49,8 +49,7 @@ export default async function BrandOverviewPage() {
     <>
       {header}
       <div className="grid gap-10">
-        <SetupProgressCard role="brand" />
-        {plan.stepsLeft > 0 ? <SetupCard plan={plan} /> : null}
+        <SetupProgressCard role="brand" then={plan.stepsLeft > 0 ? <SetupCard plan={plan} /> : null} />
         <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
           <section aria-labelledby="needs-title" className="grid gap-4">
             <h2 id="needs-title" className="text-h4">{t("needsYou.title")}</h2>

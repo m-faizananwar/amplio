@@ -46,8 +46,9 @@ export default async function CreatorOverviewPage() {
   const clickTotal = links.reduce((sum, l) => sum + l.clicks, 0);
   return (
     <div className="grid gap-6">
+      {/* one setup card: the setup ring until setup is done, then the card-gap nudge */}
       <SetupProgressCard role="creator" />
-      <CreatorOverview collaborations={collaborations} earnings={earnings} ledger={ledger} clicks={clicks} clickTotal={clickTotal} setup={setupGap(card)} />
+      <CreatorOverview collaborations={collaborations} earnings={earnings} ledger={ledger} clicks={clicks} clickTotal={clickTotal} setup={viewer.creator.onboarded ? setupGap(card) : null} />
     </div>
   );
 }

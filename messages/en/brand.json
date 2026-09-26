@@ -46,7 +46,7 @@
       }
     },
     "setup": {
-      "title": "Finish setting up",
+      "title": "First steps",
       "progress": "{done} of {total} done",
       "steps": {
         "explore": {
