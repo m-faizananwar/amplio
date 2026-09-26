@@ -47,8 +47,11 @@ export function AgentView({ role, firstName, csrfToken, profile, notes, threads 
         ) : (
           <>
             {thread}
-            <div ref={end} />
+            {/* scrolled to with room for the composer and the assistant pill below it */}
+            <div ref={end} className="scroll-mb-64" />
             <div className="sticky bottom-24 z-10 rounded-card bg-paper pt-2"><AgentComposer busy={run.busy} onSend={(text) => void run.send(text)} onCall={() => setVoice(true)} /></div>
+            {/* the composer rests 96px up; this lets the thread end above it rather than under it */}
+            <div aria-hidden="true" className="h-20" />
           </>
         )}
       </div>
