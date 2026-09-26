@@ -22,14 +22,14 @@ export function CallSheet({ call }: { call: AgentCall }) {
   const [pull, setPull] = useState(0);
   const from = useRef<number | null>(null);
   const live = call.status === "live" || call.status === "connecting";
-  // on the agent page the bar sits above the composer, elsewhere above the dock
+  // on the agent page the bar sits above the composer; elsewhere at the foot (the dock steps aside during a call)
   const barPlace = pathname.endsWith("/agent") ? "call-bar--agent" : "call-bar--app";
 
   if (call.minimised) {
     return (
       <div className={cn("call-bar", barPlace)}>
         <button type="button" className="flex min-w-0 flex-1 items-center gap-3 px-3 text-left outline-none focus-visible:ring-2 focus-visible:ring-money" aria-label={t("expand")} onClick={() => call.setMinimised(false)}>
-          <CallDots mode={call.mode} readInput={call.readInput} readOutput={call.readOutput} className="h-4 w-10" />
+          <CallDots mode={call.mode} readInput={call.readInput} readOutput={call.readOutput} className="h-3.5 w-8" />
           <span className="truncate text-small font-medium">{t("live")}</span>
           <CallTimer startedAt={call.startedAt} className="text-small text-ink-muted" />
           <ChevronUp className="ml-auto size-4 text-ink-muted" aria-hidden="true" />

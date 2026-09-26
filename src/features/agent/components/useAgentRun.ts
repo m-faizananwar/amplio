@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { AgentEvent, ConfirmEvent } from "../events";
@@ -31,6 +32,7 @@ export function useAgentRun(role: "brand" | "creator", csrfToken: string, option
   // both routes check the session's CSRF token, as /api/assistant/chat does
   const headers = { "content-type": "application/json", "x-csrf-token": csrfToken };
   const locale = useLocale();
+  const router = useRouter();
   const [items, setItems] = useState<AgentItem[]>([]);
   const [confirms, setConfirms] = useState<Record<string, ConfirmState>>({});
   const [busy, setBusy] = useState(false);
@@ -47,6 +49,8 @@ export function useAgentRun(role: "brand" | "creator", csrfToken: string, option
     if (incoming.type === "navigate") return void onNavigate.current?.(incoming);
     if (incoming.type === "resolved") {
       setConfirms((c) => ({ ...c, [incoming.id]: incoming.outcome === "failed" ? "open" : incoming.outcome }));
+      // a done action may have moved money: the shell's wallet chip re-reads it
+      if (incoming.outcome === "done") router.refresh();
       return;
     }
     const event: AgentEvent = incoming;
@@ -66,7 +70,7 @@ export function useAgentRun(role: "brand" | "creator", csrfToken: string, option
       seq.current += 1;
       return [...prev, keyed(`${event.type}-${seq.current}`)];
     });
-  }, []);
+  }, [router]);
 
   const read = useCallback(async (res: Response) => {
     if (!res.body) return;
@@ -127,11 +131,12 @@ export function useAgentRun(role: "brand" | "creator", csrfToken: string, option
       if (!res.ok) throw new Error(res.status === FORBIDDEN ? STALE : `confirm ${res.status}`);
       setConfirms((c) => ({ ...c, [event.id]: decision === "confirm" ? "done" : "cancelled" }));
       await read(res);
+      if (decision === "confirm") router.refresh();
     } catch (error) {
       setConfirms((c) => ({ ...c, [event.id]: "open" }));
       apply({ type: "error", message: error instanceof Error && error.message === STALE ? STALE : "confirm", retryable: false });
     }
-  }, [apply, read, sample, csrfToken]); // eslint-disable-line react-hooks/exhaustive-deps -- headers is derived from csrfToken
+  }, [apply, read, sample, csrfToken, router]); // eslint-disable-line react-hooks/exhaustive-deps -- headers is derived from csrfToken
 
   const reset = useCallback(() => {
     setItems([]);

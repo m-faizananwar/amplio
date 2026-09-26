@@ -6,15 +6,18 @@ import type { CallMode } from "../callTypes";
 
 type Props = { mode: CallMode; readInput: () => number; readOutput: () => number; className?: string };
 
-const EASE = 0.35;
+const EASE = 0.25;
 const THINK_MS = 180;
-const THINK_LIFT = 0.45;
-const GAIN = 1.5;
-const EDGE_DAMP = 0.35;
+// at most 1.6× and a lift of 1.2 viewBox units: the mark stays the mark
+const MAX_GROW = 0.6;
+const RISE = 1.2;
+const EDGE = 0.8;
+const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 
-// The mark's three dots as the call's pulse: listening, they follow the mic;
-// speaking, the agent's voice; thinking, a wave runs across them; muted or at
-// rest, they sit still. Transform only; reduced motion keeps them still.
+// The mark's three dots as the call's pulse: equal circles on their line that
+// swell a little and lift with the level (the mic while listening, the voice
+// while speaking); thinking, a small wave runs across them; muted or at rest
+// they sit still. Transform only; reduced motion keeps them still.
 export function CallDots({ mode, readInput, readOutput, className }: Props) {
   const root = useRef<SVGSVGElement>(null);
   useEffect(() => {
@@ -23,12 +26,12 @@ export function CallDots({ mode, readInput, readOutput, className }: Props) {
     let level = 0;
     const paint = (now: number) => {
       const dots = root.current?.querySelectorAll<SVGCircleElement>("circle");
-      const target = mode === "listening" ? readInput() : mode === "speaking" ? readOutput() : 0;
+      const target = clamp01(mode === "listening" ? readInput() : mode === "speaking" ? readOutput() : 0);
       level += (target - level) * EASE;
       dots?.forEach((dot, i) => {
-        const wave = mode === "thinking" ? THINK_LIFT * Math.max(0, Math.sin(now / THINK_MS - i * 0.9)) : 0;
-        const voice = level * GAIN * (1 - Math.abs(i - 1) * EDGE_DAMP);
-        dot.style.transform = still ? "" : `scale(${(1 + wave + voice).toFixed(3)})`;
+        const wave = mode === "thinking" ? 0.5 * Math.max(0, Math.sin(now / THINK_MS - i * 0.9)) : 0;
+        const amount = clamp01(level * (i === 1 ? 1 : EDGE) + wave);
+        dot.style.transform = still ? "" : `translate(0px, ${(-RISE * amount).toFixed(2)}px) scale(${(1 + MAX_GROW * amount).toFixed(3)})`;
       });
       raf = requestAnimationFrame(paint);
     };
@@ -36,7 +39,7 @@ export function CallDots({ mode, readInput, readOutput, className }: Props) {
     return () => cancelAnimationFrame(raf);
   }, [mode, readInput, readOutput]);
   return (
-    <svg ref={root} viewBox="0 0 28 12" data-mode={mode} className={cn("call-dots text-ink", className)} aria-hidden="true">
+    <svg ref={root} viewBox="0 0 28 12" data-mode={mode} className={cn("call-dots overflow-visible text-ink", className)} aria-hidden="true">
       <path d="M3 9 L14 4 L25 7" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" opacity="0.35" />
       <circle cx="3" cy="9" r="2.4" fill="currentColor" />
       <circle cx="14" cy="4" r="2.4" fill="currentColor" />

@@ -16,7 +16,7 @@ export function CallBody({ call }: { call: AgentCall }) {
   if (call.status === "connecting") {
     return (
       <div className="grid flex-1 content-center justify-items-center gap-4 py-6" role="status">
-        <div className="call-ring grid size-24 place-items-center rounded-full"><CallDots mode="thinking" readInput={call.readInput} readOutput={call.readOutput} className="h-6 w-14" /></div>
+        <div className="call-ring grid size-24 place-items-center rounded-full"><CallDots mode="thinking" readInput={call.readInput} readOutput={call.readOutput} className="h-5 w-12" /></div>
         <p className="text-small text-ink-muted">{t("connecting")}</p>
         <Button size="icon-lg" variant="ghost" aria-label={t("end")} onClick={call.end} className="bg-failure text-surface hover:bg-failure/90"><PhoneOff /></Button>
       </div>
@@ -50,7 +50,7 @@ function LiveBody({ call }: { call: AgentCall }) {
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-3">
       <div className="flex min-w-0 items-center gap-3">
-        <CallDots mode={call.mode} readInput={call.readInput} readOutput={call.readOutput} className="h-7 w-16 shrink-0" />
+        <CallDots mode={call.mode} readInput={call.readInput} readOutput={call.readOutput} className="h-4 w-10 shrink-0" />
         <p className="text-small font-medium" aria-live="polite">{call.mode === "rest" ? " " : t(call.mode === "muted" ? "mute" : call.mode)}</p>
         {call.engineName === "browser" ? <p className="ml-auto truncate text-caption text-ink-muted">{t("browserVoice")}</p> : null}
       </div>

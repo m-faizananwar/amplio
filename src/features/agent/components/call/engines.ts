@@ -19,7 +19,7 @@ export type CallEngine = { name: CallEngineName; start: () => Promise<void>; sto
 // language, variableValues, metadata { voiceToken, threadId, locale }).
 export type AgentVoiceSession = { provider: "vapi"; assistantId: string; publicKey: string; voiceToken: string; threadId: string | null; overrides: Record<string, unknown> };
 
-type VapiMessage = { type?: string; role?: string; transcriptType?: string; transcript?: string };
+type VapiMessage = { type?: string; role?: string; transcriptType?: string; transcript?: string; input?: string };
 
 const RESTART_MS = 250;
 const SYNTH_LEVEL_MS = 90;
@@ -33,9 +33,24 @@ const messageOf = (error: unknown) => (error instanceof Error ? error.message : 
 export async function createVapiEngine(session: AgentVoiceSession, h: EngineHandlers): Promise<CallEngine> {
   const { default: Vapi } = await import("@vapi-ai/web");
   const vapi = new Vapi(session.publicKey);
+  // The agent's line: `voice-input` is the text handed to the voice (ours,
+  // spelled right), sentence by sentence; Vapi's transcript of its own speech
+  // is only a fallback if that never arrives. A new user turn starts a new line.
+  let said = "";
+  let sawVoiceInput = false;
   vapi.on("message", (m: VapiMessage) => {
+    if (m.type === "voice-input" && m.input) {
+      sawVoiceInput = true;
+      said = said ? `${said} ${m.input}` : m.input;
+      return h.onAgent(said, false);
+    }
     if (m.type !== "transcript" || !m.transcript) return;
-    (m.role === "assistant" ? h.onAgent : h.onUser)(m.transcript, m.transcriptType === "final");
+    const final = m.transcriptType === "final";
+    if (m.role !== "assistant") {
+      if (final) said = "";
+      return h.onUser(m.transcript, final);
+    }
+    h.onAgent(sawVoiceInput ? said : m.transcript, final);
   });
   vapi.on("speech-start", () => h.onSpeaking(true));
   vapi.on("speech-end", () => h.onSpeaking(false));

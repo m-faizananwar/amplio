@@ -31,7 +31,7 @@ export function CallWindow({ call }: { call: AgentCall }) {
         {...place.handleProps}
         onClick={() => { if (!place.wasDrag()) call.setMinimised(false); }}
       >
-        <CallDots mode={call.mode} readInput={call.readInput} readOutput={call.readOutput} className="h-4 w-10" />
+        <CallDots mode={call.mode} readInput={call.readInput} readOutput={call.readOutput} className="h-3.5 w-8" />
         <CallTimer startedAt={call.startedAt} endedAt={call.endedAt} className="call-bubble-timer" />
       </button>
     );

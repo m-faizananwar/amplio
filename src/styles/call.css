@@ -117,7 +117,7 @@
     box-shadow: 0 12px 28px -10px rgb(16 24 40 / 0.3);
   }
   .call-bar > button:first-child { height: 100%; }
-  .call-bar--app { bottom: calc(84px + env(safe-area-inset-bottom)); }
+  .call-bar--app { bottom: calc(12px + env(safe-area-inset-bottom)); }
   .call-bar--agent { bottom: calc(248px + env(safe-area-inset-bottom)); }
 }
 
