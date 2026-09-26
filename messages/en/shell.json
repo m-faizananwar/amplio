@@ -10,7 +10,8 @@
       "results": "Results",
       "messages": "Messages",
       "billing": "Billing",
-      "settings": "Settings"
+      "settings": "Settings",
+      "agent": "Agent"
     },
     "creator": {
       "overview": "Overview",
@@ -20,7 +21,8 @@
       "analytics": "Analytics",
       "earnings": "Earnings",
       "messages": "Messages",
-      "settings": "Settings"
+      "settings": "Settings",
+      "agent": "Agent"
     },
     "sections": {
       "main": "Workspace",
@@ -78,7 +80,8 @@
       "openResults": "Open results",
       "toggleTheme": "Change theme",
       "switchLanguage": "Change language",
-      "call": "Call Amplio"
+      "call": "Call Amplio",
+      "askAgent": "Ask the agent"
     }
   },
   "pageStates": {

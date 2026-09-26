@@ -10,7 +10,8 @@
       "results": "Résultats",
       "messages": "Messages",
       "billing": "Facturation",
-      "settings": "Paramètres"
+      "settings": "Paramètres",
+      "agent": "Agent"
     },
     "creator": {
       "overview": "Vue d’ensemble",
@@ -20,7 +21,8 @@
       "analytics": "Statistiques",
       "earnings": "Revenus",
       "messages": "Messages",
-      "settings": "Paramètres"
+      "settings": "Paramètres",
+      "agent": "Agent"
     },
     "sections": {
       "main": "Espace",
@@ -78,7 +80,8 @@
       "openResults": "Ouvrir les résultats",
       "toggleTheme": "Changer de thème",
       "switchLanguage": "Changer de langue",
-      "call": "Appeler Amplio"
+      "call": "Appeler Amplio",
+      "askAgent": "Demander à l’agent"
     }
   },
   "pageStates": {

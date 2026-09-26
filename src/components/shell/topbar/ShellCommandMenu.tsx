@@ -1,11 +1,12 @@
 "use client";
 
-import { Briefcase, Handshake, Languages, Moon, PhoneCall, Plus, Search, UserPlus, Users, Wallet, BarChart3 } from "lucide-react";
+import { Briefcase, Handshake, Languages, Moon, PhoneCall, Plus, Search, UserPlus, Users, Wallet, BarChart3, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { useCallback, useState } from "react";
 import { CommandMenu, useCommandShortcut, type CommandMenuGroup } from "@/components/ui/command-menu";
 import type { CommandIndex } from "@/features/workspace/server/command-queries";
+import { AGENT_MODE } from "@/features/agent/flag";
 import { loadCommandIndex } from "@/features/workspace/server/actions";
 import { setLocale } from "@/i18n/actions";
 import { navFor, type Role } from "../nav";
@@ -39,6 +40,7 @@ export function ShellCommandMenu({ role }: Props) {
     { heading: t("commandMenu.groups.collaborations"), items: (index?.collaborations ?? []).map((e) => ({ id: e.id, label: e.label, icon: Handshake, onSelect: go(e.href) })) },
     { heading: t("commandMenu.groups.creators"), items: (index?.creators ?? []).map((e) => ({ id: e.id, label: e.label, hint: e.hint, keywords: e.hint ? [e.hint] : undefined, icon: Users, onSelect: go(e.href) })) },
     { heading: t("commandMenu.groups.actions"), items: [
+      ...(AGENT_MODE ? [{ id: "ask-agent", label: t("commandMenu.actions.askAgent"), icon: Sparkles, onSelect: go(`/${role}/agent`) }] : []),
       ...(role === "brand" ? [
         { id: "new-campaign", label: t("commandMenu.actions.newCampaign"), icon: Plus, onSelect: go("/brand/campaigns/new") },
         { id: "invite", label: t("commandMenu.actions.inviteCreator"), icon: UserPlus, onSelect: go("/brand/creators") },

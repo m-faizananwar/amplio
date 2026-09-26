@@ -19,7 +19,7 @@ import { WalletProvider } from "./WalletProvider";
 export async function AppShell({ viewer, children }: { viewer: ShellViewer; children: ReactNode }) {
   const t = await getTranslations("shell");
   return (
-    <ClientMessages namespaces={["shell", viewer.role, "settings", "collaboration"]}>
+    <ClientMessages namespaces={["shell", viewer.role, "settings", "collaboration", "agent"]}>
       <WalletProvider initialCents={viewer.walletCents}>
         <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded-control focus:bg-ink focus:px-3 focus:py-2 focus:text-paper">{t("skipToContent")}</a>
         <div className="font-app flex min-h-screen bg-paper">
