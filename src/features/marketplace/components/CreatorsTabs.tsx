@@ -23,7 +23,7 @@ export async function CreatorsTabs({ active, campaignId }: Props) {
             key={tab.key}
             href={tab.href}
             aria-current={active === tab.key ? "page" : undefined}
-            className={cn("py-2 text-body text-ink-muted outline-none transition-colors duration-(--duration-fast) hover:text-ink focus-visible:ring-3 focus-visible:ring-ink/15", active === tab.key && "font-medium text-ink")}
+            className={cn("py-2 text-body text-ink-muted outline-none transition-colors duration-(--duration-fast) hover:text-ink focus-visible:ring-2 focus-visible:ring-money", active === tab.key && "font-medium text-ink")}
           >
             {tab.label}
           </Link>

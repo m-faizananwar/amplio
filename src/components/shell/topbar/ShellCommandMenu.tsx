@@ -56,7 +56,7 @@ export function ShellCommandMenu({ role }: Props) {
       <button
         type="button"
         onClick={() => show(true)}
-        className="flex h-9 w-full max-w-sm items-center gap-2 rounded-control border border-rule bg-surface px-3 text-left text-body text-ink-muted outline-none transition-colors duration-(--duration-fast) ease-ledger hover:border-rule-strong hover:text-ink focus-visible:ring-3 focus-visible:ring-ink/15"
+        className="flex h-9 w-full max-w-sm items-center gap-2 rounded-control border border-rule bg-surface px-3 text-left text-body text-ink-muted outline-none transition-colors duration-(--duration-fast) ease-ledger hover:border-rule-strong hover:text-ink focus-visible:ring-2 focus-visible:ring-money"
       >
         <Search className="size-4 shrink-0" aria-hidden="true" />
         <span className="flex-1 truncate">{t("topBar.search")}</span>

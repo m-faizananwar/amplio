@@ -26,7 +26,7 @@ export function Rail({ role, onNavigate }: Props) {
           onClick={onNavigate}
           aria-current={active ? "page" : undefined}
           className={cn(
-            "flex h-9 items-center gap-3 rounded-control px-3 text-body text-ink-muted outline-none transition-colors duration-(--duration-fast) ease-ledger hover:text-ink focus-visible:ring-3 focus-visible:ring-ink/15",
+            "flex h-9 items-center gap-3 rounded-control px-3 text-body text-ink-muted outline-none transition-colors duration-(--duration-fast) ease-ledger hover:text-ink focus-visible:ring-2 focus-visible:ring-money",
             active && "font-medium text-ink",
           )}
         >
@@ -38,7 +38,7 @@ export function Rail({ role, onNavigate }: Props) {
   };
   return (
     <nav aria-label={t("sectionLabel")} className="flex h-full flex-col gap-6 px-3 py-4">
-      <Link href={root} onClick={onNavigate} className="flex h-9 items-center rounded-control px-3 outline-none focus-visible:ring-3 focus-visible:ring-ink/15" aria-label={t(`${role}.overview`)}>
+      <Link href={root} onClick={onNavigate} className="flex h-9 items-center rounded-control px-3 outline-none focus-visible:ring-2 focus-visible:ring-money" aria-label={t(`${role}.overview`)}>
         <BrandLockup size="sm" />
       </Link>
       <SlidingIndicator axis="y" variant="capsule">

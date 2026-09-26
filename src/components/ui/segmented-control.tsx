@@ -48,7 +48,7 @@ export function SegmentedControl<T extends string>({ options, value, onValueChan
           key={option.value}
           value={option.value}
           className={cn(
-            "relative z-10 inline-flex items-center justify-center rounded-[calc(var(--radius-control)-2px)] font-medium text-ink-muted outline-none transition-colors duration-(--duration-fast) ease-ledger hover:text-ink focus-visible:ring-3 focus-visible:ring-ink/15 data-checked:text-ink",
+            "relative z-10 inline-flex items-center justify-center rounded-[calc(var(--radius-control)-2px)] font-medium text-ink-muted outline-none transition-colors duration-(--duration-fast) ease-ledger hover:text-ink focus-visible:ring-2 focus-visible:ring-money data-checked:text-ink",
             size === "sm" ? "h-7 px-2.5 text-small" : "h-8 px-3.5 text-body"
           )}
         >

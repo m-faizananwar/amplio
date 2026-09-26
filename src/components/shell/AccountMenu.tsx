@@ -23,7 +23,7 @@ export function AccountMenu({ viewer }: { viewer: ShellViewer }) {
   const name = `${viewer.firstName} ${viewer.lastName}`.trim();
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger aria-label={t("label")} className="rounded-full outline-none focus-visible:ring-3 focus-visible:ring-ink/15">
+      <DropdownMenuTrigger aria-label={t("label")} className="rounded-full outline-none focus-visible:ring-2 focus-visible:ring-money">
         <PersonAvatar name={name} src={viewer.avatarUrl} />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-60">

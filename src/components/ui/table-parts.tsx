@@ -29,7 +29,7 @@ export function SortableHead({ children, direction, onSort, align = "left", clas
         type="button"
         onClick={onSort}
         className={cn(
-          "-mx-1 inline-flex items-center gap-1 rounded-[6px] px-1 py-0.5 outline-none transition-colors duration-(--duration-fast) hover:text-ink focus-visible:ring-2 focus-visible:ring-ink/15",
+          "-mx-1 inline-flex items-center gap-1 rounded-[6px] px-1 py-0.5 outline-none transition-colors duration-(--duration-fast) hover:text-ink focus-visible:ring-2 focus-visible:ring-money",
           direction && "text-ink",
           align === "right" && "flex-row-reverse"
         )}

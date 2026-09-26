@@ -61,7 +61,7 @@ export function StatCard({ label, value, format, hint, delta, spark, tone = "ink
       type="button"
       data-slot="stat-card"
       onClick={onOpen}
-      className={cn(frame, "outline-none transition-[border-color,transform] duration-(--duration-fast) ease-ledger hover:border-rule-strong focus-visible:ring-3 focus-visible:ring-ink/15 active:translate-y-px", className)}
+      className={cn(frame, "outline-none transition-[border-color,transform] duration-(--duration-fast) ease-ledger hover:border-rule-strong focus-visible:ring-2 focus-visible:ring-money active:translate-y-px", className)}
     >
       {body}
     </button>

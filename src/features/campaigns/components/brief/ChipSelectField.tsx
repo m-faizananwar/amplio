@@ -41,7 +41,7 @@ export function ChipSelectField({ control, name, label, options, group }: Props)
               type="button"
               aria-pressed={on}
               onClick={() => toggle(option)}
-              className={`rounded-chip border px-3 py-1 text-caption transition-colors duration-(--duration-fast) outline-none focus-visible:ring-3 focus-visible:ring-ink/15 ${on ? "border-ink bg-ink text-paper" : "border-rule bg-surface hover:bg-tint"}`}
+              className={`rounded-chip border px-3 py-1 text-caption transition-colors duration-(--duration-fast) outline-none focus-visible:ring-2 focus-visible:ring-money ${on ? "border-ink bg-ink text-paper" : "border-rule bg-surface hover:bg-tint"}`}
             >
               {optionLabel(option)}
             </button>

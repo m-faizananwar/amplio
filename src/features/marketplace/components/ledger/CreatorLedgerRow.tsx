@@ -30,7 +30,7 @@ export function CreatorLedgerRow({ creator: c }: { creator: CreatorDto }) {
   return (
     <li className="grid gap-3 px-5 py-4">
       <div className="grid items-center gap-3 md:grid-cols-[minmax(0,1.6fr)_6.5rem_5.5rem_5.5rem_5.5rem_9.5rem] md:gap-4">
-        <button type="button" onClick={() => openProfile(c)} className="flex min-w-0 items-center gap-3 rounded-control text-left outline-none focus-visible:ring-3 focus-visible:ring-ink/15">
+        <button type="button" onClick={() => openProfile(c)} className="flex min-w-0 items-center gap-3 rounded-control text-left outline-none focus-visible:ring-2 focus-visible:ring-money">
           <PersonAvatar name={c.name} src={c.avatarUrl} />
           <span className="min-w-0">
             <span className="block truncate font-medium text-ink hover:underline">{c.name}</span>
@@ -38,7 +38,7 @@ export function CreatorLedgerRow({ creator: c }: { creator: CreatorDto }) {
             <span className="block truncate text-caption text-ink-muted">{c.industries.slice(0, 3).map(industryLabel).join(" · ")}</span>
           </span>
         </button>
-        <button type="button" onClick={() => setOpen((v) => !v)} aria-expanded={open} className={cn("inline-flex w-fit items-center gap-1 rounded-chip border px-2.5 py-1 text-caption outline-none transition-colors duration-(--duration-fast) hover:bg-tint focus-visible:ring-3 focus-visible:ring-ink/15", c.fit.score >= STRONG ? "border-ink text-ink" : "border-rule text-ink-muted")}>
+        <button type="button" onClick={() => setOpen((v) => !v)} aria-expanded={open} className={cn("inline-flex w-fit items-center gap-1 rounded-chip border px-2.5 py-1 text-caption outline-none transition-colors duration-(--duration-fast) hover:bg-tint focus-visible:ring-2 focus-visible:ring-money", c.fit.score >= STRONG ? "border-ink text-ink" : "border-rule text-ink-muted")}>
           <span className="num font-medium">{t("fit", { score: c.fit.score })}</span>
           <ChevronDown className={cn("size-3 transition-transform duration-(--duration-fast) ease-ledger", open && "rotate-180")} aria-hidden="true" />
         </button>

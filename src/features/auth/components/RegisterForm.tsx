@@ -67,7 +67,7 @@ export function RegisterForm({ role }: { role: Role }) {
                   type="button"
                   aria-pressed={field.value === option}
                   onClick={() => field.onChange(field.value === option ? undefined : option)}
-                  className={cn("rounded-chip border px-3 py-1 text-small transition-colors duration-(--duration-fast) focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ink/20", field.value === option ? "border-ink bg-ink text-paper" : "border-rule hover:bg-tint")}
+                  className={cn("rounded-chip border px-3 py-1 text-small transition-colors duration-(--duration-fast) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-money", field.value === option ? "border-ink bg-ink text-paper" : "border-rule hover:bg-tint")}
                 >
                   {t(`signUp.heard.${HEARD_KEY[option]}`)}
                 </button>

@@ -34,6 +34,10 @@
   --color-failure: var(--failure);
   --color-failure-soft: var(--failure-soft);
   --color-info: var(--info);
+  --color-good: var(--good);
+  /* zinc wells: the field / hover surface, and its pressed step */
+  --color-well: var(--well);
+  --color-press: var(--press);
 
   /* type: Geist for text, Geist Mono for every number, id, date and code */
   --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
@@ -61,13 +65,20 @@
 
   /* shape */
   --radius-chip: 999px;
-  --radius-card: 10px;
-  --radius-control: 8px;
+  --radius-card: 20px;
+  --radius-control: 12px;
+  --radius-panel: 16px;
+  --radius-pill: 30px;
   --shadow-float: var(--float-shadow);
+  --shadow-lift: var(--lift-shadow);
+  --shadow-lift-hover: var(--lift-hover-shadow);
+  --shadow-panel: var(--panel-shadow);
   --container-content: 1200px;
 
-  /* motion: 150–220 ms, one curve, opacity + transform only */
-  --ease-ledger: cubic-bezier(0.2, 0.8, 0.2, 1);
+  /* motion: UI 180–300 ms, opacity + transform only; ease-out for moves,
+     spring for things that pop (a field's icon square, a switch thumb) */
+  --ease-ledger: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   /* named ledger-* so they never shadow tw-animate-css's own enter/exit */
   --animate-rise: ledger-rise var(--duration-slow) var(--ease-ledger) both;
   --animate-pop-in: ledger-pop var(--duration-base) var(--ease-ledger) both;
@@ -122,27 +133,36 @@
 }
 
 :root {
-  --paper: #fafaf7;
+  /* cool zinc neutrals: page zinc-50, cards white, reading ink near-black */
+  --paper: #fafafa;
   --surface: #ffffff;
-  --ink: #111111;
-  --ink-muted: #6b6b66;
-  --rule: #e6e4de;
-  --rule-strong: #d3d0c7;
-  /* the one hover/selected wash: ink at 4% on paper */
-  --tint: #f1f0eb;
+  --ink: #18181b;
+  --ink-muted: #71717a;
+  --rule: #e4e4e7;
+  --rule-strong: #d4d4d8;
+  /* the one hover/selected wash (zinc-100); fields sit in the well, press is its hover */
+  --tint: #f4f4f5;
+  --well: #fafafa;
+  --press: #f0f0f2;
+  --label: #3f3f46;
+  /* one accent for action, money and verified attribution */
   --money: #0f7b4a;
   --money-soft: #e7f3ec;
-  --attention: #b45309;
-  --attention-soft: #fbf0e3;
-  --failure: #b42318;
-  --failure-soft: #fbeae8;
-  --info: #1d4ed8;
-  --float-shadow: 0 1px 2px rgb(17 17 17 / 0.06), 0 8px 24px -8px rgb(17 17 17 / 0.16);
+  --good: #067647;
+  --attention: #b54708;
+  --attention-soft: #fef0e4;
+  --failure: #c01f14;
+  --failure-soft: #fdecea;
+  --info: #175cd3;
+  --float-shadow: 0 1px 2px rgb(16 24 40 / 0.05), 0 12px 32px rgb(16 24 40 / 0.12);
+  --lift-shadow: 0 1px 2px rgb(16 24 40 / 0.05);
+  --lift-hover-shadow: 0 2px 4px rgb(16 24 40 / 0.06), 0 12px 24px -6px rgb(16 24 40 / 0.12);
+  --panel-shadow: 0 12px 32px rgb(16 24 40 / 0.12);
 
-  --duration-fast: 150ms;
-  --duration-base: 180ms;
-  --duration-slow: 220ms;
-  --radius: 10px;
+  --duration-fast: 180ms;
+  --duration-base: 240ms;
+  --duration-slow: 300ms;
+  --radius: 12px;
 
   /* legacy names, same palette: brand is ink now, success is money */
   --brand: var(--ink);
@@ -187,27 +207,39 @@
 /* Dark is opt-in by class for now (the shell adds the switch); the values are
    final. Legacy names follow automatically because they point at ledger vars. */
 .dark {
-  --paper: #0e0e0d;
-  --surface: #161615;
-  --ink: #f2f1ec;
-  --ink-muted: #9a9892;
-  --rule: #2a2926;
-  --rule-strong: #3a3935;
-  --tint: #1d1d1b;
+  --paper: #09090b;
+  --surface: #18181b;
+  --ink: #fafafa;
+  --ink-muted: #a1a1aa;
+  --rule: #27272a;
+  --rule-strong: #3f3f46;
+  --tint: #202023;
+  --well: #1f1f23;
+  --press: #27272a;
+  --label: #d4d4d8;
   --money: #34c77b;
   --money-soft: #12291c;
+  --good: #34c77b;
   --attention: #f0a24a;
   --attention-soft: #2e2012;
   --failure: #f07266;
   --failure-soft: #331614;
   --info: #7aa2ff;
-  --float-shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 12px 32px -8px rgb(0 0 0 / 0.6);
+  --float-shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 12px 32px rgb(0 0 0 / 0.5);
+  --lift-shadow: 0 1px 2px rgb(0 0 0 / 0.4);
+  --lift-hover-shadow: 0 2px 4px rgb(0 0 0 / 0.4), 0 12px 24px -6px rgb(0 0 0 / 0.5);
+  --panel-shadow: 0 12px 32px rgb(0 0 0 / 0.5);
   --linkedin: #4c9ae8;
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
+  }
+  /* One focus ring on every control: 2px solid accent. */
+  :focus-visible {
+    outline: 2px solid var(--money);
+    outline-offset: 2px;
   }
   html {
     @apply font-sans;

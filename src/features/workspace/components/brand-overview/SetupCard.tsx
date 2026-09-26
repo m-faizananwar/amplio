@@ -27,7 +27,7 @@ export async function SetupCard({ plan }: { plan: Plan }) {
           const complete = step.done(plan);
           return (
             <li key={step.key}>
-              <Link href={step.href} className={cn("flex h-full items-start gap-3 rounded-control border border-rule p-3 outline-none transition-colors duration-(--duration-fast) hover:bg-tint focus-visible:ring-3 focus-visible:ring-ink/15", complete && "bg-paper")}>
+              <Link href={step.href} className={cn("flex h-full items-start gap-3 rounded-control border border-rule p-3 outline-none transition-colors duration-(--duration-fast) hover:bg-tint focus-visible:ring-2 focus-visible:ring-money", complete && "bg-paper")}>
                 <span className={cn("num grid size-6 shrink-0 place-items-center rounded-full border text-caption", complete ? "border-money bg-money text-paper" : "border-rule-strong text-ink-muted")} aria-hidden="true">
                   {complete ? <Check className="size-3.5" /> : i + 1}
                 </span>
