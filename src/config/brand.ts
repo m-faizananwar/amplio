@@ -1,15 +1,12 @@
 // The product's own name, in one place. Every string in our UI that names the
-// product reads from here; docs/ and the README name the reference product
-// once. Renaming = edit this file, reseed (demo emails), redeploy.
+// product reads from here. Renaming = edit this file, reseed (demo emails),
+// redeploy.
 export const BRAND = {
   name: "Amplio",
   wordmark: "Amplio",
   tagline: "The creators your buyers already trust.",
   // Demo logins: brand@<demoDomain> / creator@<demoDomain>, seeded by scripts/seed.
   demoDomain: "demo.amplio",
-  // Demo domain of a database seeded before the rename; the demo login falls
-  // back to it so a live database keeps working until pnpm db:seed:remote.
-  legacyDemoDomain: "demo.naano",
   supportEmail: "hello@amplio.example",
   // The matching copilot and the support bot in Messages.
   copilot: "Amp",

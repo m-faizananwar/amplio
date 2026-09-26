@@ -52,8 +52,8 @@ function brief(company: string, partial: Partial<Brief> & Pick<Brief, "whatToTel
   };
 }
 
-// The demo brand. Value prop and ICPs are naano's real onboarding output for
-// zune (product map, "Zune — the real onboarding output"), verbatim.
+// The demo brand. Value prop and ICPs are a real onboarding output for
+// zune, verbatim.
 const zune: BrandFixture = {
   key: "zune",
   slug: "zune",

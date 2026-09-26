@@ -6,7 +6,7 @@ import { creators } from "./creators";
 export const campaignStatus = pgEnum("campaign_status", ["draft", "active", "completed"]);
 export const campaignSource = pgEnum("campaign_source", ["manual", "ai", "link", "team"]);
 
-// The brief editor's exact field set (product map, "Brief EDITOR fields").
+// The brief editor's exact field set.
 export type BriefAngle = { angle: string; hook: string; direction: string; example: string };
 export type Brief = {
   whatToTell: string;

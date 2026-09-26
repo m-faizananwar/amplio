@@ -1,4 +1,4 @@
-// The collaboration state machine, exactly as the product map shows it.
+// The collaboration state machine, as docs/plan.md tables it.
 // Pure: no io. The db-writing wrapper is features/collaborations/server/transition.ts,
 // the only place a status may change.
 

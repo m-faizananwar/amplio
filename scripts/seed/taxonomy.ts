@@ -1,4 +1,4 @@
-// naano's 24 industries, verbatim from the creator onboarding (product map).
+// A common 24-industry list, as creator onboarding flows use it.
 export const INDUSTRIES = [
   "B2B", "B2C", "AI", "SaaS", "Sales", "Marketing", "SEO", "Outreach", "CRM", "Creative", "Productivity",
   "Fintech", "HealthTech", "EdTech", "Cybersecurity", "Growth / GTM", "HR", "E-commerce", "Developer Tools",
@@ -40,7 +40,7 @@ export const INDUSTRY_AUDIENCE: Record<Industry, Partial<Record<(typeof JOB_TITL
   "LegalTech": { Founders: 35, Operations: 25, Finance: 15 },
 };
 
-// naano's Q2 2026 benchmark: smaller creators get higher CTR. `reach` is
+// A Q2 2026 creator benchmark: smaller creators get higher CTR. `reach` is
 // median views as a multiple of followers (LinkedIn reach runs 1.5-4x the
 // follower count, higher for smaller accounts).
 export const TIERS = [
@@ -50,7 +50,7 @@ export const TIERS = [
   { max: 100_000, ctr: 0.087, engagement: 0.024, reach: 2.0 },
   { max: Infinity, ctr: 0.087, engagement: 0.018, reach: 1.6 },
 ] as const;
-// naano's real CPMs sit between 11 and 34 EUR.
+// Observed market CPMs sit between 11 and 34 EUR.
 export const CPM_EUR = { median: 18, sigma: 0.3, min: 11, max: 34 } as const;
 
 export function tierFor(followers: number) {

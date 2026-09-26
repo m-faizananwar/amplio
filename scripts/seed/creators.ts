@@ -37,7 +37,7 @@ export type PostFixture = {
 };
 
 export const CREATOR_COUNT = 300;
-const PRICE_ANCHOR = { followers: 2070, cents: 31500 }; // naano's own recommendation, observed
+const PRICE_ANCHOR = { followers: 2070, cents: 31500 }; // an observed market recommendation
 const PRICE_EXPONENT = 0.45;
 const PRICE_FLOOR = 2000;
 const PRICE_CAP = 150000;
@@ -46,7 +46,7 @@ export function avatarFor(handle: string) {
   return `https://api.dicebear.com/9.x/notionists/svg?seed=${encodeURIComponent(handle)}&backgroundColor=e8eefc,dbe4ff,eef2ff`;
 }
 
-// naano's recommendation follows reach; what a creator actually charges is
+// The usual recommendation follows reach; what a creator actually charges is
 // that times a positioning factor — most sit near it, a tail prices low to
 // win first bookings — floored at €20 and capped at the €1,500 platform limit.
 export function recommendPriceCents(followers: number) {
@@ -55,7 +55,7 @@ export function recommendPriceCents(followers: number) {
 }
 
 // What creators actually charge: their median views priced at a CPM drawn from
-// naano's observed 11-34 EUR band, rounded to 5 EUR, within the platform limits.
+// The observed market 11-34 EUR band, rounded to 5 EUR, within the platform limits.
 export function priceFromViewsCents(medianViews: number) {
   const cpm = lognormal(CPM_EUR.median * 100, CPM_EUR.sigma, CPM_EUR.min * 100, CPM_EUR.max * 100) / 100;
   const cents = Math.round(((medianViews * cpm) / 1000) * 100 / 500) * 500;

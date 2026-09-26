@@ -17,7 +17,7 @@ const HOUR = 3_600_000;
 const NOW = new Date("2026-09-12T10:00:00Z").getTime();
 
 describe("tab mapping", () => {
-  it("puts every status in exactly one creator tab (the product map's table)", () => {
+  it("puts every status in exactly one creator tab (docs/plan.md's table)", () => {
     expect(creatorTabFor("invited")).toBe("needs_action");
     expect(creatorTabFor("changes_requested")).toBe("needs_action");
     expect(creatorTabFor("approved")).toBe("needs_action");

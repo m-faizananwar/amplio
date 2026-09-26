@@ -11,7 +11,7 @@ import { TRAIL_TTL_S, type PublicTrail } from "../constants";
 // their tracked links → the clicks on them → the sign-ups the pixel attributed
 // to a click. Counts only, no names; read from the database, cached for a
 // minute, and labelled "demo workspace data" wherever it is shown.
-const DEMO_BRAND_EMAILS = [DEMO_ACCOUNTS.brand.email, DEMO_ACCOUNTS.brand.legacyEmail];
+const DEMO_BRAND_EMAILS = [DEMO_ACCOUNTS.brand.email];
 
 type Db = ReturnType<typeof getDb>;
 

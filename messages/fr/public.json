@@ -268,10 +268,9 @@
           ]
         },
         {
-          "id": "reference",
-          "title": "Produit de référence",
+          "id": "numbers",
+          "title": "Les chiffres affichés",
           "paragraphs": [
-            "Amplio est conçu comme une reconstruction de naano.com et n’y est pas affilié.",
             "Les chiffres des pages publiques proviennent d’un espace de démo alimenté par des données d’exemple, pas de vrais clients."
           ]
         }

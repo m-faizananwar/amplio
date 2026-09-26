@@ -1,5 +1,4 @@
-// Brand onboarding: the 3 steps after "register as brand" (product map,
-// "Brand onboarding after email + 6-digit code").
+// Brand onboarding: the 3 steps after "register as brand" and the email code.
 
 export const ONBOARDING_ROUTES = {
   index: "/brand/setup",
@@ -12,7 +11,7 @@ export const ONBOARDING_ROUTES = {
 export const SITE_FETCH_TIMEOUT_MS = 10_000;
 export const SITE_FETCH_MAX_BYTES = 1_500_000;
 export const SITE_FETCH_MAX_REDIRECTS = 5;
-export const SITE_FETCH_USER_AGENT = "naano-rebuild/1.0 (+https://github.com/m-faizananwar/naano-rebuild; brand onboarding site reader)";
+export const SITE_FETCH_USER_AGENT = "amplio/1.0 (+https://github.com/m-faizananwar/amplio; brand onboarding site reader)";
 export const SITE_TITLE_MAX_CHARS = 200;
 export const SITE_DESCRIPTION_MAX_CHARS = 600;
 export const SITE_HEADING_MAX_CHARS = 160;
@@ -28,8 +27,7 @@ export const ICP_TITLE_MAX_CHARS = 120;
 export const ICP_DESCRIPTION_MAX_CHARS = 1_200;
 export const COMPANY_MAX_CHARS = 80;
 
-// The auto-created campaign (product map: "Onboarding auto-creates one Active
-// campaign named '{Company} creator brief'").
+// Onboarding auto-creates one active campaign, named "{Company} creator brief".
 export const STARTER_CAMPAIGN_SUFFIX = "creator brief";
 export const STARTER_POST_DEADLINE_DAYS = 14;
 export const STARTER_FEE_CENTS = 30_000;

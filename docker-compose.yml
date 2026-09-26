@@ -1,20 +1,20 @@
 services:
   db:
     image: postgres:16-alpine
-    container_name: naano-db
+    container_name: amplio-db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: naano
+      POSTGRES_DB: amplio
     ports:
       - "5432:5432"
     volumes:
-      - naano-db:/var/lib/postgresql/data
+      - amplio-db:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d naano"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d amplio"]
       interval: 2s
       timeout: 2s
       retries: 15
 
 volumes:
-  naano-db:
+  amplio-db:

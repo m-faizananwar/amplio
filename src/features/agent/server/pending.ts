@@ -1,5 +1,6 @@
 import "server-only";
 import { createHash, createHmac, timingSafeEqual } from "node:crypto";
+import { resolveDatabaseUrl } from "@/lib/database-url";
 import { MINUTE_MS } from "../constants";
 
 // A pending action is a signed id, not a row: the tool name, its arguments,
@@ -16,7 +17,7 @@ export type PendingAction = { tool: string; args: Record<string, unknown>; userI
 function key(): Buffer {
   // A dedicated secret when set; otherwise derived from a server-only value
   // that never reaches the client (the database URL), so it works unset.
-  const base = process.env.AGENT_SIGNING_SECRET || process.env.naano_clone_DATABASE_URL || process.env.DATABASE_URL || "local-dev";
+  const base = process.env.AGENT_SIGNING_SECRET || resolveDatabaseUrl(process.env)?.url || "local-dev";
   return createHash("sha256").update(`agent-confirm:${base}`).digest();
 }
 

@@ -268,10 +268,9 @@
           ]
         },
         {
-          "id": "reference",
-          "title": "Reference product",
+          "id": "numbers",
+          "title": "The numbers you see",
           "paragraphs": [
-            "Amplio is built as a rebuild of naano.com and is not affiliated with it.",
             "The numbers on the public pages come from a seeded demo workspace, not from real customers."
           ]
         }
