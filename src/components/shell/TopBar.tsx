@@ -11,7 +11,7 @@ import type { ShellViewer } from "./viewer";
 // switch (demo accounts), the wallet, the bell, and the account pill (which holds language and theme).
 export function TopBar({ viewer }: { viewer: ShellViewer }) {
   return (
-    <header className="sticky top-0 z-30 border-b border-rule bg-surface">
+    <header className="sticky top-0 z-30 bg-paper">
       <div className="mx-auto flex h-16 max-w-content items-center gap-2 px-4 lg:px-8">
         <MobileNav role={viewer.role} setup={viewer.setup && !viewer.setup.finished ? { done: viewer.setup.done, total: viewer.setup.total } : null} />
         <div className="min-w-0 flex-1"><ShellCommandMenu role={viewer.role} /></div>
