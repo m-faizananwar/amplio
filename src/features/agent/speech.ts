@@ -17,12 +17,27 @@ export function sayEuros(raw: string, locale: "en" | "fr"): string {
     });
 }
 
+// Markdown read aloud is noise: links keep their words, each list item (-, *,
+// •, +, 1.) becomes its own sentence, and every emphasis or code mark goes.
+const LIST_ITEM = /^\s*(?:[-*•+]|\d+[.)])\s+(.*)$/;
+export function unmark(text: string): string {
+  return text
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+    .split("\n")
+    .map((line) => {
+      const item = LIST_ITEM.exec(line)?.[1];
+      if (item === undefined) return line;
+      const words = item.trim();
+      return /[.!?:;]$/.test(words) ? words : `${words}.`;
+    })
+    .join("\n")
+    .replace(/[*_`~#>]+/g, "");
+}
+
 export function speakable(text: string, locale: "en" | "fr", maxSentences = MAX_SENTENCES): string {
-  const plain = sayEuros(text, locale)
+  const plain = unmark(sayEuros(text, locale))
     .replace(URL_RE, "")
     .replace(UUID, "")
-    .replace(/[*_#`>]+/g, "")
-    .replace(/^\s*[-•]\s+/gm, "")
     .replace(/\s+/g, " ")
     .replace(/\s+([.,!?])/g, "$1")
     .trim();

@@ -29,6 +29,14 @@ describe("what a call says", () => {
     expect(out).toBe("Done. I booked Randy, see.");
   });
 
+  it("never reads Markdown aloud: list items become sentences, marks and links go", () => {
+    expect(speakable("Here are two:\n- **Zune creator brief** by Zune\n- *HubSpot creator brief*\n", "en", 5)).toBe("Here are two: Zune creator brief by Zune. HubSpot creator brief.");
+    expect(speakable("* **Zune creator brief** by Zune: €315.00 * **Stripe brief**: `new`", "en")).toBe("Zune creator brief by Zune: 315 euros Stripe brief: new.");
+    expect(speakable("1. Launch it\n2. Edit the brief", "en")).toBe("Launch it. Edit the brief.");
+    expect(speakable("See [the brief](/brand/campaigns/x) ~~now~~.", "en")).toBe("See the brief now.");
+    expect(speakable("## Results\n> 640 clicks", "en")).toBe("Results 640 clicks");
+  });
+
   it("says amounts as a voice would", () => {
     expect(speakable("€615.00 is held.", "en")).toBe("615 euros is held.");
     expect(speakable("Your wallet has €3,550.00.", "en")).toBe("Your wallet has 3,550 euros.");

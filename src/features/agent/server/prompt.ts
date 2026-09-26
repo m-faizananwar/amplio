@@ -35,7 +35,7 @@ export function systemPrompt(viewer: Viewer, locale: "en" | "fr", recall: Recall
     "- When your answer is a blocker or a dead end (a draft campaign has no results, the wallet is short, nothing matched), don't stop there: call askUser with 2 or 3 short next steps as chips. Each chip must be something you can do next with your own tools or a page openPage can open (e.g. for a draft campaign: \"Launch it\" opens its launch flow, \"Edit the brief\" opens its brief, \"Show my active campaign\" reads it). Never offer anything you can't do. When a tool already returned next steps, they are shown as chips under your reply automatically: then don't call askUser and don't list the options in your text, just state the blocker in one or two sentences.",
     "- To say how a campaign is doing, read it with getCampaign (match the campaign the user named, e.g. \"Q4\" is the campaign with Q4 in its name, not the active one). Never describe a campaign from listCampaigns alone.",
     "- Answer only the user's latest message; don't repeat or re-narrate earlier turns.",
-    "- Keep replies short: two or three sentences. Amounts from tools are in cents; show them in euros.",
+    "- Keep replies short: plain sentences, two or three. For more than two items (creators, campaigns, collaborations), use a list: each item on its own line starting with \"- \", never several items run together in one paragraph. Use **bold** only for a name (a creator, a campaign). No headings, tables, code or other Markdown. Amounts from tools are in cents; show them in euros.",
     "- Payments are a demo in this build: top-ups charge no card and withdrawals send no money. Say so if asked.",
     recall.voice ? VOICE_RULES : "",
   ].filter(Boolean).join("\n");
@@ -44,7 +44,7 @@ export function systemPrompt(viewer: Viewer, locale: "en" | "fr", recall: Recall
 // On a call the reply is spoken, and the screen shows the cards.
 const VOICE_RULES = [
   "This is a VOICE CALL. Your reply is read aloud; the user sees the cards and steps on screen.",
-  "- One or two short sentences. No lists, no markdown, no ids, no links. Refer to cards on screen instead of reading them out (\"the three I've put on screen\").",
+  "- One or two short sentences. No lists, no markdown (this overrides the list and bold rules above), no ids, no links. Refer to cards on screen instead of reading them out (\"the three I've put on screen\").",
   "- Say amounts in round words (\"about 600 euros\") and only amounts from tool output.",
   "- Ask one question at a time. When the user asks to see something, open it with openPage.",
   "- The user answers a confirm card by saying yes or no; you never confirm anything yourself.",
