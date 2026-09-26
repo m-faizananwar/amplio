@@ -80,6 +80,9 @@ next step in words and the button for it, the state drawn on the creator's avata
 (envelope, pen, pulse…) so the kind of work reads before the words. Then three numbers (clicks, attributed sign-ups,
 committed spend), each opening the rows it is made of. The setup card shows only while
 setup is unfinished. People open the app to act; totals come second.
+**Merged (components round):** the two stacked sections became one screen: Needs you beside the
+ring widget (every collaboration by whose move it is, each arc opening that filter), the three
+numbers under both. The ring answers "how is it all going" without a second list.
 
 ### Collaborations — `/brand/collaborations`
 The same ruled list as the creator side, from the brand's chair: creator, **next step and
@@ -94,6 +97,10 @@ rows (estimated reach, qualified clicks, attributed sign-ups, committed spend), 
 status in one line, clicks over time, attribution per creator (each row exports its own
 clicks), live posts, and the raw click log with the CSV of every click. The old "more
 metrics" accordion is gone: the click log already carries referrer, device and country.
+**Merged (components round):** six blocks became three — the four numbers, one chart card with
+the pixel status in its footer (the pixel is what makes the chart's sign-ups possible), and the
+per-creator table. The live-posts list and the click log were cut as sections: the reach and
+clicks numbers already open exactly those rows, with the CSV.
 
 ### Billing — `/brand/billing`
 Four amounts in the order money moves — available, **held for invitations nobody has

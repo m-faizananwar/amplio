@@ -12,7 +12,8 @@ import { pixelSnippet } from "./pixel-snippet";
 
 // The pixel is what turns a click into an attributed sign-up. One line of
 // status; the snippet and the demo landing page live behind the button.
-export function PixelStatusCard({ pixel, origin }: { pixel: PixelStatus; origin: string }) {
+// `inline` drops the card frame so it can sit in the chart card's footer.
+export function PixelStatusCard({ pixel, origin, inline = false }: { pixel: PixelStatus; origin: string; inline?: boolean }) {
   const t = useTranslations("brand.results.pixel");
   const snippet = pixelSnippet(origin, pixel.siteKey);
   async function copy() {
@@ -24,10 +25,10 @@ export function PixelStatusCard({ pixel, origin }: { pixel: PixelStatus; origin:
     }
   }
   return (
-    <section aria-labelledby="pixel-title" className="flex flex-wrap items-center gap-4 rounded-card border border-rule bg-surface p-5">
+    <section aria-labelledby="pixel-title" className={inline ? "flex flex-wrap items-center gap-4" : "flex flex-wrap items-center gap-4 rounded-card border border-rule bg-surface p-5 shadow-lift"}>
       <span className={`size-2.5 rounded-full ${pixel.active ? "bg-money" : "bg-rule-strong"}`} aria-hidden="true" />
       <div className="min-w-0 flex-1">
-        <h2 id="pixel-title" className="text-lead">{t("title")}</h2>
+        <h2 id="pixel-title" className={inline ? "text-body font-medium" : "text-lead"}>{t("title")}</h2>
         <p className="text-small text-ink-muted">{pixel.active ? t("active", { count: pixel.events }) : t("inactive")}</p>
       </div>
       <Dialog>
