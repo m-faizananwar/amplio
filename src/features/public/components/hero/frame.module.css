@@ -1,7 +1,7 @@
 /* The frame: shared by the public header and the glass hero so both
    measure in the same unit: --u is one pixel of the 1280×960 comp, --t the
    floored unit phones use for reading type and controls. Three tiers keyed to
-   the frame's shape, not its width alone (docs/design/PAGES.md, "Glass hero"). */
+   the frame's shape, not its width alone (docs/design/PAGES.md, "v3 — the glass hero"). */
 .frame {
   --u: min(100vw / 1280, 100vh / 960);
   --t: var(--u);

@@ -17,7 +17,7 @@ const PCT = 100;
 
 const at = (x: number, y: number, sx?: number) => ({ "--x": x, "--y": y, ...(sx ? { "--sx": sx } : {}) }) as CSSProperties;
 
-// The landing's first screen (docs/design/PAGES.md, "Glass hero"): a pale
+// The landing's first screen (docs/design/PAGES.md, "v3 — the glass hero"): a pale
 // glass plate, one line in two parts, the demo workspace's live counts in a
 // glass panel and a stats row, and the way into the demo. The header above it
 // is the public nav (PublicHeader); the story scenes follow below (#story).

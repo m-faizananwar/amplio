@@ -14,14 +14,16 @@ shown estimated reach and asked to trust it. So the one idea behind every screen
 that **every number is a receipt** — a click, a sign-up, a payout is a row you can open."
 
 ## 0:25 – 1:10 · landing
-Scroll the landing at reading speed. Tap the hero drawing once (a burst of clicks).
-"The hero is live: posts, tracked links, clicks, sign-ups — real counts from the demo
-workspace, labelled as demo data. The page tells one story as you scroll: a post goes out,
+Let the entrance finish (about two seconds), then scroll at reading speed.
+"The first screen says the one line — every click comes back — and puts the demo
+workspace's real posts, links, clicks and sign-ups beside it, labelled as demo data; the
+two big numbers count up to the database's values. The page tells one story as you scroll: a post goes out,
 clicks fly into the tracked link, sign-ups drop into a ledger with names on the rows, and
 the bill locks next to the proof." At the pricing block: "the coin goes whole to the
 creator and the fee reads €0 — because that's what the ledger does, so that's what the
 page says." Point at the round button bottom-right: "the assistant waits in the corner on
-public pages, so it never sits on the content." Then: "What I cut from the reference —
+public pages, so it never sits on the content" (on a phone it steps aside while the hero is
+at the top). Then: "What I cut from the reference —
 their benchmark figures, customer logos, testimonials — none of that was ours."
 
 ## 1:10 – 1:35 · sign-up, honestly

@@ -125,12 +125,11 @@ each point.
 **Why this layout.** The landing is the one place that performs
 (DIRECTION.md, "The landing is the launch"). It has one sentence to carry —
 every click and sign-up comes back as a row, to the post and the creator
-behind it — so the page is that sentence told as scenes, one idea per
-screen, then the four calm blocks a buyer needs before signing up (how to
-start, what it costs, questions, sign up). The hero's live drawing uses the
-mark's own shape and the demo workspace's real counts, so the first thing a
-visitor sees is the product's claim being acted out with real numbers,
-labelled as demo data.
+behind it — so the first screen says it in one line and puts the demo
+workspace's real counts right beside it (the glass hero, v3 below), then
+the page tells it as scenes, one idea per screen, then the four calm blocks
+a buyer needs before signing up (how to start, what it costs, questions,
+sign up). Every number on it is the demo workspace's, labelled as such.
 
 #### v1 critique (recordings: `landing-v1-1440.mp4`, `landing-v1-375.mp4`)
 
@@ -220,6 +219,59 @@ decorative rather than data; the scenes' visuals don't yet react to the
 cursor the way the hero does; FR copy runs ~15% longer and should be
 checked for widows at 375.
 
+#### v3 — the glass hero (26 Sep; screens in `screens/hero/`, entrance in `recordings/hero/`)
+
+A new first screen and a new public header, built to a measured spec rather
+than designed by eye, replacing the WebGL trail hero (v1/v2 above).
+
+- **Units.** Everything is `calc(N * var(--u))`, one pixel of a 1280×960
+  comp (`hero/frame.module.css`); the plate stretches to the viewport, the
+  foreground keeps its measured size. `.sx` spans carry the comp's optical
+  width-tracking. Type is Inter at the comp's weights (200 for the numbers,
+  360 for the headline, 470 eyebrow and tagline, 520 wordmark, 570 nav).
+- **Three tiers keyed to frame shape.** Wide frames place every element
+  absolutely off the comp; compact frames (≤ 87/80 aspect, < 900 wide or
+  < 640 tall) turn the same wrappers into a flex column, with a two-column
+  hero block when landscape; phones (≤ 640, portrait) add `--t`, a floored
+  unit for reading type and controls, put each number above its label and
+  give the panel and the demo pill the full width.
+- **Plate.** An 18 KB AVIF poster (preloaded, fetchpriority high) is the
+  LCP; the 10 s clip (1280w H.264, 404 KB, faststart, silent) attaches on
+  idle after first paint, fades in over its own first frame, plays only on
+  screen with the tab visible, and never on phones, Save-Data, fewer than 4
+  cores or reduced motion (held on frame 1, following the preference live).
+- **The numbers.** The panel reads posts, links, clicks and sign-ups; its
+  track is sign-ups over clicks, floored at 12% so it shows; the stats row
+  carries clicks and sign-ups at 100u. All from `getPublicTrail` (the query
+  behind `/api/public/trail`, cached 60 s), rendered on the server into the
+  static page, labelled "demo workspace data". The stats row's x positions
+  follow the real digit count so the rhythm holds (`stat-layout.ts`).
+- **Entrance.** Two inline scripts (`hero/entrance-script.ts`): one before
+  first paint sets `html.pre` on the landing only (WAAPI present, motion
+  allowed; self-heals after 4 s), one after the hero runs the timeline —
+  masked rise for the headline and numbers, lift for the small type, glass
+  settle for the pills, panel, play and burger, accents for the badge, dot,
+  track and slash; phones run at .86 — while the numbers count to their real
+  value in an overlay (`data-count`), then removes the class and cancels
+  itself. It starts before hydration and never rewrites the server's text.
+  Lines carry padding under their box so no descender shows under the mask
+  at frame 0. Reduced motion or no JS: the hero renders finished.
+- **Header.** The same component on every public route (`nav/PublicHeader`):
+  transparent over the plate, frosted past 40px (pill 52u, CTA 56u, 500 ms
+  expo), frosted from the start on the other pages (dark theme frosts in
+  the page's paper). The capsule parks on the current page's item and
+  springs to whichever item the pointer or focus is on. Portrait frames get
+  a glass burger: aria-expanded and data-open together; closes on a link,
+  outside click, Escape (focus back to the burger), a route change and a
+  turn to landscape. The language and theme switches moved to the footer.
+  The 404 keeps its own page: a header in the root not-found made every
+  route, app included, load Inter and the header's chunk.
+- **Found while checking.** The public pages are prerendered per locale
+  behind the proxy's rewrite, so `usePathname()` said `/en` for `/`: the
+  header now strips the locale before it compares (01c8cce). On compact
+  frames the assistant's corner button sat on Open the demo; it steps aside
+  while the hero is at the top.
+
 ### For creators — `/for-creators`
 A creator's path in the order they live it: four ruled steps with the trail
 running through their numbers (the last dot green — paid), then the card
@@ -257,6 +309,14 @@ take), the drawn cross-outs, a line drawing per FAQ answer, a quiet trail
 on legal pages and beside the auth form. Everything waits until it's on
 screen (`src/features/public/components/stage/Stage.tsx`), loops pause
 off-screen, and reduced motion shows the final frame.
+Around those drawings, the public pages speak the site's earlier
+interaction language again (restored from before a2e204b, public pages
+only, in the last section of `src/styles/interaction.css`): every section
+below the hero pops on a spring (700 ms, `cubic-bezier(.34,1.56,.64,1)`,
+children 80 ms apart, a grid's cards one by one) with its heading landing
+word by word, and replays whenever it comes back into view, up or down;
+cards lift 3px and invert to ink; buttons lift 2px and invert; arrows nudge
+2px. Reduced motion shows every final state.
 
 ## Auth
 
@@ -374,6 +434,34 @@ after first paint. Since 02a323b phones, low-power devices and Save-Data never
 download it — the hero's drawing animates its clicks in plain SVG — and desktop
 keeps the WebGL layer. Mobile numbers vary a few points run to run (two runs
 shown for `/`); the "→" rows are before / after that change.
+
+## Lighthouse, glass hero (local production build, Lighthouse 12, 2026-09-26)
+
+`pnpm build && pnpm start` on localhost against the local database, simulated
+throttling, two mobile runs per page; "main before" is 18c5070 built and run the
+same way on the same machine. Performance, with FCP · LCP; Accessibility is 100
+and CLS 0 on every run of both builds; Best practices is 96 on both, for the
+`/_vercel/*` scripts that 404 off Vercel.
+
+| Page | Mobile, glass hero | Mobile, main before | Desktop (both) |
+|---|---|---|---|
+| `/` | 99 · 90 — 1.5 s · 2.1–3.5 s (poster is the LCP) | 94 · 90 — 1.5 s · 3.1–3.5 s | 100 |
+| `/for-creators` | 91 · 90 — 1.5 s · 3.4–3.5 s | 92 · 91 — 1.4 s · 3.4–3.5 s | 100 |
+| `/pricing` | 91 · 90 — 1.5 s · 3.4–3.5 s | 94 · 92 — 1.4 s · 3.1–3.4 s | 100 |
+| `/faq` | 90 · 90 — 1.5 s · 3.5 s | 92 · 91 — 1.4 s · 3.4–3.5 s | 100 |
+| `/privacy`, `/terms` | 90 · 90 — 1.5 s · 3.5 s | 91–92 — 1.4 s · 3.4–3.5 s | 100 |
+| `/login` (no public header) | 97 · 94 | 97 · 92 | 100 |
+
+Local runs are harsher than the live ones above: on localhost every request has
+finished before first paint, so Lighthouse's simulation counts all of them.
+What it cost and what we took back: the header brings Inter and its stylesheet
+to every public page, about 0.1 s of simulated FCP (1–2 points). Inter is a
+22 KB subset instead of Google's 48 KB file, the unused Cormorant (23 KB, on
+every page) is gone, the hero's stylesheets are folded so public pages load 7
+stylesheets as before, and the 404 doesn't carry the header (it cost every
+route 100 KB). The clip is never loaded on a phone, so it isn't in the mobile
+numbers; on desktop it attaches after first paint and desktop stays at 100 —
+so poster-only was not needed.
 
 ## Real vs stubbed
 

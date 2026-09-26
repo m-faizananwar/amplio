@@ -32,11 +32,19 @@ referrer, device. If a number can't be traced to rows, it isn't shown.
 | Creator community leaderboard | Ranking creators against each other doesn't help anyone get or finish a deal |
 | Guided tour | Replaced by empty states that say what to do next, where you already are |
 | Book-a-call pages | No calendar behind them |
-| Cinematic landing effects (video scrub, glass, splash) | They slowed the first paint and said nothing about the product |
+| Cinematic landing effects (video scrub, splash, glass cards everywhere) | They slowed the first paint and said nothing about the product. Glass and a background clip came back on 26 September in one place only — the landing's first screen and the public header — built to a measured spec with its costs held: the poster is the LCP, the clip never loads on phones, Save-Data, small CPUs or reduced motion, and Lighthouse mobile stays ≥ 90 ("Brought back" below) |
 | Start a campaign from your link | The link was never read: the brief came from the workspace profile, so the path promised something it didn't do |
 | Team invite panel | It took an email and sent nothing. There are no seats behind it |
 | The support-bot thread in Messages | A canned conversation that answered every question with "I can't answer that yet". The assistant does that job, from real data |
 | "Continue with Google / LinkedIn" on sign-up | There is no OAuth behind them |
+
+## Brought back
+
+| What | Why it came back | What keeps it honest |
+|---|---|---|
+| A glass first screen: a pale plate (a glass sphere cut by a glass blade, a slow 10 s clip), a glass panel, glass pills | The first screen now says the product's line in one sentence and puts the demo workspace's own counts beside it; the WebGL drawing acted the same counts out and cost phones the most | The numbers are the database's (`getPublicTrail`, the source of `/api/public/trail`), labelled "demo workspace data"; the poster (18 KB) is the LCP and the clip attaches on idle, desktop only; three.js is gone from the bundle |
+| The compressing header with a sliding capsule | One header for every public page that says where you are and gets out of the way | It's the same markup transparent or frosted; the burger menu is a real button with aria-expanded, Escape and focus return |
+| The first version's interaction language on the public pages (spring pops, cards and buttons that invert, arrow nudge) | a2e204b removed it everywhere because it fought the app's primitives; on the public pages it never did, and they felt flat without it | Scoped to the public site (the last section of `src/styles/interaction.css`); the app keeps the ledger motion; reduced motion shows final states |
 
 ## Stopped pretending
 

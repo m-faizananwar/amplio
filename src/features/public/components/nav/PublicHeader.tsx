@@ -19,7 +19,7 @@ const LOCALE_PREFIX = new RegExp(`^/(${LOCALES.join("|")})(?=/|$)`);
 
 const at = (x: number, y: number, sx?: number) => ({ "--x": x, "--y": y, ...(sx ? { "--sx": sx } : {}) }) as CSSProperties;
 
-// The public site's header (docs/design/PAGES.md, "Glass hero"): measured in
+// The public site's header (docs/design/PAGES.md, "v3 — the glass hero"): measured in
 // the hero's units, transparent over the landing's plate and frosted
 // everywhere else. `data-hx` marks what the landing's entrance animates.
 export function PublicHeader({ labels }: { labels: HeaderLabels }) {

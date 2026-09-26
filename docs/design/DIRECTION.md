@@ -3,7 +3,9 @@
 8x changed the brief: keep the idea and the backend, rebuild the frontend with our own
 layout and visual design. The first version's landing effects (video-scrub hero, frosted
 cards, splash screen, animated footers, compressing nav, the auth-page media panel, the
-metric stage, the globe) are removed, not restyled. The backend (Postgres, Drizzle, server actions, tracking, ledger, assistant) stays.
+metric stage, the globe) are removed, not restyled. On 26 September the landing's first
+screen and the public header came back as glass, built new from a measured spec (see "The
+landing is the launch"); nothing of the first version's code returned with them. The backend (Postgres, Drizzle, server actions, tracking, ledger, assistant) stays.
 
 Deadline: resubmit by end of Saturday 26 September. Freeze: Saturday 19:00 UTC.
 
@@ -18,14 +20,20 @@ money and verified attribution.
 
 **Type.** Geist for everything (next/font, self-hosted). Geist Mono for every number,
 amount, ID, date and code, always tabular. Scale: 12 / 13 / 14 (body) / 16 / 20 / 24 /
-32 / 48 / 64. Headings tight (-0.02em), weight 600; body 400. No serif, no display face.
+32 / 48 / 64. Headings tight (-0.02em), weight 600; body 400. No serif. One exception:
+the landing's glass hero and the public header are set in Inter (variable, self-hosted
+through next/font as a 22 KB en/fr subset) at the comp's own weights — 200, 360, 400,
+425, 470, 500, 520, 570 — and nowhere else.
 
 **Colour.** Tokens only, light and dark.
 - paper `#FAFAF7`, surface `#FFFFFF`, ink `#111111`, muted `#6B6B66`, rule `#E6E4DE`
 - accent (money, attributed, verified) `#0F7B4A`
 - attention (pending, needs you) `#B45309`, failure `#B42318`, info `#1D4ED8` (links only)
 - dark: paper `#0E0E0D`, surface `#161615`, ink `#F2F1EC`, rule `#2A2926`, accent `#34C77B`
-No gradients, no glass, no blur, no background video.
+In the app and on every page below the landing's first screen: no gradients, no glass,
+no blur, no background video. The one exception is the landing's first screen and the
+public header (below): a pale glass plate behind the hero, glass on the nav pill, the
+panel and the pills, and the header frosting once you scroll.
 
 **Shape.** Hairline 1px rules. Radius 10 (cards), 8 (inputs, buttons), 999 (status chips).
 Shadows only on floating layers (menus, dialogs, toasts). 8px spacing grid; content
@@ -34,6 +42,11 @@ max-width 1200; 12-column grid.
 **Motion.** 150–220 ms, ease-out `cubic-bezier(.2,.8,.2,1)`, opacity and transform only.
 Numbers roll when they change. Tab indicators slide. Lists stagger 20 ms for the first 12
 rows. Pages fade up 8px on enter. Reduced motion: no movement, instant state.
+The public site keeps the earlier interaction language instead (restored from before
+a2e204b, scoped to the public pages): sections below the hero pop on a spring (700 ms,
+`cubic-bezier(.34,1.56,.64,1)`, children 80 ms apart, headings word by word) and replay
+when they come back; cards lift 3px and invert to ink; buttons lift 2px and invert; arrows
+nudge 2px; the nav's capsule springs between items.
 
 **Mark.** A new logo: three dots joined by one line (post → click → lead), drawn in ink.
 Wordmark "Amplio" in Geist 600.
@@ -51,17 +64,24 @@ scrolls to the end.
   clicks light up → sign-ups land → each one snaps into a ledger row with a name on it →
   the brand sees the bill and the proof side by side. Then: how to start, what it costs,
   questions, sign up.
-- **The hero is alive.** A WebGL layer (three.js with a small shader) draws the trail: the
-  mark's three dots become a living network — posts as sources, clicks as particles
-  travelling along lines, sign-ups as dots that settle into a column of ledger rows. It is
-  driven by the real demo-workspace counts and reacts to the cursor and to scroll.
-- **Rhythm.** Scenes change on scroll with quick cuts (250–400 ms), numbers count up hard,
-  text lands word by word, one idea per screen. No slow fades, no long empty scrolls.
+- **The first screen is glass.** A full-viewport hero on a pale plate — a crystal sphere
+  cut by a thin glass blade on a blue-white studio backdrop, a slow 10 s clip — with the
+  line "Every click / comes back." in light Inter, a glass panel reading out the demo
+  workspace's live posts, links, clicks and sign-ups, the two numbers that matter in a
+  stats row, and the way into the demo. It is measured off a 1280×960 comp (one design
+  unit = one comp pixel) with three tiers keyed to the frame's shape, and its entrance is a
+  one-off WAAPI timeline (masked rise, lift, glass settle, accents) that ends on the real
+  counts. (This replaced the WebGL trail hero of 21–26 September; its job — the live
+  numbers — is now the panel's and the stats row's.)
+- **Rhythm.** Below the hero, scenes pop on the spring as they arrive, numbers count up
+  hard, text lands word by word, one idea per screen. No slow fades, no long empty scrolls.
 - **Palette holds.** Paper, ink and the one green; the energy comes from motion, scale
-  and contrast, not from new colours. Big type (up to 120px) is allowed here only.
-- **Cost.** The WebGL layer loads after first paint, pauses off-screen, caps at 60fps and
-  0.75 device pixel ratio, and falls back to a static drawing under reduced motion or
-  without WebGL. The landing still has to load fast on a phone.
+  and contrast, not from new colours. The hero's plate brings its own pale blue-white, and
+  its foreground keeps to ink tones and the same green. Big type is allowed here only.
+- **Cost.** The poster (18 KB AVIF, preloaded) is the LCP; the clip (404 KB) attaches on
+  idle after first paint and never on phones, Save-Data, fewer than 4 cores or reduced
+  motion. The landing still has to load fast on a phone: Lighthouse mobile ≥ 90, desktop
+  ≥ 95, and if the clip ever costs more than that, the poster alone wins.
 - **Two passes.** Build it, then watch it at normal speed at 1440 and 375 and critique
   the pace: where it drags, where it's boring, what a ten-year-old would skip. Then a second
   version that fixes each of those, sharper and more playful. Both passes are recorded.
@@ -109,9 +129,10 @@ graphic, under 500 lines, lazy-loaded when heavy.
 ## Signature pattern: the trail
 
 Any metric (clicks, leads, CPL, earnings) is clickable and opens a drawer listing the
-rows it came from, with timestamps and sources. On the landing page, the hero shows the
-trail for real: post → tracked link → click → sign-up, with live counts from the database
-(clearly labelled "demo workspace data").
+rows it came from, with timestamps and sources. On the landing page, the hero's glass
+panel and stats row show the trail's counts for real — posts, tracked links, clicks,
+sign-ups, live from the database — and the first scene below acts the trail out, all
+clearly labelled "demo workspace data".
 
 ## Components (one set, used everywhere)
 
@@ -124,8 +145,8 @@ Onboarding and Settings use exactly the same fields.
 
 ## What each surface shows (relevant only)
 
-- **Landing:** hero with the live trail, three-step how it works, what brands get, what
-  creators get, pricing (only what is true), FAQ, sign-up call to action, footer.
+- **Landing:** the glass hero with the live counts, the story in five scenes, how to
+  start, pricing (only what is true), FAQ, sign-up call to action, footer.
 - **Removed pages:** /benchmarks, /case-study, /about, /for-agencies, /book-a-call — their
   figures, testimonials, customer logos and team belong to naano, not us.
 - **Auth + onboarding:** our own layout (not two-pane): one centred column, role chosen
