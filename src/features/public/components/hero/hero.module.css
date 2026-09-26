@@ -80,8 +80,11 @@
 }
 
 /* ---- the demo pill ---- */
+/* the comp's offsets (thumb 12, label 89.8, knob 50 with 13 to the edge) as a row, so the
+   label keeps the Start free pill's 51.4u gap to its knob in any language; 269u at least */
 .meet {
-  width: calc(269 * var(--t)); height: calc(86 * var(--t)); border-radius: 999px;
+  display: flex; align-items: center; min-width: calc(269 * var(--t)); height: calc(86 * var(--t)); border-radius: 999px;
+  padding: 0 calc(13 * var(--t)) 0 calc(12 * var(--t));
   background: rgba(255, 255, 255, .325);
   border: calc(1 * var(--u)) solid rgba(255, 255, 255, .62);
   -webkit-backdrop-filter: blur(calc(40 * var(--u))); backdrop-filter: blur(calc(40 * var(--u)));
@@ -89,15 +92,15 @@
   text-decoration: none;
   transition: translate .35s var(--lift-ease), background-color .35s var(--lift-ease), border-color .35s var(--lift-ease);
 }
-.meet > * { position: absolute; }
+.meet > * { position: relative; flex: none; }
 .thumb {
-  left: calc(12 * var(--t)); top: calc(11 * var(--t)); width: calc(64 * var(--t)); height: calc(64 * var(--t));
+  width: calc(64 * var(--t)); height: calc(64 * var(--t));
   border-radius: 50%; overflow: hidden;
 }
 .thumb::after { content: ""; position: absolute; inset: 0; border-radius: 50%; box-shadow: inset 0 0 0 calc(2 * var(--u)) rgba(255, 255, 255, .9); }
 .thumb img { width: 100%; height: 100%; object-fit: cover; object-position: 60% 50%; }
 .meetLabel {
-  left: calc(89.8 * var(--t)); top: calc(34.55 * var(--t)); font-size: calc(17.5 * var(--t)); font-weight: 425;
+  margin: 0 calc(51.4 * var(--t)) 0 calc(13.8 * var(--t)); font-size: calc(17.5 * var(--t)); font-weight: 425;
   letter-spacing: -0.0681em; line-height: 1; color: #1B2A44; white-space: nowrap;
   transition: color .35s var(--lift-ease);
 }
@@ -106,7 +109,7 @@
   transition: background-color .35s var(--lift-ease), color .35s var(--lift-ease);
 }
 .knob svg { width: calc(17 * var(--t)); height: calc(17 * var(--t)); transition: translate .3s var(--expo); }
-.meet .knob { left: calc(206 * var(--t)); top: calc(17 * var(--t)); width: calc(50 * var(--t)); height: calc(50 * var(--t)); background: var(--meet-knob); color: #fff; }
+.meet .knob { position: relative; margin-left: auto; width: calc(50 * var(--t)); height: calc(50 * var(--t)); background: var(--meet-knob); color: #fff; }
 .meet:hover { translate: 0 calc(-2 * var(--u)); background: var(--cta); border-color: var(--cta); }
 .meet:hover .meetLabel { color: #fff; }
 .meet:hover .knob { background: #fff; color: var(--ink); }
@@ -154,10 +157,9 @@
   .lbl { font-size: calc(15 * var(--t)); line-height: calc(18.5 * var(--t)); }
   .slash { width: calc(29 * var(--t)); height: calc(92 * var(--t)); align-self: center; flex: none; }
   .lastRow { flex-direction: column; align-items: stretch; }
-  .meet { width: 100%; height: calc(72 * var(--t)); margin-left: 0; }
-  .meet .thumb { top: calc(8 * var(--t)); width: calc(56 * var(--t)); height: calc(56 * var(--t)); }
-  .meet .meetLabel { left: calc(84 * var(--t)); top: calc(27 * var(--t)); }
-  .meet .knob { left: auto; right: calc(11 * var(--t)); top: calc(11 * var(--t)); }
+  .meet { width: 100%; height: calc(72 * var(--t)); margin-left: 0; padding: 0 calc(11 * var(--t)) 0 calc(8 * var(--t)); }
+  .meet .thumb { width: calc(56 * var(--t)); height: calc(56 * var(--t)); }
+  .meet .meetLabel { margin-left: calc(20 * var(--t)); }
 }
 
 /* ---- the entrance's first frame (html.pre is set by the inline script) ---- */
