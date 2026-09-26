@@ -72,7 +72,8 @@
       "clicks": "Clics qualifiés",
       "reach": "Portée estimée"
     },
-    "needsYou": "À vous"
+    "needsYou": "À vous",
+    "invitedByYou": "Invitée"
   },
   "confirm": {
     "title": "Confirmez avant que je continue",

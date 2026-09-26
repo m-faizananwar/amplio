@@ -72,7 +72,8 @@
       "clicks": "Qualified clicks",
       "reach": "Est. reach"
     },
-    "needsYou": "Needs you"
+    "needsYou": "Needs you",
+    "invitedByYou": "Invited"
   },
   "confirm": {
     "title": "Confirm before I go ahead",

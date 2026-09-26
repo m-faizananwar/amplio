@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useFormatter, useTranslations } from "next-intl";
 import { buttonVariants } from "@/components/ui/button";
 import { RollingNumber } from "@/components/ui/rolling-number";
@@ -19,6 +20,9 @@ const CARD = "agent-rise rounded-card border border-rule bg-surface p-4 shadow-l
 export function ResultCard({ result, sample }: { result: ResultEvent; sample: boolean }) {
   const t = useTranslations("agent.result");
   const tc = useTranslations("collaboration");
+  // the shared labels are written from the creator's side ("Invitation reçue");
+  // a brand looking at its own invitations reads them as sent
+  const brandSide = usePathname().startsWith("/brand");
   const format = useFormatter();
   const euros = (cents: number) => format.number(cents / CENTS, { style: "currency", currency: "EUR" });
   const title = <p className="text-small font-medium text-ink-muted">{result.title}</p>;
@@ -52,7 +56,7 @@ export function ResultCard({ result, sample }: { result: ResultEvent; sample: bo
               <li key={c.id} className="agent-rise flex items-center gap-3 px-4 py-3">
                 <div className="min-w-0 flex-1"><p className="truncate font-medium">{c.counterpart}</p><p className="truncate text-small text-ink-muted">{c.campaign}</p></div>
                 {c.nextAction === "needs_you" ? <span className="text-caption font-medium text-attention">{t("needsYou")}</span> : null}
-                {isStatus(c.status) ? <StatusChip tone={statusTone(c.status)}>{tc(`status.${c.status}`)}</StatusChip> : null}
+                {isStatus(c.status) ? <StatusChip tone={statusTone(c.status)}>{brandSide && c.status === "invited" ? t("invitedByYou") : tc(`status.${c.status}`)}</StatusChip> : null}
                 <span className="num text-small">{euros(c.feeCents)}</span>
               </li>
             ))}
