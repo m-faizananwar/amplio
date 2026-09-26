@@ -1,4 +1,122 @@
 {
+  "nav": {
+    "label": "Agent"
+  },
+  "command": {
+    "ask": "Demander à l’agent"
+  },
+  "title": "Agent",
+  "description": "Il peut chercher, réserver et vérifier des choses pour vous, et demande confirmation avant tout mouvement d’argent.",
+  "greeting": {
+    "brand": "Qu’est-ce qu’on fait aujourd’hui, {name} ?",
+    "creator": "Qu’est-ce qu’on fait aujourd’hui, {name} ?",
+    "sub": "Dites-lui ce dont vous avez besoin. Il montre chaque étape et demande confirmation avant de réserver ou de payer."
+  },
+  "starters": {
+    "brand": {
+      "find": "Trouver des créateurs pour ma prochaine campagne",
+      "today": "Qu’est-ce qui a besoin de moi aujourd’hui ?",
+      "campaign": "Où en est ma campagne Q4 ?"
+    },
+    "creator": {
+      "find": "Trouver des campagnes qui me correspondent",
+      "week": "Qu’est-ce que je dois faire cette semaine ?",
+      "earned": "Combien ai-je gagné ?"
+    }
+  },
+  "composer": {
+    "label": "Écrire à l’agent",
+    "placeholder": "Demandez n’importe quoi sur Amplio",
+    "send": "Envoyer",
+    "mic": "Parler",
+    "call": "Appeler"
+  },
+  "steps": {
+    "worked": "{count, plural, one {# étape faite} other {# étapes faites}}",
+    "running": "En cours…",
+    "failed": "Cette étape a échoué",
+    "input": "Entrée",
+    "output": "Résultat"
+  },
+  "result": {
+    "creatorsTitle": "{count, plural, one {# créateur} other {# créateurs}}",
+    "shortlist": "Présélectionner",
+    "shortlisted": "Présélectionné",
+    "open": "Ouvrir",
+    "followers": "abonnés",
+    "perPost": "par publication",
+    "fit": "{score} % de correspondance",
+    "whyFit": "Pourquoi cette correspondance",
+    "apply": "Postuler",
+    "valueProp": "Ce qu’ils vendent",
+    "customers": "Leurs clients",
+    "brief": "Brief",
+    "nextAction": "Suivant",
+    "available": "Disponible",
+    "held": "Bloqué",
+    "earned": "Gagné",
+    "pending": "En attente"
+  },
+  "confirm": {
+    "title": "Confirmez avant que je continue",
+    "total": "Bloqué depuis votre portefeuille",
+    "perCreator": "Par créateur",
+    "confirm": "Confirmer",
+    "change": "Modifier",
+    "cancel": "Annuler",
+    "working": "Confirmation en cours…",
+    "done": "Terminé",
+    "sayYes": "Dites “oui” pour confirmer"
+  },
+  "error": {
+    "line": "Une erreur s’est produite à cette étape. Rien n’a été réservé ni payé.",
+    "retry": "Réessayer"
+  },
+  "sample": {
+    "badge": "Exécution d’exemple",
+    "note": "L’agent en direct n’est pas connecté ici ; ceci rejoue un exemple pour vous montrer à quoi ressemble une exécution."
+  },
+  "rail": {
+    "know": "Ce que je sais",
+    "profile": "Profil",
+    "notes": "Notes que je garde",
+    "noNotes": "Rien d’enregistré pour l’instant. Dites-moi quelque chose à retenir.",
+    "remove": "Oublier ceci",
+    "threads": "Conversations précédentes",
+    "noThreads": "Vos conversations s’afficheront ici.",
+    "newChat": "Nouvelle conversation",
+    "company": "Entreprise",
+    "handle": "Identifiant",
+    "headline": "Accroche"
+  },
+  "voice": {
+    "listening": "Écoute",
+    "thinking": "Réflexion",
+    "speaking": "Parle",
+    "end": "Terminer l’appel",
+    "back": "Retour à la conversation"
+  },
+  "firstRun": {
+    "campaigns": {
+      "title": "Pas encore de campagne",
+      "body": "Créez une campagne pour que l’agent puisse commencer à chercher des créateurs.",
+      "action": "Créer une campagne"
+    },
+    "collaborations": {
+      "title": "Pas encore de collaboration",
+      "body": "Une fois votre campagne créée, l’agent peut trouver des créateurs et lancer des conversations pour vous.",
+      "action": "Trouver des créateurs"
+    },
+    "opportunities": {
+      "title": "Aucune campagne ne correspond encore à votre fiche",
+      "body": "Complétez votre fiche pour que l’agent puisse vous proposer les bonnes campagnes.",
+      "action": "Compléter votre fiche"
+    },
+    "messages": {
+      "title": "Pas encore de message",
+      "body": "Les conversations s’ouvrent dès qu’une réservation est acceptée."
+    }
+  },
   "labels": {
     "amount_released": "Montant versé",
     "amount": "Montant",
