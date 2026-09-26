@@ -6,8 +6,11 @@ import type { ConfirmEvent, ResultEvent } from "../../events";
 // `data` for the model (ids + key fields) plus an optional card for the UI.
 // Confirm tools never run in the loop: `prepare` checks the call and states
 // its facts; only a confirmed pending action reaches `execute`.
-export type ToolContext = { viewer: Viewer; locale: "en" | "fr" };
-export type ToolOutput = { summary: string; data: unknown; result?: ResultEvent };
+// scope: what a pending confirmation is bound to besides the user: the
+// thread when there is one (so a card made on a call can be tapped on screen),
+// else the browser session.
+export type ToolContext = { viewer: Viewer; locale: "en" | "fr"; scope?: string };
+export type ToolOutput = { summary: string; data: unknown; result?: ResultEvent; navigate?: string };
 export type Prepared = { title: string; facts: ConfirmEvent["facts"]; confirmLabel: string } | { error: string };
 
 type Base = { name: string; role: "brand" | "creator"; label: string; description: string; parameters: Record<string, unknown> };

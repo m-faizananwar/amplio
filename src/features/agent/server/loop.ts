@@ -6,6 +6,7 @@ import { GEMINI_MODEL } from "@/features/ai/constants";
 import { resolveAiProvider } from "@/lib/ai-provider";
 import { ID_RADIX, MAX_CHIPS, SUMMARY_MAX } from "../constants";
 import type { AgentEvent } from "../events";
+import { inventedIds } from "../id-guard";
 import { amountsFrom, checkMoney } from "../money-check";
 import { compactForModel } from "./compact";
 import { createPending } from "./pending";
@@ -15,6 +16,8 @@ import type { ToolContext } from "./tools/types";
 
 export const MAX_TOOL_STEPS = 8;
 export const TURN_BUDGET_MS = 45_000;
+// a call waits on the answer (Vapi's tool timeout is set to 40 s)
+export const VOICE_BUDGET_MS = 28_000;
 export const CALL_TIMEOUT_MS = 12_000;
 const HISTORY_TURNS = 10;
 const CHUNK_WORDS = 6;
@@ -23,7 +26,7 @@ const FALLBACK_TURNS = 12;
 
 export type Turn = { role: "user" | "assistant"; text: string };
 type Emit = (event: AgentEvent) => void;
-type TurnInput = { viewer: Viewer; locale: "en" | "fr"; text: string; history: Turn[]; emit: Emit; recall?: Recall };
+export type TurnInput = { viewer: Viewer; locale: "en" | "fr"; text: string; history: Turn[]; emit: Emit; recall?: Recall; scope?: string; voice?: boolean };
 
 const geminiKey = () => {
   const p = resolveAiProvider({ ...process.env, ANTHROPIC_API_KEY: undefined });
@@ -55,12 +58,15 @@ export async function runCall({ call, ctx, emit, stepId, seen }: CallInput): Pro
   }
   const tool = findTool(ctx.viewer.brand ? "brand" : "creator", name);
   if (!tool) return { response: { error: `No tool named ${name} for this account.` } };
+  const invented = inventedIds(args);
+  if (invented.length) return { response: { error: `${invented.join(", ")} must come from a tool result in this turn. Call the read tool again to get it.` } };
   emit({ type: "step", id: stepId, label: tool.label, status: "running", tool: name, input: summarise(args) });
   try {
     if (tool.kind === "read") {
       const out = await withTimeout(tool.run(ctx, args), CALL_TIMEOUT_MS);
       emit({ type: "step", id: stepId, label: tool.label, status: "done", tool: name, output: out.summary });
       if (out.result) emit(out.result);
+      if (out.navigate) emit({ type: "navigate", href: out.navigate });
       if (seen) amountsFrom(out.data, seen);
       return { response: compactForModel(out.data) };
     }
@@ -70,7 +76,7 @@ export async function runCall({ call, ctx, emit, stepId, seen }: CallInput): Pro
       return { response: { error: prepared.error } };
     }
     if (seen) amountsFrom(prepared.facts, seen);
-    const pending = createPending({ tool: name, args, userId: ctx.viewer.userId }, ctx.viewer.csrfToken);
+    const pending = createPending({ tool: name, args, userId: ctx.viewer.userId }, ctx.scope ?? ctx.viewer.csrfToken);
     emit({ type: "step", id: stepId, label: tool.label, status: "done", tool: name, output: "waiting for your confirmation" });
     emit({ type: "confirm", id: pending.id, title: prepared.title, facts: prepared.facts, confirmLabel: prepared.confirmLabel, cancelLabel: ctx.locale === "fr" ? "Pas maintenant" : "Not now", expiresAt: pending.expiresAt });
     return { response: { status: "prepared; the user must confirm it in the app before anything happens" }, stop: "confirm" };
@@ -93,7 +99,7 @@ const toContents = (history: Turn[], text: string): Content[] => [
 
 // One turn: the model plans, calls tools (reads together), and either asks,
 // prepares a confirm, or answers. Capped at 8 tool steps and 45 seconds.
-export async function runTurn({ viewer, locale, text, history, emit, recall }: TurnInput): Promise<string> {
+export async function runTurn({ viewer, locale, text, history, emit, recall, scope, voice }: TurnInput): Promise<string> {
   const apiKey = geminiKey();
   if (!apiKey) {
     // no Gemini key: the existing assistant answers (it has its own grammar tools)
@@ -102,9 +108,9 @@ export async function runTurn({ viewer, locale, text, history, emit, recall }: T
     return fallback.text;
   }
   const ai = new GoogleGenAI({ apiKey });
-  const ctx: ToolContext = { viewer, locale };
+  const ctx: ToolContext = { viewer, locale, scope };
   const contents = toContents(history, text);
-  const deadline = Date.now() + TURN_BUDGET_MS;
+  const deadline = Date.now() + (voice ? VOICE_BUDGET_MS : TURN_BUDGET_MS);
   // every amount a tool returned this turn; the reply may only use these
   const seen = amountsFrom({ walletCents: viewer.brand?.walletCents ?? 0, availableCents: viewer.creator?.availableCents ?? 0 });
   let steps = 0;
@@ -112,7 +118,7 @@ export async function runTurn({ viewer, locale, text, history, emit, recall }: T
     const res = await withTimeout(ai.models.generateContent({
       model: GEMINI_MODEL,
       contents,
-      config: { systemInstruction: systemPrompt(viewer, locale, recall), tools: [{ functionDeclarations: [ASK_USER, ...declarationsFor(viewer.brand ? "brand" : "creator")] as never }], thinkingConfig: { thinkingBudget: 0 } },
+      config: { systemInstruction: systemPrompt(viewer, locale, { notes: [], summary: "", ...recall, voice }), tools: [{ functionDeclarations: [ASK_USER, ...declarationsFor(viewer.brand ? "brand" : "creator")] as never }], thinkingConfig: { thinkingBudget: 0 } },
     }), Math.max(1, deadline - Date.now()));
     const calls = res.functionCalls ?? [];
     const modelParts: Part[] = res.candidates?.[0]?.content?.parts ?? [];

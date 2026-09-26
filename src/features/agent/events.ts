@@ -72,10 +72,14 @@ export const confirmEvent = z.object({
 // Assistant text, streamed: chunks of one message share an id and append;
 // the `final` event closes it and carries the WHOLE text (replace, don't append).
 export const messageEvent = z.object({ type: z.literal("message"), id: z.string(), text: z.string(), final: z.boolean().default(false) });
+// The agent opened a page (internal path only); the call widget follows it.
+export const navigateEvent = z.object({ type: z.literal("navigate"), href: z.string().regex(/^\/(brand|creator)(\/[\w\-/?=&.%]*)?$/), label: z.string().optional() });
+// A confirm card was answered (by a tap, or by a spoken yes on a call).
+export const resolvedEvent = z.object({ type: z.literal("resolved"), id: z.string(), outcome: z.enum(["done", "cancelled", "failed"]) });
 export const doneEvent = z.object({ type: z.literal("done"), threadId: z.string().nullable() });
 export const errorEvent = z.object({ type: z.literal("error"), message: z.string(), retryable: z.boolean().default(false) });
 
-export const agentEvent = z.union([stepEvent, questionEvent, resultEvent, confirmEvent, messageEvent, doneEvent, errorEvent]);
+export const agentEvent = z.union([stepEvent, questionEvent, resultEvent, confirmEvent, messageEvent, navigateEvent, resolvedEvent, doneEvent, errorEvent]);
 export type AgentEvent = z.infer<typeof agentEvent>;
 export type StepEvent = z.infer<typeof stepEvent>;
 export type ResultEvent = z.infer<typeof resultEvent>;

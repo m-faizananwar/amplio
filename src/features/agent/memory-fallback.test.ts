@@ -10,8 +10,8 @@ const { addNote, listNotes, listThreads, openThread, saveTurn } = await import("
 describe("agent memory without its tables", () => {
   it("degrades to no memory instead of failing the turn", async () => {
     vi.spyOn(console, "warn").mockImplementation(() => undefined);
-    await expect(openThread("u1", null, "hello")).resolves.toBeNull();
-    await expect(openThread("u1", "t1", "hello")).resolves.toBeNull();
+    await expect(openThread("u1", null, { title: "hello" })).resolves.toBeNull();
+    await expect(openThread("u1", "t1", { title: "hello" })).resolves.toBeNull();
     await expect(listNotes("u1")).resolves.toEqual([]);
     await expect(listThreads("u1")).resolves.toEqual([]);
     await expect(addNote("u1", "only French creators")).resolves.toBe(false);

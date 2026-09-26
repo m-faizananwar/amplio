@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
 import { agentRequest } from "@/features/agent/events";
 import { agentEnabled } from "@/features/agent/server/flag";
-import { runTurn } from "@/features/agent/server/loop";
-import { listNotes, openThread, saveTurn } from "@/features/agent/server/memory";
 import { allowTurn } from "@/features/agent/server/rate-limit";
 import { eventStream } from "@/features/agent/server/stream";
+import { agentTurn } from "@/features/agent/server/turn";
 import { getViewer } from "@/features/auth/server/session";
 
 export const dynamic = "force-dynamic";
@@ -22,11 +21,5 @@ export async function POST(request: Request) {
   const parsed = agentRequest.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: "Say a little more and I'll try again." }, { status: 400 });
   const { text, history = [], locale = "en", threadId } = parsed.data;
-  return eventStream(async (emit) => {
-    // stored threads when the tables exist; otherwise the client's own history
-    const [thread, notes] = await Promise.all([openThread(viewer.userId, threadId, text), listNotes(viewer.userId)]);
-    const reply = await runTurn({ viewer, locale, text, history: thread ? thread.history : history, emit, recall: { notes, summary: thread?.summary ?? "" } });
-    if (thread) await saveTurn(thread.threadId, { user: text, assistant: reply });
-    return thread?.threadId ?? null;
-  }, { userId: viewer.userId, locale });
+  return eventStream(async (emit) => (await agentTurn({ viewer, locale, text, threadId, history, emit })).threadId, { userId: viewer.userId, locale });
 }
