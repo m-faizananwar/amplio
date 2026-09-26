@@ -11,7 +11,9 @@ const CENTS = 100;
 
 // What it pays and the two things to do. From md up the wrapper dissolves
 // (md:contents) so price, brief and action land in the row's fixed columns
-// and the prices form one line down the list, whatever the action says.
+// and the prices form one line down the list, whatever the action says. The
+// action column (17rem in the row) fits the longest label, FR "Voir la
+// collaboration" (266px), so a button never runs back over "Read brief".
 export function OpportunityActions({ opportunity: o, pending, onApply, onBrief }: Props) {
   const t = useTranslations("creator.opportunities.item");
   const format = useFormatter();

@@ -22,7 +22,7 @@ export function OpportunityRow({ opportunity: o, pending, onApply, onBrief }: Pr
   const due = o.daysToDeadline === null ? t("noDeadline") : t("daysLeft", { count: Math.max(0, o.daysToDeadline) });
   return (
     <li className="vt-row grid gap-3 bg-surface px-5 py-4" style={listRowStyle(o.campaignId)}>
-      <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_6rem_auto_11rem] md:items-center md:gap-x-4">
+      <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_6rem_auto_17rem] md:items-center md:gap-x-4">
         <div className="flex min-w-0 items-start gap-3">
           <PartyAvatar kind="brand" name={o.brandCompany} src={o.brandLogoUrl} />
           <div className="min-w-0">
