@@ -1,5 +1,6 @@
 "use client";
 
+import { LockKeyhole } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
@@ -30,10 +31,10 @@ export function ResetPasswordForm({ token }: { token: string }) {
     <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4" noValidate>
       <input type="hidden" {...form.register("token")} />
       <FormField id="password" label={t("reset.password")} hint={t("reset.passwordPlaceholder")} error={errors.password ? t("errors.password") : undefined}>
-        <Input id="password" type="password" autoComplete="new-password" aria-invalid={!!errors.password} {...form.register("password")} />
+        <Input id="password" leadingIcon={<LockKeyhole />} type="password" autoComplete="new-password" aria-invalid={!!errors.password} {...form.register("password")} />
       </FormField>
       <FormField id="confirm" label={t("reset.confirm")} error={errors.confirm ? t("errors.confirm") : undefined}>
-        <Input id="confirm" type="password" autoComplete="new-password" aria-invalid={!!errors.confirm} {...form.register("confirm")} />
+        <Input id="confirm" leadingIcon={<LockKeyhole />} type="password" autoComplete="new-password" aria-invalid={!!errors.confirm} {...form.register("confirm")} />
       </FormField>
       <FormAlert message={serverError} />
       <Button type="submit" size="lg" className="h-11" disabled={isSubmitting}>{isSubmitting ? t("reset.submitting") : t("reset.submit")}</Button>
