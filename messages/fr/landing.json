@@ -4,26 +4,13 @@
     "description": "Réservez des créateurs LinkedIn pour vos posts sponsorisés. Chaque clic et chaque inscription vous revient, rattaché au post et au créateur qui l’ont provoqué."
   },
   "hero": {
-    "eyebrow": "Créateurs LinkedIn, réservés et suivis",
-    "title": "Chaque clic vous revient.",
-    "sub": "Avec Amplio, l’argent mis dans un post LinkedIn laisse une trace : chaque clic et chaque inscription reviennent en ligne, avec le post et le créateur à l’origine.",
-    "primary": "Inscrire ma marque",
-    "secondary": "Devenir créateur",
     "liveLabel": "données de l’espace démo",
     "counts": {
       "posts": "{count, plural, one {# post} other {# posts}}",
       "links": "{count, plural, one {# lien suivi} other {# liens suivis}}",
       "clicks": "{count, plural, one {# clic} other {# clics}}",
       "signups": "{count, plural, one {# inscription} other {# inscriptions}}"
-    },
-    "lastClick": "dernier clic {time}",
-    "offline": "Les chiffres en direct sont indisponibles pour le moment.",
-    "trail": {
-      "posts": "posts",
-      "site": "votre site",
-      "ledger": "inscriptions → lignes"
-    },
-    "tapHint": "Touchez le dessin pour envoyer des clics."
+    }
   },
   "scenes": {
     "post": {
@@ -165,5 +152,35 @@
       "terms": "Conditions d’utilisation"
     },
     "demoNote": "Les chiffres publics de cette page proviennent d’un espace de démo alimenté par des données d’exemple, pas de vrais clients."
+  },
+  "nav": {
+    "home": "Accueil Amplio",
+    "main": "Principale",
+    "forCreators": "Pour les créateurs",
+    "pricing": "Tarifs",
+    "signIn": "Se connecter",
+    "startFree": "Essai gratuit",
+    "menu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu"
+  },
+  "glass": {
+    "eyebrow": "Créateurs LinkedIn, réservés et mesurés",
+    "line1": "Chaque clic",
+    "line2": "remonte.",
+    "tag": "Chaque inscription, rattachée au post qui l’a générée.",
+    "play": "Voir comment ça fonctionne",
+    "live": "En direct",
+    "sub": "Parcours<br></br>de l’espace<br></br>de démo",
+    "figures": {
+      "posts": "posts",
+      "links": "liens",
+      "clicks": "clics",
+      "signups": "inscrits"
+    },
+    "dataNote": "données de l’espace démo",
+    "rate": "{rate} % des clics convertis en inscriptions",
+    "statClicks": "Clics<br></br>rattachés<br></br>à un post",
+    "statSignups": "Inscriptions<br></br>attribuées",
+    "demo": "Ouvrir la démo"
   }
 }

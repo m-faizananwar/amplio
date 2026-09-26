@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { BrandLockup } from "@/components/brand/BrandLockup";
+import { LocaleToggle } from "@/components/shell/topbar/LocaleToggle";
+import { ThemeToggle } from "@/components/shell/topbar/ThemeToggle";
 
-// The public footer: lockup + tagline, three short columns, the demo-data
+// The public footer: lockup + tagline, the language and theme switches (the
+// glass header has no room for them), three short columns, the demo-data
 // note. Calm: paper, a hairline above, no effects.
 export async function PublicFooter() {
   const t = await getTranslations("landing.footer");
@@ -18,6 +21,7 @@ export async function PublicFooter() {
         <div>
           <BrandLockup size="md" />
           <p className="mt-3 max-w-xs text-ink-muted">{t("tagline")}</p>
+          <div className="mt-5 flex flex-wrap items-center gap-2"><LocaleToggle /><ThemeToggle /></div>
         </div>
         {cols.map((col) => (
           <div key={col.title}>

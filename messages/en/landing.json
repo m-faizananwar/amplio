@@ -4,26 +4,13 @@
     "description": "Book LinkedIn creators for sponsored posts. Every click and every sign-up comes back as a row, tied to the post and the creator that caused it."
   },
   "hero": {
-    "eyebrow": "LinkedIn creators, booked and tracked",
-    "title": "Every click comes back.",
-    "sub": "Amplio turns a LinkedIn post into money you can trace: every click and every sign-up comes back as a row, to the post and the creator behind it.",
-    "primary": "Start as a brand",
-    "secondary": "Join as a creator",
     "liveLabel": "demo workspace data",
     "counts": {
       "posts": "{count, plural, one {# post} other {# posts}}",
       "links": "{count, plural, one {# tracked link} other {# tracked links}}",
       "clicks": "{count, plural, one {# click} other {# clicks}}",
       "signups": "{count, plural, one {# sign-up} other {# sign-ups}}"
-    },
-    "lastClick": "last click {time}",
-    "offline": "Live counts are unavailable right now.",
-    "trail": {
-      "posts": "posts",
-      "site": "your site",
-      "ledger": "sign-ups → rows"
-    },
-    "tapHint": "Tap the drawing to send clicks."
+    }
   },
   "scenes": {
     "post": {
@@ -165,5 +152,35 @@
       "terms": "Terms"
     },
     "demoNote": "Public numbers on this page come from a seeded demo workspace, not from real customers."
+  },
+  "nav": {
+    "home": "Amplio home",
+    "main": "Main",
+    "forCreators": "For creators",
+    "pricing": "Pricing",
+    "signIn": "Sign in",
+    "startFree": "Start free",
+    "menu": "Open menu",
+    "closeMenu": "Close menu"
+  },
+  "glass": {
+    "eyebrow": "LinkedIn creators, booked and tracked",
+    "line1": "Every click",
+    "line2": "comes back.",
+    "tag": "Every sign-up, traced to the post that earned it.",
+    "play": "See how it works",
+    "live": "Live",
+    "sub": "Demo<br></br>workspace<br></br>trail",
+    "figures": {
+      "posts": "posts",
+      "links": "links",
+      "clicks": "clicks",
+      "signups": "sign-ups"
+    },
+    "dataNote": "demo workspace data",
+    "rate": "{rate}% of clicks became sign-ups",
+    "statClicks": "Clicks<br></br>traced to<br></br>a post",
+    "statSignups": "Sign-ups<br></br>attributed",
+    "demo": "Open the demo"
   }
 }
