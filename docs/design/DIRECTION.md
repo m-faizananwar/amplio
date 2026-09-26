@@ -18,12 +18,22 @@ money and verified attribution.
 
 ## System
 
-**Type.** Geist for everything (next/font, self-hosted). Geist Mono for every number,
-amount, ID, date and code, always tabular. Scale: 12 / 13 / 14 (body) / 16 / 20 / 24 /
-32 / 48 / 64. Headings tight (-0.02em), weight 600; body 400. No serif. One exception:
-the landing's glass hero and the public header are set in Inter (variable, self-hosted
-through next/font as a 22 KB en/fr subset) at the comp's own weights — 200, 360, 400,
-425, 470, 500, 520, 570 — and nowhere else.
+**Type.** Every face is self-hosted through next/font; each has one job.
+- **The app and the sign-in pages: Instrument Sans** (400–700). Slightly narrower and warmer
+  than a neo-grotesk, so dense tables, chips and uppercase button labels fit without feeling
+  cramped, and it still reads as a working tool rather than a brand statement.
+- **The sidebar only: Inter** (variable; 450 for a resting row, 600 for the current page). Its
+  labels are 14px in a narrow column; Inter's tall x-height and even spacing keep them legible
+  there, and the weight step (not colour alone) says which page you are on.
+- **Every number, amount, ID and date in the app: JetBrains Mono**, tabular, so columns line
+  up and a rolling counter never changes width.
+- **The onboarding wizard: Plus Jakarta Sans** (the fork's choice for the card being built).
+- **The landing and public pages keep Geist / Geist Mono**, and the glass hero and public header
+  Inter at the comp's own weights (200, 360, 400, 425, 470, 500, 520, 570) as a 22 KB subset.
+The app faces are declared once in the root layout but not preloaded, and switch on through
+`html:has(.font-app)` wherever the app is mounted — so portalled menus and dialogs get them and
+the public pages don't pay for them. Scale: 12 / 13 / 14 (body) / 16 / 20 / 24 / 32 / 48 / 64.
+Headings tight (-0.02em), weight 600; body 400. No serif.
 
 **Colour.** Tokens only, light and dark (`src/app/globals.css`). The app runs on a cool
 zinc scale; reading ink stays near-black.
@@ -157,7 +167,15 @@ Fewer, richer, tactile. Every one is on `/dev/ui`.
   behind the glyph on value or focus), Textarea, Select, Combobox, DatePicker (day · month ·
   year chips), Switch. A 44px zinc well, press on hover, white + a soft accent ring + a 1px
   spring lift on focus or open, red ring when invalid; the label turns accent while its field is
-  focused. Dropdowns open a panel (radius 16) from the trigger edge; the selected check draws in.
+  focused.
+- **Dropdowns** (`src/styles/dropdown.css`): every select, combobox, filter pill, date picker,
+  menu and the notifications panel open the same way. The panel renders at full size and a
+  clip-path reveals it from the corner nearest its trigger (320 ms, ease-out); around it the
+  positioner carries the shadow as a drop-shadow (so it hugs the clip) and springs opacity and
+  scale .96 → 1 from that corner; rows arrive 35 ms apart; the chevron disc turns a half turn.
+  A single select opens with the current choice over the trigger. Reduced motion: a 120 ms fade.
+- **Account pill**: the avatar, name and company in a white pill that morphs into the account
+  menu (Profile, Settings, Language, Theme, Sign out) without moving the bar.
 - **Cards and widgets**: Card; StatCard (label, rolling number, a toned delta chip, "Show rows"
   opening the trail); RingWidget (a dial of ticks, one arc per state, each opening its filter);
   Table rows 52px with a hover well; StatusChip with its state glyph.
