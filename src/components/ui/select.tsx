@@ -54,6 +54,10 @@ function SelectTrigger({
   )
 }
 
+// Opens below its trigger (flipping above near the bottom), as wide as the
+// wider of the trigger and its longest option up to 360px, at most eight rows
+// tall before it scrolls to — and shows — the current choice. Aligning the
+// choice over the trigger pushed earlier options off the top of short lists.
 function SelectContent({
   className,
   children,
@@ -61,7 +65,7 @@ function SelectContent({
   sideOffset = 4,
   align = "center",
   alignOffset = 0,
-  alignItemWithTrigger = true,
+  alignItemWithTrigger = false,
   ...props
 }: SelectPrimitive.Popup.Props &
   Pick<
@@ -81,7 +85,7 @@ function SelectContent({
         <SelectPrimitive.Popup
           data-slot="select-content"
           data-align-trigger={alignItemWithTrigger}
-          className={cn("dd-panel relative isolate z-50 max-h-(--available-height) w-(--anchor-width) min-w-36 overflow-x-hidden overflow-y-auto p-1.5 text-body text-ink", className)}
+          className={cn("dd-panel relative isolate z-50 max-h-[min(var(--available-height),306px)] w-max min-w-(--anchor-width) max-w-[min(360px,calc(100vw-16px))] overflow-x-hidden overflow-y-auto p-1.5 text-body text-ink", className)}
           {...props}
         >
           <SelectScrollUpButton />
@@ -121,7 +125,7 @@ function SelectItem({
       )}
       {...props}
     >
-      <SelectPrimitive.ItemText className="flex flex-1 shrink-0 gap-2 whitespace-nowrap">
+      <SelectPrimitive.ItemText className="min-w-0 flex-1 truncate">
         {children}
       </SelectPrimitive.ItemText>
       <SelectPrimitive.ItemIndicator
