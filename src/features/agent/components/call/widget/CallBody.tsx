@@ -1,12 +1,13 @@
 "use client";
 
-import { Mic, MicOff, PhoneOff } from "lucide-react";
+import { Mic, MicOff, Phone } from "lucide-react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useEffect, useRef } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import type { AgentCall } from "../useAgentCall";
-import { CallDots } from "./CallDots";
+import { AgentAvatar } from "../../identity/AgentAvatar";
+import { CallGlow } from "./CallGlow";
 import { CallFeed } from "./CallFeed";
 import { CallSummary } from "./CallSummary";
 
@@ -16,9 +17,9 @@ export function CallBody({ call }: { call: AgentCall }) {
   if (call.status === "connecting") {
     return (
       <div className="grid flex-1 content-center justify-items-center gap-4 py-6" role="status">
-        <div className="call-ring grid size-24 place-items-center rounded-full"><CallDots mode="thinking" readInput={call.readInput} readOutput={call.readOutput} className="h-5 w-12" /></div>
+        <CallGlow mode="thinking" readInput={call.readInput} readOutput={call.readOutput} className="grid size-24 place-items-center rounded-full bg-well"><AgentAvatar size={52} state="working" /></CallGlow>
         <p className="text-small text-ink-muted">{t("connecting")}</p>
-        <Button size="icon-lg" variant="ghost" aria-label={t("end")} onClick={call.end} className="bg-failure text-surface hover:bg-failure/90"><PhoneOff /></Button>
+        <div className="call-controls"><HangUp label={t("end")} onClick={call.end} turn /></div>
       </div>
     );
   }
@@ -50,8 +51,9 @@ function LiveBody({ call }: { call: AgentCall }) {
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-3">
       <div className="flex min-w-0 items-center gap-3">
-        <CallDots mode={call.mode} readInput={call.readInput} readOutput={call.readOutput} className="h-4 w-10 shrink-0" />
-        <p className="text-small font-medium" aria-live="polite">{call.mode === "rest" ? " " : t(call.mode === "muted" ? "mute" : call.mode)}</p>
+        <CallGlow mode={call.mode} readInput={call.readInput} readOutput={call.readOutput} className="call-glow-pill">
+          <p className="text-small font-medium" aria-live="polite">{call.mode === "rest" ? " " : t(call.mode === "muted" ? "mute" : call.mode)}</p>
+        </CallGlow>
         {call.engineName === "browser" ? <p className="ml-auto truncate text-caption text-ink-muted">{t("browserVoice")}</p> : null}
       </div>
       <dl className="grid gap-1 rounded-control bg-well px-3 py-2 text-small" aria-live="polite">
@@ -60,10 +62,15 @@ function LiveBody({ call }: { call: AgentCall }) {
       </dl>
       {/* no thread on this line (no thread storage yet): the voice carries it all, so the captions get the room */}
       {call.hasFeed ? <div ref={feed} className="min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-contain"><CallFeed call={call} /></div> : <div className="flex-1" />}
-      <div className="flex items-center justify-center gap-4">
+      <div className="call-controls flex items-center justify-center gap-4">
         <Button size="icon-lg" variant="quiet" aria-pressed={call.muted} aria-label={call.muted ? t("unmute") : t("mute")} onClick={call.toggleMute}>{call.muted ? <MicOff /> : <Mic />}</Button>
-        <Button size="icon-lg" variant="ghost" aria-label={t("end")} onClick={call.end} className="bg-failure text-surface hover:bg-failure/90">{<PhoneOff />}</Button>
+        <HangUp label={t("end")} onClick={call.end} />
       </div>
     </div>
   );
+}
+
+// the phone that answered, turned over (call.css); `turn` plays the turn as the call opens
+function HangUp({ label, onClick, turn }: { label: string; onClick: () => void; turn?: boolean }) {
+  return <Button size="icon-lg" variant="ghost" aria-label={label} onClick={onClick} data-turn={turn || undefined} className="call-hangup bg-failure text-surface hover:bg-failure/90"><Phone /></Button>;
 }

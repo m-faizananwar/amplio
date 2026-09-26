@@ -63,21 +63,21 @@
   }
   .dark .call-bubble-timer { color: var(--paper); }
 
-  .call-dots circle { transform-box: fill-box; transform-origin: center; }
-  .call-dots[data-mode="muted"] { opacity: 0.4; }
+  /* the voice glow around the mode label */
+  .call-glow-pill { display: inline-flex; min-height: 32px; align-items: center; padding: 0 14px; border-radius: 999px; }
 
-  /* connecting: a soft ring breathing out from the mark */
-  .call-ring { position: relative; background: var(--well); }
-  .call-ring::before, .call-ring::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border: 2px solid color-mix(in oklab, var(--money) 45%, transparent);
-    border-radius: inherit;
-    animation: call-ring 1.8s var(--ease-ledger) infinite;
-  }
-  .call-ring::after { animation-delay: 0.9s; }
-  @keyframes call-ring { from { opacity: 0.9; scale: 1; } to { opacity: 0; scale: 1.6; } }
+  /* opening: the controls unfold one by one, and the phone that started the
+     call turns over into the hang-up */
+  .call-controls > * { animation: call-control-in 360ms var(--ease-ledger) backwards; }
+  .call-controls > :nth-child(2) { animation-delay: 90ms; }
+  .call-controls > :nth-child(3) { animation-delay: 180ms; }
+  .call-controls > .call-hangup:only-child { animation: none; }
+  @keyframes call-control-in { from { opacity: 0; scale: 0.6; translate: 0 8px; } }
+  .call-hangup svg { rotate: 135deg; }
+  .call-hangup[data-turn] { animation: call-hangup-bg 520ms var(--ease-ledger) 160ms backwards; }
+  .call-hangup[data-turn] svg { animation: call-hangup-turn 560ms linear(0, 0.2 6%, 0.56 14%, 0.86 23%, 1.02 31%, 1.06 38%, 1.04 46%, 1.01 56%, 0.998 68%, 1) 160ms backwards; }
+  @keyframes call-hangup-bg { from { background: var(--money); } }
+  @keyframes call-hangup-turn { from { rotate: 0deg; } }
 
   .call-live-dot { display: inline-block; width: 8px; height: 8px; border-radius: 999px; background: var(--money); box-shadow: 0 0 0 2px var(--paper); animation: call-live 1.6s ease-in-out infinite; }
   @keyframes call-live { 50% { box-shadow: 0 0 0 2px var(--paper), 0 0 0 5px color-mix(in oklab, var(--money) 25%, transparent); } }
@@ -123,6 +123,5 @@
 
 @media (prefers-reduced-motion: reduce) {
   .call-float, .call-sheet { transition: none !important; animation: none !important; }
-  .call-ring::before, .call-ring::after, .call-live-dot { animation: none !important; }
-  .call-ring::before { opacity: 0.6; }
+  .call-live-dot, .call-controls > *, .call-hangup, .call-hangup svg { animation: none !important; }
 }

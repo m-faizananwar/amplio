@@ -6,7 +6,9 @@ import { useTranslations } from "next-intl";
 import { Button, buttonVariants } from "@/components/ui/button";
 import type { AgentCall } from "../useAgentCall";
 import { CallBody } from "./CallBody";
-import { CallDots } from "./CallDots";
+import { AgentAvatar } from "../../identity/AgentAvatar";
+import { CallBeam } from "./CallBeam";
+import { CallGlow } from "./CallGlow";
 import { CallTimer } from "./CallTimer";
 import { useCallCorner } from "./useCallCorner";
 
@@ -20,27 +22,30 @@ export function CallWindow({ call }: { call: AgentCall }) {
   const t = useTranslations("agent.call");
   const place = useCallCorner(call.minimised ? BUBBLE : WINDOW);
   const live = call.status === "live" || call.status === "connecting";
+  // the agent is working: tool steps running, or it is speaking
+  const working = live && (call.run.busy || call.mode === "speaking" || call.mode === "thinking");
   if (call.minimised) {
     return (
       <button
         type="button"
-        className="call-float call-bubble"
-        data-moving={place.moving || undefined}
+        className="call-float call-bubble" data-moving={place.moving || undefined}
         style={place.style}
         aria-label={t("expand")}
         {...place.handleProps}
         onClick={() => { if (!place.wasDrag()) call.setMinimised(false); }}
       >
-        <CallDots mode={call.mode} readInput={call.readInput} readOutput={call.readOutput} className="h-3.5 w-8" />
+        <CallGlow mode={call.mode} readInput={call.readInput} readOutput={call.readOutput} className="grid size-full place-items-center rounded-full"><AgentAvatar size={34} state={working ? "working" : "default"} /></CallGlow>
         <CallTimer startedAt={call.startedAt} endedAt={call.endedAt} className="call-bubble-timer" />
       </button>
     );
   }
   return (
     <section aria-label={t("start")} className="call-float call-window" data-moving={place.moving || undefined} style={{ ...place.style, width: WINDOW.w, height: WINDOW.h }}>
+      <CallBeam working={live && call.run.busy} radius={20} className="flex h-full min-h-0 flex-col">
       <header className="flex items-center gap-1 border-b border-rule px-2 py-1.5">
         <button type="button" className="call-handle" aria-label={t("handle")} {...place.handleProps}>
           <GripHorizontal className="size-4 text-ink-muted" aria-hidden="true" />
+          <AgentAvatar size={22} state={working ? "working" : "default"} />
           <span className="truncate text-small font-medium">{live ? t("live") : ""}</span>
           <CallTimer startedAt={call.startedAt} endedAt={call.endedAt} className="text-small text-ink-muted" />
         </button>
@@ -48,6 +53,7 @@ export function CallWindow({ call }: { call: AgentCall }) {
         {live ? <Button variant="ghost" size="icon-sm" aria-label={t("minimise")} onClick={() => call.setMinimised(true)}><Minus /></Button> : null}
       </header>
       <div className="flex min-h-0 flex-1 flex-col p-4"><CallBody call={call} /></div>
+      </CallBeam>
     </section>
   );
 }
