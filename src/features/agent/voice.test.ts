@@ -35,6 +35,11 @@ describe("what a call says", () => {
     expect(speakable("4 685,00 € restent.", "fr")).toBe("4685 euros restent.");
   });
 
+  it("chips attached to a reply don't replace it on a call", () => {
+    const text = speechFor([{ type: "message", id: "m", text: "Q4 is still a draft, so it has no results yet.", final: true }, { type: "question", text: "", chips: ["Launch it", "Edit the brief"] }], "en");
+    expect(text).toBe("Q4 is still a draft, so it has no results yet.");
+  });
+
   it("reads a confirm card and asks", () => {
     const text = speechFor([{ type: "confirm", id: "pa_1", title: "Book 3 creators for Zune", facts: [{ label: "Held from your wallet", value: "€615.00", cents: 61_500 }], confirmLabel: "Book them", cancelLabel: "Not now", expiresAt: "x" }], "en");
     expect(text).toBe("Book 3 creators for Zune. Held from your wallet: 615 euros. Shall I go ahead?");

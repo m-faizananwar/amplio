@@ -10,8 +10,12 @@ import type { ConfirmEvent, ResultEvent } from "../../events";
 // thread when there is one (so a card made on a call can be tapped on screen),
 // else the browser session.
 export type ToolContext = { viewer: Viewer; locale: "en" | "fr"; scope?: string };
-export type ToolOutput = { summary: string; data: unknown; result?: ResultEvent; navigate?: string };
-export type Prepared = { title: string; facts: ConfirmEvent["facts"]; confirmLabel: string } | { error: string };
+// nextSteps: when a tool hits a blocker it names what can be done next, in the
+// user's language, only things the agent's tools or pages can actually do;
+// they become chips if the model doesn't ask on its own.
+export type NextStep = { label: string; hint: string };
+export type ToolOutput = { summary: string; data: unknown; result?: ResultEvent; navigate?: string; nextSteps?: NextStep[] };
+export type Prepared = { title: string; facts: ConfirmEvent["facts"]; confirmLabel: string } | { error: string; nextSteps?: NextStep[] };
 
 type Base = { name: string; role: "brand" | "creator"; label: string; description: string; parameters: Record<string, unknown> };
 export type ReadTool = Base & { kind: "read"; run: (ctx: ToolContext, args: Record<string, unknown>) => Promise<ToolOutput> };

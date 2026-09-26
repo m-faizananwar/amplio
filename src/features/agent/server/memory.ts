@@ -151,3 +151,17 @@ export async function getPending(threadId: string): Promise<string | null> {
 export async function setPending(threadId: string, id: string | null): Promise<void> {
   await safe("pending", () => getDb().update(agentThreads).set({ pendingConfirm: id }).where(eq(agentThreads.id, threadId)), undefined);
 }
+
+const HINT_LOOKBACK = 30;
+// The chips the thread's latest question offered, with what each one means.
+export async function lastHints(threadId: string): Promise<Record<string, string> | null> {
+  return safe("hints", async () => {
+    const rows = await getDb().select({ event: agentEvents.event }).from(agentEvents).where(eq(agentEvents.threadId, threadId)).orderBy(desc(agentEvents.seq)).limit(HINT_LOOKBACK);
+    for (const { event } of rows) {
+      const e = event as { type?: string; hints?: Record<string, string> };
+      if (e.type === "user") return null; // the user already moved on from those chips
+      if (e.type === "question") return e.hints ?? null;
+    }
+    return null;
+  }, null);
+}

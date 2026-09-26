@@ -4,7 +4,8 @@ import type { AgentEvent } from "../events";
 import { runTurn, type Turn } from "./loop";
 import { localizer } from "./localize";
 import { callTitle } from "../thread-view";
-import { appendEvents, listNotes, openThread, saveTurn, setPending, setTitle } from "./memory";
+import { withChipHint } from "../chip-hint";
+import { appendEvents, lastHints, listNotes, openThread, saveTurn, setPending, setTitle } from "./memory";
 
 export type TurnRequest = { viewer: Viewer; locale: "en" | "fr"; text: string; threadId?: string | null; history?: Turn[]; emit?: (e: AgentEvent) => void; voice?: boolean };
 
@@ -14,13 +15,15 @@ export type TurnRequest = { viewer: Viewer; locale: "en" | "fr"; text: string; t
 // it still runs, on the history the caller passed.
 export async function agentTurn(req: TurnRequest): Promise<{ threadId: string | null; events: AgentEvent[]; reply: string }> {
   const { viewer, locale, text } = req;
-  const [thread, notes] = await Promise.all([openThread(viewer.userId, req.threadId, { title: text, keepId: req.voice === true, kind: req.voice ? "call" : "chat" }), listNotes(viewer.userId)]);
+  const [thread, notes, hints] = await Promise.all([openThread(viewer.userId, req.threadId, { title: text, keepId: req.voice === true, kind: req.voice ? "call" : "chat" }), listNotes(viewer.userId), req.threadId ? lastHints(req.threadId) : Promise.resolve(null)]);
   // the feed and the spoken words are in the caller's language, like the chat stream
   const local = await localizer(locale);
   const events: AgentEvent[] = [];
   const emit = (e: AgentEvent) => { events.push(local(e)); req.emit?.(e); };
   const reply = await runTurn({
-    viewer, locale, text, emit, voice: req.voice,
+    viewer, locale, emit, voice: req.voice,
+    // a chip reply carries what the chip meant; the stored text stays as said
+    text: withChipHint(text, hints),
     history: thread ? thread.history : req.history ?? [],
     recall: { notes, summary: thread?.summary ?? "" },
     scope: thread ? `thread:${thread.threadId}` : undefined,

@@ -40,7 +40,8 @@ export function speechFor(events: AgentEvent[], locale: "en" | "fr"): string {
     const amount = money ? ` ${money.label}: ${sayEuros(`€${(money.cents ?? 0) / CENTS}`, locale)}.` : "";
     return `${speakable(confirm.title, locale, 1)}.${amount} ${fr ? "Je le fais ?" : "Shall I go ahead?"}`.replace(/\.\./g, ".");
   }
-  const question = [...events].reverse().find((e) => e.type === "question");
+  // a question with no text is chips attached to the reply: the reply is what's said
+  const question = [...events].reverse().find((e) => e.type === "question" && e.text.trim() !== "");
   if (question && question.type === "question") return speakable(question.text, locale, 1);
   const final = [...events].reverse().find((e) => e.type === "message" && e.final);
   if (final && final.type === "message" && final.text.trim()) return speakable(final.text, locale);

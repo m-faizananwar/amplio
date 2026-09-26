@@ -11,6 +11,8 @@ import { alreadyLine, splitOnCampaign } from "../../on-campaign";
 import { arr, type ConfirmTool, euros, L, num, obj, str, type ToolContext } from "./types";
 
 const MAX_BOOK = 5;
+const CENTS = 100;
+const MIN_TOPUP_EUROS = 500;
 const brandId = (ctx: ToolContext) => ctx.viewer.brand?.id ?? "";
 const ids = (v: unknown) => (Array.isArray(v) ? v.filter((x): x is string => typeof x === "string").slice(0, MAX_BOOK) : []);
 const own = async (ctx: ToolContext, id: unknown) => (typeof id === "string" ? (await listBrandCollaborations(brandId(ctx))).find((c) => c.id === id) ?? null : null);
@@ -33,7 +35,10 @@ const bookCreators: ConfirmTool = {
     if (picks.length === 0) return { error: `${alreadyLine(already, campaign.name, ctx.locale)} ${L(ctx, "Search again for others.", "Cherchez-en d’autres.")}` };
     const total = picks.reduce((s, p) => s + p.priceCents, 0);
     const wallet = await walletCentsNow(brandId(ctx));
-    if (total > wallet) return { error: `The fees total ${euros(total, ctx.locale)} and the wallet has ${euros(wallet, ctx.locale)}. Top up first.` };
+    if (total > wallet) return { error: `The fees total ${euros(total, ctx.locale)} and the wallet has ${euros(wallet, ctx.locale)}. Top up first.`, nextSteps: [
+      { label: L(ctx, "Top up the wallet", "Recharger le portefeuille"), hint: `Prepare topUp with amountEuros ${Math.max(MIN_TOPUP_EUROS, Math.ceil((total - wallet) / CENTS))} (the shortfall; €${MIN_TOPUP_EUROS} minimum).` },
+      { label: L(ctx, "Book fewer creators", "Réserver moins de créateurs"), hint: "Ask which of these creators to keep with askUser, then prepare bookCreators again with only those." },
+    ] };
     return {
       title: L(ctx, `Book ${picks.length} creator${picks.length > 1 ? "s" : ""} for ${campaign.name}`, `Réserver ${picks.length} créateur${picks.length > 1 ? "s" : ""} pour ${campaign.name}`),
       facts: [

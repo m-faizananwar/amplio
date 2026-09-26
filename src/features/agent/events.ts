@@ -25,6 +25,9 @@ export const questionEvent = z.object({
   type: z.literal("question"),
   text: z.string(),
   chips: z.array(z.string()).max(MAX_CHIPS).default([]),
+  // chip → what it means for the agent (ids included), set on next-step chips;
+  // the UI just sends the chip's text back
+  hints: z.record(z.string(), z.string()).optional(),
 });
 
 // ---- results: compact, typed payloads the UI renders as cards ----

@@ -12,7 +12,7 @@ import { compactForModel } from "./compact";
 import { createPending } from "./pending";
 import { ASK_USER, type Recall, systemPrompt } from "./prompt";
 import { declarationsFor, findTool } from "./tools";
-import type { ToolContext } from "./tools/types";
+import type { NextStep, ToolContext } from "./tools/types";
 
 export const MAX_TOOL_STEPS = 8;
 export const TURN_BUDGET_MS = 45_000;
@@ -47,8 +47,8 @@ function say(emit: Emit, text: string) {
 
 // One call the model asked for: a question ends the turn, a read runs (with
 // its own timeout) and reports a step, a confirm tool is only prepared.
-type CallInput = { call: { name?: string; args?: Record<string, unknown> }; ctx: ToolContext; emit: Emit; stepId: string; seen?: Set<number> };
-export async function runCall({ call, ctx, emit, stepId, seen }: CallInput): Promise<{ response: Record<string, unknown>; stop?: "question" | "confirm" }> {
+type CallInput = { call: { name?: string; args?: Record<string, unknown> }; ctx: ToolContext; emit: Emit; stepId: string; seen?: Set<number>; next?: NextStep[] };
+export async function runCall({ call, ctx, emit, stepId, seen, next }: CallInput): Promise<{ response: Record<string, unknown>; stop?: "question" | "confirm" }> {
   const name = call.name ?? "";
   const args = call.args ?? {};
   if (name === ASK_USER.name) {
@@ -68,11 +68,13 @@ export async function runCall({ call, ctx, emit, stepId, seen }: CallInput): Pro
       if (out.result) emit(out.result);
       if (out.navigate) emit({ type: "navigate", href: out.navigate });
       if (seen) amountsFrom(out.data, seen);
+      if (next && out.nextSteps) next.push(...out.nextSteps);
       return { response: compactForModel(out.data) };
     }
     const prepared = await withTimeout(tool.prepare(ctx, args), CALL_TIMEOUT_MS);
     if ("error" in prepared) {
       emit({ type: "step", id: stepId, label: tool.label, status: "failed", tool: name, output: prepared.error });
+      if (next && prepared.nextSteps) next.push(...prepared.nextSteps);
       return { response: { error: prepared.error } };
     }
     if (seen) amountsFrom(prepared.facts, seen);
@@ -114,6 +116,7 @@ export async function runTurn({ viewer, locale, text, history, emit, recall, sco
   // every amount a tool returned this turn; the reply may only use these (no
   // balance from the session: it can be stale, so the model asks a tool)
   const seen = new Set<number>();
+  const next: NextStep[] = [];
   let steps = 0;
   while (Date.now() < deadline) {
     const res = await withTimeout(ai.models.generateContent({
@@ -128,10 +131,13 @@ export async function runTurn({ viewer, locale, text, history, emit, recall, sco
       if (checked.dropped) console.warn("[agent] dropped unverified amounts", { sentences: checked.dropped });
       const reply = checked.text || (locale === "fr" ? "Voici ce que j’ai trouvé." : "Here's what I found.");
       say(emit, reply);
+      // a blocker never ends the turn cold: the tools' own next steps as chips
+      const steps = next.filter((s, i) => next.findIndex((o) => o.label === s.label) === i).slice(0, MAX_CHIPS);
+      if (steps.length) emit({ type: "question", text: "", chips: steps.map((s) => s.label), hints: Object.fromEntries(steps.map((s) => [s.label, s.hint])) });
       return reply;
     }
     contents.push({ role: "model", parts: modelParts });
-    const outcomes = await Promise.all(calls.map((call, i) => runCall({ call, ctx, emit, stepId: `s${steps + i + 1}`, seen })));
+    const outcomes = await Promise.all(calls.map((call, i) => runCall({ call, ctx, emit, stepId: `s${steps + i + 1}`, seen, next })));
     steps += calls.length;
     contents.push({ role: "user", parts: calls.map((call, i) => ({ functionResponse: { name: call.name ?? "", response: outcomes[i].response } })) });
     const stop = outcomes.find((o) => o.stop)?.stop;

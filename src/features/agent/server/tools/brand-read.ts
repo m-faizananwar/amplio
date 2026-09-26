@@ -1,5 +1,6 @@
 import "server-only";
-import { getBrandProfile, listCampaignSummaries } from "@/features/campaigns/server/read-campaigns";
+import { getCampaignAnalytics } from "@/features/campaigns/server/read-analytics";
+import { getBrandProfile, getCampaign, listCampaignSummaries } from "@/features/campaigns/server/read-campaigns";
 import { creatorsOnCampaign, listBrandCollaborations } from "@/features/collaborations/server/queries";
 import { getMarketplaceContext, listCreators } from "@/features/marketplace/server/queries";
 import { marketplaceQuerySchema } from "@/features/marketplace/schemas";
@@ -8,7 +9,7 @@ import { billingBucketsNow, walletCentsNow } from "@/features/payouts/server/que
 import { filterFor } from "@/lib/next-step";
 import type { CreatorCard } from "../../events";
 import { describeFilters, searchLimit } from "../../filters";
-import { arr, euros, num, obj, type ReadTool, str, type ToolContext } from "./types";
+import { arr, euros, L, num, obj, type ReadTool, str, type ToolContext } from "./types";
 
 
 const brandId = (ctx: ToolContext) => ctx.viewer.brand?.id ?? "";
@@ -70,11 +71,19 @@ const searchCreators: ReadTool = {
     const already = list.items.filter(isOn).length;
     const top = list.items.filter((c) => c.followers >= minFollowers && !isOn(c)).slice(0, searchLimit(a));
     const applied = describeFilters(a);
+    // nothing matched: the ways to widen this search, only for filters it used
+    const again = `Repeat the last searchCreators call (same campaign and filters)`;
+    const nextSteps = top.length ? undefined : [
+      ...(Array.isArray(a.countries) && a.countries.length ? [{ label: L(ctx, "Search without the country filter", "Chercher sans filtre de pays"), hint: `${again} without countries.` }] : []),
+      ...(typeof a.maxPriceEuros === "number" ? [{ label: L(ctx, "Raise the budget", "Augmenter le budget"), hint: "Ask for the new maximum price per creator with askUser, then repeat the last searchCreators call with it." }] : []),
+      ...(Array.isArray(a.industries) && a.industries.length ? [{ label: L(ctx, "Any industry", "Tous secteurs"), hint: `${again} without industries.` }] : []),
+    ];
     const cards = top.map(toCreatorCard);
     return {
       summary: `${applied.length ? `${applied.join(" · ")} → ` : "no filters → "}${list.total} match · ${cards.length} best by fit${mctx.selectedCampaign ? ` for ${mctx.selectedCampaign.name}` : ""}${already ? ` · ${already} already on it` : ""}`,
       data: { appliedFilters: applied.length ? applied : ["none"], campaign: mctx.selectedCampaign, alreadyOnCampaign: already, creators: top.map((c) => ({ id: c.id, name: c.name, country: c.country, industries: c.industries, followers: c.followers, priceCents: c.priceCents, fitScore: c.fit.score, fitReason: c.fit.reason })) },
       result: { type: "result", kind: "creators", title: mctx.selectedCampaign ? mctx.selectedCampaign.name : "Creators", items: cards },
+      nextSteps,
     };
   },
 };
@@ -104,4 +113,31 @@ const getWallet: ReadTool = {
   },
 };
 
-export const BRAND_READS = [getProfile, listCampaigns, searchCreators, listCollaborations, getWallet];
+const TOP_CREATORS = 3;
+
+const readCampaign: ReadTool = {
+  name: "getCampaign", role: "brand", kind: "read", label: "Reading the campaign",
+  description: "One of the brand's campaigns: status, post deadline, and, once it is active, how it is doing (published posts, qualified clicks, estimated reach, bookings, committed budget, top creators by clicks). A draft has no results yet.",
+  parameters: obj({ campaignId: str("The campaign id, from listCampaigns") }, ["campaignId"]),
+  async run(ctx, a) {
+    const c = await getCampaign(brandId(ctx), String(a.campaignId ?? ""));
+    if (!c) return { summary: "not one of yours", data: { error: "That campaign isn't one of yours." } };
+    const base = { id: c.id, name: c.name, status: c.status, postDeadline: c.postDeadline, feeCents: c.defaultFeeCents };
+    const card = { type: "result" as const, kind: "campaign" as const, title: c.name, item: { id: c.id, name: c.name, status: c.status, postDeadline: c.postDeadline } };
+    if (c.status === "draft") {
+      const active = (await listCampaignSummaries(brandId(ctx))).find((x) => x.status === "active");
+      const open = (section: string) => `Call openPage with campaignId ${c.id} and section "${section}" (campaign "${c.name}").`;
+      const nextSteps = [
+        { label: L(ctx, "Launch it", "La lancer"), hint: open("launch") },
+        { label: L(ctx, "Edit the brief", "Modifier le brief"), hint: open("brief") },
+        ...(active ? [{ label: L(ctx, "Show my active campaign", "Voir ma campagne active"), hint: `Call getCampaign with campaignId ${active.id} (campaign "${active.name}").` }] : []),
+      ];
+      return { summary: `${c.name} · draft, no results yet`, data: { ...base, results: null, note: "Draft: launch it to get results." }, result: card, nextSteps };
+    }
+    const r = await getCampaignAnalytics(c.id);
+    const results = { publishedPosts: r.publishedPosts, qualifiedClicks: r.qualifiedClicks, estReach: r.estReach, bookings: r.bookings, committedCents: r.committedCents, topCreators: r.byCreator.slice(0, TOP_CREATORS).map((x) => ({ name: x.creatorName, clicks: x.clicks })) };
+    return { summary: `${c.name} · ${r.publishedPosts} posts · ${r.qualifiedClicks} clicks`, data: { ...base, results }, result: { ...card, item: { ...card.item, budgetCents: r.committedCents } } };
+  },
+};
+
+export const BRAND_READS = [getProfile, listCampaigns, readCampaign, searchCreators, listCollaborations, getWallet];
