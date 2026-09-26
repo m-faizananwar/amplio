@@ -7,7 +7,7 @@ import { resolveAiProvider } from "@/lib/ai-provider";
 import { ID_RADIX, MAX_CHIPS, SUMMARY_MAX } from "../constants";
 import type { AgentEvent } from "../events";
 import { inventedIds } from "../id-guard";
-import { amountsFrom, checkMoney } from "../money-check";
+import { amountsFrom, checkMoney, withEuros } from "../money-check";
 import { compactForModel } from "./compact";
 import { createPending } from "./pending";
 import { ASK_USER, type Recall, systemPrompt } from "./prompt";
@@ -69,7 +69,7 @@ export async function runCall({ call, ctx, emit, stepId, seen, next }: CallInput
       if (out.navigate) emit({ type: "navigate", href: out.navigate });
       if (seen) amountsFrom(out.data, seen);
       if (next && out.nextSteps) next.push(...out.nextSteps);
-      return { response: compactForModel(out.data) };
+      return { response: compactForModel(withEuros(out.data, ctx.locale)) };
     }
     const prepared = await withTimeout(tool.prepare(ctx, args), CALL_TIMEOUT_MS);
     if ("error" in prepared) {
@@ -127,7 +127,7 @@ export async function runTurn({ viewer, locale, text, history, emit, recall, sco
     const calls = res.functionCalls ?? [];
     const modelParts: Part[] = res.candidates?.[0]?.content?.parts ?? [];
     if (calls.length === 0 || steps >= MAX_TOOL_STEPS) {
-      const checked = checkMoney(res.text?.trim() ?? "", seen);
+      const checked = checkMoney(res.text?.trim() ?? "", seen, locale);
       if (checked.dropped) console.warn("[agent] dropped unverified amounts", { sentences: checked.dropped });
       const reply = checked.text || (locale === "fr" ? "Voici ce que j’ai trouvé." : "Here's what I found.");
       say(emit, reply);

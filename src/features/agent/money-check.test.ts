@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { amountsFrom, checkMoney, parseEuros } from "./money-check";
+import { amountsFrom, checkMoney, parseEuros, withEuros } from "./money-check";
 
 describe("money in the agent's words", () => {
   it("reads euro amounts in English and French formats", () => {
@@ -23,5 +23,16 @@ describe("money in the agent's words", () => {
   it("keeps sentences whose amounts match the tools", () => {
     const allowed = amountsFrom({ totalCents: 13_000, priceCents: 6500 });
     expect(checkMoney("€130.00 is held: €65 each.", allowed).text).toBe("€130.00 is held: €65 each.");
+  });
+
+  it("writes the amounts it keeps in the reader's format", () => {
+    const allowed = amountsFrom({ availableCents: 355_000, heldCents: 196_000 });
+    const text = "You have €3550.00 available in your wallet, and €1960.00 is held.";
+    expect(checkMoney(text, allowed, "en").text).toBe("You have €3,550.00 available in your wallet, and €1,960.00 is held.");
+    expect(checkMoney("Vous avez 3550 € disponibles.", allowed, "fr").text.replace(/[\u202f\u00a0]/g, " ")).toBe("Vous avez 3 550,00 € disponibles.");
+  });
+
+  it("hands the model each amount already formatted, next to its cents", () => {
+    expect(withEuros({ availableCents: 355_000, creators: [{ priceCents: 6500 }] }, "en")).toEqual({ availableCents: 355_000, availableEuros: "€3,550.00", creators: [{ priceCents: 6500, priceEuros: "€65.00" }] });
   });
 });
