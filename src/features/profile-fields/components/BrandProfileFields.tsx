@@ -8,6 +8,7 @@ import { ICP_COUNT, ICP_DESCRIPTION_MAX_CHARS, ICP_TITLE_MAX_CHARS, VALUE_PROP_M
 import type { ProfileInput } from "@/features/brand-onboarding/schemas";
 import { fieldError } from "./field-error";
 import { describedBy, FormField } from "./FormField";
+import { Users } from "lucide-react";
 
 const INDEXES = Array.from({ length: ICP_COUNT }, (_, i) => i);
 
@@ -24,7 +25,7 @@ function IcpFields({ control, index }: { control: Control<ProfileInput>; index: 
         const error = fieldError(fieldState.error, { too_small: t("errors.nameRequired"), too_big: t("errors.nameTooLong", { max: ICP_TITLE_MAX_CHARS }) });
         return (
           <FormField id={`icp-${n}-title`} label={t("name.label")} error={error}>
-            <Input id={`icp-${n}-title`} placeholder={t("name.placeholder")} aria-invalid={fieldState.invalid || undefined} aria-describedby={describedBy(`icp-${n}-title`, error)} {...field} />
+            <Input id={`icp-${n}-title`} leadingIcon={<Users />} placeholder={t("name.placeholder")} aria-invalid={fieldState.invalid || undefined} aria-describedby={describedBy(`icp-${n}-title`, error)} {...field} />
           </FormField>
         );
       }} />

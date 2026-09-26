@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import type { WebsiteInput } from "@/features/brand-onboarding/schemas";
 import { fieldError } from "./field-error";
 import { describedBy, FormField } from "./FormField";
+import { Globe } from "lucide-react";
 
 // websiteSchema: the company website the AI draft is read from.
 export function WebsiteFields({ control }: { control: Control<WebsiteInput> }) {
@@ -15,7 +16,7 @@ export function WebsiteFields({ control }: { control: Control<WebsiteInput> }) {
       const error = fieldError(fieldState.error, { too_small: t("errors.websiteRequired"), too_big: t("errors.websiteTooLong"), invalid_format: t("errors.websiteFormat") }, t("errors.websiteFormat"));
       return (
         <FormField id="website" label={t("website.label")} hint={t("website.help")} error={error}>
-          <Input id="website" type="url" inputMode="url" autoComplete="url" placeholder={t("website.placeholder")} aria-invalid={fieldState.invalid || undefined} aria-describedby={describedBy("website", error, "x")} {...field} value={field.value ?? ""} />
+          <Input id="website" leadingIcon={<Globe />} type="url" inputMode="url" autoComplete="url" placeholder={t("website.placeholder")} aria-invalid={fieldState.invalid || undefined} aria-describedby={describedBy("website", error, "x")} {...field} value={field.value ?? ""} />
         </FormField>
       );
     }} />

@@ -10,6 +10,7 @@ import { INDUSTRIES } from "@/features/workspace/constants";
 import { fieldError } from "./field-error";
 import { describedBy, FormField } from "./FormField";
 import { IndustryPicker } from "./IndustryPicker";
+import { PenLine } from "lucide-react";
 
 const COUNTRY_OPTIONS = COUNTRIES.map((c) => ({ value: c.code, label: c.name }));
 
@@ -22,7 +23,7 @@ export function CardFields({ control }: { control: Control<CardInput> }) {
         const error = fieldError(fieldState.error, { too_small: t("errors.headlineRequired"), too_big: t("errors.headlineMax", { max: HEADLINE_MAX }) });
         return (
           <FormField id="headline" label={t("headline.label")} hint={t("headline.help")} error={error}>
-            <Input id="headline" placeholder={t("headline.placeholder")} aria-invalid={fieldState.invalid || undefined} aria-describedby={describedBy("headline", error, "x")} {...field} />
+            <Input id="headline" leadingIcon={<PenLine />} placeholder={t("headline.placeholder")} aria-invalid={fieldState.invalid || undefined} aria-describedby={describedBy("headline", error, "x")} {...field} />
           </FormField>
         );
       }} />

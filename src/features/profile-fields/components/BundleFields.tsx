@@ -11,6 +11,7 @@ import type { PriceInput } from "@/features/creator-onboarding/schemas";
 import { fieldError } from "./field-error";
 import { describedBy, FormField } from "./FormField";
 import { MoneyInput } from "./MoneyInput";
+import { Hash } from "lucide-react";
 
 type Props = { index: number; control: Control<PriceInput>; bundle: PriceInput["bundles"][number]; priceCents: number; onRemove: () => void };
 
@@ -37,7 +38,7 @@ export function BundleFields({ index, control, bundle, priceCents, onRemove }: P
           const error = fieldError(fieldState.error, { too_small: t("errors.bundlePostsMin", { min: BUNDLE_MIN_POSTS }), too_big: t("errors.bundlePostsMax", { max: BUNDLE_MAX_POSTS }) });
           return (
             <FormField id={postsId} label={t("bundles.posts")} error={error}>
-              <Input id={postsId} type="number" inputMode="numeric" min={BUNDLE_MIN_POSTS} max={BUNDLE_MAX_POSTS} step={1} className="num" value={field.value} onChange={(e) => field.onChange(Number(e.target.value))} aria-invalid={fieldState.invalid || undefined} aria-describedby={describedBy(postsId, error)} />
+              <Input id={postsId} leadingIcon={<Hash />} type="number" inputMode="numeric" min={BUNDLE_MIN_POSTS} max={BUNDLE_MAX_POSTS} step={1} className="num" value={field.value} onChange={(e) => field.onChange(Number(e.target.value))} aria-invalid={fieldState.invalid || undefined} aria-describedby={describedBy(postsId, error)} />
             </FormField>
           );
         }} />

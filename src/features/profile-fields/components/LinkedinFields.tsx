@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import type { LinkedinInput } from "@/features/creator-onboarding/schemas";
 import { fieldError } from "./field-error";
 import { describedBy, FormField } from "./FormField";
+import { Link2 } from "lucide-react";
 
 // linkedinSchema: the public profile URL. Onboarding step 1, Settings › LinkedIn.
 export function LinkedinFields({ control }: { control: Control<LinkedinInput> }) {
@@ -18,7 +19,7 @@ export function LinkedinFields({ control }: { control: Control<LinkedinInput> })
         const error = fieldError(fieldState.error, { too_small: t("errors.required"), too_big: t("errors.tooLong"), invalid_format: t("errors.format") }, t("errors.format"));
         return (
           <FormField id="linkedinUrl" label={t("url.label")} hint={t("url.help")} error={error}>
-            <Input id="linkedinUrl" type="url" inputMode="url" autoComplete="url" placeholder={t("url.placeholder")} aria-invalid={fieldState.invalid || undefined} aria-describedby={describedBy("linkedinUrl", error, "x")} {...field} />
+            <Input id="linkedinUrl" leadingIcon={<Link2 />} type="url" inputMode="url" autoComplete="url" placeholder={t("url.placeholder")} aria-invalid={fieldState.invalid || undefined} aria-describedby={describedBy("linkedinUrl", error, "x")} {...field} />
           </FormField>
         );
       }}
