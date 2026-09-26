@@ -18,7 +18,7 @@ export function CallGlow({ mode, readInput, readOutput, type = "pill", className
   const level = () => (mode === "listening" ? readInput() : mode === "speaking" ? readOutput() : 0);
   return (
     <Suspense fallback={<div className={className}>{children}</div>}>
-      <VoiceBeam type={type} level={level} processing={mode === "thinking"} active={mode !== "rest"} theme={resolved} colorVariant="forest" className={className}>
+      <VoiceBeam type={type} level={level} processing={mode === "thinking"} active={mode !== "rest"} theme={resolved} colorVariant="ocean" className={className}>
         {children}
       </VoiceBeam>
     </Suspense>

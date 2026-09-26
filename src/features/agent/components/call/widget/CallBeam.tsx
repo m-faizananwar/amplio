@@ -21,7 +21,7 @@ export function CallBeam({ working, radius, className, children }: Props) {
   const reduced = useReducedMotion();
   return (
     <Suspense fallback={<div className={className}>{children}</div>}>
-      <BorderBeam active={working} size="md" colorVariant="forest" theme={resolved} borderRadius={radius} className={className} staticColors={reduced} {...(resolved === "light" ? LIGHT : null)}>
+      <BorderBeam active={working} size="md" colorVariant="ocean" theme={resolved} borderRadius={radius} className={className} staticColors={reduced} {...(resolved === "light" ? LIGHT : null)}>
         {children}
       </BorderBeam>
     </Suspense>
