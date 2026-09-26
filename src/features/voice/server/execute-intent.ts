@@ -3,7 +3,7 @@ import type { Viewer } from "@/features/auth/server/session";
 import { applyToCampaign, reviewDraft, submitDraft } from "@/features/collaborations/server/actions";
 import { bookCreator } from "@/features/marketplace/server/actions";
 import { topUpWallet } from "@/features/payouts/server/actions";
-import { formatCents } from "@/lib/money";
+import { formatEuros } from "@/lib/money";
 import { GATED_TOOLS, ROUTES } from "../constants";
 import type { VoiceIntent, VoiceOutcome } from "../schemas";
 import {
@@ -19,7 +19,7 @@ const EURO_CENTS = 100;
 const DRAFT_STATUSES = ["draft_submitted"] as const;
 const WRITE_STATUSES = ["accepted", "changes_requested"] as const;
 
-type Ctx = { viewer: Viewer; confirmed: boolean };
+type Ctx = { viewer: Viewer; confirmed: boolean; locale?: "en" | "fr" };
 type Handler = (intent: VoiceIntent, ctx: Ctx) => Promise<VoiceOutcome>;
 
 const say = (speech: string, navigate?: string): VoiceOutcome => ({ speech, navigate });
@@ -32,19 +32,19 @@ const roleOf = (viewer: Viewer) => (viewer.brand ? "brand" : "creator");
 // names into ids and decides whether to ask "confirm?" first.
 export async function executeIntent(intent: VoiceIntent, ctx: Ctx): Promise<VoiceOutcome> {
   const handler = HANDLERS[intent.tool];
-  if (GATED_TOOLS.includes(intent.tool) && !ctx.confirmed) return describe(intent, ctx.viewer);
+  if (GATED_TOOLS.includes(intent.tool) && !ctx.confirmed) return describe(intent, ctx);
   return handler(intent, ctx);
 }
 
 // First pass of a gated tool: resolve what it would do, then ask.
-async function describe(intent: VoiceIntent, viewer: Viewer): Promise<VoiceOutcome> {
+async function describe(intent: VoiceIntent, { viewer, locale = "en" }: Ctx): Promise<VoiceOutcome> {
   const brandOnly = intent.tool === "topUp" || intent.tool === "bookCreator";
   const creatorOnly = intent.tool === "applyToCampaign" || intent.tool === "submitDraft";
   if (brandOnly && !viewer.brand) return failed("That's a brand action. You're signed in as a creator.");
   if (creatorOnly && !viewer.creator) return failed("That's a creator action. You're signed in as a brand.");
   switch (intent.tool) {
     case "topUp":
-      return ask(`Add ${formatCents(intent.amountEuros * EURO_CENTS, "EUR", "de-DE")} to your wallet.`, intent);
+      return ask(`Add ${formatEuros(intent.amountEuros * EURO_CENTS, locale)} to your wallet.`, intent);
     case "bookCreator": {
       const creator = await findCreatorByName(intent.name);
       if (!creator) return failed(`I couldn't find a creator called ${intent.name}.`);
@@ -119,11 +119,11 @@ const HANDLERS: Record<VoiceIntent["tool"], Handler> = {
     return say(`Opening results for ${campaign.name}.`, `/brand/campaigns/${campaign.id}/analytics`);
   },
 
-  topUp: async (intent) => {
+  topUp: async (intent, ctx) => {
     if (intent.tool !== "topUp") return failed("Bad intent.");
     const result = await topUpWallet({ amountCents: intent.amountEuros * EURO_CENTS });
     if (!result.ok) return failed(result.error);
-    return say(`Done. Your wallet is now ${formatCents(result.data.balanceCents, "EUR", "de-DE")}.`, "/brand/billing");
+    return say(`Done. Your wallet is now ${formatEuros(result.data.balanceCents, ctx.locale ?? "en")}.`, "/brand/billing");
   },
 
   bookCreator: async (intent, { viewer }) => {

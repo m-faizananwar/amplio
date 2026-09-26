@@ -103,7 +103,7 @@ export async function runTurn({ viewer, locale, text, history, emit, recall, sco
   const apiKey = geminiKey();
   if (!apiKey) {
     // no Gemini key: the existing assistant answers (it has its own grammar tools)
-    const fallback = await answerChat({ message: text.slice(0, FALLBACK_MAX), history: history.slice(-FALLBACK_TURNS) }, viewer);
+    const fallback = await answerChat({ message: text.slice(0, FALLBACK_MAX), history: history.slice(-FALLBACK_TURNS) }, viewer, locale);
     say(emit, fallback.text);
     return fallback.text;
   }

@@ -19,14 +19,14 @@ const SYSTEM = (context: string, loggedOut: boolean) =>
 // Signed in: the message goes through the voice layer's intent parser and
 // executor first (same tools, same confirm gate); only an "unknown" intent
 // falls through to a conversational answer. Logged out: conversation only.
-export async function answerChat(req: ChatRequest, viewer: Viewer | null): Promise<ChatResponse> {
+export async function answerChat(req: ChatRequest, viewer: Viewer | null, locale: "en" | "fr" = "en"): Promise<ChatResponse> {
   if (viewer) {
-    const result = await handleTranscript({ transcript: req.message, pending: req.pending, viewer });
+    const result = await handleTranscript({ transcript: req.message, pending: req.pending, viewer, locale });
     if (result.intent?.tool !== "unknown" || req.pending) {
       return { ok: result.ok, text: result.speech, navigate: result.navigate, pending: result.pending, source: "tool" };
     }
   }
-  const context = viewer ? await viewerContext(viewer) : publicContext();
+  const context = viewer ? await viewerContext(viewer, locale) : publicContext();
   const user = [...(req.history ?? []).slice(-HISTORY_MAX).map((m: ChatMessage) => `${m.role}: ${m.text}`), `user: ${req.message}`].join("\n");
   try {
     const answer = await generateText({ system: SYSTEM(context, !viewer), user, maxTokens: ANSWER_MAX_TOKENS });

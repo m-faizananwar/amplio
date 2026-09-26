@@ -16,6 +16,11 @@ export function intlTag(locale: string): string {
   return locale === "fr" ? "fr-FR" : "en-GB";
 }
 
+// Euros and cents in the reader's locale: English "€3,550.00", French "3 550,00 €".
+export function formatEuros(cents: number, locale: string): string {
+  return new Intl.NumberFormat(intlTag(locale), { style: "currency", currency: "EUR" }).format(cents / CENTS_PER_UNIT);
+}
+
 // Whole euros for marketing figures (prices per post, a paid total).
 export function formatWholeEuros(cents: number, locale: string): string {
   return new Intl.NumberFormat(intlTag(locale), { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(Math.round(cents / CENTS_PER_UNIT));

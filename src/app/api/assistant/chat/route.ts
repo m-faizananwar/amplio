@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { getLocale } from "next-intl/server";
 import { chatRequestSchema } from "@/features/assistant/schemas";
 import { answerChat } from "@/features/assistant/server/answer";
 import { getViewer } from "@/features/auth/server/session";
@@ -19,7 +20,8 @@ export async function POST(request: Request) {
   const parsed = chatRequestSchema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ ok: false, text: "Say a little more and I'll try again.", source: "template" }, { status: 400 });
   try {
-    return NextResponse.json(await answerChat(parsed.data, session));
+    const locale = (await getLocale()) === "fr" ? "fr" : "en";
+    return NextResponse.json(await answerChat(parsed.data, session, locale));
   } catch (error) {
     console.error("[assistant] chat route failed", { userId: session?.userId, error });
     return NextResponse.json({ ok: false, text: "Something went wrong on our side. Try again.", source: "template" }, { status: 500 });

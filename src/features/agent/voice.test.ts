@@ -31,6 +31,7 @@ describe("what a call says", () => {
 
   it("says amounts as a voice would", () => {
     expect(speakable("€615.00 is held.", "en")).toBe("615 euros is held.");
+    expect(speakable("Your wallet has €3,550.00.", "en")).toBe("Your wallet has 3,550 euros.");
     expect(speakable("4 685,00 € restent.", "fr")).toBe("4685 euros restent.");
   });
 

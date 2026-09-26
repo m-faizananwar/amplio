@@ -4,7 +4,8 @@ vi.mock("server-only", () => ({}));
 const getViewer = vi.fn();
 const answerChat = vi.fn();
 vi.mock("@/features/auth/server/session", () => ({ getViewer: () => getViewer() }));
-vi.mock("@/features/assistant/server/answer", () => ({ answerChat: (req: unknown, viewer: unknown) => answerChat(req, viewer) }));
+vi.mock("@/features/assistant/server/answer", () => ({ answerChat: (req: unknown, viewer: unknown, locale: unknown) => answerChat(req, viewer, locale) }));
+vi.mock("next-intl/server", () => ({ getLocale: async () => "fr" }));
 
 const { POST } = await import("@/app/api/assistant/chat/route");
 const signedIn = { userId: "u1", csrfToken: "right", brand: { id: "b1" }, creator: null };
@@ -20,7 +21,7 @@ describe("the assistant chat on a signed-in visitor's public page", () => {
   it("no token sent: answered as logged out, not 'session is stale'", async () => {
     const res = await ask();
     expect(res.status).toBe(200);
-    expect(answerChat).toHaveBeenCalledWith(expect.anything(), null);
+    expect(answerChat).toHaveBeenCalledWith(expect.anything(), null, "fr");
   });
 
   it("a wrong token is refused", async () => {
@@ -32,6 +33,7 @@ describe("the assistant chat on a signed-in visitor's public page", () => {
   it("the right token acts as the user (tools)", async () => {
     const res = await ask({ "x-csrf-token": "right" });
     expect(res.status).toBe(200);
-    expect(answerChat).toHaveBeenCalledWith(expect.anything(), signedIn);
+    // and in the reader's locale, so amounts are written their way
+    expect(answerChat).toHaveBeenCalledWith(expect.anything(), signedIn, "fr");
   });
 });

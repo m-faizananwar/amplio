@@ -11,13 +11,14 @@ export async function handleTranscript(input: {
   pending?: VoiceIntent;
   confirmed?: boolean;
   viewer: Viewer;
+  locale?: "en" | "fr";
 }): Promise<VoiceResponse> {
   const transcript = input.transcript.trim().slice(0, TRANSCRIPT_MAX_CHARS);
   const role = input.viewer.brand ? "brand" : "creator";
 
   if (input.pending) {
     if (YES_PATTERN.test(transcript)) {
-      const outcome = await executeIntent(input.pending, { viewer: input.viewer, confirmed: true });
+      const outcome = await executeIntent(input.pending, { viewer: input.viewer, confirmed: true, locale: input.locale });
       return { ok: !outcome.failed, ...outcome, intent: input.pending, source: "grammar" };
     }
     if (NO_PATTERN.test(transcript)) return { ok: true, speech: "Cancelled.", intent: input.pending, source: "grammar" };
@@ -25,6 +26,6 @@ export async function handleTranscript(input: {
   }
 
   const { intent, source, reason } = await parseIntent(transcript, role);
-  const outcome = await executeIntent(intent, { viewer: input.viewer, confirmed: input.confirmed === true });
+  const outcome = await executeIntent(intent, { viewer: input.viewer, confirmed: input.confirmed === true, locale: input.locale });
   return { ok: !outcome.failed, ...outcome, intent, source, ...(reason ? { fallbackReason: reason } : {}) };
 }
