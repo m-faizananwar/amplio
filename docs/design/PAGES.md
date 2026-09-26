@@ -107,6 +107,9 @@ Four amounts in the order money moves — available, **held for invitations nobo
 answered yet**, committed to accepted work, paid to creators — then the ledger, filterable
 by bookings and top-ups. Held funds stay visible until the creator accepts (a decline returns
 them). The top-up is presets plus a custom amount and says plainly that no card is charged.
+**Merged (components round):** four amount cards became one balance card — available large with
+the money Top up beside it, then held · committed · paid as one strip in the order money moves —
+then the ledger. Four equal cards made the spendable balance look like one number among four.
 
 ### Creators — `/brand/creators` (+ describe-who-you-want mode)
 A ranked ledger, not a card grid: best fit for the selected campaign first, one row per

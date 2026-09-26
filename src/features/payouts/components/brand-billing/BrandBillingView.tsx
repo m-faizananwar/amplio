@@ -1,18 +1,15 @@
 "use client";
 
-import { Plus } from "lucide-react";
 import { useFormatter, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Burst } from "@/components/graphics/Burst";
 import { useWallet } from "@/components/shell/WalletProvider";
-import { Button } from "@/components/ui/button";
-import { StatCard } from "@/components/ui/stat-card";
 import { TOPUP_PRESETS_CENTS } from "../../constants";
 import type { LedgerRowDto } from "../../schemas";
 import { topUpWallet } from "../../server/actions";
 import type { BillingBuckets } from "../../server/queries";
+import { BalanceCard } from "./BalanceCard";
 import { LedgerRows } from "./LedgerRows";
 import { TopUpDialog } from "./TopUpDialog";
 
@@ -21,8 +18,8 @@ const DEFAULT_PRESET = 1;
 
 type Props = { balanceCents: number; buckets: BillingBuckets; rows: LedgerRowDto[]; suggestedCents: number | null };
 
-// Where the money is, left to right in the order it moves: available, held
-// for invitations nobody has answered, committed to accepted work, paid.
+// Two blocks: the balance card (available, with the top-up; then held,
+// committed, paid in the order money moves) and the ledger behind it.
 // A top-up updates the balance and the ledger at once and rolls back on error.
 export function BrandBillingView({ balanceCents, buckets, rows: initialRows, suggestedCents }: Props) {
   const t = useTranslations("brand.billing");
@@ -55,17 +52,8 @@ export function BrandBillingView({ balanceCents, buckets, rows: initialRows, sug
   }
 
   return (
-    <div className="grid gap-12">
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <div className="relative grid gap-3 rounded-card border border-rule bg-surface p-5">
-          {credited > 0 ? <Burst key={credited} /> : null}
-          <StatCard className="border-0 p-0" label={t("buckets.available.label")} value={wallet.walletCents} format={euros} tone="money" hint={t("buckets.available.hint")} />
-          <Button size="sm" className="justify-self-start" onClick={() => setDialog({ open: true, cents: TOPUP_PRESETS_CENTS[DEFAULT_PRESET], suggested: false })}><Plus aria-hidden="true" />{t("topUp.open")}</Button>
-        </div>
-        <StatCard label={t("buckets.held.label")} value={buckets.heldCents} format={euros} hint={t("buckets.held.hint", { count: buckets.heldCount })} />
-        <StatCard label={t("buckets.committed.label")} value={buckets.committedCents} format={euros} hint={t("buckets.committed.hint", { count: buckets.committedCount })} />
-        <StatCard label={t("buckets.paid.label")} value={buckets.paidCents} format={euros} hint={t("buckets.paid.hint", { count: buckets.paidCount })} />
-      </div>
+    <div className="grid gap-8">
+      <BalanceCard walletCents={wallet.walletCents} buckets={buckets} euros={euros} credited={credited} onTopUp={() => setDialog({ open: true, cents: TOPUP_PRESETS_CENTS[DEFAULT_PRESET], suggested: false })} />
       <LedgerRows rows={rows} />
       {dialog.open ? <TopUpDialog open onOpenChange={(open) => setDialog((d) => ({ ...d, open }))} initialCents={dialog.cents} suggested={dialog.suggested} onSubmit={submit} /> : null}
     </div>
