@@ -4,19 +4,21 @@ import Link from "next/link";
 import { useFormatter, useTranslations } from "next-intl";
 import { buttonVariants } from "@/components/ui/button";
 import { RollingNumber } from "@/components/ui/rolling-number";
+import { StatusChip, statusTone } from "@/components/ui/status-chip";
+import { COLLABORATION_STATUSES, type CollaborationStatus } from "@/lib/collaboration-status";
 import type { ResultEvent } from "../events";
 import { CampaignResultCard } from "./CampaignResultCard";
 import { CreatorResultCard } from "./CreatorResultCard";
 
 const CENTS = 100;
-// a status key that reached the card unlabelled ("needs_you") still reads as words
-const humanize = (s: string) => (/^[a-z]+(_[a-z]+)+$/.test(s) ? `${s[0]?.toUpperCase()}${s.slice(1).replaceAll("_", " ")}` : s);
+const isStatus = (s: string): s is CollaborationStatus => (COLLABORATION_STATUSES as readonly string[]).includes(s);
 const CARD = "agent-rise rounded-card border border-rule bg-surface p-4 shadow-lift";
 
 // A result as cards, never a wall of text: creators as a row to scroll,
 // money as rolling figures, lists as compact rows with their next step.
 export function ResultCard({ result, sample }: { result: ResultEvent; sample: boolean }) {
   const t = useTranslations("agent.result");
+  const tc = useTranslations("collaboration");
   const format = useFormatter();
   const euros = (cents: number) => format.number(cents / CENTS, { style: "currency", currency: "EUR" });
   const title = <p className="text-small font-medium text-ink-muted">{result.title}</p>;
@@ -49,7 +51,8 @@ export function ResultCard({ result, sample }: { result: ResultEvent; sample: bo
             {result.items.map((c) => (
               <li key={c.id} className="agent-rise flex items-center gap-3 px-4 py-3">
                 <div className="min-w-0 flex-1"><p className="truncate font-medium">{c.counterpart}</p><p className="truncate text-small text-ink-muted">{c.campaign}</p></div>
-                <p className="text-small"><span className="text-ink-muted">{t("nextAction")}: </span>{humanize(c.nextAction)}</p>
+                {c.nextAction === "needs_you" ? <span className="text-caption font-medium text-attention">{t("needsYou")}</span> : null}
+                {isStatus(c.status) ? <StatusChip tone={statusTone(c.status)}>{tc(`status.${c.status}`)}</StatusChip> : null}
                 <span className="num text-small">{euros(c.feeCents)}</span>
               </li>
             ))}

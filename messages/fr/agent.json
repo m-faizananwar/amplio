@@ -58,15 +58,21 @@
     "pending": "En attente",
     "campaign": {
       "kind": "Campagne",
-      "budget": "Budget",
+      "budget": "Engagé",
       "deadline": "Publier avant le",
       "open": "Ouvrir",
       "status": {
         "draft": "Brouillon",
         "active": "Active",
         "completed": "Terminée"
-      }
-    }
+      },
+      "invited": "Invités",
+      "booked": "Réservés",
+      "posts": "Publications",
+      "clicks": "Clics qualifiés",
+      "reach": "Portée estimée"
+    },
+    "needsYou": "À vous"
   },
   "confirm": {
     "title": "Confirmez avant que je continue",

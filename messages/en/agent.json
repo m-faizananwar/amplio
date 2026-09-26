@@ -58,15 +58,21 @@
     "pending": "Pending",
     "campaign": {
       "kind": "Campaign",
-      "budget": "Budget",
+      "budget": "Committed",
       "deadline": "Post by",
       "open": "Open",
       "status": {
         "draft": "Draft",
         "active": "Active",
         "completed": "Completed"
-      }
-    }
+      },
+      "invited": "Invited",
+      "booked": "Booked",
+      "posts": "Posts",
+      "clicks": "Qualified clicks",
+      "reach": "Est. reach"
+    },
+    "needsYou": "Needs you"
   },
   "confirm": {
     "title": "Confirm before I go ahead",
