@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { GlassHero } from "@/features/public/components/hero/GlassHero";
+import { InsideAmplio } from "@/features/public/components/inside/InsideAmplio";
 import { LaunchClosing } from "@/features/public/components/launch/LaunchClosing";
 import { LaunchScenes } from "@/features/public/components/launch/LaunchScenes";
 import { getShowcaseCreators } from "@/features/public/server/queries";
@@ -26,6 +27,7 @@ export default async function HomePage(props: LocaleParams) {
   return (
     <>
       <GlassHero trail={trail} />
+      <InsideAmplio trail={trail} creators={creators} />
       <LaunchScenes trail={trail} creators={names} />
       <LaunchClosing trail={trail} />
     </>

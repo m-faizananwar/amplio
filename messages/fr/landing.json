@@ -182,5 +182,29 @@
     "statClicks": "Clics<br></br>rattachés<br></br>à un post",
     "statSignups": "Inscriptions<br></br>attribuées",
     "demo": "Ouvrir la démo"
+  },
+  "inside": {
+    "line1": "Chaque clic",
+    "line2": "devient une ligne avec un nom",
+    "sub": "L’espace de démo, tel qu’une marque le voit : chaque post, clic et brouillon au même endroit.",
+    "cta": "Ouvrir la démo",
+    "card": {
+      "label": "Une revue de collaboration dans l’espace de démo",
+      "eyebrow": "# Brief créateurs Zune / T4",
+      "title": "Revue de collaboration",
+      "meta": "Aujourd’hui · {posts, plural, one {# post en ligne} other {# posts en ligne}} · {clicks} clics",
+      "tabs": [
+        "Clics",
+        "Inscriptions",
+        "Brouillons",
+        "Paiements"
+      ],
+      "panel": "Ce qui est revenu",
+      "row1": "{clicks} clics rattachés à {posts, plural, one {# post} other {# posts}}",
+      "owner1": "Responsable : Zune",
+      "row2": "Brouillon de {name} en attente de relecture",
+      "owner2": "Responsable : vous",
+      "note": "données de l’espace démo"
+    }
   }
 }

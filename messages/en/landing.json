@@ -182,5 +182,29 @@
     "statClicks": "Clicks<br></br>traced to<br></br>a post",
     "statSignups": "Sign-ups<br></br>attributed",
     "demo": "Open the demo"
+  },
+  "inside": {
+    "line1": "See every click",
+    "line2": "land as a row with a name on it",
+    "sub": "The demo workspace, as a brand sees it: every post, click and draft in one place.",
+    "cta": "Open the demo",
+    "card": {
+      "label": "A collaboration review in the demo workspace",
+      "eyebrow": "# Zune creator brief / Q4",
+      "title": "Collaboration review",
+      "meta": "Today · {posts, plural, one {# live post} other {# live posts}} · {clicks} clicks",
+      "tabs": [
+        "Clicks",
+        "Sign-ups",
+        "Drafts",
+        "Payouts"
+      ],
+      "panel": "What came back",
+      "row1": "{clicks} clicks traced to {posts, plural, one {# post} other {# posts}}",
+      "owner1": "Owner: Zune",
+      "row2": "Draft from {name} waiting for review",
+      "owner2": "Owner: you",
+      "note": "demo workspace data"
+    }
   }
 }
