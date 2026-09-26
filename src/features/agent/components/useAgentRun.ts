@@ -20,7 +20,9 @@ export type AgentItem = { key: string } & (AgentEvent | { type: "user"; text: st
 // replace the earlier row; message chunks with the same id join into one.
 // The live agent streams SSE; while its route answers 404 (flag off, or not
 // deployed) a recorded sample plays instead and `sample` says so.
-export function useAgentRun(role: "brand" | "creator") {
+export function useAgentRun(role: "brand" | "creator", csrfToken: string) {
+  // both routes check the session's CSRF token, as /api/assistant/chat does
+  const headers = { "content-type": "application/json", "x-csrf-token": csrfToken };
   const locale = useLocale();
   const [items, setItems] = useState<AgentItem[]>([]);
   const [confirms, setConfirms] = useState<Record<string, ConfirmState>>({});
@@ -81,7 +83,7 @@ export function useAgentRun(role: "brand" | "creator") {
     setBusy(true);
     try {
       const { id, history } = thread.current;
-      const res = await fetch(RUN_URL, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ text, threadId: id, history: id ? undefined : history.slice(-HISTORY_TURNS), locale }) });
+      const res = await fetch(RUN_URL, { method: "POST", headers, body: JSON.stringify({ text, threadId: id, history: id ? undefined : history.slice(-HISTORY_TURNS), locale }) });
       if (res.status === 404) {
         setSample(true);
         await play(role === "creator" ? CREATOR_RUN_FIXTURE : BRAND_RUN_FIXTURE);
@@ -92,7 +94,7 @@ export function useAgentRun(role: "brand" | "creator") {
     } finally {
       setBusy(false);
     }
-  }, [apply, locale, play, read, role]);
+  }, [apply, locale, play, read, role, csrfToken]); // eslint-disable-line react-hooks/exhaustive-deps -- headers is derived from csrfToken
 
   const decide = useCallback(async (event: ConfirmEvent, decision: "confirm" | "cancel") => {
     setConfirms((c) => ({ ...c, [event.id]: "working" }));
@@ -102,7 +104,7 @@ export function useAgentRun(role: "brand" | "creator") {
       return;
     }
     try {
-      const res = await fetch(CONFIRM_URL, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ id: event.id, threadId: thread.current.id, decision }) });
+      const res = await fetch(CONFIRM_URL, { method: "POST", headers, body: JSON.stringify({ id: event.id, threadId: thread.current.id, decision }) });
       if (!res.ok) throw new Error(`confirm ${res.status}`);
       setConfirms((c) => ({ ...c, [event.id]: decision === "confirm" ? "done" : "cancelled" }));
       await read(res);
@@ -110,7 +112,7 @@ export function useAgentRun(role: "brand" | "creator") {
       setConfirms((c) => ({ ...c, [event.id]: "open" }));
       apply({ type: "error", message: "confirm", retryable: false });
     }
-  }, [apply, read, sample]);
+  }, [apply, read, sample, csrfToken]); // eslint-disable-line react-hooks/exhaustive-deps -- headers is derived from csrfToken
 
   const reset = useCallback(() => {
     setItems([]);

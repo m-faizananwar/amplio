@@ -9,16 +9,16 @@ import { KnowRail } from "./KnowRail";
 import { useAgentRun } from "./useAgentRun";
 import { VoiceView } from "./VoiceView";
 
-type Props = { role: "brand" | "creator"; firstName: string; profile: Array<{ label: string; value: string }> };
+type Props = { role: "brand" | "creator"; firstName: string; csrfToken: string; profile: Array<{ label: string; value: string }> };
 
 const STARTERS = { brand: ["find", "today", "campaign"], creator: ["find", "week", "earned"] } as const;
 
 // The agent page: one conversation column (~760px) with the composer pinned
 // under it, the "what I know" rail beside it on wide screens, and a voice
 // view that drives the same run.
-export function AgentView({ role, firstName, profile }: Props) {
+export function AgentView({ role, firstName, csrfToken, profile }: Props) {
   const t = useTranslations("agent");
-  const run = useAgentRun(role);
+  const run = useAgentRun(role, csrfToken);
   const [voice, setVoice] = useState(false);
   const end = useRef<HTMLDivElement>(null);
   const lastUser = [...run.items].reverse().find((i) => i.type === "user");

@@ -20,7 +20,7 @@ export default async function CreatorAgentPage() {
   return (
     <>
       <PageHeader title={t("title")} description={t("description")} />
-      <AgentView role="creator" firstName={viewer.firstName} profile={profile} />
+      <AgentView role="creator" firstName={viewer.firstName} csrfToken={viewer.csrfToken} profile={profile} />
     </>
   );
 }
