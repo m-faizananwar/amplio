@@ -66,6 +66,10 @@ export const assistantBody = (serverUrl: string) => ({
   silenceTimeoutSeconds: 30,
   maxDurationSeconds: 900,
   endCallPhrases: ["goodbye", "bye for now", "au revoir"],
+  // Vapi's default client messages plus tool-calls-result: the call widget
+  // captions each reply with the words our webhook returned, not with a
+  // transcript of the synthetic voice (which misspells the brand).
+  clientMessages: ["conversation-update", "function-call", "hang", "model-output", "speech-update", "status-update", "transfer-update", "transcript", "tool-calls", "tool-calls-result", "user-interrupted", "voice-input", "assistant.started"],
   metadata: { app: `${BRAND.key}-rebuild` },
 });
 
