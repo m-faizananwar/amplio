@@ -45,10 +45,12 @@
       "title": "Votre fiche",
       "description": "Votre nom et ce que les marques voient en premier : accroche, pays et secteurs.",
       "firstName": {
-        "label": "Prénom"
+        "label": "Prénom",
+        "placeholder": "Camille"
       },
       "lastName": {
-        "label": "Nom"
+        "label": "Nom",
+        "placeholder": "Martin"
       },
       "headline": {
         "label": "Accroche",
@@ -85,7 +87,8 @@
         "help": "Entre {min} et {max}.",
         "recommendation": "Suggestion : {amount}",
         "recommendationNote": "Calculée à partir de votre audience publique et de votre engagement. Modifiable à tout moment.",
-        "useRecommendation": "Appliquer"
+        "useRecommendation": "Appliquer",
+        "placeholder": "150"
       },
       "bundles": {
         "title": "Offres groupées",
@@ -98,7 +101,9 @@
         "perPost": "{amount} par post",
         "saving": "{percent} % de moins que votre tarif unitaire",
         "limit": "{count, plural, one {# offre au maximum} other {# offres au maximum}}",
-        "item": "Offre {count}"
+        "item": "Offre {count}",
+        "postsPlaceholder": "3",
+        "totalPlaceholder": "400"
       },
       "errors": {
         "priceRequired": "Saisissez un tarif.",
@@ -125,7 +130,8 @@
       },
       "legalName": {
         "label": "Nom légal",
-        "help": "Votre nom ou celui de votre entreprise, tel qu’il doit figurer sur les factures."
+        "help": "Votre nom ou celui de votre entreprise, tel qu’il doit figurer sur les factures.",
+        "placeholder": "Camille Martin, ou Martin Conseil SAS"
       },
       "legalAddress": {
         "label": "Adresse légale",
@@ -211,7 +217,8 @@
       "description": "Votre nom sur les invitations, conversations et factures.",
       "xHandle": {
         "label": "Compte X",
-        "help": "Facultatif. Affiché sur votre carte à côté de LinkedIn."
+        "help": "Facultatif. Affiché sur votre carte à côté de LinkedIn.",
+        "placeholder": "@camille"
       }
     },
     "indexLabel": "Sections des paramètres",
@@ -264,12 +271,14 @@
         "failed": "Une erreur est survenue de notre côté. Réessayez."
       },
       "companyName": {
-        "label": "Nom de l’entreprise"
+        "label": "Nom de l’entreprise",
+        "placeholder": "Acme Analytics"
       },
       "valueProp": {
         "label": "Proposition de valeur",
         "help": "Ce que vous faites, pour qui et comment, en quelques phrases.",
-        "counter": "{count} / {max}"
+        "counter": "{count} / {max}",
+        "placeholder": "Nous aidons les équipes finance des SaaS de 50 à 500 personnes à clôturer le mois en deux jours au lieu de dix."
       },
       "errors": {
         "companyRequired": "Le nom de l’entreprise est obligatoire.",

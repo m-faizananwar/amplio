@@ -27,7 +27,7 @@ export function CompanySection({ defaults }: { defaults: BrandCompanyInput }) {
         <div className="grid gap-5 sm:grid-cols-2">
           <Controller control={form.control} name="company" render={({ field, fieldState }) => (
             <FormField id="company" label={t("company.companyName.label")} error={fieldError(fieldState.error, { too_small: t("company.errors.companyRequired"), too_big: t("company.errors.companyTooLong", { max: 120 }) })}>
-              <Input id="company" leadingIcon={<Building2 />} autoComplete="organization" aria-invalid={fieldState.invalid || undefined} {...field} />
+              <Input id="company" leadingIcon={<Building2 />} placeholder={t("company.companyName.placeholder")} autoComplete="organization" aria-invalid={fieldState.invalid || undefined} {...field} />
             </FormField>
           )} />
           <Controller control={form.control} name="website" render={({ field, fieldState }) => (

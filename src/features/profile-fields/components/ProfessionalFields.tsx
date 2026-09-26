@@ -48,7 +48,7 @@ export function ProfessionalFields({ control }: { control: Control<ProfessionalI
       </div>
       <Controller control={control} name="legalName" render={({ field, fieldState }) => (
         <FormField id="legalName" label={t("legalName.label")} hint={t("legalName.help")} error={fieldState.error ? t("errors.legalNameRequired") : undefined}>
-          <Input id="legalName" leadingIcon={<Building2 />} autoComplete="organization" aria-invalid={fieldState.invalid || undefined} aria-describedby={describedBy("legalName", fieldState.error?.message, "x")} {...field} />
+          <Input id="legalName" leadingIcon={<Building2 />} placeholder={t("legalName.placeholder")} autoComplete="organization" aria-invalid={fieldState.invalid || undefined} aria-describedby={describedBy("legalName", fieldState.error?.message, "x")} {...field} />
         </FormField>
       )} />
       <Controller control={control} name="legalAddress" render={({ field, fieldState }) => (

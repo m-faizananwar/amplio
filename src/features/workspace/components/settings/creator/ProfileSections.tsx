@@ -49,10 +49,10 @@ export function CardSection({ defaults }: { defaults: YourCardInput }) {
   const t = useTranslations("settings.creator");
   const { form, onSubmit } = useSectionForm({ schema: yourCardSchema, defaults, save: saveYourCard, saved: t("states.saved") });
   const icons: Record<keyof CreatorIdentityInput, ReactNode> = { firstName: <UserRound />, lastName: <UserRound />, xHandle: <AtSign /> };
-  const text = (name: keyof CreatorIdentityInput, label: string, hint?: string) => (
+  const text = (name: keyof CreatorIdentityInput, label: string, placeholder: string, hint?: string) => (
     <Controller control={form.control} name={name} render={({ field, fieldState }) => (
       <FormField id={name} label={label} hint={hint} error={fieldState.error ? (name === "xHandle" ? fieldState.error.message : t("card.errors.firstNameRequired")) : undefined}>
-        <Input id={name} leadingIcon={icons[name]} aria-invalid={fieldState.invalid || undefined} {...field} />
+        <Input id={name} leadingIcon={icons[name]} placeholder={placeholder} aria-invalid={fieldState.invalid || undefined} {...field} />
       </FormField>
     )} />
   );
@@ -60,12 +60,12 @@ export function CardSection({ defaults }: { defaults: YourCardInput }) {
     <SettingsSection id="card" title={t("card.title")} description={t("card.description")}>
       <form onSubmit={onSubmit} noValidate className="grid gap-5">
         <div className="grid gap-5 sm:grid-cols-2">
-          {text("firstName", t("card.firstName.label"))}
-          {text("lastName", t("card.lastName.label"))}
+          {text("firstName", t("card.firstName.label"), t("card.firstName.placeholder"))}
+          {text("lastName", t("card.lastName.label"), t("card.lastName.placeholder"))}
         </div>
         {/* CardFields is typed to the card schema; this form holds it plus the name, so its control is a superset */}
         <CardFields control={form.control as unknown as Control<CardInput>} />
-        {text("xHandle", t("you.xHandle.label"), t("you.xHandle.help"))}
+        {text("xHandle", t("you.xHandle.label"), t("you.xHandle.placeholder"), t("you.xHandle.help"))}
         <SaveRow form={form} />
       </form>
     </SettingsSection>

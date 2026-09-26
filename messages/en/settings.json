@@ -45,10 +45,12 @@
       "title": "Your card",
       "description": "Your name and what brands see first: headline, country and industries.",
       "firstName": {
-        "label": "First name"
+        "label": "First name",
+        "placeholder": "Camille"
       },
       "lastName": {
-        "label": "Last name"
+        "label": "Last name",
+        "placeholder": "Martin"
       },
       "headline": {
         "label": "Headline",
@@ -85,7 +87,8 @@
         "help": "Between {min} and {max}.",
         "recommendation": "Suggested: {amount}",
         "recommendationNote": "Based on your public audience and engagement. You can change it any time.",
-        "useRecommendation": "Use suggestion"
+        "useRecommendation": "Use suggestion",
+        "placeholder": "150"
       },
       "bundles": {
         "title": "Bundles",
@@ -98,7 +101,9 @@
         "perPost": "{amount} per post",
         "saving": "{percent}% off your single-post price",
         "limit": "{count, plural, one {Up to # bundle} other {Up to # bundles}}",
-        "item": "Bundle {count}"
+        "item": "Bundle {count}",
+        "postsPlaceholder": "3",
+        "totalPlaceholder": "400"
       },
       "errors": {
         "priceRequired": "Enter a price.",
@@ -125,7 +130,8 @@
       },
       "legalName": {
         "label": "Legal name",
-        "help": "Your name or your business name, as it should appear on invoices."
+        "help": "Your name or your business name, as it should appear on invoices.",
+        "placeholder": "Camille Martin, or Martin Conseil SAS"
       },
       "legalAddress": {
         "label": "Legal address",
@@ -211,7 +217,8 @@
       "description": "Your name on invitations, threads and invoices.",
       "xHandle": {
         "label": "X handle",
-        "help": "Optional. Shown on your card next to LinkedIn."
+        "help": "Optional. Shown on your card next to LinkedIn.",
+        "placeholder": "@camille"
       }
     },
     "indexLabel": "Settings sections",
@@ -264,12 +271,14 @@
         "failed": "Something went wrong on our side. Try again."
       },
       "companyName": {
-        "label": "Company name"
+        "label": "Company name",
+        "placeholder": "Acme Analytics"
       },
       "valueProp": {
         "label": "Value proposition",
         "help": "What you do, for whom and how, in a few sentences.",
-        "counter": "{count} / {max}"
+        "counter": "{count} / {max}",
+        "placeholder": "We help finance teams at 50–500 person SaaS companies close the month in two days, not ten."
       },
       "errors": {
         "companyRequired": "Company name is required.",

@@ -30,7 +30,7 @@ export function PriceFields({ control, recommendedCents }: Props) {
         const error = fieldError(fieldState.error, { too_small: t("errors.priceMin", { amount: money(PRICE_FLOOR_CENTS) }), too_big: t("errors.priceMax", { amount: money(PRICE_CAP_CENTS) }) }, t("errors.priceRequired"));
         return (
           <FormField id="priceCents" label={t("price.label")} hint={hint} error={error}>
-            <MoneyInput id="priceCents" cents={field.value} onCents={field.onChange} min={PRICE_FLOOR_CENTS / CENTS_PER_EURO} invalid={fieldState.invalid} describedBy={describedBy("priceCents", error, hint)} />
+            <MoneyInput id="priceCents" placeholder={t("price.placeholder")} cents={field.value} onCents={field.onChange} min={PRICE_FLOOR_CENTS / CENTS_PER_EURO} invalid={fieldState.invalid} describedBy={describedBy("priceCents", error, hint)} />
           </FormField>
         );
       }} />
