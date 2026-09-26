@@ -118,9 +118,17 @@
   .group:hover .blob-btn:not(:disabled) .blob-btn__label { animation: blob-bounce 450ms var(--ease-spring); }
   .blob-btn:focus-visible { outline: 2px solid var(--money); outline-offset: 3px; }
 
-  /* A link styled with buttonVariants() has no blob markup: it fills flat. */
-  .blob-btn:not(:has(.blob-btn__inner)) { background: var(--surface); transition: color 500ms var(--ease-ledger), background-color 300ms var(--ease-ledger); }
-  .blob-btn:not(:has(.blob-btn__inner)):is(:hover, :focus-visible) { background: var(--blob-color); }
+  /* A link styled with buttonVariants() has no blob markup: it fills flat.
+     Its own background would sit under the ::after shadow (negative z paints
+     above the element's background), so the offset is a box-shadow here. */
+  .blob-btn:not(:has(.blob-btn__inner)) {
+    background: var(--surface);
+    box-shadow: 3px 3px 0 var(--blob-border);
+    transition: color 500ms var(--ease-ledger), background-color 300ms var(--ease-ledger), box-shadow 450ms var(--ease-ledger);
+  }
+  .blob-btn:not(:has(.blob-btn__inner))::after { display: none; }
+  .blob-btn:not(:has(.blob-btn__inner)):is(:hover, :focus-visible) { background: var(--blob-color); box-shadow: 0 0 0 var(--blob-border); }
+  .blob-btn:not(:has(.blob-btn__inner)):disabled, .blob-btn:not(:has(.blob-btn__inner))[aria-disabled="true"] { box-shadow: none; }
 
   @keyframes blob-bounce {
     0%, 100% { transform: scale(1); }
