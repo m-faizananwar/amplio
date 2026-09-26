@@ -62,11 +62,13 @@ const searchCreators: ReadTool = {
     });
     const list = await listCreators(mctx, q);
     const minFollowers = typeof a.minFollowers === "number" ? a.minFollowers : 0;
-    const top = list.items.filter((c) => c.followers >= minFollowers).slice(0, SEARCH_LIMIT);
+    // creators already invited to or working on this campaign can't be booked again
+    const already = list.items.filter((c) => c.collaborationStatus).length;
+    const top = list.items.filter((c) => c.followers >= minFollowers && !c.collaborationStatus).slice(0, SEARCH_LIMIT);
     const cards = top.map(toCreatorCard);
     return {
-      summary: `${list.total} match · ${cards.length} best by fit${mctx.selectedCampaign ? ` for ${mctx.selectedCampaign.name}` : ""}`,
-      data: { campaign: mctx.selectedCampaign, walletCents: mctx.walletCents, creators: top.map((c) => ({ id: c.id, name: c.name, country: c.country, industries: c.industries, followers: c.followers, priceCents: c.priceCents, fitScore: c.fit.score, fitReason: c.fit.reason })) },
+      summary: `${list.total} match · ${cards.length} best by fit${mctx.selectedCampaign ? ` for ${mctx.selectedCampaign.name}` : ""}${already ? ` · ${already} already on it` : ""}`,
+      data: { campaign: mctx.selectedCampaign, walletCents: mctx.walletCents, alreadyOnCampaign: already, creators: top.map((c) => ({ id: c.id, name: c.name, country: c.country, industries: c.industries, followers: c.followers, priceCents: c.priceCents, fitScore: c.fit.score, fitReason: c.fit.reason })) },
       result: { type: "result", kind: "creators", title: mctx.selectedCampaign ? mctx.selectedCampaign.name : "Creators", items: cards },
     };
   },
