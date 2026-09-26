@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import { getLocale, getTranslations } from "next-intl/server";
+import { ServerScript } from "@/components/page/ServerScript";
 import { cn } from "@/lib/cn";
 import { formatCount } from "@/lib/money";
 import type { PublicTrail } from "../../constants";
@@ -57,7 +58,7 @@ export async function GlassHero({ trail }: { trail: PublicTrail | null }) {
           </div>
         </div>
       </div>
-      <script dangerouslySetInnerHTML={{ __html: TIMELINE_SCRIPT }} />
+      <ServerScript code={TIMELINE_SCRIPT} />
     </section>
   );
 }

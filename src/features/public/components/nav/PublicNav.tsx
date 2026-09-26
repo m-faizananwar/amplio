@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import { ServerScript } from "@/components/page/ServerScript";
 import { PRE_SCRIPT } from "../hero/entrance-script";
 import { PublicHeader } from "./PublicHeader";
 
@@ -11,7 +12,7 @@ export async function PublicNav() {
   const labels = Object.fromEntries(keys.map((k) => [k, t(k)])) as Record<(typeof keys)[number], string>;
   return (
     <>
-      <script dangerouslySetInnerHTML={{ __html: PRE_SCRIPT }} />
+      <ServerScript code={PRE_SCRIPT} />
       <PublicHeader labels={labels} />
     </>
   );
