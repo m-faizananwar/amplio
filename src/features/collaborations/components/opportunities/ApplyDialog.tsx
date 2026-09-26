@@ -1,39 +1,38 @@
 "use client";
 
+import { Send } from "lucide-react";
 import { useFormatter, useTranslations } from "next-intl";
+import { ActionDialog } from "@/components/dialog/ActionDialog";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import type { OpportunityDto } from "../../schemas";
 
 type Props = { opportunity: OpportunityDto | null; onOpenChange: (open: boolean) => void; onConfirm: (o: OpportunityDto) => void };
 
 const CENTS = 100;
 
-// Applying is a commitment on the creator's own price, so it takes one confirm.
+// Applying is a commitment on the creator's own price, so it takes one
+// confirm, with the brand, the price, the deadline and the fit in view.
 export function ApplyDialog({ opportunity: o, onOpenChange, onConfirm }: Props) {
   const t = useTranslations("creator.opportunities.applyDialog");
+  const tf = useTranslations("creator.opportunities.item");
   const format = useFormatter();
+  if (!o) return <ActionDialog open={false} onOpenChange={onOpenChange} icon={<Send />} title="" sub="" action={null} cancelLabel={t("cancel")} />;
   return (
-    <Dialog open={o !== null} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
-        {o ? (
-          <>
-            <DialogHeader>
-              <DialogTitle>{t("title", { campaign: o.campaignName })}</DialogTitle>
-              <DialogDescription>{t("description", { brand: o.brandCompany })}</DialogDescription>
-            </DialogHeader>
-            <dl className="grid gap-2 rounded-control border border-rule bg-paper p-4 text-small">
-              <div className="flex justify-between gap-3"><dt className="text-ink-muted">{t("yourPrice")}</dt><dd className="num text-money">{format.number(o.listPriceCents / CENTS, { style: "currency", currency: "EUR" })}</dd></div>
-              <div className="flex justify-between gap-3"><dt className="text-ink-muted">{t("deadline")}</dt><dd className="num text-ink">{o.postDeadline ? format.dateTime(new Date(o.postDeadline), { dateStyle: "medium" }) : t("noDeadline")}</dd></div>
-              <div className="flex justify-between gap-3"><dt className="text-ink-muted">{t("channel")}</dt><dd className="text-ink">{t("channelValue")}</dd></div>
-            </dl>
-            <DialogFooter>
-              <Button type="button" variant="secondary" onClick={() => onOpenChange(false)}>{t("cancel")}</Button>
-              <Button type="button" onClick={() => onConfirm(o)}>{t("confirm")}</Button>
-            </DialogFooter>
-          </>
-        ) : null}
-      </DialogContent>
-    </Dialog>
+    <ActionDialog
+      open
+      onOpenChange={onOpenChange}
+      icon={<Send />}
+      title={t("title", { campaign: o.campaignName })}
+      sub={t("description", { brand: o.brandCompany })}
+      facts={[
+        { label: t("brand"), value: o.brandCompany },
+        { label: t("yourPrice"), value: format.number(o.listPriceCents / CENTS, { style: "currency", currency: "EUR" }), mono: true, tone: "money" },
+        { label: t("deadline"), value: o.postDeadline ? format.dateTime(new Date(o.postDeadline), { dateStyle: "medium" }) : t("noDeadline"), mono: true },
+        { label: t("channel"), value: t("channelValue") },
+        { label: t("fit"), value: tf("fitScore", { percent: o.matchScore }), mono: true },
+      ]}
+      action={<Button type="button" icon={<Send />} onClick={() => onConfirm(o)}>{t("confirm")}</Button>}
+      cancelLabel={t("cancel")}
+    />
   );
 }

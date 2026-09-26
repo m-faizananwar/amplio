@@ -91,7 +91,9 @@
       "closed": "Cette campagne n’accepte plus de candidatures.",
       "duplicate": "Vous avez déjà une collaboration sur cette campagne.",
       "unknownCampaign": "Campagne introuvable. Rechargez la page."
-    }
+    },
+    "brand": "Marque",
+    "fit": "Adéquation avec votre audience"
   },
   "empty": {
     "none": {

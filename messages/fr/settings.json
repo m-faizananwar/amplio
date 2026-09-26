@@ -203,7 +203,10 @@
           "body": "Votre utilisateur, votre profil, vos sessions et vos collaborations seront supprimés. Cette action est irréversible.",
           "confirm": "Supprimer le compte",
           "pending": "Suppression…",
-          "cancel": "Annuler"
+          "cancel": "Annuler",
+          "armed": "Supprimer définitivement ? Cliquez à nouveau",
+          "whatGoes": "Supprimé",
+          "whatGoesValue": "Profil, sessions, collaborations"
         },
         "errors": {
           "demo": "Les comptes de démonstration ne peuvent pas être supprimés.",
@@ -370,7 +373,10 @@
           "body": "Votre utilisateur, le profil de l’entreprise, vos campagnes, vos sessions et vos collaborations seront supprimés. Cette action est irréversible.",
           "confirm": "Supprimer le compte",
           "pending": "Suppression…",
-          "cancel": "Annuler"
+          "cancel": "Annuler",
+          "armed": "Supprimer définitivement ? Cliquez à nouveau",
+          "whatGoes": "Supprimé",
+          "whatGoesValue": "Profil, sessions, collaborations"
         },
         "errors": {
           "demo": "Les comptes de démonstration ne peuvent pas être supprimés.",

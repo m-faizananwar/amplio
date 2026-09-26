@@ -210,3 +210,19 @@ html { scroll-behavior: smooth; }
   .card-invert:hover, .public-ix .group\/button:hover { translate: none; }
   .public-ix :is(a, button):hover svg.lucide-arrow-right { translate: none; }
 }
+
+/* ---- decision dialogs (ActionDialog): grow from the control that opened them ----
+   The popup sits at the viewport centre, so its origin is the centre plus the
+   trigger's offset; it scales .96 → 1 and fades on the spring, 300 ms. */
+@keyframes dlgIn { from { opacity: 0; scale: 0.96; } to { opacity: 1; scale: 1; } }
+@keyframes dlgOut { from { opacity: 1; scale: 1; } to { opacity: 0; scale: 0.98; } }
+[data-slot="dialog-content"].action-dialog {
+  transform-origin: calc(50% + var(--dlg-ox, 0px)) calc(50% + var(--dlg-oy, 0px));
+  animation: none;
+}
+[data-slot="dialog-content"].action-dialog[data-open] { animation: dlgIn 300ms var(--ease-spring) both; }
+[data-slot="dialog-content"].action-dialog[data-closed] { animation: dlgOut var(--duration-fast) var(--ease-ledger) both; }
+@media (prefers-reduced-motion: reduce) {
+  [data-slot="dialog-content"].action-dialog[data-open],
+  [data-slot="dialog-content"].action-dialog[data-closed] { animation: none; }
+}

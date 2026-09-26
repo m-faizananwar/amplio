@@ -203,7 +203,10 @@
           "body": "This removes your user, profile, sessions and collaborations. It can't be undone.",
           "confirm": "Delete account",
           "pending": "Deleting…",
-          "cancel": "Cancel"
+          "cancel": "Cancel",
+          "armed": "Delete for good? Click again",
+          "whatGoes": "Removed",
+          "whatGoesValue": "Profile, sessions, collaborations"
         },
         "errors": {
           "demo": "Demo accounts can't be deleted.",
@@ -370,7 +373,10 @@
           "body": "This removes your user, company profile, campaigns, sessions and collaborations. It can't be undone.",
           "confirm": "Delete account",
           "pending": "Deleting…",
-          "cancel": "Cancel"
+          "cancel": "Cancel",
+          "armed": "Delete for good? Click again",
+          "whatGoes": "Removed",
+          "whatGoesValue": "Profile, sessions, collaborations"
         },
         "errors": {
           "demo": "Demo accounts can't be deleted.",

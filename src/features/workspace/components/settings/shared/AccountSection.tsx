@@ -1,16 +1,22 @@
 "use client";
 
+import { Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
 import { toast } from "sonner";
+import { ActionDialog } from "@/components/dialog/ActionDialog";
+import { Button } from "@/components/ui/button";
 import { ConfirmButton } from "@/components/ui/confirm-button";
 import { deleteAccount } from "../../../server/actions";
 import { SettingsSection } from "./SettingsSection";
 
 type Props = { role: "creator" | "brand"; email: string; handle?: string; isDemo: boolean };
 
-// Read-only identity and the one destructive action, two clicks to confirm.
+// Read-only identity and the one destructive action: a dialog says what goes,
+// and the delete itself arms first and needs a second click.
 export function AccountSection({ role, email, handle, isDemo }: Props) {
   const t = useTranslations(`settings.${role}.account`);
+  const [open, setOpen] = useState(false);
   async function remove() {
     const result = await deleteAccount();
     // On success the action redirects; we only get here when it refused.
@@ -25,7 +31,10 @@ export function AccountSection({ role, email, handle, isDemo }: Props) {
       <p className="mt-2 text-caption text-ink-muted">{t("readOnly")}</p>
       <div className="mt-5 grid gap-2 border-t border-rule pt-4">
         <p className="text-small text-ink-muted">{isDemo ? t("delete.demoDisabled") : t("delete.description")}</p>
-        <ConfirmButton className="justify-self-start" confirmLabel={t("delete.confirm.title")} onConfirm={remove} disabled={isDemo}>{t("delete.button")}</ConfirmButton>
+        <Button type="button" variant="danger" icon={<Trash2 />} className="justify-self-start" onClick={() => setOpen(true)} disabled={isDemo}>{t("delete.button")}</Button>
+        <ActionDialog open={open} onOpenChange={setOpen} icon={<Trash2 />} tone="danger" title={t("delete.confirm.title")} sub={t("delete.confirm.body")} cancelLabel={t("delete.confirm.cancel")}
+          facts={[{ label: t("email.label"), value: email, mono: true }, ...(handle ? [{ label: t("handle.label"), value: `@${handle}`, mono: true }] : []), { label: t("delete.confirm.whatGoes"), value: t("delete.confirm.whatGoesValue") }]}
+          action={<ConfirmButton confirmLabel={t("delete.confirm.armed")} onConfirm={remove}>{t("delete.confirm.confirm")}</ConfirmButton>} />
       </div>
     </SettingsSection>
   );

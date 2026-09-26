@@ -3,14 +3,15 @@
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ConfirmButton } from "@/components/ui/confirm-button";
 import { nextStatus } from "@/lib/collaboration-status";
 import type { CollaborationDto } from "../../schemas";
 import { decideApplication, payCollaboration, reviewDraft } from "../../server/actions";
 import { useDetailFormat } from "../detail/useDetailFormat";
 import { ReviewDraftDialog } from "../review/ReviewDraftDialog";
 import { ActionPanel, WaitingNote } from "./ActionPanel";
-import { DecisionButtons } from "./DecisionButtons";
+import { decideFacts, payFacts } from "./action-facts";
+import { DecidePanel } from "./DecideDialog";
+import { PayPanel } from "./PayPanel";
 import type { useCollaborationAction } from "./useCollaborationAction";
 
 type Props = { collaboration: CollaborationDto; csrfToken: string; action: ReturnType<typeof useCollaborationAction> };
@@ -19,6 +20,8 @@ type Props = { collaboration: CollaborationDto; csrfToken: string; action: Retur
 // release the fee on a live post. Anything else is the creator's turn.
 export function BrandActions({ collaboration: c, csrfToken, action }: Props) {
   const t = useTranslations("collaboration.detail.brand");
+  const tf = useTranslations("collaboration.detail.facts");
+  const tc = useTranslations("collaboration.detail");
   const fmt = useDetailFormat();
   const { run, isPending } = action;
   const [reviewing, setReviewing] = useState(false);
@@ -28,10 +31,9 @@ export function BrandActions({ collaboration: c, csrfToken, action }: Props) {
 
   if (can("accept") && can("decline")) {
     return (
-      <ActionPanel title={t("decide.title")} description={t("decide.description", v)}>
-        <DecisionButtons acceptLabel={t("decide.accept")} declineLabel={t("decide.decline")} declineConfirm={t("decide.declineConfirm.title")} declineWarning={t("decide.declineConfirm.body", v)} disabled={isPending}
-          onDecide={(decision) => run(nextStatus(c.status, decision, "brand"), () => decideApplication({ ...base, decision }), decision === "accept" ? t("toasts.accepted", v) : t("toasts.declined"))} />
-      </ActionPanel>
+      <DecidePanel facts={decideFacts(c, { role: "brand", t: tf, fmt })} disabled={isPending}
+        labels={{ title: t("decide.title"), description: t("decide.description", v), open: t("decide.open"), accept: t("decide.accept"), decline: t("decide.decline"), declineArmed: t("decide.declineConfirm.title"), warning: t("decide.declineConfirm.body", v), cancel: tc("cancel") }}
+        onDecide={(decision) => run(nextStatus(c.status, decision, "brand"), () => decideApplication({ ...base, decision }), decision === "accept" ? t("toasts.accepted", v) : t("toasts.declined"))} />
     );
   }
   if (can("approve") || can("request_changes")) {
@@ -45,10 +47,8 @@ export function BrandActions({ collaboration: c, csrfToken, action }: Props) {
   }
   if (can("pay")) {
     return (
-      <ActionPanel title={t("pay.title")} description={t("pay.description", v)}>
-        {/* Money leaves the brand on this click and can't come back: two clicks, like a delete. */}
-        <ConfirmButton variant="money" disabled={isPending} confirmLabel={t("pay.confirm", v)} onConfirm={async () => { await run("paid", () => payCollaboration(base), t("toasts.paid", v)); }}>{t("pay.action", v)}</ConfirmButton>
-      </ActionPanel>
+      <PayPanel facts={payFacts(c, tf, fmt)} disabled={isPending} onPay={() => run("paid", () => payCollaboration(base), t("toasts.paid", v))}
+        labels={{ title: t("pay.title"), description: t("pay.description", v), action: t("pay.action", v), armed: t("pay.confirm", v), cancel: tc("cancel") }} />
     );
   }
   const waiting = ["invited", "accepted", "changes_requested", "approved", "scheduled", "paid", "declined"].includes(c.status) ? t(`waiting.${c.status}`, v) : null;

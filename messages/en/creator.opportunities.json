@@ -91,7 +91,9 @@
       "closed": "This campaign is no longer open to applications.",
       "duplicate": "You already have a collaboration on this campaign.",
       "unknownCampaign": "We couldn't find this campaign. Reload the page."
-    }
+    },
+    "brand": "Brand",
+    "fit": "Fit with your audience"
   },
   "empty": {
     "none": {

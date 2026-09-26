@@ -242,7 +242,8 @@
           "body": "{brand} gets its fee back and this collaboration closes for good.",
           "confirm": "Decline",
           "cancel": "Keep it open"
-        }
+        },
+        "open": "Review the invitation"
       },
       "draft": {
         "title": "Write the draft",
@@ -267,7 +268,8 @@
         "description": "Draft approved. Pick the day you'll publish, then come back to add the post URL.",
         "label": "Publish date",
         "submit": "Schedule",
-        "pending": "Saving…"
+        "pending": "Saving…",
+        "open": "Pick the publish day"
       },
       "publish": {
         "title": "Publish and add the post URL",
@@ -275,7 +277,8 @@
         "label": "LinkedIn post URL",
         "placeholder": "https://www.linkedin.com/posts/…",
         "submit": "Mark as published",
-        "pending": "Saving…"
+        "pending": "Saving…",
+        "open": "Add the post URL"
       },
       "waiting": {
         "applied": "{brand} hasn't answered your application yet.",
@@ -332,7 +335,8 @@
           "body": "{creator} is told the application was not selected. This can’t be undone.",
           "confirm": "Decline",
           "cancel": "Keep it open"
-        }
+        },
+        "open": "Review the application"
       },
       "review": {
         "title": "A draft is waiting for your review",
@@ -350,7 +354,14 @@
         "requestChanges": "Request changes",
         "sendChanges": "Send the changes",
         "sending": "Sending…",
-        "back": "Back"
+        "back": "Back",
+        "cancel": "Cancel",
+        "facts": {
+          "creator": "Creator",
+          "campaign": "Campaign",
+          "round": "Revision round",
+          "fee": "Fee, held for this post"
+        }
       },
       "pay": {
         "title": "The post is live",
@@ -392,7 +403,23 @@
         "paySystem": "Payment released",
         "unknown": "Status changed"
       }
-    }
+    },
+    "facts": {
+      "brand": "Brand",
+      "creator": "Creator",
+      "campaign": "Campaign",
+      "feeHeldForYou": "Fee, held for you",
+      "feeFromWallet": "Fee, held from your wallet",
+      "fee": "Fee",
+      "acceptBy": "Answer by",
+      "deadline": "Post deadline",
+      "scheduledFor": "Scheduled for",
+      "post": "Post",
+      "liveSince": "Live since",
+      "amount": "Amount released",
+      "none": "—"
+    },
+    "cancel": "Cancel"
   },
   "messages": {
     "title": "Messages",

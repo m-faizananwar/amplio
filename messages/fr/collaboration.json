@@ -242,7 +242,8 @@
           "body": "{brand} récupère sa rémunération et cette collaboration est définitivement clôturée.",
           "confirm": "Refuser",
           "cancel": "La garder ouverte"
-        }
+        },
+        "open": "Voir l’invitation"
       },
       "draft": {
         "title": "Rédiger le brouillon",
@@ -267,7 +268,8 @@
         "description": "Brouillon validé. Choisissez le jour de publication, puis revenez ajouter l’URL du post.",
         "label": "Date de publication",
         "submit": "Programmer",
-        "pending": "Enregistrement…"
+        "pending": "Enregistrement…",
+        "open": "Choisir le jour de publication"
       },
       "publish": {
         "title": "Publier et ajouter l’URL du post",
@@ -275,7 +277,8 @@
         "label": "URL du post LinkedIn",
         "placeholder": "https://www.linkedin.com/posts/…",
         "submit": "Marquer comme publié",
-        "pending": "Enregistrement…"
+        "pending": "Enregistrement…",
+        "open": "Ajouter l’URL du post"
       },
       "waiting": {
         "applied": "{brand} n’a pas encore répondu à votre candidature.",
@@ -332,7 +335,8 @@
           "body": "{creator} sera informé que sa candidature n’a pas été retenue. C’est définitif.",
           "confirm": "Refuser",
           "cancel": "Garder ouverte"
-        }
+        },
+        "open": "Voir la candidature"
       },
       "review": {
         "title": "Un brouillon attend votre relecture",
@@ -350,7 +354,14 @@
         "requestChanges": "Demander des modifications",
         "sendChanges": "Envoyer les modifications",
         "sending": "Envoi…",
-        "back": "Retour"
+        "back": "Retour",
+        "cancel": "Annuler",
+        "facts": {
+          "creator": "Créateur",
+          "campaign": "Campagne",
+          "round": "Tour de révision",
+          "fee": "Rémunération bloquée pour ce post"
+        }
       },
       "pay": {
         "title": "Le post est en ligne",
@@ -392,7 +403,23 @@
         "paySystem": "Paiement versé",
         "unknown": "Statut modifié"
       }
-    }
+    },
+    "facts": {
+      "brand": "Marque",
+      "creator": "Créateur",
+      "campaign": "Campagne",
+      "feeHeldForYou": "Rémunération, bloquée pour vous",
+      "feeFromWallet": "Rémunération, bloquée sur votre portefeuille",
+      "fee": "Rémunération",
+      "acceptBy": "Réponse avant le",
+      "deadline": "Date limite de publication",
+      "scheduledFor": "Prévu le",
+      "post": "Post",
+      "liveSince": "En ligne depuis le",
+      "amount": "Montant versé",
+      "none": "—"
+    },
+    "cancel": "Annuler"
   },
   "messages": {
     "title": "Messages",

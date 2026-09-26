@@ -104,6 +104,14 @@
     "errors": {
       "failed": "Impossible d’enregistrer le retrait. Aucun montant n’a été déplacé.",
       "notCreator": "Connectez-vous avec un compte créateur pour retirer vos revenus."
+    },
+    "facts": {
+      "available": "Disponible",
+      "held": "Bloqué, en attente de versement",
+      "destination": "Vers",
+      "bankEnding": "Banque · IBAN se terminant par {last4}",
+      "sub": "{amount} quitte votre solde disponible. Le retrait apparaît « en cours » jusqu’à son arrivée.",
+      "confirmArmed": "Envoyer {amount} ? Cliquez à nouveau"
     }
   },
   "empty": {

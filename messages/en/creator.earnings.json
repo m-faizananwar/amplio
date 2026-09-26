@@ -104,6 +104,14 @@
     "errors": {
       "failed": "We couldn't record the withdrawal. Nothing was moved.",
       "notCreator": "Sign in as a creator to withdraw."
+    },
+    "facts": {
+      "available": "Available now",
+      "held": "Held, awaiting release",
+      "destination": "Goes to",
+      "bankEnding": "Bank · IBAN ending {last4}",
+      "sub": "{amount} leaves your available balance. It shows as in transit until it arrives.",
+      "confirmArmed": "Send {amount}? Click again"
     }
   },
   "empty": {
