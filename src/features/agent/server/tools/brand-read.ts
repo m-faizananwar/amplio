@@ -1,7 +1,7 @@
 import "server-only";
 import { getCampaignAnalytics } from "@/features/campaigns/server/read-analytics";
 import { getBrandProfile, getCampaign, listCampaignSummaries } from "@/features/campaigns/server/read-campaigns";
-import { creatorsOnCampaign, listBrandCollaborations } from "@/features/collaborations/server/queries";
+import { campaignCreatorCounts, creatorsOnCampaign, listBrandCollaborations } from "@/features/collaborations/server/queries";
 import { getMarketplaceContext, listCreators } from "@/features/marketplace/server/queries";
 import { marketplaceQuerySchema } from "@/features/marketplace/schemas";
 import type { CreatorDto } from "@/features/marketplace/schemas";
@@ -121,7 +121,9 @@ const readCampaign: ReadTool = {
     const c = await getCampaign(brandId(ctx), String(a.campaignId ?? ""));
     if (!c) return { summary: "not one of yours", data: { error: "That campaign isn't one of yours." } };
     const base = { id: c.id, name: c.name, status: c.status, postDeadline: c.postDeadline, feeCents: c.defaultFeeCents };
-    const card = { type: "result" as const, kind: "campaign" as const, title: c.name, item: { id: c.id, name: c.name, status: c.status, postDeadline: c.postDeadline } };
+    // creators invited / booked, counted fresh: on the card and for the reply
+    const counts = await campaignCreatorCounts(c.id);
+    const card = { type: "result" as const, kind: "campaign" as const, title: c.name, item: { id: c.id, name: c.name, status: c.status, postDeadline: c.postDeadline, creatorsInvited: counts.invited, creatorsBooked: counts.booked } };
     if (c.status === "draft") {
       const active = (await listCampaignSummaries(brandId(ctx))).find((x) => x.status === "active");
       const open = (section: string) => `Call openPage with campaignId ${c.id} and section "${section}" (campaign "${c.name}").`;
@@ -130,11 +132,12 @@ const readCampaign: ReadTool = {
         { label: L(ctx, "Edit the brief", "Modifier le brief"), hint: open("brief") },
         ...(active ? [{ label: L(ctx, "Show my active campaign", "Voir ma campagne active"), hint: `Call getCampaign with campaignId ${active.id} (campaign "${active.name}").` }] : []),
       ];
-      return { summary: `${c.name} · draft, no results yet`, data: { ...base, results: null, note: "Draft: launch it to get results." }, result: card, nextSteps };
+      return { summary: `${c.name} · draft, no results yet`, data: { ...base, creatorsInvited: counts.invited, creatorsBooked: counts.booked, results: null, note: "Draft: launch it to get results." }, result: card, nextSteps };
     }
     const r = await getCampaignAnalytics(c.id);
     const results = { publishedPosts: r.publishedPosts, qualifiedClicks: r.qualifiedClicks, estReach: r.estReach, bookings: r.bookings, committedCents: r.committedCents, topCreators: r.byCreator.slice(0, TOP_CREATORS).map((x) => ({ name: x.creatorName, clicks: x.clicks })) };
-    return { summary: `${c.name} · ${r.publishedPosts} posts · ${r.qualifiedClicks} clicks`, data: { ...base, results }, result: { ...card, item: { ...card.item, budgetCents: r.committedCents } } };
+    const shown = { publishedPosts: r.publishedPosts, clicks: r.qualifiedClicks, estReach: r.estReach, bookings: r.bookings, committedCents: r.committedCents, budgetCents: r.committedCents };
+    return { summary: `${c.name} · ${r.publishedPosts} posts · ${r.qualifiedClicks} clicks`, data: { ...base, creatorsInvited: counts.invited, creatorsBooked: counts.booked, results }, result: { ...card, item: { ...card.item, ...shown } } };
   },
 };
 

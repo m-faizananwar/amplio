@@ -100,3 +100,13 @@ export async function creatorsOnCampaign(campaignId: string, creatorIds: string[
     .where(and(eq(collaborations.campaignId, campaignId), inArray(collaborations.creatorId, creatorIds.filter(isUuid))));
   return new Set(rows.map((r) => r.creatorId));
 }
+
+// How many creators a campaign has invited (not answered yet) and booked
+// (accepted or further along). Read straight from the database, uncached: the
+// agent shows it right after it may have booked some.
+const BOOKED = ["accepted", "draft_submitted", "changes_requested", "approved", "scheduled", "live", "paid"] as const;
+export async function campaignCreatorCounts(campaignId: string): Promise<{ invited: number; booked: number }> {
+  if (!isUuid(campaignId)) return { invited: 0, booked: 0 };
+  const rows = await getDb().select({ status: collaborations.status }).from(collaborations).where(eq(collaborations.campaignId, campaignId));
+  return { invited: rows.filter((r) => r.status === "invited").length, booked: rows.filter((r) => (BOOKED as readonly string[]).includes(r.status)).length };
+}

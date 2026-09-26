@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { COLLABORATION_STATUSES } from "@/lib/collaboration-status";
+import { NEXT_STEP_FILTERS, type NextStepFilter } from "@/lib/next-step";
 
 // The agent's wire contract: one Server-Sent Event per item, `data:` a JSON
 // object of one of these shapes. POST /api/agent streams them for a turn;
@@ -45,8 +47,18 @@ export const creatorCard = z.object({
   fitReason: z.string().optional(),
   avatarUrl: z.string().nullable().optional(),
 });
-export const campaignCard = z.object({ id: z.string(), name: z.string(), status: z.string(), postDeadline: z.string().nullable(), budgetCents: money.nullable().optional() });
-export const collaborationCard = z.object({ id: z.string(), campaign: z.string(), counterpart: z.string(), status: z.string(), nextAction: z.string(), feeCents: money });
+// A campaign's card; results are present once it is active (a draft has none).
+// creatorsInvited = invitations not answered yet; creatorsBooked = accepted or
+// further along (accepted … paid).
+export const campaignCard = z.object({
+  id: z.string(), name: z.string(), status: z.string(), postDeadline: z.string().nullable(), budgetCents: money.nullable().optional(),
+  publishedPosts: z.number().int().optional(), clicks: z.number().int().optional(), estReach: z.number().int().optional(),
+  bookings: z.number().int().optional(), committedCents: money.optional(), creatorsInvited: z.number().int().optional(), creatorsBooked: z.number().int().optional(),
+});
+// status and nextAction are keys, translated by the UI with the app's own
+// labels: status is a collaboration status, nextAction who moves next for
+// this viewer (needs_you | waiting | live | done).
+export const collaborationCard = z.object({ id: z.string(), campaign: z.string(), counterpart: z.string(), status: z.enum(COLLABORATION_STATUSES), nextAction: z.enum(NEXT_STEP_FILTERS as unknown as [NextStepFilter, ...NextStepFilter[]]), feeCents: money });
 export const opportunityCard = z.object({ campaignId: z.string(), campaign: z.string(), brand: z.string(), fitScore: z.number().int(), priceCents: money, postDeadline: z.string().nullable() });
 
 export const resultEvent = z.discriminatedUnion("kind", [

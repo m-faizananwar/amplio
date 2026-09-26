@@ -6,7 +6,7 @@ const getCampaignAnalytics = vi.fn();
 const summaries = vi.fn();
 vi.mock("@/features/campaigns/server/read-campaigns", () => ({ getCampaign: (b: string, c: string) => getCampaign(b, c), getBrandProfile: vi.fn(), listCampaignSummaries: () => summaries() }));
 vi.mock("@/features/campaigns/server/read-analytics", () => ({ getCampaignAnalytics: (c: string) => getCampaignAnalytics(c) }));
-vi.mock("@/features/collaborations/server/queries", () => ({ listBrandCollaborations: async () => [], listCreatorCollaborations: async () => [], creatorsOnCampaign: async () => new Set() }));
+vi.mock("@/features/collaborations/server/queries", () => ({ listBrandCollaborations: async () => [], listCreatorCollaborations: async () => [], creatorsOnCampaign: async () => new Set(), campaignCreatorCounts: async () => ({ invited: 2, booked: 5 }) }));
 vi.mock("@/features/marketplace/server/queries", () => ({ getMarketplaceContext: vi.fn(), listCreators: vi.fn() }));
 vi.mock("@/features/payouts/server/queries", () => ({ billingBucketsNow: vi.fn(), walletCentsNow: vi.fn() }));
 
@@ -53,5 +53,13 @@ describe("next steps from a draft campaign", () => {
     summaries.mockResolvedValue([{ id: Q4, name: "Q4", status: "draft" }]);
     const onlyDraft = read && read.kind === "read" ? await read.run(ctx, { campaignId: Q4 }) : null;
     expect(onlyDraft?.nextSteps?.map((n) => n.label)).toEqual(["Launch it", "Edit the brief"]);
+  });
+
+  it("an active campaign's card carries its results and its creators", async () => {
+    getCampaign.mockResolvedValue({ id: Q4, name: "Zune creator brief", status: "active", postDeadline: null, defaultFeeCents: 0 });
+    getCampaignAnalytics.mockResolvedValue({ publishedPosts: 4, qualifiedClicks: 640, estReach: 132_608, bookings: 34, committedCents: 720_000, byCreator: [] });
+    const read = BRAND_READS.find((t) => t.name === "getCampaign");
+    const out = read && read.kind === "read" ? await read.run(ctx, { campaignId: Q4 }) : null;
+    expect(out?.result && out.result.kind === "campaign" ? out.result.item : null).toMatchObject({ publishedPosts: 4, clicks: 640, estReach: 132_608, bookings: 34, committedCents: 720_000, creatorsInvited: 2, creatorsBooked: 5 });
   });
 });
