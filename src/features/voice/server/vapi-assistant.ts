@@ -1,4 +1,5 @@
 import "server-only";
+import { createHash } from "node:crypto";
 import { BRAND } from "@/config/brand";
 import { agentEnabled } from "@/features/agent/server/flag";
 import { VAPI_API_URL, VAPI_ASSISTANT_NAME } from "../constants";
@@ -68,6 +69,8 @@ export const assistantBody = (serverUrl: string) => ({
   metadata: { app: `${BRAND.key}-rebuild` },
 });
 
+type Remote = { id: string; name?: string; metadata?: { configHash?: string } };
+const HASH_LEN = 16;
 let cached: { serverUrl: string; id: string } | null = null;
 
 // Find-or-create by name (one assistant per host, so a local or preview
@@ -78,10 +81,18 @@ export async function ensureAssistant(serverUrl: string): Promise<string> {
   const headers = { Authorization: `Bearer ${process.env.VAPI_PRIVATE_KEY}`, "Content-Type": "application/json" };
   const name = assistantName(serverUrl);
   const list = await fetch(`${VAPI_API_URL}/assistant?limit=100`, { headers }).then((r) => (r.ok ? r.json() : []));
-  const existing = Array.isArray(list) ? list.find((a: { name?: string }) => a.name === name) : null;
+  const existing = Array.isArray(list) ? (list as Remote[]).find((a) => a.name === name) : null;
+  // A cold start only rewrites the assistant when its config changed: the
+  // hash rides in its metadata, so an unchanged one costs a single request.
+  const body = assistantBody(serverUrl);
+  const hash = createHash("sha256").update(JSON.stringify(body)).digest("hex").slice(0, HASH_LEN);
+  if (existing?.metadata?.configHash === hash) {
+    cached = { serverUrl, id: existing.id };
+    return existing.id;
+  }
   const method = existing ? "PATCH" : "POST";
   const url = existing ? `${VAPI_API_URL}/assistant/${existing.id}` : `${VAPI_API_URL}/assistant`;
-  const res = await fetch(url, { method, headers, body: JSON.stringify(assistantBody(serverUrl)) });
+  const res = await fetch(url, { method, headers, body: JSON.stringify({ ...body, metadata: { ...body.metadata, configHash: hash } }) });
   if (!res.ok) throw new Error(`Vapi ${method} assistant failed: ${res.status} ${await res.text()}`);
   const { id } = (await res.json()) as { id: string };
   cached = { serverUrl, id };

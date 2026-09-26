@@ -21,9 +21,13 @@ export async function GET(request: Request) {
   if (!isVapiConfigured()) return NextResponse.json({ provider: "web-speech" });
   try {
     const serverUrl = new URL("/api/voice/vapi", request.url).toString();
-    const [assistantId, voiceToken] = await Promise.all([ensureAssistant(serverUrl), createHeadlessSession(viewer.userId)]);
     const locale = (await getLocale()) === "fr" ? "fr" : "en";
-    const thread = agentEnabled() ? await openThread(viewer.userId, null, { title: locale === "fr" ? "Appel" : "Call" }) : null;
+    // independent, so together: a cold start waits on the slowest, not the sum
+    const [assistantId, voiceToken, thread] = await Promise.all([
+      ensureAssistant(serverUrl),
+      createHeadlessSession(viewer.userId),
+      agentEnabled() ? openThread(viewer.userId, null, { title: locale === "fr" ? "Appel" : "Call" }) : Promise.resolve(null),
+    ]);
     const variableValues = { voiceToken, threadId: thread?.threadId ?? null, locale };
     return NextResponse.json({
       provider: "vapi",
