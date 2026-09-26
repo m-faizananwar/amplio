@@ -35,14 +35,22 @@ the tracked link and the history on the left; where the money is and the offer t
 the right. The page is the one place a status changes, so the action sits first.
 
 ### Analytics — `/creator/analytics`
-Five numbers in a row, each opening the rows it is made of (followers → the profile read;
-posts, reach, engagements → the posts; clicks → every click), then the tracked links (each
-link's count opens its own clicks) and the posts. A range switch re-queries the server.
+One chart card, then the tracked links. The five figures (followers, posts, reach,
+engagements, clicks) sit along the top of the card as a strip; picking one draws its line
+below (clicks per day, or post by post) and "See the rows" opens what it is made of.
+Followers is one reading, so it says so instead of drawing a flat line. Each link's count
+opens its own clicks. A range switch re-queries the server.
+**Merged (components round):** five stat cards, the posts table and the links were three
+blocks saying "how am I doing"; the figures became the chart's picker and the posts became
+its points and rows, so the page is one card that answers it plus the links you act on.
 
 ### Earnings — `/creator/earnings` (+ withdraw)
-The one action (Withdraw, disabled with the reason when nothing is available) above four
-money numbers — available, awaiting release, withdrawn, earned — each opening the ledger
-rows that add up to it, then the months and the ledger itself. Withdrawing is a dialog:
+One balance card, then the ledger. The card leads with what's available and the one
+action that moves it (Withdraw, disabled with the reason when nothing is available), a
+ruled strip of the three figures around it (awaiting release, withdrawn, earned), and the
+months as bars on a baseline; every figure opens the ledger rows that add up to it.
+**Merged (components round):** a Withdraw row, four stat cards and a separate month chart
+were three blocks about one balance; now it is one card, and the ledger is the detail. Withdrawing is a dialog:
 amount or all of it, where it goes, one confirm, and the Stripe stub said plainly.
 
 ### Messages — `/creator/messages` (shared with the brand side)
@@ -51,9 +59,13 @@ Only real threads — one per accepted collaboration. The canned "support bot" t
 answered "I can't answer questions in this version" is cut; the assistant is the place to ask.
 
 ### Settings — `/creator/settings`
-Stacked sections with a sticky index on wide screens, one form per schema. Each section
-saves on its own, so a validation error in pricing never blocks the card, and the fields
-are the onboarding ones (`src/features/profile-fields`), so editing looks like creating.
+Five sections with a sticky index on wide screens: your card, LinkedIn, pricing, getting
+paid, account. Each section saves on its own, so a validation error in pricing never blocks
+the card, and the fields are the onboarding ones (`src/features/profile-fields`), so editing
+looks like creating.
+**Merged (components round):** "You" (name) and "Card" (headline, country, industries) were
+one thing — what brands see — split by the database, so they are one form that saves
+through both actions; "Business details" and "Payouts" are one "Getting paid" section. 7 → 5.
 
 ## Brand
 
@@ -336,9 +348,12 @@ it was also emailed. Validation messages are translated; server messages
 ## Brand
 
 ### Settings — `/brand/settings`
-Same shape as the creator's: an index and one form per schema — Company (name, website),
-Ideal customers (the onboarding value proposition and three customers, saved through
-onboarding's own action), Audience (industries and regions onboarding doesn't ask), Account.
+Same shape as the creator's: an index and three sections — Company (name, website), Who you
+sell to (the value proposition, three ideal customers, and their industries and regions),
+Account.
+**Merged (components round):** "Ideal customers" and "Audience" both described the buyer,
+split only because onboarding saves one and settings the other; one form now saves through
+onboarding's action then the audience action. 4 → 3.
 The Team section is cut: it validated an email and then said no invitation was sent.
 
 ## Assistant and call mode (every surface)

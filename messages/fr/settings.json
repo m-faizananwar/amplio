@@ -42,8 +42,8 @@
       }
     },
     "card": {
-      "title": "Fiche",
-      "description": "Ce que les marques voient en premier.",
+      "title": "Votre fiche",
+      "description": "Votre nom et ce que les marques voient en premier : accroche, pays et secteurs.",
       "firstName": {
         "label": "Prénom"
       },
@@ -214,7 +214,11 @@
         "help": "Facultatif. Affiché sur votre carte à côté de LinkedIn."
       }
     },
-    "indexLabel": "Sections des paramètres"
+    "indexLabel": "Sections des paramètres",
+    "gettingPaid": {
+      "title": "Être payé",
+      "description": "Où arrivent vos retraits, et les informations nécessaires pour facturer les marques."
+    }
   },
   "brand": {
     "title": "Paramètres",
@@ -366,6 +370,10 @@
         }
       }
     },
-    "indexLabel": "Sections des paramètres"
+    "indexLabel": "Sections des paramètres",
+    "customers": {
+      "title": "À qui vous vendez",
+      "description": "Votre proposition de valeur, les trois clients pour lesquels vos créateurs écrivent, et où ils se trouvent. Les créateurs vous sont proposés en fonction de ces choix."
+    }
   }
 }

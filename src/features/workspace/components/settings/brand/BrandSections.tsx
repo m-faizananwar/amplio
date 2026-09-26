@@ -1,7 +1,8 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { Controller } from "react-hook-form";
+import { type Control, Controller } from "react-hook-form";
+import type { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { type ProfileInput, profileSchema } from "@/features/brand-onboarding/schemas";
 import { completeOnboarding } from "@/features/brand-onboarding/server/actions";
@@ -10,7 +11,7 @@ import { fieldError } from "@/features/profile-fields/components/field-error";
 import { FormField } from "@/features/profile-fields/components/FormField";
 import { IndustryPicker } from "@/features/profile-fields/components/IndustryPicker";
 import { INDUSTRIES, REGIONS } from "../../../constants";
-import { type BrandAudienceInput, brandAudienceSchema, type BrandCompanyInput, brandCompanySchema } from "../../../schemas";
+import { brandAudienceSchema, type BrandCompanyInput, brandCompanySchema } from "../../../schemas";
 import { updateBrandAudience, updateBrandCompany } from "../../../server/actions";
 import { SaveRow } from "../shared/SaveRow";
 import { SettingsSection } from "../shared/SettingsSection";
@@ -40,25 +41,27 @@ export function CompanySection({ defaults }: { defaults: BrandCompanyInput }) {
   );
 }
 
-// The onboarding profile — value proposition and three ideal customers —
-// saved through onboarding's own (idempotent) action.
-export function PositioningSection({ defaults }: { defaults: ProfileInput }) {
-  const t = useTranslations("settings.brand");
-  const { form, onSubmit } = useSectionForm({ schema: profileSchema, defaults, save: completeOnboarding, saved: t("states.saved") });
-  return (
-    <SettingsSection id="customers" title={t("idealCustomers.title")} description={t("idealCustomers.description", { count: 3 })}>
-      <form onSubmit={onSubmit} noValidate><BrandProfileFields control={form.control} /><SaveRow form={form} /></form>
-    </SettingsSection>
-  );
+// Who the brand sells to, in one form: the value proposition and three ideal
+// customers (saved through onboarding's own idempotent action), then where
+// those buyers are (industries and regions, which rank creators).
+const customersSchema = profileSchema.extend(brandAudienceSchema.shape);
+type CustomersInput = z.infer<typeof customersSchema>;
+
+async function saveCustomers(v: CustomersInput) {
+  const profile = await completeOnboarding({ valueProp: v.valueProp, icps: v.icps });
+  if (!profile.ok) return profile;
+  return updateBrandAudience({ targetIndustries: v.targetIndustries, targetRegions: v.targetRegions });
 }
 
-export function AudienceSection({ defaults }: { defaults: BrandAudienceInput }) {
+export function CustomersSection({ defaults }: { defaults: CustomersInput }) {
   const t = useTranslations("settings.brand");
-  const { form, onSubmit } = useSectionForm({ schema: brandAudienceSchema, defaults, save: updateBrandAudience, saved: t("states.saved") });
+  const { form, onSubmit } = useSectionForm({ schema: customersSchema, defaults, save: saveCustomers, saved: t("states.saved") });
   const counter = (n: number) => (n === 0 ? t("audience.noneSelected") : String(n));
   return (
-    <SettingsSection id="audience" title={t("audience.title")} description={t("audience.description")}>
+    <SettingsSection id="customers" title={t("customers.title")} description={t("customers.description")}>
       <form onSubmit={onSubmit} noValidate className="grid gap-5">
+        {/* BrandProfileFields is typed to the profile schema; this form holds it plus the audience, so its control is a superset */}
+        <BrandProfileFields control={form.control as unknown as Control<ProfileInput>} />
         <Controller control={form.control} name="targetIndustries" render={({ field }) => (
           <IndustryPicker name="targetIndustries" group="industries" options={INDUSTRIES} legend={t("audience.industries.label")} help={t("audience.industries.help")} counter={counter(field.value.length)} value={field.value} onChange={field.onChange} max={INDUSTRIES.length} />
         )} />

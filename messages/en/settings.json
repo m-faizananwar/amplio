@@ -42,8 +42,8 @@
       }
     },
     "card": {
-      "title": "Card",
-      "description": "What brands see first.",
+      "title": "Your card",
+      "description": "Your name and what brands see first: headline, country and industries.",
       "firstName": {
         "label": "First name"
       },
@@ -214,7 +214,11 @@
         "help": "Optional. Shown on your card next to LinkedIn."
       }
     },
-    "indexLabel": "Settings sections"
+    "indexLabel": "Settings sections",
+    "gettingPaid": {
+      "title": "Getting paid",
+      "description": "Where your withdrawals go, and the details needed to invoice brands."
+    }
   },
   "brand": {
     "title": "Settings",
@@ -366,6 +370,10 @@
         }
       }
     },
-    "indexLabel": "Settings sections"
+    "indexLabel": "Settings sections",
+    "customers": {
+      "title": "Who you sell to",
+      "description": "Your value proposition, the three buyers creators write for, and where they are. Creators are ranked for you from this."
+    }
   }
 }

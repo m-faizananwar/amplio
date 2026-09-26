@@ -4,18 +4,17 @@ import type { BrandAudienceInput } from "../../../schemas";
 import type { BrandSettings } from "../../../server/settings-queries";
 import { AccountSection } from "../shared/AccountSection";
 import { SettingsIndex } from "../shared/SettingsIndex";
-import { AudienceSection, CompanySection, PositioningSection } from "./BrandSections";
+import { CompanySection, CustomersSection } from "./BrandSections";
 
 type Props = { settings: BrandSettings; email: string; isDemo: boolean };
 
-// Brand settings: the company, the onboarding profile (value proposition and
-// ideal customers), the audience onboarding doesn't ask, and the account.
+// Brand settings in three sections: the company, who you sell to (value
+// proposition, ideal customers and where they are, one form), the account.
 export async function BrandSettingsView({ settings: s, email, isDemo }: Props) {
   const t = await getTranslations("settings.brand");
   const sections = [
     { id: "company", label: t("company.title") },
-    { id: "customers", label: t("idealCustomers.title") },
-    { id: "audience", label: t("audience.title") },
+    { id: "customers", label: t("customers.title") },
     { id: "account", label: t("account.title") },
   ];
   const icps = [0, 1, 2].map((i) => s.icps[i] ?? { title: "", description: "" });
@@ -24,8 +23,7 @@ export async function BrandSettingsView({ settings: s, email, isDemo }: Props) {
       <SettingsIndex label={t("indexLabel")} sections={sections} />
       <div className="grid gap-5">
         <CompanySection defaults={{ company: s.company, website: s.website }} />
-        <PositioningSection defaults={{ valueProp: s.valueProp, icps } as ProfileInput} />
-        <AudienceSection defaults={{ targetIndustries: s.targetIndustries, targetRegions: s.targetRegions } as BrandAudienceInput} />
+        <CustomersSection defaults={{ valueProp: s.valueProp, icps, targetIndustries: s.targetIndustries, targetRegions: s.targetRegions } as ProfileInput & BrandAudienceInput} />
         <AccountSection role="brand" email={email} isDemo={isDemo} />
       </div>
     </div>

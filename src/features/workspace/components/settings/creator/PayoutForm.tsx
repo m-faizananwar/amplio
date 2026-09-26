@@ -8,14 +8,14 @@ import { FormField } from "@/features/profile-fields/components/FormField";
 import { type PayoutDetailsInput, payoutDetailsSchema } from "../../../schemas";
 import { updatePayoutDetails } from "../../../server/actions";
 import { SaveRow } from "../shared/SaveRow";
-import { SettingsSection } from "../shared/SettingsSection";
 import { useSectionForm } from "../shared/useSectionForm";
 
-type Props = { defaults: { method: "stripe" | "bank" | null; accountHolder: string; ibanLast4: string } };
+export type PayoutDefaults = { method: "stripe" | "bank" | null; accountHolder: string; ibanLast4: string };
+type Props = { defaults: PayoutDefaults };
 const IBAN_KEPT = 4;
 
 // Settings-only: where withdrawals go. The ledger stands in for the payment rail.
-export function PayoutSection({ defaults }: Props) {
+export function PayoutForm({ defaults }: Props) {
   const t = useTranslations("settings.creator.payouts");
   const { form, onSubmit } = useSectionForm<PayoutDetailsInput>({
     schema: payoutDetailsSchema,
@@ -25,8 +25,7 @@ export function PayoutSection({ defaults }: Props) {
   });
   const method = useWatch({ control: form.control, name: "method" });
   return (
-    <SettingsSection id="payouts" title={t("title")} description={t("description")}>
-      <form onSubmit={onSubmit} noValidate className="grid gap-5">
+    <form onSubmit={onSubmit} noValidate className="grid gap-5">
         <Controller control={form.control} name="method" render={({ field }) => (
           <SegmentedControl label={t("method.label")} value={field.value} onValueChange={field.onChange} options={[{ value: "bank", label: t("method.bank") }, { value: "stripe", label: t("method.stripe") }]} />
         )} />
@@ -45,6 +44,5 @@ export function PayoutSection({ defaults }: Props) {
         ) : null}
         <SaveRow form={form} label={t("save")} />
       </form>
-    </SettingsSection>
   );
 }
