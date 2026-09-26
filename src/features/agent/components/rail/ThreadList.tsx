@@ -31,7 +31,7 @@ export function ThreadList({ threads, current, onResume }: Props) {
     const Icon = th.kind === "call" ? Phone : MessageSquare;
     const meta = [now && th.updatedAt ? ago(th.updatedAt, now, locale) : null, th.kind === "call" && th.durationSec ? t("minutes", { n: minutesOf(th.durationSec) }) : null].filter(Boolean).join(" · ");
     return (
-      <li key={th.id}>
+      <li key={th.id} className="min-w-0">
         <button type="button" aria-current={th.id === current || undefined} onClick={() => onResume(th)} className="flex w-full min-w-0 items-center gap-2.5 rounded-control px-2.5 py-2 text-left outline-none transition-colors duration-(--duration-fast) hover:bg-well focus-visible:ring-2 focus-visible:ring-money aria-[current]:bg-well">
           <Icon className="size-3.5 shrink-0 text-ink-muted" aria-label={th.kind === "call" ? t("call") : t("chat")} />
           <span className="min-w-0 flex-1 truncate text-small aria-[current]:font-medium">{th.title}</span>
@@ -42,11 +42,11 @@ export function ThreadList({ threads, current, onResume }: Props) {
   };
 
   return (
-    <div className="grid gap-2">
+    <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-2">
       {groups.filter((g) => g.items.length).map((g) => (
-        <div key={g.key} className="grid gap-0.5">
+        <div key={g.key} className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-0.5">
           {g.key === "all" ? null : <p className="px-2.5 text-caption font-medium text-ink-muted">{t(g.key)}</p>}
-          <ul className="grid gap-0.5">{g.items.map(row)}</ul>
+          <ul className="grid grid-cols-[minmax(0,1fr)] gap-0.5">{g.items.map(row)}</ul>
         </div>
       ))}
       {real.length > SHOWN ? (

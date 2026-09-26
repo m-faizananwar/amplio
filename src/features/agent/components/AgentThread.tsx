@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import type { ConfirmEvent, StepEvent } from "../events";
 import { ConfirmCard } from "./ConfirmCard";
+import { MessageText } from "./MessageText";
 import { ResultCard } from "./ResultCard";
 import { StepGroup } from "./StepGroup";
 import { type AgentItem, type ConfirmState, STALE } from "./useAgentRun";
@@ -45,7 +46,7 @@ export function AgentThread({ items, confirms, sample, onSend, onDecide, onRetry
           case "user":
             return <li key={block.key} className="agent-rise h-fit min-w-12 max-w-[75%] justify-self-end rounded-card rounded-br-md bg-ink px-3.5 py-2.5 text-body break-words whitespace-pre-wrap text-paper">{item.text}</li>;
           case "message":
-            return <li key={block.key} className="agent-message text-lead leading-relaxed text-ink">{item.text.split(/(\s+)/).map((w, i) => <span key={i} style={{ animationDelay: `${Math.min(i, 120) * 18}ms` }}>{w}</span>)}</li>;
+            return <li key={block.key} className="grid gap-2 text-lead leading-relaxed text-ink"><MessageText text={item.text} /></li>;
           case "question":
             return (
               <li key={block.key} className={`agent-rise grid ${item.text ? "gap-3" : "-mt-2"}`}>

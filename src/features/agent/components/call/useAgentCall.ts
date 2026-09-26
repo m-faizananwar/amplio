@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { ConfirmEvent } from "../../events";
+import { speakable } from "../../speech";
 import { type AgentItem, type ConfirmState, useAgentRun } from "../useAgentRun";
 import { type CallEngineName, type CallMode, type CallStatus, isAppPath, SPOKEN_YES } from "./callTypes";
 import { type AgentVoiceSession, type CallEngine, createBrowserEngine, createVapiEngine, type EngineHandlers } from "./engines";
@@ -177,8 +178,8 @@ export function useAgentCall(role: "brand" | "creator", csrfToken: string) {
     const last = [...run.items].reverse().find((i) => i.type === "message");
     if (!last || last.type !== "message" || !last.final || spoken.current.has(last.id)) return;
     spoken.current.add(last.id);
-    engine.current?.speak(last.text);
-  }, [run.items, status, engineName]);
+    engine.current?.speak(speakable(last.text, locale === "fr" ? "fr" : "en"));
+  }, [run.items, status, engineName, locale]);
 
   useEffect(() => release, [release]);
 

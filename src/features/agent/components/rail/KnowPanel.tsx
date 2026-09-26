@@ -22,7 +22,7 @@ export function KnowPanel({ profile, notes, threads, current, onResume }: KnowPr
           {notes.length ? <ul className="grid gap-1">{[...new Set(notes)].map((n) => <li key={n} className="rounded-control bg-paper px-2.5 py-1.5 text-small">{n}</li>)}</ul> : <p className="text-small text-ink-muted">{t("noNotes")}</p>}
         </div>
       </section>
-      <section className="grid gap-2 rounded-card border border-rule bg-surface p-3 shadow-lift">
+      <section className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-2 rounded-card border border-rule bg-surface p-3 shadow-lift">
         <h2 className="px-1.5 text-small font-semibold">{t("threads")}</h2>
         <ThreadList threads={threads} current={current} onResume={onResume} />
       </section>

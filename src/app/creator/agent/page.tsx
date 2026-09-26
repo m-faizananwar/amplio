@@ -14,16 +14,17 @@ export async function generateMetadata(): Promise<Metadata> {
 
 // The agent, for the creator: a conversation that shows its steps and asks
 // before money moves. Off unless NEXT_PUBLIC_FF_AGENT_MODE=1.
-export default async function CreatorAgentPage() {
+// ?thread=<id> opens that conversation (the list only holds the newest)
+export default async function CreatorAgentPage({ searchParams }: { searchParams: Promise<{ thread?: string }> }) {
   if (!AGENT_MODE) notFound();
   const viewer = await getViewer();
   if (!viewer?.creator) redirect("/login");
-  const [t, notes, threads] = await Promise.all([getTranslations("agent"), listNotes(viewer.userId), listThreads(viewer.userId)]);
+  const [t, notes, threads, { thread }] = await Promise.all([getTranslations("agent"), listNotes(viewer.userId), listThreads(viewer.userId), searchParams]);
   const profile = [{ label: t("rail.handle"), value: `@${viewer.creator.handle}` }, { label: t("rail.headline"), value: viewer.creator.headline }];
   return (
     <>
       <PageHeader title={t("title")} description={t("description")} />
-      <AgentView role="creator" firstName={viewer.firstName} csrfToken={viewer.csrfToken} profile={profile} notes={notes} threads={threads.filter((th) => th.turns > 0)} />
+      <AgentView role="creator" firstName={viewer.firstName} csrfToken={viewer.csrfToken} profile={profile} notes={notes} threads={threads.filter((th) => th.turns > 0)} initialThread={thread ?? null} />
     </>
   );
 }

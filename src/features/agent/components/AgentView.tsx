@@ -13,7 +13,7 @@ import { KnowRail, type RailThread } from "./rail/KnowRail";
 import { dayTime, minutesOf, startedAt } from "./rail/threadTime";
 import { type ThreadMeta, useAgentRun } from "./useAgentRun";
 
-type Props = { role: "brand" | "creator"; firstName: string; csrfToken: string; profile: Array<{ label: string; value: string }>; notes: string[]; threads: RailThread[] };
+type Props = { role: "brand" | "creator"; firstName: string; csrfToken: string; profile: Array<{ label: string; value: string }>; notes: string[]; threads: RailThread[]; initialThread?: string | null };
 
 const STARTERS = { brand: ["find", "today", "campaign"], creator: ["find", "week", "earned"] } as const;
 
@@ -21,16 +21,21 @@ const STARTERS = { brand: ["find", "today", "campaign"], creator: ["find", "week
 // under it and the "what I know" rail beside it on wide screens. A call runs
 // in the floating widget; while one is on (or just ended), this page is its
 // full view: the same thread, with everything the widget shows in small.
-export function AgentView({ role, firstName, csrfToken, profile, notes, threads }: Props) {
+export function AgentView({ role, firstName, csrfToken, profile, notes, threads, initialThread = null }: Props) {
   const t = useTranslations("agent");
   const own = useAgentRun(role, csrfToken);
   const call = useCall();
   const run = call && call.status !== "idle" ? call.run : own;
   const live = call?.status === "live" || call?.status === "connecting";
   const locale = useLocale();
-  const [current, setCurrent] = useState<RailThread | null>(null);
+  const [current, setCurrent] = useState<RailThread | null>(() => (initialThread ? { id: initialThread, title: "" } : null));
   const [opened, setOpened] = useState<ThreadMeta | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(Boolean(initialThread));
+  const replay = own.replay;
+  // a deep link opens its thread once, on arrival
+  useEffect(() => {
+    if (initialThread) void replay(initialThread).then((meta) => { setOpened(meta); setLoading(false); });
+  }, [initialThread]); // eslint-disable-line react-hooks/exhaustive-deps -- once per link, not per render
   const end = useRef<HTMLDivElement>(null);
   const lastUser = [...run.items].reverse().find((i) => i.type === "user");
   useEffect(() => { end.current?.scrollIntoView({ block: "end", behavior: "smooth" }); }, [run.items.length]);

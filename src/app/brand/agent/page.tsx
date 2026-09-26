@@ -14,16 +14,17 @@ export async function generateMetadata(): Promise<Metadata> {
 
 // The agent, for the brand: a conversation that shows its steps and asks
 // before money moves. Off unless NEXT_PUBLIC_FF_AGENT_MODE=1.
-export default async function BrandAgentPage() {
+// ?thread=<id> opens that conversation (the list only holds the newest)
+export default async function BrandAgentPage({ searchParams }: { searchParams: Promise<{ thread?: string }> }) {
   if (!AGENT_MODE) notFound();
   const viewer = await getViewer();
   if (!viewer?.brand) redirect("/login");
-  const [t, notes, threads] = await Promise.all([getTranslations("agent"), listNotes(viewer.userId), listThreads(viewer.userId)]);
+  const [t, notes, threads, { thread }] = await Promise.all([getTranslations("agent"), listNotes(viewer.userId), listThreads(viewer.userId), searchParams]);
   const profile = [{ label: t("rail.company"), value: viewer.brand.company }];
   return (
     <>
       <PageHeader title={t("title")} description={t("description")} />
-      <AgentView role="brand" firstName={viewer.firstName} csrfToken={viewer.csrfToken} profile={profile} notes={notes} threads={threads.filter((th) => th.turns > 0)} />
+      <AgentView role="brand" firstName={viewer.firstName} csrfToken={viewer.csrfToken} profile={profile} notes={notes} threads={threads.filter((th) => th.turns > 0)} initialThread={thread ?? null} />
     </>
   );
 }
