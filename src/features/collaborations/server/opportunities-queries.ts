@@ -8,6 +8,7 @@ import type { OpportunityDto } from "../schemas";
 import { toBriefDto } from "./dto";
 import { cachedRead } from "@/db/cache";
 import { tag } from "@/lib/cache-tags";
+import { getBrandLogos } from "@/features/brand-onboarding/server/queries";
 
 const DAY_MS = 86_400_000;
 
@@ -32,7 +33,7 @@ async function loadOpportunities(creatorId: string): Promise<OpportunityDto[]> {
     .where(and(eq(campaigns.status, "active"), eq(campaigns.openToApplications, true)))
     .orderBy(asc(campaigns.createdAt));
 
-  const baseline = await getEngagementBaseline();
+  const [baseline, logos] = await Promise.all([getEngagementBaseline(), getBrandLogos(rows.map((r) => r.brand.id))]);
   const now = Date.now();
   return rows
     .map(({ campaign, brand, existingId, existingStatus }) => {
@@ -44,6 +45,7 @@ async function loadOpportunities(creatorId: string): Promise<OpportunityDto[]> {
         description: campaign.description,
         brandCompany: brand.company,
         brandInitial: brief.brandInitial,
+        brandLogoUrl: logos.get(brand.id) ?? null,
         brandWebsite: brand.website,
         industries: brief.targetIndustries,
         regions: brief.targetGeos,

@@ -2,7 +2,7 @@
 
 import { useFormatter, useTranslations } from "next-intl";
 import Link from "next/link";
-import { BrandMark } from "@/components/graphics/BrandMark";
+import { PartyAvatar } from "@/components/PartyAvatar";
 import { StatusChip, statusTone } from "@/components/ui/status-chip";
 import { ownerFor } from "@/lib/next-step";
 import type { CollaborationDto } from "../../schemas";
@@ -24,7 +24,7 @@ export function CreatorCollaborationRow({ c }: { c: CollaborationDto }) {
     <li className="vt-row bg-surface" style={listRowStyle(c.id)}>
       <Link href={`/creator/collaborations/${c.id}`} className="grid gap-2 px-5 py-4 transition-colors duration-(--duration-fast) ease-ledger hover:bg-tint focus-visible:bg-tint focus-visible:outline-none md:grid-cols-[minmax(0,1.3fr)_minmax(0,1.6fr)_7rem_7rem] md:items-center md:gap-4">
         <span className="flex min-w-0 items-center gap-3">
-          <BrandMark name={c.brandCompany} size="sm" />
+          <PartyAvatar kind="brand" name={c.brandCompany} src={c.brandLogoUrl} size="sm" />
           <span className="min-w-0">
             <span className="block truncate font-medium text-ink">{c.brandCompany}</span>
             <span className="block truncate text-small text-ink-muted">{c.campaignName}</span>

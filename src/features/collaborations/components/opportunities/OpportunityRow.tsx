@@ -3,7 +3,7 @@
 import { ChevronDown } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
-import { BrandMark } from "@/components/graphics/BrandMark";
+import { PartyAvatar } from "@/components/PartyAvatar";
 import type { OpportunityDto } from "../../schemas";
 import { FitRing } from "@/components/graphics/FitRing";
 import { listRowStyle } from "@/components/motion/useListTransition";
@@ -24,7 +24,7 @@ export function OpportunityRow({ opportunity: o, pending, onApply, onBrief }: Pr
     <li className="vt-row grid gap-3 bg-surface px-5 py-4" style={listRowStyle(o.campaignId)}>
       <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_6rem_auto_11rem] md:items-center md:gap-x-4">
         <div className="flex min-w-0 items-start gap-3">
-          <BrandMark name={o.brandCompany} />
+          <PartyAvatar kind="brand" name={o.brandCompany} src={o.brandLogoUrl} />
           <div className="min-w-0">
             <p className="truncate font-medium text-ink">{o.campaignName}</p>
             <p className="truncate text-small text-ink-muted">{o.brandCompany} · {t("channel")} · <span className="num">{due}</span></p>

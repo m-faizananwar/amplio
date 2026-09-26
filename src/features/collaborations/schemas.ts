@@ -106,6 +106,8 @@ export type CollaborationDto = {
   brandId: string;
   brandCompany: string;
   brandInitial: string;
+  /** The brand's uploaded logo, or null (then its trail mark is drawn). */
+  brandLogoUrl: string | null;
   brandWebsite: string | null;
   creatorId: string;
   creatorName: string;
@@ -168,6 +170,7 @@ export type OpportunityDto = {
   description: string;
   brandCompany: string;
   brandInitial: string;
+  brandLogoUrl: string | null;
   brandWebsite: string | null;
   industries: string[];
   regions: string[];

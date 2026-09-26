@@ -3,6 +3,7 @@ import { and, asc, desc, eq } from "drizzle-orm";
 import { getDb } from "@/db";
 import { brands, campaigns, collaborationEvents, collaborations } from "@/db/schema";
 import type { CampaignOption, CollaborationDetailDto, CollaborationDto, ViewerRole } from "../schemas";
+import { getBrandLogos } from "@/features/brand-onboarding/server/queries";
 import { appOrigin, trackedUrlFor } from "./app-url";
 import { collaborationSelect, isUuid, toBriefDto, toCollaborationDto, toEventDto } from "./dto";
 import { cachedRead } from "@/db/cache";
@@ -12,7 +13,8 @@ async function loadCreatorCollaborations(creatorId: string): Promise<Collaborati
   const rows = await collaborationSelect()
     .where(eq(collaborations.creatorId, creatorId))
     .orderBy(desc(collaborations.updatedAt));
-  return rows.map((r) => toCollaborationDto(r, "creator"));
+  const logos = await getBrandLogos(rows.map((r) => r.brandId));
+  return rows.map((r) => toCollaborationDto(r, "creator", logos));
 }
 
 async function loadBrandCollaborations(brandId: string): Promise<CollaborationDto[]> {
@@ -58,7 +60,7 @@ async function loadCollaborationDetail(scope: DetailArgs): Promise<Collaboration
 
   const trackedUrl = trackedUrlFor(row.trackingCode, scope.origin);
   return {
-    collaboration: toCollaborationDto(row, scope.role),
+    collaboration: toCollaborationDto(row, scope.role, scope.role === "creator" ? await getBrandLogos([row.brandId]) : undefined),
     events: events.map(toEventDto),
     brief: toBriefDto(campaignRow.campaign, campaignRow.brand, trackedUrl),
     trackedUrl,

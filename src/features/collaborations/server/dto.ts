@@ -50,7 +50,8 @@ export function collaborationSelect() {
 
 export type CollaborationRow = Awaited<ReturnType<ReturnType<typeof collaborationSelect>["execute"]>>[number];
 
-export function toCollaborationDto(row: CollaborationRow, role: ViewerRole): CollaborationDto {
+// `logos`: brand logos by brand id, for the creator's side (a brand sees creators).
+export function toCollaborationDto(row: CollaborationRow, role: ViewerRole, logos?: Map<string, string>): CollaborationDto {
   const c = row.collab;
   return {
     id: c.id,
@@ -61,6 +62,7 @@ export function toCollaborationDto(row: CollaborationRow, role: ViewerRole): Col
     brandId: row.brandId,
     brandCompany: row.brandCompany,
     brandInitial: initialOf(row.brandCompany),
+    brandLogoUrl: logos?.get(row.brandId) ?? null,
     brandWebsite: row.brandWebsite,
     creatorId: c.creatorId,
     creatorName: `${row.creatorFirstName} ${row.creatorLastName}`.trim(),
