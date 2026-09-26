@@ -7,6 +7,7 @@ import { getPublicCard } from "@/features/workspace/server/card-queries";
 import { pickCollaborations } from "../../collab-list";
 import { DRAFT_PREVIEW_MAX } from "../../constants";
 import { messageTool } from "./brand-write";
+import { withCollabWords } from "./collab-words";
 import { type ConfirmTool, day, euros, L, num, obj, type ReadTool, str, type ToolContext } from "./types";
 
 const LIST_LIMIT = 8;
@@ -46,7 +47,7 @@ const getCollaborations: ReadTool = {
   async run(ctx, a) {
     const rows = await listCreatorCollaborations(creatorId(ctx));
     const { total, items } = pickCollaborations(rows, { role: "creator", filter: a.filter, limit: a.limit, counterpart: (c) => c.brandCompany });
-    return { summary: `${total} collaborations · ${items.length} shown`, data: { total, shown: items.length, items }, result: { type: "result", kind: "collaborations", title: "Your collaborations", items } };
+    return { summary: `${total} collaborations · ${items.length} shown`, data: { total, shown: items.length, items: await withCollabWords(items, "creator", ctx.locale) }, result: { type: "result", kind: "collaborations", title: "Your collaborations", items } };
   },
 };
 

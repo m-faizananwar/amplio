@@ -186,7 +186,12 @@
     "creators_out_of_budget": "Créateurs hors budget",
     "opening_the_page": "Ouverture de la page",
     "already_on_it": "Déjà sur la campagne",
-    "reading_the_campaign": "Lecture de la campagne"
+    "reading_the_campaign": "Lecture de la campagne",
+    "next_needs_you": "à vous de jouer",
+    "next_waiting_brand": "en attente du créateur",
+    "next_waiting_creator": "en attente de la marque",
+    "next_live": "en ligne",
+    "next_done": "terminé"
   },
   "call": {
     "start": "Appeler en mode agent",

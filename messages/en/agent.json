@@ -186,7 +186,12 @@
     "creators_out_of_budget": "Creators out of budget",
     "opening_the_page": "Opening the page",
     "already_on_it": "Already on it",
-    "reading_the_campaign": "Reading the campaign"
+    "reading_the_campaign": "Reading the campaign",
+    "next_needs_you": "your move",
+    "next_waiting_brand": "waiting on the creator",
+    "next_waiting_creator": "waiting on the brand",
+    "next_live": "live",
+    "next_done": "done"
   },
   "call": {
     "start": "Call in agentic mode",

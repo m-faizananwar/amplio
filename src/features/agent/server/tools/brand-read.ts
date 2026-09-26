@@ -9,6 +9,7 @@ import { billingBucketsNow, walletCentsNow } from "@/features/payouts/server/que
 import { pickCollaborations } from "../../collab-list";
 import type { CreatorCard } from "../../events";
 import { describeFilters, searchLimit } from "../../filters";
+import { withCollabWords } from "./collab-words";
 import { arr, euros, L, num, obj, type ReadTool, str, type ToolContext } from "./types";
 
 
@@ -95,7 +96,7 @@ const listCollaborations: ReadTool = {
   async run(ctx, a) {
     const rows = await listBrandCollaborations(brandId(ctx));
     const { total, items } = pickCollaborations(rows, { role: "brand", filter: a.filter, limit: a.limit, counterpart: (c) => c.creatorName });
-    return { summary: `${total} collaborations · ${items.length} shown`, data: { total, shown: items.length, items }, result: { type: "result", kind: "collaborations", title: "Collaborations", items } };
+    return { summary: `${total} collaborations · ${items.length} shown`, data: { total, shown: items.length, items: await withCollabWords(items, "brand", ctx.locale) }, result: { type: "result", kind: "collaborations", title: "Collaborations", items } };
   },
 };
 
