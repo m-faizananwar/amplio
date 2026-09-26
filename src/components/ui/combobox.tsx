@@ -1,7 +1,7 @@
 "use client"
 
 import { Combobox as ComboboxPrimitive } from "@base-ui/react/combobox"
-import { Check, ChevronsUpDown } from "lucide-react"
+import { Check, ChevronDown } from "lucide-react"
 import { cn } from "@/lib/cn"
 
 export type ComboboxOption = { value: string; label: string; hint?: string }
@@ -35,27 +35,27 @@ export function Combobox({ options, value, onValueChange, placeholder, emptyText
           id={id}
           placeholder={placeholder}
           aria-label={aria["aria-label"]}
-          className="h-9 w-full rounded-control border border-input bg-surface pr-9 pl-3 text-body text-ink outline-none transition-[border-color,box-shadow] duration-(--duration-fast) ease-ledger placeholder:text-ink-muted hover:border-ink-muted/60 focus-visible:border-ink focus-visible:ring-3 focus-visible:ring-ink/10"
+          className="field-control pr-12"
         />
-        <ComboboxPrimitive.Trigger className="absolute inset-y-0 right-0 grid w-9 place-items-center text-ink-muted" aria-label="Show options">
-          <ChevronsUpDown className="size-4" aria-hidden="true" />
+        <ComboboxPrimitive.Trigger className="group/cb absolute inset-y-0 right-3.5 flex items-center" aria-label="Show options">
+          <span className="field-chevron group-data-[popup-open]/cb:rotate-180"><ChevronDown aria-hidden="true" /></span>
         </ComboboxPrimitive.Trigger>
       </div>
       <ComboboxPrimitive.Portal>
         <ComboboxPrimitive.Positioner sideOffset={6} className="z-50 outline-none">
-          <ComboboxPrimitive.Popup className="max-h-72 w-(--anchor-width) origin-(--transform-origin) overflow-y-auto rounded-control border border-rule bg-surface p-1 text-body shadow-float transition-[opacity,scale] duration-(--duration-fast) ease-ledger data-ending-style:scale-95 data-ending-style:opacity-0 data-starting-style:scale-95 data-starting-style:opacity-0">
+          <ComboboxPrimitive.Popup className="dropdown-panel max-h-72 w-(--anchor-width) overflow-y-auto p-1.5 text-body">
             <ComboboxPrimitive.Empty className="px-2.5 py-2 text-small text-ink-muted empty:hidden">{emptyText}</ComboboxPrimitive.Empty>
             <ComboboxPrimitive.List>
               {(option: ComboboxOption) => (
                 <ComboboxPrimitive.Item
                   key={option.value}
                   value={option}
-                  className="flex cursor-default items-center gap-2 rounded-[6px] px-2.5 py-1.5 text-ink outline-none select-none data-highlighted:bg-tint"
+                  className="dropdown-option"
                 >
-                  <span className="flex-1 truncate">{option.label}</span>
+                  <span className="min-w-0 flex-1 truncate">{option.label}</span>
                   {option.hint ? <span className="num text-caption text-ink-muted">{option.hint}</span> : null}
                   <ComboboxPrimitive.ItemIndicator>
-                    <Check className="size-4" aria-hidden="true" />
+                    <Check className="dropdown-check" aria-hidden="true" />
                   </ComboboxPrimitive.ItemIndicator>
                 </ComboboxPrimitive.Item>
               )}

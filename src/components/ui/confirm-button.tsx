@@ -10,8 +10,8 @@ type Props = {
   onConfirm: () => void | Promise<void>
   disabled?: boolean
   size?: "default" | "sm" | "xs" | "lg"
-  /** Danger for deleting; primary for a deliberate money move (releasing a fee). */
-  variant?: "danger" | "primary"
+  /** At rest: danger for deleting, money for a deliberate money move (releasing a fee). Armed is always danger. */
+  variant?: "danger" | "primary" | "money" | "quiet"
   className?: string
 }
 
@@ -48,7 +48,7 @@ export function ConfirmButton({ children, confirmLabel, onConfirm, disabled, siz
   return (
     <Button
       type="button"
-      variant={variant}
+      variant={armed ? "danger" : variant}
       size={size}
       className={className}
       disabled={disabled || busy}

@@ -27,7 +27,7 @@ export function MultiSelectPill({ label, options, selected, onChange, searchPlac
     <Popover>
       <PopoverTrigger
         render={
-          <Button type="button" variant="secondary" size="sm" className={pillClass(active)} />
+          <Button type="button" variant="chip" size="sm" className={pillClass(active)} />
         }
       >
         {label}

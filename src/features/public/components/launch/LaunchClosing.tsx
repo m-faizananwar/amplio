@@ -32,7 +32,7 @@ export async function LaunchClosing({ trail }: { trail: PublicTrail | null }) {
           </li>
         ))}
       </ol>
-      <Link href={href} className={cn(buttonVariants({ variant: key === "brands" ? "primary" : "secondary", size: "lg" }), "mt-8")}>
+      <Link href={href} className={cn(buttonVariants({ variant: key === "brands" ? "solid" : "line", size: "lg" }), "mt-8")}>
         {t(`start.${key}.cta`)} <ArrowRight aria-hidden="true" />
       </Link>
     </div>

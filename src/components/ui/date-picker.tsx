@@ -1,7 +1,7 @@
 "use client"
 
 import { addDays, addMonths, endOfMonth, endOfWeek, format, isBefore, isSameDay, isSameMonth, parseISO, startOfMonth, startOfWeek } from "date-fns"
-import { CalendarDays, ChevronLeft, ChevronRight } from "lucide-react"
+import { CalendarDays, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react"
 import { useState } from "react"
 import { cn } from "@/lib/cn"
 import { Button } from "./button"
@@ -24,8 +24,9 @@ type Props = {
 const ISO = "yyyy-MM-dd"
 const MON: { weekStartsOn: 1 } = { weekStartsOn: 1 }
 
-// A trigger that reads like an input and opens a one-month grid. Days are
-// real buttons (Tab/Enter work); days before `min` are disabled, not hidden.
+// A field whose value reads as segmented chips (day · month · year) and opens
+// a one-month grid in the panel style. Days are real buttons (Tab/Enter work);
+// days before `min` are disabled, not hidden.
 export function DatePicker({ value, onValueChange, min, placeholder, id, weekdayLabels = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"], previousLabel = "Previous month", nextLabel = "Next month", className }: Props) {
   const selected = value ? parseISO(value) : null
   const [open, setOpen] = useState(false)
@@ -41,14 +42,18 @@ export function DatePicker({ value, onValueChange, min, placeholder, id, weekday
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger
         id={id}
-        className={cn(
-          "inline-flex h-9 w-full items-center justify-between gap-2 rounded-control border border-input bg-surface px-3 text-left text-body outline-none transition-[border-color,box-shadow] duration-(--duration-fast) ease-ledger hover:border-ink-muted/60 focus-visible:border-ink focus-visible:ring-3 focus-visible:ring-ink/10",
-          selected ? "text-ink" : "text-ink-muted",
-          className
-        )}
+        data-empty={!selected}
+        className={cn("field-control", className)}
       >
-        <span className={selected ? "num" : undefined}>{selected ? format(selected, "d MMM yyyy") : placeholder}</span>
-        <CalendarDays className="size-4 text-ink-muted" aria-hidden="true" />
+        <CalendarDays className="size-4 shrink-0 text-ink-muted" aria-hidden="true" />
+        {selected ? (
+          <span className="flex items-center gap-1" aria-label={format(selected, "d MMMM yyyy")}>
+            <span className="field-segment">{format(selected, "dd")}</span>
+            <span className="field-segment">{format(selected, "MMM")}</span>
+            <span className="field-segment">{format(selected, "yyyy")}</span>
+          </span>
+        ) : <span className="truncate text-ink-muted">{placeholder}</span>}
+        <span className="field-chevron"><ChevronDown aria-hidden="true" /></span>
       </PopoverTrigger>
       <PopoverContent align="start" className="w-72 gap-2 p-3">
         <div className="flex items-center justify-between">
@@ -70,9 +75,9 @@ export function DatePicker({ value, onValueChange, min, placeholder, id, weekday
                 aria-pressed={isSelected}
                 aria-label={format(day, "d MMMM yyyy")}
                 className={cn(
-                  "num grid h-8 place-items-center rounded-[6px] text-small outline-none transition-colors duration-(--duration-fast) focus-visible:ring-2 focus-visible:ring-ink/20 disabled:pointer-events-none disabled:opacity-35",
+                  "num grid h-9 place-items-center rounded-full text-small outline-none transition-colors duration-(--duration-fast) focus-visible:ring-2 focus-visible:ring-money disabled:pointer-events-none disabled:opacity-35",
                   isSameMonth(day, month) ? "text-ink" : "text-ink-muted/60",
-                  isSelected ? "bg-ink text-paper" : "hover:bg-tint",
+                  isSelected ? "bg-money text-surface" : "hover:bg-well",
                   isSameDay(day, new Date()) && !isSelected && "font-semibold underline underline-offset-4"
                 )}
               >

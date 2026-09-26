@@ -36,7 +36,7 @@ export function PriceFilter({ min, max, count }: Props) {
   const summary = active ? `${euros(min ?? 0)} – ${max !== undefined ? euros(max) : "∞"}` : t("label");
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger render={<Button type="button" variant="secondary" size="sm" className={pillClass(active)} />}>
+      <PopoverTrigger render={<Button type="button" variant="chip" size="sm" className={pillClass(active)} />}>
         <span className={active ? "num" : undefined}>{summary}</span>
         <ChevronDown className="size-3.5 opacity-60" aria-hidden="true" />
       </PopoverTrigger>

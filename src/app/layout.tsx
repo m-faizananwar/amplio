@@ -8,8 +8,11 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { RouteProgress } from "@/components/motion/RouteProgress";
 import { ScrollMorph } from "@/components/motion/ScrollMorph";
 import { Toaster } from "@/components/ui/sonner";
+import { GooFilter } from "@/components/ui/button";
 import "./globals.css";
 import "@/styles/interaction.css";
+import "@/styles/blob-button.css";
+import "@/styles/fields.css";
 
 import { BRAND } from "@/config/brand";
 
@@ -50,6 +53,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
       </head>
       <body className="flex min-h-full flex-col">
+        <GooFilter />
         <RouteProgress />
         <ScrollMorph />
         {children}

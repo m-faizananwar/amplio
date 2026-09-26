@@ -47,7 +47,7 @@ export function BrandActions({ collaboration: c, csrfToken, action }: Props) {
     return (
       <ActionPanel title={t("pay.title")} description={t("pay.description", v)}>
         {/* Money leaves the brand on this click and can't come back: two clicks, like a delete. */}
-        <ConfirmButton variant="primary" disabled={isPending} confirmLabel={t("pay.confirm", v)} onConfirm={async () => { await run("paid", () => payCollaboration(base), t("toasts.paid", v)); }}>{t("pay.action", v)}</ConfirmButton>
+        <ConfirmButton variant="money" disabled={isPending} confirmLabel={t("pay.confirm", v)} onConfirm={async () => { await run("paid", () => payCollaboration(base), t("toasts.paid", v)); }}>{t("pay.action", v)}</ConfirmButton>
       </ActionPanel>
     );
   }

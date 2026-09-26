@@ -1,0 +1,177 @@
+/* Fields (docs/design/DIRECTION.md, "Text fields" and "Dropdowns"). One finish
+   for every control that takes input: a 44px zinc well, a darker press on
+   hover, white with a soft accent ring and a 1px spring lift on focus or when
+   open, a red ring when invalid. Components add the classes; the states live
+   here so Input, Textarea, Select, Combobox and DatePicker can't drift. */
+@layer components {
+  .field-control {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    height: 44px;
+    align-items: center;
+    gap: 8px;
+    padding: 0 14px;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-control);
+    background: var(--well);
+    color: var(--ink);
+    font-size: 14px;
+    line-height: 20px;
+    text-align: left;
+    outline: none;
+    transition:
+      background-color var(--duration-fast) var(--ease-ledger),
+      border-color var(--duration-fast) var(--ease-ledger),
+      box-shadow var(--duration-slow) var(--ease-ledger),
+      translate var(--duration-slow) var(--ease-spring);
+  }
+  .field-control::placeholder { color: var(--ink-muted); }
+  .field-control[data-placeholder] { color: var(--ink-muted); }
+  .field-control:hover:not(:disabled, :focus, [data-popup-open]) { background: var(--press); }
+  .field-control:is(:focus, :focus-visible, [data-popup-open], [aria-expanded="true"]),
+  .field-shell:focus-within > .field-control {
+    background: var(--surface);
+    border-color: var(--money);
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--money) 16%, transparent);
+    translate: 0 -1px;
+  }
+  .field-control[aria-invalid="true"] {
+    border-color: var(--failure);
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--failure) 14%, transparent);
+  }
+  .field-control:disabled { cursor: not-allowed; opacity: 0.6; }
+  textarea.field-control { height: auto; min-height: 96px; align-items: flex-start; padding: 11px 14px; line-height: 1.5; }
+  .field-control--sm { height: 36px; padding: 0 12px; font-size: 13px; }
+
+  /* The label above: 13px, 600, zinc-700; accent while its field is focused or open. */
+  .field-label { font-size: 13px; font-weight: 600; line-height: 18px; color: var(--label); transition: color var(--duration-fast) var(--ease-ledger); }
+  [data-slot="field"]:has(:focus-visible, :focus, [data-popup-open]) > .field-label { color: var(--money); }
+  .field-error { display: flex; align-items: center; gap: 6px; font-size: 12px; line-height: 16px; color: var(--failure); }
+  .field-error svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  /* Leading icon in a 28px rounded square. Filled accent square pops in behind
+     it (spring, 450 ms) when the field has a value or focus. */
+  .field-shell { position: relative; display: flex; width: 100%; min-width: 0; }
+  .field-shell > .field-control { padding-left: 46px; }
+  .field-icon {
+    position: absolute;
+    top: 50%;
+    left: 8px;
+    z-index: 1;
+    display: grid;
+    width: 28px;
+    height: 28px;
+    margin-top: -14px;
+    place-items: center;
+    border-radius: 9px;
+    color: var(--ink-muted);
+    pointer-events: none;
+  }
+  .field-shell:has(textarea) > .field-icon { top: 8px; margin-top: 0; }
+  .field-icon::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--money);
+    box-shadow: 0 4px 10px -2px color-mix(in oklab, var(--money) 45%, transparent);
+    opacity: 0;
+    transform: scale(0.4);
+    transition: transform 450ms var(--ease-spring), opacity var(--duration-fast) var(--ease-ledger);
+  }
+  .field-icon svg { position: relative; width: 16px; height: 16px; transition: transform 450ms var(--ease-spring), color var(--duration-fast) var(--ease-ledger); }
+  .field-shell:is(:focus-within, [data-filled="true"]) > .field-icon::before { opacity: 1; transform: scale(1); }
+  .field-shell:is(:focus-within, [data-filled="true"]) > .field-icon { color: var(--surface); }
+  .field-shell:is(:focus-within, [data-filled="true"]) > .field-icon svg { transform: scale(1.1); }
+
+  /* Select / combobox / date: the chevron sits in a 28px round zinc chip
+     that turns 180° while the panel is open. */
+  .field-chevron {
+    display: grid;
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    margin-right: -8px;
+    margin-left: auto;
+    place-items: center;
+    border-radius: 999px;
+    background: var(--tint);
+    color: var(--ink-muted);
+    transition: transform var(--duration-slow) var(--ease-ledger), background-color var(--duration-fast) var(--ease-ledger);
+  }
+  .field-chevron svg { width: 14px; height: 14px; }
+  :is([data-popup-open], [aria-expanded="true"]) > .field-chevron,
+  :is([data-popup-open], [aria-expanded="true"]) ~ .field-chevron,
+  [data-popup-open] .field-chevron { transform: rotate(180deg); }
+
+  /* Date as segmented chips: day · month · year in small wells. */
+  .field-segment { display: inline-grid; min-width: 32px; height: 28px; place-items: center; padding: 0 8px; border-radius: 8px; background: var(--tint); font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 13px; }
+  .field-control[data-empty="true"] .field-segment { color: var(--ink-muted); }
+
+  /* The dropdown panel: radius 16, white, deep soft shadow, opens .97 → 1 from the trigger edge. */
+  .dropdown-panel {
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-panel);
+    background: var(--surface);
+    box-shadow: var(--panel-shadow);
+    transform-origin: var(--transform-origin);
+    transition: opacity var(--duration-fast) var(--ease-ledger), scale var(--duration-fast) var(--ease-ledger);
+  }
+  .dropdown-panel:is([data-starting-style], [data-ending-style]) { opacity: 0; scale: 0.97; }
+  .dropdown-option {
+    display: flex;
+    min-height: 36px;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    border-radius: 10px;
+    color: var(--ink);
+    cursor: default;
+    outline: none;
+    user-select: none;
+    transition: background-color var(--duration-fast) var(--ease-ledger);
+  }
+  .dropdown-option:is([data-highlighted], :hover) { background: var(--well); }
+  .dropdown-option[data-disabled] { opacity: 0.5; pointer-events: none; }
+  /* the selected option's check draws in */
+  .dropdown-check { width: 16px; height: 16px; margin-left: auto; color: var(--money); }
+  .dropdown-check path, .dropdown-check polyline { stroke-dasharray: 24; stroke-dashoffset: 24; animation: dropdown-check-draw var(--duration-slow) var(--ease-ledger) forwards; }
+  @keyframes dropdown-check-draw { to { stroke-dashoffset: 0; } }
+
+  /* Switch: 36×22 inset track, a 16px white thumb that springs 16px; on = accent. */
+  .switch-track {
+    position: relative;
+    display: inline-flex;
+    width: 36px;
+    height: 22px;
+    flex-shrink: 0;
+    align-items: center;
+    padding: 3px 2px;
+    border-radius: 999px;
+    background: var(--rule-strong);
+    box-shadow: inset 0 1px 2px rgb(16 24 40 / 0.18);
+    cursor: pointer;
+    outline: none;
+    transition: background-color var(--duration-base) var(--ease-ledger);
+  }
+  .switch-track[data-checked] { background: var(--money); }
+  .switch-track[data-disabled] { cursor: not-allowed; opacity: 0.5; }
+  .switch-track:focus-visible { outline: 2px solid var(--money); outline-offset: 2px; }
+  .switch-thumb {
+    display: block;
+    width: 16px;
+    height: 16px;
+    border-radius: 999px;
+    background: #fff;
+    box-shadow: 0 1px 2px rgb(16 24 40 / 0.2);
+    transition: translate var(--duration-slow) var(--ease-spring);
+  }
+  .switch-thumb[data-checked] { translate: 16px 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .field-control, .field-icon::before, .field-icon svg, .field-chevron, .switch-thumb, .dropdown-panel { transition: none !important; }
+  .field-control:is(:focus, :focus-visible, [data-popup-open]), .field-shell:focus-within > .field-control { translate: none; }
+  .dropdown-check path, .dropdown-check polyline { animation: none; stroke-dashoffset: 0; }
+}

@@ -20,7 +20,7 @@ export function ActivityFilter({ value }: { value: ActivityWindow }) {
   const active = value !== "any";
   return (
     <Popover open={open} onOpenChange={(next) => { setOpen(next); if (next) setDraft(value); }}>
-      <PopoverTrigger render={<Button type="button" variant="secondary" size="sm" className={pillClass(active)} />}>
+      <PopoverTrigger render={<Button type="button" variant="chip" size="sm" className={pillClass(active)} />}>
         <SlidersHorizontal className="size-3.5" aria-hidden="true" />
         {active ? t("active", { window: t(`windows.${value}`) }) : t("label")}
         <ChevronDown className="size-3.5 opacity-60" aria-hidden="true" />

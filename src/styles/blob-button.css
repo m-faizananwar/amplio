@@ -1,0 +1,150 @@
+/* The blob button (docs/design/DIRECTION.md, "Buttons"). A pill with a 2px
+   border on ::before, a solid offset shadow on ::after that tucks back on
+   hover, a white inner surface, and four round blobs that rise from below
+   through the goo filter (#goo, defined once in the root layout) and merge
+   into one liquid fill. Colours are per variant; everything is tokens. */
+
+/* In the components layer, so a caller's utilities (w-full, hidden sm:inline-flex)
+   still win over the pill's own layout. */
+@layer components {
+  .blob-btn {
+    --blob-color: var(--ink);
+    --blob-border: var(--ink);
+    --blob-label: var(--ink);
+    --blob-on: var(--surface);
+    position: relative;
+    z-index: 0;
+    isolation: isolate;
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 34px;
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--blob-label);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    outline: none;
+    transition: color 500ms var(--ease-ledger);
+  }
+  .blob-btn svg { width: 16px; height: 16px; flex-shrink: 0; pointer-events: none; }
+
+  .blob-btn--sm { padding: 8px 18px; font-size: 12px; gap: 8px; }
+  .blob-btn--sm:has(> .blob-btn__icon) { padding: 8px 18px 8px 8px; }
+  .blob-btn--sm svg { width: 14px; height: 14px; }
+
+  .blob-btn--money { --blob-color: var(--money); --blob-border: var(--money); --blob-label: var(--money); }
+  .blob-btn--quiet { --blob-color: var(--ink); --blob-border: var(--rule-strong); --blob-label: var(--ink); }
+  .blob-btn--danger { --blob-color: var(--failure); --blob-border: var(--failure); --blob-label: var(--failure); }
+  .dark .blob-btn--money, .dark .blob-btn--danger { --blob-on: var(--paper); }
+
+  /* the border */
+  .blob-btn::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border: 2px solid var(--blob-border);
+    border-radius: inherit;
+    pointer-events: none;
+  }
+  /* the offset shadow: under the pill at rest, tucked back on hover */
+  .blob-btn::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    border-radius: inherit;
+    background: var(--blob-border);
+    transform: translate3d(3px, 3px, 0);
+    transition: transform 450ms var(--ease-ledger);
+  }
+
+  .blob-btn__inner {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    border-radius: inherit;
+    background: var(--surface);
+  }
+  .blob-btn__blobs { position: relative; display: block; height: 100%; filter: url("#goo"); }
+  .blob-btn__blob {
+    position: absolute;
+    top: 2px;
+    width: 25%;
+    height: 100%;
+    border-radius: 100%;
+    background: var(--blob-color);
+    transform: translate3d(0, 150%, 0) scale(1.4);
+    transition: transform 450ms var(--ease-ledger);
+  }
+  .blob-btn__blob:nth-child(1) { left: 0; transition-delay: 0ms; }
+  .blob-btn__blob:nth-child(2) { left: 30%; transition-delay: 80ms; }
+  .blob-btn__blob:nth-child(3) { left: 60%; transition-delay: 160ms; }
+  .blob-btn__blob:nth-child(4) { left: 90%; transition-delay: 240ms; }
+
+  .blob-btn__label { position: relative; display: inline-flex; align-items: center; gap: inherit; }
+  .blob-btn__icon {
+    position: relative;
+    display: grid;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    place-items: center;
+    margin: -9px 0 -9px -20px;
+    border-radius: 50%;
+    background: var(--blob-color);
+    color: var(--blob-on);
+    transition: transform 450ms var(--ease-spring);
+  }
+  .blob-btn--sm .blob-btn__icon { width: 26px; height: 26px; margin: 0; }
+
+  /* filled: hover, keyboard focus, and the armed step of a two-click confirm */
+  .blob-btn:is(:hover, :focus-visible, [data-armed]):not(:disabled) { color: var(--blob-on); }
+  .blob-btn:is(:hover, :focus-visible, [data-armed]):not(:disabled)::after { transform: translate3d(0, 0, 0); }
+  .blob-btn:is(:hover, :focus-visible, [data-armed]):not(:disabled) .blob-btn__blob { transform: translateZ(0) scale(1.4); }
+  .blob-btn:is(:hover, :focus-visible):not(:disabled) .blob-btn__icon { transform: rotate(90deg); background: var(--blob-on); color: var(--blob-color); }
+  .blob-btn:is(:hover, :focus-visible):not(:disabled) .blob-btn__label,
+  .group:hover .blob-btn:not(:disabled) .blob-btn__label { animation: blob-bounce 450ms var(--ease-spring); }
+  .blob-btn:focus-visible { outline: 2px solid var(--money); outline-offset: 3px; }
+
+  /* A link styled with buttonVariants() has no blob markup: it fills flat. */
+  .blob-btn:not(:has(.blob-btn__inner)) { background: var(--surface); transition: color 500ms var(--ease-ledger), background-color 300ms var(--ease-ledger); }
+  .blob-btn:not(:has(.blob-btn__inner)):is(:hover, :focus-visible) { background: var(--blob-color); }
+
+  @keyframes blob-bounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+  }
+
+  /* Without the goo filter the blobs don't merge: make them big enough to cover. */
+  @supports not (filter: url("#goo")) {
+    .blob-btn__blob { transform: translate3d(0, 150%, 0) scale(1.7); }
+    .blob-btn:is(:hover, :focus-visible, [data-armed]) .blob-btn__blob { transform: translateZ(0) scale(1.7); }
+  }
+
+  .blob-btn:disabled, .blob-btn[aria-disabled="true"] {
+    --blob-border: var(--rule-strong);
+    color: var(--ink-muted);
+    cursor: not-allowed;
+  }
+  .blob-btn:disabled::after, .blob-btn:disabled .blob-btn__blobs { display: none; }
+  .blob-btn:disabled .blob-btn__icon { background: var(--rule); color: var(--ink-muted); }
+
+  /* Reduced motion: the fill appears without travel. */
+  @media (prefers-reduced-motion: reduce) {
+    .blob-btn, .blob-btn::after, .blob-btn__blob, .blob-btn__icon { transition: none; }
+    .blob-btn__blob { transition-delay: 0ms !important; }
+    .blob-btn .blob-btn__label { animation: none !important; }
+  }
+}
