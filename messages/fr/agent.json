@@ -191,7 +191,8 @@
     "next_waiting_brand": "en attente du créateur",
     "next_waiting_creator": "en attente de la marque",
     "next_live": "en ligne",
-    "next_done": "terminé"
+    "next_done": "terminé",
+    "status_invited_brand": "Invitée"
   },
   "call": {
     "start": "Appeler en mode agent",

@@ -191,7 +191,8 @@
     "next_waiting_brand": "waiting on the creator",
     "next_waiting_creator": "waiting on the brand",
     "next_live": "live",
-    "next_done": "done"
+    "next_done": "done",
+    "status_invited_brand": "Invited"
   },
   "call": {
     "start": "Call in agentic mode",

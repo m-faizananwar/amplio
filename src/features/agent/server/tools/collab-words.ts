@@ -14,5 +14,8 @@ export async function withCollabWords<T extends Item>(items: T[], role: "brand" 
     getTranslations({ locale, namespace: "agent.labels" }),
   ]);
   const next = (key: NextStepFilter) => labels(key === "waiting" ? `next_waiting_${role}` : `next_${key}`);
-  return items.map((c) => ({ ...c, statusLabel: status(c.status), nextStep: next(c.nextAction) }));
+  // the app's "invited" label is the creator's ("Invitation reçue"); a brand
+  // reads it from its own side, as the agent's cards do
+  const label = (s: CollaborationStatus) => (s === "invited" && role === "brand" ? labels("status_invited_brand") : status(s));
+  return items.map((c) => ({ ...c, statusLabel: label(c.status), nextStep: next(c.nextAction) }));
 }

@@ -21,6 +21,8 @@ describe("collaborations in the model's words", () => {
       { id: "c2", status: "invited", nextAction: "waiting", statusLabel: "Invited", nextStep: "waiting on the creator" },
     ]);
     const fr = await withCollabWords(items, "creator", "fr");
-    expect(fr.map((c) => [c.statusLabel, c.nextStep])).toEqual([["Brouillon envoyé", "à vous de jouer"], [expect.any(String), "en attente de la marque"]]);
+    expect(fr.map((c) => [c.statusLabel, c.nextStep])).toEqual([["Brouillon envoyé", "à vous de jouer"], ["Invitation reçue", "en attente de la marque"]]);
+    // a brand reads "invited" from its own side, as the cards do
+    expect((await withCollabWords(items, "brand", "fr"))[1].statusLabel).toBe("Invitée");
   });
 });
