@@ -15,7 +15,7 @@ type Step = "website" | "profile";
 export async function BrandSetupView({ profile, logo, step }: { profile: OnboardingProfileDto; logo: string | null; step?: string }) {
   const t = await getTranslations("onboarding");
   const hasDraft = !!profile.website && (profile.valueProp.trim().length > 0 || profile.icps.some((i) => i.title.trim()));
-  const progress = brandSetup({ hasWebsite: !!profile.website, onboarded: profile.onboarded, completedAt: null });
+  const progress = brandSetup({ hasWebsite: hasDraft, onboarded: profile.onboarded, completedAt: null });
   const current: Step = step === "website" || step === "profile" ? step : hasDraft ? "profile" : "website";
   const done = (k: string) => progress.steps.find((x) => x.key === k)?.done ?? false;
   const tabs = [
