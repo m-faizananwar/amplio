@@ -54,14 +54,14 @@ export function StatCard({ label, value, format, hint, delta, spark, tone = "ink
   )
   // A column that fills its grid cell: cards in a row share one height and
   // "Show rows" sits bottom-right however long the caption runs.
-  const frame = "group/stat flex h-full w-full flex-col rounded-card border border-rule bg-surface p-5 text-left"
+  const frame = "group/stat flex h-full w-full flex-col rounded-card border border-rule bg-surface p-5 text-left shadow-lift"
   if (!onOpen) return <div data-slot="stat-card" className={cn(frame, className)}>{body}</div>
   return (
     <button
       type="button"
       data-slot="stat-card"
       onClick={onOpen}
-      className={cn(frame, "outline-none transition-[border-color,transform] duration-(--duration-fast) ease-ledger hover:border-rule-strong focus-visible:ring-2 focus-visible:ring-money active:translate-y-px", className)}
+      className={cn(frame, "outline-none transition-[translate,box-shadow] duration-(--duration-slow) ease-ledger hover:-translate-y-0.5 hover:shadow-lift-hover focus-visible:ring-2 focus-visible:ring-money active:translate-y-0 motion-reduce:hover:translate-y-0", className)}
     >
       {body}
     </button>
@@ -70,9 +70,10 @@ export function StatCard({ label, value, format, hint, delta, spark, tone = "ink
 
 function DeltaBadge({ delta }: { delta: Delta }) {
   const Icon = delta.direction === "down" ? ArrowDownRight : ArrowUpRight
-  const colour = delta.direction === "flat" ? "text-ink-muted" : delta.good === false ? "text-failure" : delta.good ? "text-money" : "text-ink"
+  // Three tones: accent when the move is good news, quiet otherwise, flat when nothing moved.
+  const tone = delta.direction === "flat" ? "border border-rule text-ink-muted" : delta.good ? "bg-money-soft text-money" : "bg-tint text-ink"
   return (
-    <span className={cn("num inline-flex items-center gap-0.5 font-medium", colour)}>
+    <span className={cn("num inline-flex h-5 items-center gap-0.5 rounded-chip px-1.5 text-caption font-medium", tone)}>
       {delta.direction === "flat" ? null : <Icon className="size-3.5" aria-hidden="true" />}
       {delta.label}
     </span>

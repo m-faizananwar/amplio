@@ -1,12 +1,13 @@
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/cn"
+import { StatusGlyph } from "@/components/graphics/StatusGlyph"
 import type { CollaborationStatus } from "@/lib/collaboration-status"
 
 // A status is a small pill with a dot. Colour carries meaning, never decoration:
 // attention = waiting on someone, money = live/paid (verified), failure =
 // declined, neutral = everything in motion that needs no one right now.
 const chipVariants = cva(
-  "inline-flex h-6 shrink-0 items-center gap-1.5 rounded-chip px-2.5 text-caption font-medium whitespace-nowrap before:size-1.5 before:rounded-full before:bg-current",
+  "inline-flex h-6 shrink-0 items-center gap-1.5 rounded-chip px-2.5 text-caption font-medium whitespace-nowrap not-data-[glyph]:before:size-1.5 not-data-[glyph]:before:rounded-full not-data-[glyph]:before:bg-current",
   {
     variants: {
       tone: {
@@ -39,8 +40,16 @@ export function statusTone(status: CollaborationStatus): ChipTone {
   return STATUS_TONE[status]
 }
 
-type Props = React.ComponentProps<"span"> & VariantProps<typeof chipVariants>
+type Props = React.ComponentProps<"span"> & VariantProps<typeof chipVariants> & {
+  /** A collaboration state: its glyph replaces the dot, redrawn when the state moves. */
+  status?: CollaborationStatus
+}
 
-export function StatusChip({ tone, className, ...props }: Props) {
-  return <span data-slot="status-chip" data-tone={tone ?? "neutral"} className={cn(chipVariants({ tone }), className)} {...props} />
+export function StatusChip({ tone, status, className, children, ...props }: Props) {
+  return (
+    <span data-slot="status-chip" data-tone={tone ?? "neutral"} data-glyph={status ? "" : undefined} className={cn(chipVariants({ tone }), status && "pl-1.5", className)} {...props}>
+      {status ? <StatusGlyph key={status} status={status} className="size-3.5" /> : null}
+      {children}
+    </span>
+  )
 }

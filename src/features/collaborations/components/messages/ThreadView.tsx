@@ -41,7 +41,7 @@ export function ThreadView({ detail, role, csrfToken, senderName, senderAvatarUr
           <h2 className="truncate font-medium">{thread.counterpartName}</h2>
           <p className="truncate text-caption text-ink-muted">{thread.campaignName}</p>
         </div>
-        <StatusChip tone={statusTone(thread.status)}>{t(`status.${thread.status}`)}</StatusChip>
+        <StatusChip tone={statusTone(thread.status)} status={thread.status}>{t(`status.${thread.status}`)}</StatusChip>
         <Link href={`/${role}/collaborations/${thread.collaborationId}`} className="hidden text-small text-info hover:underline sm:block">{t("messages.thread.openCollaboration")}</Link>
       </header>
       <ul className="min-h-0 flex-1 space-y-4 overflow-y-auto p-4">

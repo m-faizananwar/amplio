@@ -28,7 +28,7 @@ export function EventTimeline({ events, role, collaboration: c }: Props) {
               <span aria-hidden="true" className={`absolute top-1.5 left-0 size-[7px] rounded-chip ${i === events.length - 1 ? "bg-ink" : "bg-rule-strong"}`} />
               <p className="flex flex-wrap items-center gap-2 text-small">
                 <span className="font-medium text-ink">{t(`detail.${role}.timeline.${key}`, vars)}</span>
-                <StatusChip tone={statusTone(e.toStatus)}>{t(`status.${e.toStatus}`)}</StatusChip>
+                <StatusChip tone={statusTone(e.toStatus)} status={e.toStatus}>{t(`status.${e.toStatus}`)}</StatusChip>
               </p>
               <time dateTime={e.createdAt} className="num text-caption text-ink-muted">{fmt.dateTime(e.createdAt)}</time>
               {e.note ? <blockquote className="rounded-control bg-paper px-3 py-2 text-small">{e.note}</blockquote> : null}

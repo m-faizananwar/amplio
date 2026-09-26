@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { PersonAvatar } from "@/components/ui/avatar"
 import { EmptyState } from "@/components/ui/empty-state"
 import { Skeleton } from "@/components/ui/skeleton"
+import { RingWidget } from "@/components/ui/ring-widget"
 import { StatCard } from "@/components/ui/stat-card"
 import { StatusChip, statusTone } from "@/components/ui/status-chip"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
@@ -23,7 +24,7 @@ export function DataGallery() {
     <>
       <StatsSection />
       <Section id="chips" title="StatusChip · Avatar">
-        <Row label="collaboration">{STATUSES.map((s) => <StatusChip key={s} tone={statusTone(s)}>{STATUS_LABELS[s]}</StatusChip>)}</Row>
+        <Row label="collaboration">{STATUSES.map((s) => <StatusChip key={s} tone={statusTone(s)} status={s}>{STATUS_LABELS[s]}</StatusChip>)}</Row>
         <Row label="avatar">
           <PersonAvatar name="Tom Bechtelar" src={avatarFor("Tom Bechtelar")} size="lg" />
           <PersonAvatar name="Tom Bechtelar" src={avatarFor("Tom Bechtelar")} />
@@ -44,7 +45,15 @@ function StatsSection() {
   const [clicks, setClicks] = useState(640)
   const [open, setOpen] = useState(false)
   return (
-    <Section id="stats" title="StatCard · rolling number · trail drawer">
+    <Section id="stats" title="StatCard · RingWidget · rolling number · trail drawer">
+      <Row label="ring">
+        <RingWidget className="w-full max-w-xl" label="Collaborations" totalLabel="in progress" segments={[
+          { key: "needs_you", label: "Needs you", count: 4, href: "/brand/collaborations?filter=needs_you" },
+          { key: "waiting", label: "Waiting on creators", count: 6, href: "/brand/collaborations?filter=waiting" },
+          { key: "live", label: "Live", count: 3, href: "/brand/collaborations?filter=live" },
+          { key: "done", label: "Done", count: 9, href: "/brand/collaborations?filter=done" },
+        ]} />
+      </Row>
       <Row label="cards">
         <div className="grid w-full gap-4 md:grid-cols-3">
           <StatCard label="Qualified clicks" value={clicks} spark={SPARK} delta={{ label: "+12%", direction: "up", good: true }} hint="last 30 days" onOpen={() => setOpen(true)} />
@@ -78,7 +87,7 @@ function TableSection() {
             {rows.map((r) => (
               <TableRow key={r.id}>
                 <TableCell className="font-medium">{r.creator}</TableCell>
-                <TableCell><StatusChip tone={statusTone(r.status)}>{STATUS_LABELS[r.status]}</StatusChip></TableCell>
+                <TableCell><StatusChip tone={statusTone(r.status)} status={r.status}>{STATUS_LABELS[r.status]}</StatusChip></TableCell>
                 <TableCell className="num text-right">{r.clicks}</TableCell>
                 <TableCell className="num text-right">{euros(r.feeCents)}</TableCell>
               </TableRow>

@@ -36,7 +36,7 @@ export function TrackedLinks({ links, onOpen }: { links: TrackedLinkPerformance[
             {links.map((l) => (
               <TableRow key={l.collaborationId}>
                 <TableCell><span className="block font-medium">{l.brand}</span><span className="block text-caption text-ink-muted">{l.campaign}</span></TableCell>
-                <TableCell><StatusChip tone={statusTone(l.status as CollaborationStatus)}>{ts(l.status)}</StatusChip></TableCell>
+                <TableCell><StatusChip tone={statusTone(l.status as CollaborationStatus)} status={l.status as CollaborationStatus}>{ts(l.status)}</StatusChip></TableCell>
                 <TableCell className="num hidden text-small text-ink-muted md:table-cell">/r/{l.code}</TableCell>
                 <TableCell className="num hidden text-small text-ink-muted sm:table-cell">{l.publishedAt ? format.dateTime(new Date(l.publishedAt), { dateStyle: "medium" }) : t("trackedLinks.notPublished")}</TableCell>
                 <TableCell className="text-right">
