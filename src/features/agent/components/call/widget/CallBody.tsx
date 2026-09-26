@@ -3,6 +3,7 @@
 import { Mic, MicOff, Phone } from "lucide-react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import { Markdown } from "@/components/markdown/Markdown";
 import { useEffect, useRef } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import type { AgentCall } from "../useAgentCall";
@@ -58,7 +59,7 @@ function LiveBody({ call }: { call: AgentCall }) {
       </div>
       <dl className="grid gap-1 rounded-control bg-well px-3 py-2 text-small" aria-live="polite">
         <div className="flex min-w-0 gap-2"><dt className="shrink-0 text-ink-muted">{t("you")}</dt><dd className="line-clamp-1 min-w-0">{call.caption.you || "…"}</dd></div>
-        <div className="flex min-w-0 gap-2"><dt className="shrink-0 text-ink-muted">{t("agent")}</dt><dd className={`min-w-0 ${call.hasFeed ? "line-clamp-2" : "line-clamp-6"}`}>{call.caption.agent || "…"}</dd></div>
+        <div className="flex min-w-0 gap-2"><dt className="shrink-0 text-ink-muted">{t("agent")}</dt><dd className={`min-w-0 ${call.hasFeed ? "line-clamp-2" : "line-clamp-6"}`}>{call.caption.agent ? <Markdown compact text={call.caption.agent} /> : "…"}</dd></div>
       </dl>
       {/* no thread on this line (no thread storage yet): the voice carries it all, so the captions get the room */}
       {call.hasFeed ? <div ref={feed} className="min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-contain"><CallFeed call={call} /></div> : <div className="flex-1" />}

@@ -2,6 +2,7 @@
 
 import { Mic, MicOff, PhoneOff } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { Markdown } from "@/components/markdown/Markdown";
 import { useRouter } from "next/navigation";
 import { type FormEvent, type ReactNode, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -42,7 +43,7 @@ export function CallView({ role, csrfToken, account }: Props) {
       <div className="flex flex-1 flex-col items-center justify-center gap-8 px-6">
         <VoiceMark listening={loop.listening && !loop.muted} speaking={loop.speaking} />
         <ol ref={log} className="max-h-48 w-full max-w-xl space-y-2 overflow-y-auto text-center text-lead" aria-live="polite" aria-label={t("transcript")}>
-          {turns.map((m, i) => <li key={`${i}-${m.role}`} className={m.role === "user" ? "text-ink-muted" : "text-ink"}>{m.text}</li>)}
+          {turns.map((m, i) => <li key={`${i}-${m.role}`} className={m.role === "user" ? "text-ink-muted" : "text-ink"}>{m.role === "user" ? m.text : <Markdown compact text={m.text} />}</li>)}
           {loop.partial ? <li className="text-ink-muted">{loop.partial}</li> : null}
           {turns.length === 0 && !loop.partial ? <li className="text-ink-muted">{note ?? t("prompt")}</li> : null}
         </ol>

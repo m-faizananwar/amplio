@@ -2,12 +2,12 @@
 
 import { AlertTriangle } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { Markdown } from "@/components/markdown/Markdown";
 import { Button } from "@/components/ui/button";
 import type { ConfirmEvent, StepEvent } from "../events";
 import { ConfirmCard } from "./ConfirmCard";
 import { AgentBeam } from "./fx/AgentBeam";
 import { AgentAvatar } from "./identity/AgentAvatar";
-import { MessageText } from "./MessageText";
 import { ResultCard } from "./ResultCard";
 import { StepGroup } from "./StepGroup";
 import { type AgentItem, type ConfirmState, STALE } from "./useAgentRun";
@@ -55,7 +55,7 @@ export function AgentThread({ items, confirms, sample, onSend, onDecide, onRetry
             return (
               <li key={block.key} className="flex min-w-0 items-start gap-3">
                 <AgentAvatar size={28} state={busy && block.key === lastMessageKey ? "working" : "default"} className="mt-0.5 shrink-0" />
-                <div className="grid min-w-0 flex-1 gap-2 text-lead leading-relaxed text-ink"><MessageText text={item.text} /></div>
+                <Markdown animate text={item.text} className="min-w-0 flex-1 text-lead leading-relaxed text-ink" />
               </li>
             );
           case "question":

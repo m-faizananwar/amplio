@@ -55,7 +55,18 @@
     "available": "Disponible",
     "held": "Bloqué",
     "earned": "Gagné",
-    "pending": "En attente"
+    "pending": "En attente",
+    "campaign": {
+      "kind": "Campagne",
+      "budget": "Budget",
+      "deadline": "Publier avant le",
+      "open": "Ouvrir",
+      "status": {
+        "draft": "Brouillon",
+        "active": "Active",
+        "completed": "Terminée"
+      }
+    }
   },
   "confirm": {
     "title": "Confirmez avant que je continue",

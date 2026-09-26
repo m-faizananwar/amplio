@@ -55,7 +55,18 @@
     "available": "Available",
     "held": "Held",
     "earned": "Earned",
-    "pending": "Pending"
+    "pending": "Pending",
+    "campaign": {
+      "kind": "Campaign",
+      "budget": "Budget",
+      "deadline": "Post by",
+      "open": "Open",
+      "status": {
+        "draft": "Draft",
+        "active": "Active",
+        "completed": "Completed"
+      }
+    }
   },
   "confirm": {
     "title": "Confirm before I go ahead",

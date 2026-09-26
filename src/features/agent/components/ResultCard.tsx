@@ -5,9 +5,12 @@ import { useFormatter, useTranslations } from "next-intl";
 import { buttonVariants } from "@/components/ui/button";
 import { RollingNumber } from "@/components/ui/rolling-number";
 import type { ResultEvent } from "../events";
+import { CampaignResultCard } from "./CampaignResultCard";
 import { CreatorResultCard } from "./CreatorResultCard";
 
 const CENTS = 100;
+// a status key that reached the card unlabelled ("needs_you") still reads as words
+const humanize = (s: string) => (/^[a-z]+(_[a-z]+)+$/.test(s) ? `${s[0]?.toUpperCase()}${s.slice(1).replaceAll("_", " ")}` : s);
 const CARD = "agent-rise rounded-card border border-rule bg-surface p-4 shadow-lift";
 
 // A result as cards, never a wall of text: creators as a row to scroll,
@@ -38,12 +41,7 @@ export function ResultCard({ result, sample }: { result: ResultEvent; sample: bo
         </section>
       );
     case "campaign":
-      return (
-        <section className={`${CARD} grid gap-2`}>{title}
-          <p className="text-h4 font-semibold">{result.item.name}</p>
-          {result.item.brief ? <><p className="text-caption text-ink-muted">{t("brief")}</p><p className="text-body whitespace-pre-line">{result.item.brief}</p></> : null}
-        </section>
-      );
+      return <CampaignResultCard result={result} />;
     case "collaborations":
       return (
         <section className="grid gap-2">{title}
@@ -51,7 +49,7 @@ export function ResultCard({ result, sample }: { result: ResultEvent; sample: bo
             {result.items.map((c) => (
               <li key={c.id} className="agent-rise flex items-center gap-3 px-4 py-3">
                 <div className="min-w-0 flex-1"><p className="truncate font-medium">{c.counterpart}</p><p className="truncate text-small text-ink-muted">{c.campaign}</p></div>
-                <p className="text-small"><span className="text-ink-muted">{t("nextAction")}: </span>{c.nextAction}</p>
+                <p className="text-small"><span className="text-ink-muted">{t("nextAction")}: </span>{humanize(c.nextAction)}</p>
                 <span className="num text-small">{euros(c.feeCents)}</span>
               </li>
             ))}
