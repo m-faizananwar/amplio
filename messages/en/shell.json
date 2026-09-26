@@ -32,7 +32,7 @@
     },
     "collapse": "Collapse sidebar",
     "expand": "Expand sidebar",
-    "callAgent": "Call the agent"
+    "callAgent": "Call in agentic mode"
   },
   "topBar": {
     "roleSwitch": {
@@ -84,8 +84,8 @@
       "toggleTheme": "Change theme",
       "switchLanguage": "Change language",
       "call": "Call Amplio",
-      "askAgent": "Ask the agent",
-      "callAgent": "Call the agent"
+      "askAgent": "Open agentic mode",
+      "callAgent": "Call in agentic mode"
     }
   },
   "pageStates": {

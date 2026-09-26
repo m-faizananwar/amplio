@@ -3,7 +3,7 @@
     "label": "Mode agent"
   },
   "command": {
-    "ask": "Demander à l’agent"
+    "ask": "Ouvrir le mode agent"
   },
   "title": "Mode agent",
   "description": "Il peut chercher, réserver et vérifier des choses pour vous, et demande confirmation avant tout mouvement d’argent.",
@@ -25,7 +25,7 @@
     }
   },
   "composer": {
-    "label": "Écrire à l’agent",
+    "label": "Écrire au mode agent",
     "placeholder": "Demandez n’importe quoi sur Amplio",
     "send": "Envoyer",
     "mic": "Parler",
@@ -76,7 +76,7 @@
   },
   "sample": {
     "badge": "Exécution d’exemple",
-    "note": "L’agent en direct n’est pas connecté ici ; ceci rejoue un exemple pour vous montrer à quoi ressemble une exécution."
+    "note": "Le mode agent n’est pas connecté ici ; ceci rejoue un exemple pour vous montrer à quoi ressemble une exécution."
   },
   "rail": {
     "know": "Ce que je sais",
@@ -101,17 +101,17 @@
   "firstRun": {
     "campaigns": {
       "title": "Pas encore de campagne",
-      "body": "Créez une campagne pour que l’agent puisse commencer à chercher des créateurs.",
+      "body": "Créez une campagne pour que le mode agent puisse commencer à chercher des créateurs.",
       "action": "Créer une campagne"
     },
     "collaborations": {
       "title": "Pas encore de collaboration",
-      "body": "Une fois votre campagne créée, l’agent peut trouver des créateurs et lancer des conversations pour vous.",
+      "body": "Une fois votre campagne créée, le mode agent peut trouver des créateurs et lancer des conversations pour vous.",
       "action": "Trouver des créateurs"
     },
     "opportunities": {
       "title": "Aucune campagne ne correspond encore à votre fiche",
-      "body": "Complétez votre fiche pour que l’agent puisse vous proposer les bonnes campagnes.",
+      "body": "Complétez votre fiche pour que le mode agent puisse vous proposer les bonnes campagnes.",
       "action": "Compléter votre fiche"
     },
     "messages": {
@@ -179,7 +179,7 @@
     "reading_the_campaign": "Lecture de la campagne"
   },
   "call": {
-    "start": "Appeler l’agent",
+    "start": "Appeler en mode agent",
     "startShort": "Appeler",
     "connecting": "Connexion…",
     "listening": "À l’écoute",
@@ -194,7 +194,7 @@
     "handle": "Déplacer l’appel. Les flèches le déplacent, Entrée le place dans le coin le plus proche.",
     "you": "Vous",
     "agent": "Agent",
-    "feedEmpty": "Les étapes s’affichent ici pendant que l’agent travaille.",
+    "feedEmpty": "Les étapes s’affichent ici pendant que le mode agent travaille.",
     "feedInChat": "Les étapes de cet appel sont dans la conversation.",
     "deniedTitle": "Micro bloqué",
     "deniedBody": "Autorisez le micro dans les réglages du site de votre navigateur, puis réessayez, ou écrivez dans la conversation.",
@@ -207,7 +207,7 @@
     "nothingDone": "Rien n’a été modifié pendant cet appel.",
     "continueChat": "Continuer par écrit",
     "close": "Fermer",
-    "live": "En appel",
+    "live": "Mode agent · en appel",
     "opened": "Page ouverte : {label}",
     "sayYes": "Dites « oui » ou appuyez sur Confirmer",
     "sheetHandle": "Glisser vers le bas pour réduire l’appel",

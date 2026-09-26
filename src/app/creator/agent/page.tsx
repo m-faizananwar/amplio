@@ -8,7 +8,9 @@ import { AGENT_MODE } from "@/features/agent/flag";
 import { listNotes, listThreads } from "@/features/agent/server/memory";
 import { getViewer } from "@/features/auth/server/session";
 
-export const metadata: Metadata = { title: `Agent · ${BRAND.wordmark}` };
+export async function generateMetadata(): Promise<Metadata> {
+  return { title: `${(await getTranslations("agent"))("title")} · ${BRAND.wordmark}` };
+}
 
 // The agent, for the creator: a conversation that shows its steps and asks
 // before money moves. Off unless NEXT_PUBLIC_FF_AGENT_MODE=1.

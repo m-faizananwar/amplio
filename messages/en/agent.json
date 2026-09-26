@@ -3,7 +3,7 @@
     "label": "Agentic mode"
   },
   "command": {
-    "ask": "Ask the agent"
+    "ask": "Open agentic mode"
   },
   "title": "Agentic mode",
   "description": "It can find, book and check things for you, and asks before anything that moves money.",
@@ -25,7 +25,7 @@
     }
   },
   "composer": {
-    "label": "Message the agent",
+    "label": "Message agentic mode",
     "placeholder": "Ask for anything on Amplio",
     "send": "Send",
     "mic": "Speak",
@@ -76,7 +76,7 @@
   },
   "sample": {
     "badge": "Sample run",
-    "note": "The live agent isn’t connected here; this replays a sample so you can see how a run looks."
+    "note": "Agentic mode isn’t connected here; this replays a sample so you can see how a run looks."
   },
   "rail": {
     "know": "What I know",
@@ -101,17 +101,17 @@
   "firstRun": {
     "campaigns": {
       "title": "No campaigns yet",
-      "body": "Create a campaign and the agent can start finding creators for it.",
+      "body": "Create a campaign and agentic mode can start finding creators for it.",
       "action": "Create a campaign"
     },
     "collaborations": {
       "title": "No collaborations yet",
-      "body": "Once you have a campaign, the agent can find creators and start conversations for you.",
+      "body": "Once you have a campaign, agentic mode can find creators and start conversations for you.",
       "action": "Find creators"
     },
     "opportunities": {
       "title": "No campaigns match your card yet",
-      "body": "Complete your card so the agent can match you with the right campaigns.",
+      "body": "Complete your card so agentic mode can match you with the right campaigns.",
       "action": "Complete your card"
     },
     "messages": {
@@ -179,7 +179,7 @@
     "reading_the_campaign": "Reading the campaign"
   },
   "call": {
-    "start": "Call the agent",
+    "start": "Call in agentic mode",
     "startShort": "Call",
     "connecting": "Connecting…",
     "listening": "Listening",
@@ -194,7 +194,7 @@
     "handle": "Move the call. Arrow keys move it, Enter snaps it to the nearest corner.",
     "you": "You",
     "agent": "Agent",
-    "feedEmpty": "Steps show here as the agent works.",
+    "feedEmpty": "Steps show here as agentic mode works.",
     "feedInChat": "Steps for this call are in the chat.",
     "deniedTitle": "Microphone blocked",
     "deniedBody": "Allow the microphone in your browser’s site settings and try again, or type in the chat.",
@@ -207,7 +207,7 @@
     "nothingDone": "Nothing was changed on this call.",
     "continueChat": "Continue in chat",
     "close": "Close",
-    "live": "On a call",
+    "live": "Agentic mode · on a call",
     "opened": "Opened {label}",
     "sayYes": "Say “yes” or tap Confirm",
     "sheetHandle": "Drag down to minimise the call",

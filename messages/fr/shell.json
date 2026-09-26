@@ -32,7 +32,7 @@
     },
     "collapse": "Réduire la barre latérale",
     "expand": "Agrandir la barre latérale",
-    "callAgent": "Appeler l’agent"
+    "callAgent": "Appeler en mode agent"
   },
   "topBar": {
     "roleSwitch": {
@@ -84,8 +84,8 @@
       "toggleTheme": "Changer de thème",
       "switchLanguage": "Changer de langue",
       "call": "Appeler Amplio",
-      "askAgent": "Demander à l’agent",
-      "callAgent": "Appeler l’agent"
+      "askAgent": "Ouvrir le mode agent",
+      "callAgent": "Appeler en mode agent"
     }
   },
   "pageStates": {
