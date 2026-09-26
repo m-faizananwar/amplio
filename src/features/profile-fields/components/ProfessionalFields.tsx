@@ -6,7 +6,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Combobox } from "@/components/ui/combobox";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { COUNTRIES, EU_COUNTRY_CODES } from "@/features/creator-onboarding/constants";
+import { COUNTRIES, EU_COUNTRY_CODES, LEGAL_ADDRESS_MAX } from "@/features/creator-onboarding/constants";
 import type { ProfessionalInput } from "@/features/creator-onboarding/schemas";
 import { describedBy, FormField } from "./FormField";
 import { Building2 } from "lucide-react";
@@ -53,7 +53,7 @@ export function ProfessionalFields({ control }: { control: Control<ProfessionalI
       )} />
       <Controller control={control} name="legalAddress" render={({ field, fieldState }) => (
         <FormField id="legalAddress" label={t("legalAddress.label")} error={fieldState.error ? t("errors.legalAddressRequired") : undefined}>
-          <Textarea id="legalAddress" rows={3} autoComplete="street-address" placeholder={t("legalAddress.placeholder")} aria-invalid={fieldState.invalid || undefined} {...field} />
+          <Textarea id="legalAddress" rows={3} maxLength={LEGAL_ADDRESS_MAX} autoComplete="street-address" placeholder={t("legalAddress.placeholder")} aria-invalid={fieldState.invalid || undefined} {...field} />
         </FormField>
       )} />
       <CheckField control={control} name="taxAcknowledged" text={t("taxAcknowledged.label")} error={t("errors.confirm")} />

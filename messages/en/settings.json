@@ -325,7 +325,6 @@
         "save": "Save",
         "cancel": "Cancel",
         "close": "Close",
-        "count": "{count} / {max}",
         "notSet": "Not set yet",
         "unsaved": "You have unsaved changes.",
         "discard": "Discard them",

@@ -11,7 +11,7 @@ import { AmbientTrail } from "@/features/public/components/stage/AmbientTrail";
 export async function AuthColumn({ rail, children, wide = false }: { rail?: ReactNode; children: ReactNode; wide?: boolean }) {
   const t = await getTranslations("landing.footer.links");
   return (
-    <div className="flex min-h-[100svh] flex-col bg-paper">
+    <div className="font-app flex min-h-[100svh] flex-col bg-paper">
       <header className="mx-auto flex w-full max-w-content items-center justify-between px-4 py-5 sm:px-8">
         <Link href="/" aria-label="Amplio home" className="rounded-control focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-money">
           <BrandLockup size="md" />

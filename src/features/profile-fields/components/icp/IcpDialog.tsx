@@ -86,9 +86,8 @@ export function IcpDialog({ icps, start, origin, onSave, onClose }: Props) {
               <Input ref={titleInput} id="icp-dialog-title-field" leadingIcon={<Users />} value={draft.title} placeholder={t("name.placeholder")} maxLength={ICP_TITLE_MAX_CHARS} aria-invalid={!!problems.title || undefined} onChange={(e) => edit({ title: e.target.value })} />
             </FormField>
             <FormField id="icp-dialog-details" label={t("details.label")} error={errorText("description")}>
-              <Textarea id="icp-dialog-details" rows={7} value={draft.description} placeholder={t("details.placeholder")} aria-invalid={!!problems.description || undefined} aria-describedby="icp-dialog-count" onChange={(e) => edit({ description: e.target.value })} />
+              <Textarea id="icp-dialog-details" rows={7} maxLength={ICP_DESCRIPTION_MAX_CHARS} value={draft.description} placeholder={t("details.placeholder")} aria-invalid={!!problems.description || undefined} onChange={(e) => edit({ description: e.target.value })} />
             </FormField>
-            <p id="icp-dialog-count" className={s.count} data-over={draft.description.length > ICP_DESCRIPTION_MAX_CHARS ? "" : undefined} aria-live="polite">{t("card.count", { count: draft.description.length, max: ICP_DESCRIPTION_MAX_CHARS })}</p>
           </div>
           {confirming ? (
             <div className={s.confirm} role="alert">

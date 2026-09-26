@@ -325,7 +325,6 @@
         "save": "Enregistrer",
         "cancel": "Annuler",
         "close": "Fermer",
-        "count": "{count} / {max}",
         "notSet": "Pas encore renseigné",
         "unsaved": "Vous avez des modifications non enregistrées.",
         "discard": "Les abandonner",
