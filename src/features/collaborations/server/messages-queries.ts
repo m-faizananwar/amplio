@@ -4,6 +4,7 @@ import { getDb } from "@/db";
 import { campaigns, collaborations, creators, messages, users } from "@/db/schema";
 import { THREAD_STATUSES } from "@/lib/collaboration-labels";
 import type { MessageDto, ThreadDetailDto, ThreadDto, ViewerRole } from "../schemas";
+import { getBrandLogo, getBrandLogos } from "@/features/brand-onboarding/server/queries";
 import { type CollaborationRow, collaborationSelect, initialOf, isUuid } from "./dto";
 import { MAX_THREAD_MESSAGES, MESSAGE_PREVIEW_CHARS } from "../ui-constants";
 import { cachedRead } from "@/db/cache";
@@ -21,7 +22,11 @@ function preview(body: string | null) {
   return oneLine.length > MESSAGE_PREVIEW_CHARS ? `${oneLine.slice(0, MESSAGE_PREVIEW_CHARS)}…` : oneLine;
 }
 
-function toThreadDto(row: CollaborationRow, role: ViewerRole, last: { body: string | null; at: Date | null }): ThreadDto {
+type LastMessage = { body: string | null; at: Date | null };
+
+// `brandLogo` is the brand's uploaded logo, shown to the creator side.
+function toThreadDto(row: CollaborationRow, role: ViewerRole, extra: { last: LastMessage; brandLogo?: string | null }): ThreadDto {
+  const { last, brandLogo = null } = extra;
   const creatorName = `${row.creatorFirstName} ${row.creatorLastName}`.trim();
   const counterpartName = role === "brand" ? creatorName : row.brandCompany;
   return {
@@ -31,7 +36,7 @@ function toThreadDto(row: CollaborationRow, role: ViewerRole, last: { body: stri
     status: row.collab.status,
     counterpartName,
     counterpartKind: role === "brand" ? "person" : "brand",
-    counterpartAvatarUrl: role === "brand" ? row.creatorAvatarUrl : null,
+    counterpartAvatarUrl: role === "brand" ? row.creatorAvatarUrl : brandLogo,
     counterpartInitial: initialOf(counterpartName),
     lastMessagePreview: preview(last.body),
     lastMessageAt: last.at ? last.at.toISOString() : null,
@@ -58,9 +63,12 @@ async function loadThreads(scope: ThreadScope): Promise<ThreadDto[]> {
   const rows = await collaborationSelect().where(
     and(ownerFilter(scope), inArray(collaborations.status, [...THREAD_STATUSES])),
   );
-  const last = await lastMessages(rows.map((r) => r.collab.id));
+  const [last, logos] = await Promise.all([
+    lastMessages(rows.map((r) => r.collab.id)),
+    scope.role === "creator" ? getBrandLogos(rows.map((r) => r.brandId)) : Promise.resolve(new Map<string, string>()),
+  ]);
   return rows
-    .map((r) => toThreadDto(r, scope.role, last.get(r.collab.id) ?? { body: null, at: null }))
+    .map((r) => toThreadDto(r, scope.role, { last: last.get(r.collab.id) ?? { body: null, at: null }, brandLogo: logos.get(r.brandId) ?? null }))
     .sort((a, b) => (b.lastMessageAt ?? "").localeCompare(a.lastMessageAt ?? ""));
 }
 
@@ -70,6 +78,7 @@ async function loadThread(scope: ThreadScope, collaborationId: string): Promise<
   const [row] = await collaborationSelect().where(and(eq(collaborations.id, collaborationId), ownerFilter(scope)));
   if (!row || !THREAD_STATUSES.includes(row.collab.status)) return null;
 
+  const logo = await getBrandLogo(row.brandId);
   const list = await getDb()
     .select({
       id: messages.id,
@@ -92,13 +101,13 @@ async function loadThread(scope: ThreadScope, collaborationId: string): Promise<
     body: m.body,
     senderName: m.role === "brand" ? row.brandCompany : `${m.firstName} ${m.lastName}`.trim(),
     senderKind: m.role === "brand" ? "brand" : "person",
-    senderAvatarUrl: m.role === "brand" ? null : (m.avatarUrl || null),
+    senderAvatarUrl: m.role === "brand" ? logo : (m.avatarUrl || null),
     mine: m.senderUserId === scope.userId,
     createdAt: m.createdAt.toISOString(),
   }));
   const lastMessage = list[list.length - 1];
   return {
-    thread: toThreadDto(row, scope.role, { body: lastMessage?.body ?? null, at: lastMessage?.createdAt ?? null }),
+    thread: toThreadDto(row, scope.role, { last: { body: lastMessage?.body ?? null, at: lastMessage?.createdAt ?? null }, brandLogo: logo }),
     messages: dtos,
   };
 }

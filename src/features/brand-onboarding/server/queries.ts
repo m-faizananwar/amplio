@@ -1,5 +1,5 @@
 import "server-only";
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 import { getDb } from "@/db";
 import { brandLogos, brands, users } from "@/db/schema";
 import type { OnboardingProfileDto } from "../schemas";
@@ -71,5 +71,17 @@ export async function getBrandLogo(brandId: string): Promise<string | null> {
   } catch (error) {
     console.warn("[brand-onboarding] brand logo unavailable", { brandId, error: error instanceof Error ? error.message : String(error) });
     return null;
+  }
+}
+
+// Several brands' logos at once (a thread list), same fallback: none.
+export async function getBrandLogos(brandIds: string[]): Promise<Map<string, string>> {
+  if (brandIds.length === 0) return new Map();
+  try {
+    const rows = await getDb().select({ brandId: brandLogos.brandId, dataUrl: brandLogos.dataUrl }).from(brandLogos).where(inArray(brandLogos.brandId, [...new Set(brandIds)]));
+    return new Map(rows.map((r) => [r.brandId, r.dataUrl]));
+  } catch (error) {
+    console.warn("[brand-onboarding] brand logos unavailable", { error: error instanceof Error ? error.message : String(error) });
+    return new Map();
   }
 }
