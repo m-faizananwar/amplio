@@ -14,16 +14,18 @@ shown estimated reach and asked to trust it. So the one idea behind every screen
 that **every number is a receipt** — a click, a sign-up, a payout is a row you can open."
 
 ## 0:25 – 1:10 · landing
-Let the entrance finish (about two seconds), then scroll at reading speed.
-"The first screen says the one line — every click comes back — and puts the demo
-workspace's real posts, links, clicks and sign-ups beside it, labelled as demo data; the
-two big numbers count up to the database's values. The page tells one story as you scroll: a post goes out,
+Load the landing and let the entrance play (about two seconds): the headline rises line by
+line, the glass panel settles, the two big numbers count up. "One line — **Every click comes
+back.** The panel beside it is live: the demo workspace's posts, tracked links, clicks and
+sign-ups, straight from the database and labelled as demo data. Under it, the two numbers
+that matter — clicks traced to a post, sign-ups attributed — counting up to their real
+values. **Open the demo** goes straight to the one-click demo accounts." Then scroll at
+reading speed. "The page tells one story as you scroll: a post goes out,
 clicks fly into the tracked link, sign-ups drop into a ledger with names on the rows, and
 the bill locks next to the proof." At the pricing block: "the coin goes whole to the
 creator and the fee reads €0 — because that's what the ledger does, so that's what the
 page says." Point at the round button bottom-right: "the assistant waits in the corner on
-public pages, so it never sits on the content" (on a phone it steps aside while the hero is
-at the top). Then: "What I cut from the reference —
+public pages, so it never sits on the content." Then: "What I cut from the reference —
 their benchmark figures, customer logos, testimonials — none of that was ours."
 
 ## 1:10 – 1:35 · sign-up, honestly
@@ -70,7 +72,7 @@ they built, and every change was checked on the live site. Every prompt is in th
 
 ## 4:20 – 4:40 · close
 "The idea and the backend are the same — a real Postgres database, real tracking, a real
-LinkedIn import. The interface and the product decisions are ours."
+LinkedIn import. The product decisions are mine."
 
 ## Before you hit record
 - Private window, 1440 wide, English, light theme. `/api/health` is 200.
