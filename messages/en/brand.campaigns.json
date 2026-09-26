@@ -23,7 +23,13 @@
       "completed": "Completed"
     },
     "continue": "Finish setup",
-    "open": "Open"
+    "open": "Open",
+    "rowMenu": {
+      "more": "More actions for {name}",
+      "open": "Open campaign",
+      "editBrief": "Edit brief",
+      "analytics": "View analytics"
+    }
   },
   "detail": {
     "back": "Campaigns",

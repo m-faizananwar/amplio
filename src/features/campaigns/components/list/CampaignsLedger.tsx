@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react";
+import { CampaignRowMenu } from "./CampaignRowMenu";
 import Link from "next/link";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { BlankBriefScene } from "@/components/graphics/scenes";
@@ -21,15 +22,15 @@ export async function CampaignsLedger({ campaigns }: { campaigns: CampaignCardDt
   }
   return (
     <div className="overflow-hidden rounded-card border border-rule bg-surface">
-      <div className="hidden grid-cols-[minmax(0,1.6fr)_10.5rem_5rem_5.5rem_7.5rem_8rem] gap-4 border-b border-rule px-5 py-2.5 text-caption text-ink-muted md:grid" aria-hidden="true">
+      <div className="hidden grid-cols-[minmax(0,1.6fr)_10.5rem_5rem_5.5rem_7.5rem_8rem] gap-4 border-b border-rule py-2.5 pr-14 pl-5 text-caption text-ink-muted md:grid" aria-hidden="true">
         <span>{t("columns.campaign")}</span><span>{t("columns.status")}</span><span>{t("columns.creators")}</span><span>{t("columns.published")}</span><span className="text-right">{t("columns.committed")}</span><span />
       </div>
       <ol className="list-stagger divide-y divide-rule">
         {campaigns.map((c) => {
           const href = c.status === "draft" ? `/brand/campaigns/${c.id}/launch` : `/brand/campaigns/${c.id}`;
           return (
-            <li key={c.id}>
-              <Link href={href} className="group grid gap-2 px-5 py-4 outline-none transition-colors duration-(--duration-fast) ease-ledger hover:bg-tint focus-visible:bg-tint md:grid-cols-[minmax(0,1.6fr)_10.5rem_5rem_5.5rem_7.5rem_8rem] md:items-center md:gap-4">
+            <li key={c.id} className="relative">
+              <Link href={href} className="group grid gap-2 py-4 pr-14 pl-5 outline-none transition-colors duration-(--duration-fast) ease-ledger hover:bg-tint focus-visible:bg-tint md:grid-cols-[minmax(0,1.6fr)_10.5rem_5rem_5.5rem_7.5rem_8rem] md:items-center md:gap-4">
                 <span className="min-w-0">
                   <span className="block truncate font-medium text-ink">{c.name}</span>
                   <span className="block truncate text-small text-ink-muted">{c.description || t("noDescription")}</span>
@@ -43,6 +44,7 @@ export async function CampaignsLedger({ campaigns }: { campaigns: CampaignCardDt
                   <ArrowRight className="size-3.5 transition-transform duration-(--duration-fast) ease-ledger group-hover:translate-x-0.5" aria-hidden="true" />
                 </span>
               </Link>
+              <div className="absolute top-3 right-3 md:top-1/2 md:-translate-y-1/2"><CampaignRowMenu id={c.id} name={c.name} /></div>
             </li>
           );
         })}

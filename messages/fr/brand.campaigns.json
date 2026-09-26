@@ -23,7 +23,13 @@
       "completed": "Terminée"
     },
     "continue": "Terminer la configuration",
-    "open": "Ouvrir"
+    "open": "Ouvrir",
+    "rowMenu": {
+      "more": "Plus d’actions pour {name}",
+      "open": "Ouvrir la campagne",
+      "editBrief": "Modifier le brief",
+      "analytics": "Voir les statistiques"
+    }
   },
   "detail": {
     "back": "Campagnes",
